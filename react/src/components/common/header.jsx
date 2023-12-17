@@ -7,7 +7,7 @@ import more from "../../assets/public/more.svg";
 
 const PopupMenu = ({ items, onClose }) => {
   return (
-    <div className="absolute right-2 bg-slate-900 text-white p-4 rounded-xl shadow-xl">
+    <div className="absolute right-2 bg-slate-900 text-white p-4 rounded-xl shadow-xl z-10">
       <ul>
         {items.map((item, index) => (
           <li key={index} className="py-2.5">
@@ -110,7 +110,7 @@ const Header = () => {
       </div>
       {isPopupOpen && (
         <div
-          className="fixed top-0 left-0 right-0 bottom-0 bg-gray-800 opacity-50"
+          className="fixed top-0 left-0 right-0 bottom-0 opacity-50"
           onClick={togglePopup}
         ></div>
       )}
