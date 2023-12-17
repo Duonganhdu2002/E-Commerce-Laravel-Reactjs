@@ -1,9 +1,7 @@
 import React from 'react'
 
-export default function header() {
+export default function Header() {
   return (
-    <div>
-        <div className="bg-"></div>
-    </div>
+    <div className="bg-slate-800">Header</div>
   )
 }
