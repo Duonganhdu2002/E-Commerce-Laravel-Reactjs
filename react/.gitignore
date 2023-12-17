@@ -1,8 +1,4 @@
-# Logs
 
-dist
-dist-ssr
-*.local
 
 # Editor directories and files
 .vscode/*
