@@ -1,9 +1,9 @@
 import React from 'react'
-import Header from '../components/common/Header'
-import Navbar from '../components/common/navbar'
 import Container from '../components/common/container'
-import SubFooter from '../components/common/subfooter'
 import Footer from '../components/common/footer'
+import Header from '../components/common/header'
+import Navbar from '../components/common/navbar'
+import SubFooter from '../components/common/subfooter'
 
 
 
