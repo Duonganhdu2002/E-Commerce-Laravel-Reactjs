@@ -1,11 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
-import Dashboard from "./views/Dashboard";
-import Dangnhap from "./views/Dangnhap";
-import Login from "./views/login";
+import Home from "./views/Home";
+import Login from "./views/Login";
 const router = createBrowserRouter([
     {
         path : '/',
-        element : <Dangnhap/>
+        element : <Home/>
     },
     {
         path : '/login',
