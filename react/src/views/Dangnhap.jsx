@@ -1,5 +1,4 @@
 import React from 'react'
-import Container from '../components/common/container'
 import Footer from '../components/common/footer'
 import Header from '../components/common/header'
 import Navbar from '../components/common/navbar'
@@ -12,7 +11,6 @@ export default function Dangnhap() {
     <div>
       <Header/>
       <Navbar/>
-      <Container/>
       <SubFooter/>
       <Footer/>
     </div>
