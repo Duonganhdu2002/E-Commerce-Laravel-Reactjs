@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,11 +14,26 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $this->call([
+            account_type::class,
+            discount::class,
+            order_status::class,
+            payment_type::class,
+            product_category::class,
+            product_color::class,
+            product_size::class,
+            shipping_method::class,
+            user::class,
+            user_address::class,
+            user_payment::class,
+            user_review::class,
+            order::class,
+            product::class,
+            order_items::class,
+            product_image::class,
+            shopping_cart::class,
+            transaction::class,
+            product_review::class,
+        ]);
     }
 }
