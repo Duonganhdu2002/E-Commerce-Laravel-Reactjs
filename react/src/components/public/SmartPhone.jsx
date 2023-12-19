@@ -14,37 +14,37 @@ export default function SmartPhone() {
                         <a className='p-6' href="">HeadPhones</a>
                     </div>
                     <div>
-                        <div style={{ float: "left" }} className='w-[33%] p-4'>
+                        <div className='w-[33%] p-4 float-left'>
                             <img className='w-full h-full' src={img1} alt="" />
                             <p className=' text-xl'>Product name</p>
                             <p className=' text-neutral-500'>Best sales</p>
                             <p className=' text-lg text-slate-800'>$193.00</p>
                         </div>
-                        <div style={{ float: "left" }} className='w-[33%] p-4'>
+                        <div className='w-[33%] p-4 float-left'>
                             <img className='w-full h-full' src={img1} alt="" />
                             <p className=' text-xl'>Product name</p>
                             <p className=' text-neutral-500'>Best sales</p>
                             <p className=' text-lg text-slate-800'>$193.00</p>
                         </div>
-                        <div style={{ float: "left" }} className='w-[33%] p-4'>
+                        <div className='w-[33%] p-4 float-left'>
                             <img className='w-full h-full' src={img1} alt="" />
                             <p className=' text-xl'>Product name</p>
                             <p className=' text-neutral-500'>Best sales</p>
                             <p className=' text-lg text-slate-800'>$193.00</p>
                         </div>
-                        <div style={{ float: "left" }} className='w-[33%] p-4'>
+                        <div className='w-[33%] p-4 float-left'>
                             <img className='w-full h-full' src={img1} alt="" />
                             <p className=' text-xl'>Product name</p>
                             <p className=' text-neutral-500'>Best sales</p>
                             <p className=' text-lg text-slate-800'>$193.00</p>
                         </div>
-                        <div style={{ float: "left" }} className='w-[33%] p-4'>
+                        <div className='w-[33%] p-4 float-left'>
                             <img className='w-full h-full' src={img1} alt="" />
                             <p className=' text-xl'>Product name</p>
                             <p className=' text-neutral-500'>Best sales</p>
                             <p className=' text-lg text-slate-800'>$193.00</p>
                         </div>
-                        <div style={{ float: "left" }} className='w-[33%] p-4'>
+                        <div className='w-[33%] p-4 float-left'>
                             <img className='w-full h-full' src={img1} alt="" />
                             <p className=' text-xl'>Product name</p>
                             <p className=' text-neutral-500'>Best sales</p>

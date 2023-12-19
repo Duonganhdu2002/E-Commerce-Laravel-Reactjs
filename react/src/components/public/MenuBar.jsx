@@ -3,7 +3,7 @@ import React from 'react'
 export default function MenuBar() {
   return (
     <div className=' flex justify-center'>
-      <div style={{height: "7vh"}} className=' w-[80%] flex border-2'>
+      <div className=' w-[80%] flex border-2 h-[7vh]'>
         <div className='w-1/4 bg-slate-900 justify-center items-center flex'>
           <p className=' text-white text-xl'>Browser By Categorgy</p>
         </div>
