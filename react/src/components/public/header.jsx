@@ -37,8 +37,8 @@ const Header = () => {
   return (
     <div>
       <div className="hidden md:block">
-        <div className="bg-slate-900 text-white flex justify-between px-52 h-12 items-center">
-          <div className="">
+        <div style={{height: "5vh"}} className="bg-slate-900 text-white flex justify-between px-52 items-center">
+          <div>
             <p>FREE SHIPPING FOR ALL ORDER OF $150</p>
           </div>
 
@@ -80,9 +80,6 @@ const Header = () => {
           </div>
         </div>
       </div>
-
-
-
       <div className="block md:hidden">
         <div className="bg-slate-900 text-white flex justify-between px-100 h-12 items-center">
           <div className="flex justify-between px-5 items-center">
@@ -103,7 +100,7 @@ const Header = () => {
           </div>
           <div className="flex items-center px-2">
             <a href="#" className="px-2" onClick={togglePopup}>
-            <img className="h-6 w-6 mr-2" src={more} alt="icon" />
+              <img className="h-6 w-6 mr-2" src={more} alt="icon" />
             </a>
           </div>
         </div>

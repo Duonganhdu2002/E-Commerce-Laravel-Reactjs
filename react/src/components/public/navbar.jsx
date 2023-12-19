@@ -6,7 +6,7 @@ import heart from '../../assets/public/heart.svg'
 import cart from '../../assets/public/cart.svg'
 export default function Navbar() {
     return (
-        <div className='bg-white w-full px-60 flex relative justify-start items-center mx-auto h-auto border-y-2'>
+        <div style={{height: "10vh"}} className='bg-white w-full px-60 flex relative justify-start items-center mx-auto'>
             {/* <!-- start logo --> */}
             <div className="flex w-1/12">
                 <a href="#">
