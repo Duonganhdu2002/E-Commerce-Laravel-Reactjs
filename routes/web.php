@@ -15,7 +15,7 @@ use App\Models\user;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 // Route::get('test', function () {

@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+<<<<<<< HEAD
 use App\Http\Controllers\AccountType;
 use App\Http\Controllers\Discount;
 use App\Http\Controllers\OderItems;
@@ -32,11 +33,15 @@ use App\Http\Controllers\UserReview;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+=======
+use App\Http\Controllers\UserController;
+>>>>>>> 3bc44a175e4ab39f447972ef370b63df1c9a2ae9
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+<<<<<<< HEAD
 Route::prefix('public')->group(function () {
 
     Route::resource('/AccountType', AccountType::class);
@@ -92,3 +97,6 @@ Route::prefix('public')->group(function () {
 
     Route::resource('UserReview', UserReview::class);
 });
+=======
+Route::resource('user', UserController::class);
+>>>>>>> 3bc44a175e4ab39f447972ef370b63df1c9a2ae9
