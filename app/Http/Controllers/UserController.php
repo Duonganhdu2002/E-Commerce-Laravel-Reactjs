@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\User as UserResource;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserController extends Controller
 {
@@ -60,6 +61,25 @@ class UserController extends Controller
 
     public function destroy(string $id)
     {
-        //
+        try {
+            $user = User::findOrFail($id);
+            $user->delete();
+
+            $arr = [
+                'status' => true,
+                'message' => 'Người dùng đã được xóa thành công',
+                'data' => null
+            ];
+
+            return response()->json($arr, 200);
+        } catch (ModelNotFoundException $e) {
+            $arr = [
+                'success' => false,
+                'message' => 'Người dùng không tồn tại',
+                'data' => null
+            ];
+
+            return response()->json($arr, 404);
+        }
     }
 }
