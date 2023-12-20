@@ -18,6 +18,7 @@ use App\Http\Controllers\ShippingMethod;
 use App\Http\Controllers\ShoppingCart;
 use App\Http\Controllers\Transaction;
 use App\Http\Controllers\UserAddress;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserPayment;
 use App\Http\Controllers\UserReview;
 
@@ -91,4 +92,6 @@ Route::prefix('public')->group(function () {
 
 
     Route::resource('UserReview', UserReview::class);
+
+    Route::resource('UserController', UserController::class);
 });
