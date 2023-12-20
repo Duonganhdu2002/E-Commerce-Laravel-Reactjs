@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\user;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('home');
 });
+
+// Route::get('test', function () {
+//     // return DB::table('user')->where('user_id',1)->get();
+
+//     $elm = user::find(1);
+//     return $elm->user_address;
+// });
