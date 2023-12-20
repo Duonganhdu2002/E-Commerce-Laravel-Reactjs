@@ -11,8 +11,16 @@ class user extends Model
     protected $table = 'user';
     protected $fillable = ['user_id','type_account_id','username','password','avt_image','first_name','last_name','telephone','created_at','modified_at'];
 
+    protected $primaryKey = 'user_id';
+
     protected $hidden = [
         'password'
     ];
+
+    public function user_address(){
+        return $this->hasMany(user_address::class,'user_id','user_id');
+    }
+
+    
 
 }

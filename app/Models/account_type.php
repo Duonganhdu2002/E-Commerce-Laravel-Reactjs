@@ -10,4 +10,7 @@ class account_type extends Model
     use HasFactory;
     public $table = 'account_type';
     protected $fillable = ['type_account_id','type_account_name'];
+
+
+    
 }
