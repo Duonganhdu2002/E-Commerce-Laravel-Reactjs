@@ -51,8 +51,25 @@ class UserController extends Controller
 
     public function show(string $id)
     {
-        //
+        $user = User::find($id);
+
+    if (empty($user)) {
+        $arr = [
+            'status' => false,
+            'message' => 'Không có người dùng này',
+            'data' => null
+        ];
+        return response()->json($arr, 404);
     }
+
+    $arr = [
+        'status' => true,
+        'message' => "Thông tin",
+        'data' => $user, 
+    ];
+    return response()->json($arr, 200);
+    }
+
 
     public function update(Request $request, string $id)
     {
