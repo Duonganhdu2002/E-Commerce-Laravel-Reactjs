@@ -8,9 +8,9 @@ use App\Http\Controllers\OderItems;
 use App\Http\Controllers\Order;
 use App\Http\Controllers\OrderStatus;
 use App\Http\Controllers\PaymentType;
-use App\Http\Controllers\Product;
 use App\Http\Controllers\ProductCategory;
 use App\Http\Controllers\ProductColor;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImage;
 use App\Http\Controllers\ProductReview;
 use App\Http\Controllers\ProductSize;
@@ -58,7 +58,7 @@ Route::prefix('public')->group(function () {
     Route::resource('PaymentType', PaymentType::class);
 
 
-    Route::resource('Product', Product::class);
+    Route::resource('Product', ProductController::class);
 
 
     Route::resource('ProductCategory', ProductCategory::class);
