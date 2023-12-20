@@ -306,8 +306,8 @@ export default function Footer() {
                     </div>
                 </div>
                 <div
-                    className=" flex items-center border-t-2 border-gray-700/50 mt-32 justify-center"
-                    style={{ height: "80px" }}
+                    className=" flex items-center border-t-2 border-gray-700/50 justify-center"
+                    style={{ height: "50px" }}
                 >
                     <p className="">
                         © 1997-2024. All right reseved by{" "}
