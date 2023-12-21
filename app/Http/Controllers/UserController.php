@@ -8,6 +8,7 @@ use App\Http\Resources\User as UserResource;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+
 class UserController extends Controller
 {
     public function index()
@@ -16,7 +17,7 @@ class UserController extends Controller
 
         $arr = [
             'status' => true,
-            'message' => 'Danh sách sản phẩm',
+            'message' => 'Danh sách tài khoản',
             'data' => UserResource::collection($user)
         ];
 
@@ -43,7 +44,7 @@ class UserController extends Controller
         $user = User::create($input);
         $arr = [
             'status' => true,
-            'message' => "Sản phẩm đã lưu thành công",
+            'message' => "Tài khoản đã lưu thành công",
             'data' => new UserResource($user)
         ];
         return response()->json($arr, 201);
@@ -53,28 +54,64 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-    if (empty($user)) {
+        if (empty($user)) {
+            $arr = [
+                'status' => false,
+                'message' => 'Không có người dùng này',
+                'data' => null
+            ];
+            return response()->json($arr, 404);
+        }
+
         $arr = [
-            'status' => false,
-            'message' => 'Không có người dùng này',
-            'data' => null
+            'status' => true,
+            'message' => "Thông tin",
+            'data' => $user, 
         ];
-        return response()->json($arr, 404);
+        return response()->json($arr, 200);
+        
+    
     }
-
-    $arr = [
-        'status' => true,
-        'message' => "Thông tin",
-        'data' => $user, 
-    ];
-    return response()->json($arr, 200);
-    }
-
 
     public function update(Request $request, string $id)
     {
-        //
+        $user = User::find($id);
+
+        if (empty($user)) {
+            $arr = [
+                'status' => false,
+                'message' => 'Không có người dùng này',
+                'data' => null
+            ];
+            return response()->json($arr, 404);
+        }
+
+        $input = $request->all();
+
+        $validator = Validator::make($input, [
+            'username' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $arr = [
+                'success' => false,
+                'message' => 'Lỗi kiểm tra dữ liệu',
+                'data' => $validator->errors()
+            ];
+            return response()->json($arr, 200);
+        }
+
+        $user->update($input);
+
+        $arr = [
+            'status' => true,
+            'message' => 'Thông tin người dùng đã được cập nhật thành công',
+            'data' => new UserResource($user)
+        ];
+
+        return response()->json($arr, 200);
     }
+
 
     public function destroy(string $id)
     {
