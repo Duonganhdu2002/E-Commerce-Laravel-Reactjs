@@ -22,6 +22,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserPayment;
 use App\Http\Controllers\UserReview;
 
+use App\Http\Controllers\API\AuthController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -39,10 +41,31 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+
+Route::prefix('form')->group(function () {
+
+    // Route cho trang đăng nhập và đăng ký
+    Route::get('/login', function () {
+        return view('login'); // Thay 'login' bằng tên file blade của form đăng nhập của bạn
+    })->name('login');
+
+    Route::get('/register', function () {
+        return view('register'); // Thay 'register' bằng tên file blade của form đăng ký của bạn
+    })->name('register');
+
+    // Route xử lý đăng nhập và đăng ký
+    Route::post('/api/login', [AuthController::class, 'login']);
+    Route::post('/api/register', [AuthController::class, 'register']);
+
+    // Route xử lý đăng xuất
+    Route::post('/api/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+});
+
 Route::prefix('public')->group(function () {
 
     Route::resource('UserController', UserController::class);
-    
+
 
     Route::resource('AccountType', AccountType::class);
 
