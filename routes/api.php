@@ -33,7 +33,7 @@ use App\Http\Controllers\UserReview;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Auth::routes();
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
