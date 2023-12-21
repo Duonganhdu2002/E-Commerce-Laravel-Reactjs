@@ -33,6 +33,7 @@ use App\Http\Controllers\UserReview;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Auth::routes();
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -40,7 +41,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('public')->group(function () {
 
-    Route::resource('/AccountType', AccountType::class);
+    Route::resource('UserController', UserController::class);
+    
+
+    Route::resource('AccountType', AccountType::class);
 
 
     Route::resource('Discount', Discount::class);
@@ -92,6 +96,4 @@ Route::prefix('public')->group(function () {
 
 
     Route::resource('UserReview', UserReview::class);
-
-    Route::resource('UserController', UserController::class);
 });

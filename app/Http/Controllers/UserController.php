@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\User as UserResource;
 use App\Models\User;
+use Auth;
 
 class UserController extends Controller
 {
@@ -15,7 +16,7 @@ class UserController extends Controller
 
         $arr = [
             'status' => true,
-            'message' => 'Danh sách sản phẩm',
+            'message' => 'Danh sách tài khoản',
             'data' => UserResource::collection($user)
         ];
 
@@ -42,7 +43,7 @@ class UserController extends Controller
         $user = User::create($input);
         $arr = [
             'status' => true,
-            'message' => "Sản phẩm đã lưu thành công",
+            'message' => "Tài khoản đã lưu thành công",
             'data' => new UserResource($user)
         ];
         return response()->json($arr, 201);
@@ -53,10 +54,38 @@ class UserController extends Controller
         //
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
-        //
+        $input = $request->all();
+
+        $validator = Validator::make($input, [
+            'username' => 'required',
+            'telephone' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            $arr = [
+                'status' => false,
+                'message' => 'Lỗi kiểm tra dữ liệu',
+                'data' => $validator->errors()
+            ];
+
+            return response()->json($arr, 200);
+        }
+
+        // Sử dụng phương thức fill để cập nhật các trường
+        $user->fill($input);
+        $user->save();
+
+        $arr = [
+            'status' => true,
+            'message' => 'Tài khoản cập nhật thành công',
+            'data' => new UserResource($user)
+        ];
+
+        return response()->json($arr, 200);
     }
+
 
     public function destroy(string $id)
     {
