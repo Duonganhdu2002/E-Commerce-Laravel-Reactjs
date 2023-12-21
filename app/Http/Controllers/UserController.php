@@ -6,7 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\User as UserResource;
 use App\Models\User;
+<<<<<<< HEAD
 use Auth;
+=======
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+>>>>>>> 5bffe4c8cfa84b38aef51ee464a67c4c119f4449
 
 class UserController extends Controller
 {
@@ -51,10 +55,31 @@ class UserController extends Controller
 
     public function show(string $id)
     {
-        //
+        $user = User::find($id);
+
+    if (empty($user)) {
+        $arr = [
+            'status' => false,
+            'message' => 'Không có người dùng này',
+            'data' => null
+        ];
+        return response()->json($arr, 404);
     }
 
+<<<<<<< HEAD
     public function update(Request $request, User $user)
+=======
+    $arr = [
+        'status' => true,
+        'message' => "Thông tin",
+        'data' => $user, 
+    ];
+    return response()->json($arr, 200);
+    }
+
+
+    public function update(Request $request, string $id)
+>>>>>>> 5bffe4c8cfa84b38aef51ee464a67c4c119f4449
     {
         $input = $request->all();
 
@@ -89,6 +114,25 @@ class UserController extends Controller
 
     public function destroy(string $id)
     {
-        //
+        try {
+            $user = User::findOrFail($id);
+            $user->delete();
+
+            $arr = [
+                'status' => true,
+                'message' => 'Người dùng đã được xóa thành công',
+                'data' => null
+            ];
+
+            return response()->json($arr, 200);
+        } catch (ModelNotFoundException $e) {
+            $arr = [
+                'success' => false,
+                'message' => 'Người dùng không tồn tại',
+                'data' => null
+            ];
+
+            return response()->json($arr, 404);
+        }
     }
 }
