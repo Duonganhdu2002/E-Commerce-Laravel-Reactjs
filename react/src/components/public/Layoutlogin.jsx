@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import React from "react";
 import logo from "../../assets/public/logo.svg";
 import sale1 from "../../assets/public/sale/sale1.png";
-import Home from "../../views/Home";
 
 export default function LayoutLogin() {
     return (
