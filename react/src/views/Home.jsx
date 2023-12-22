@@ -11,12 +11,12 @@ import SmartPhone from "../components/public/SmartPhone";
 import Watch from "../components/public/Watch";
 import Banner2 from "../components/public/Banner2";
 import HeadPhone from "../components/public/HeadPhone";
-import Popup from "../components/public/popup";
+import PopupAdvertisement from "../components/public/popupadvertisement";
 
 export default function Home() {
     return (
         <div>
-            <Popup />
+            <PopupAdvertisement />
             <Header />
             <Navbar />
             <MenuBar />

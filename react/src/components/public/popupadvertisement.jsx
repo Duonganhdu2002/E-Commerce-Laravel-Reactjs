@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Banner3 from "../../assets/public/banner/banner_3.png";
 
-const Popup = () => {
+const PopupAdvertisement = () => {
     const [isPopupVisible, setPopupVisible] = useState(
         sessionStorage.getItem("popupDisplayed") !== "true"
     );
@@ -36,4 +36,4 @@ const Popup = () => {
     );
 };
 
-export default Popup;
+export default PopupAdvertisement;
