@@ -31,7 +31,7 @@ const Container = () => {
     return (
         <div>
             <div
-                style={{ height: "78vh" }}
+
                 className="flex justify-center items-center"
             >
                 <img
