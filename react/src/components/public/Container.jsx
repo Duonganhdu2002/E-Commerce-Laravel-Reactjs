@@ -29,9 +29,8 @@ const Container = () => {
     }, [currentIndex, imagePaths.length]);
 
     return (
-        <div>
+        <div className=" flex items-center justify-around 2xl:px-48 sm:px-4 lg:px-10 mt-2">
             <div
-
                 className="flex justify-center items-center"
             >
                 <img
