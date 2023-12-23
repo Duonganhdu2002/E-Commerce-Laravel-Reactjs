@@ -40,7 +40,7 @@ export default function Banner1() {
                         <a href="" className=" font-bold text-sm text-white">
                             #New Gaming Platform
                         </a>
-                        <p className="font-bold text-3xl text-white">
+                        <p className=" font-bold text-3xl text-white">
                             Oculus Quest 2 Virtual Reality Headset
                         </p>
                         <button className=" flex justify-center items-center mt-8 border-2 white rounded-2xl w-28 h-10 text-white text-lg font-bold transition-all duration-200 hover:bg-white hover:text-slate-800">
@@ -48,7 +48,7 @@ export default function Banner1() {
                         </button>
                     </div>
                     <img className=" rounded-2xl" src={Banner_1} alt="banner" />
-                    <div className=" flex-col justify-between items-center w-8/12 h-auto ml-5 absolute md:hidden">
+                    <div className=" flex-col justify-between items-center w-7/12 h-auto ml-5 absolute md:hidden">
                         <a href="" className="font-bold text-sm text-white">
                             #New Gaming Platform
                         </a>
