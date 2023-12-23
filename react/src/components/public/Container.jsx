@@ -29,14 +29,14 @@ const Container = () => {
     }, [currentIndex, imagePaths.length]);
 
     return (
-        <div className=" flex items-center justify-around 2xl:px-48 sm:px-4 lg:px-10 mt-2">
+        <div className=" flex items-center justify-around 2xl:px-48 sm:px-4 xl:px-48 lg:px-36 md:px-10 mt-2">
             <div
                 className="flex justify-center items-center"
             >
                 <img
                     src={imagePaths[currentIndex]}
                     alt=""
-                    className="transition-all duration-500 ease-in-out animate-slideLeft cursor-pointer"
+                    className="transition-all duration-500 ease-in-out animate-slideLeft cursor-pointer sm:rounded-2xl"
                     onClick={() =>
                         setCurrentIndex(
                             (prevIndex) => (prevIndex + 1) % imagePaths.length
