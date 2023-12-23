@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import React from "react";
 import logo from "../../assets/public/logo.svg";
 import sale1 from "../../assets/public/sale/sale1.png";
+import logo_google_1 from "../../assets/public/Google__G__logo.svg"
 
 export default function LayoutLogin() {
     return (
@@ -30,14 +31,14 @@ export default function LayoutLogin() {
                                     htmlFor="email"
                                     className="block text-sm font-medium leading-6 text-gray-900"
                                 >
-                                    Email address
+                                    Username or Email address or Phone number *
                                 </label>
                                 <div className="mt-2">
                                     <input
-                                        id="email"
-                                        name="email"
-                                        type="email"
-                                        autoComplete="email"
+                                        id=" username"
+                                        name=" username"
+                                        type=" username"
+                                        autoComplete=" username"
                                         required
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-600 sm:text-sm sm:leading-6"
                                     />
@@ -50,12 +51,12 @@ export default function LayoutLogin() {
                                         htmlFor="password"
                                         className="block text-sm font-medium leading-6 text-gray-900"
                                     >
-                                        Password
+                                        Password *
                                     </label>
                                     <div className="text-sm">
                                         <a
                                             href="#"
-                                            className="font-semibold text-slate-500 hover:text-slate-900"
+                                            className="font-semibold text-slate-500 hover:text-slate-900 hover:underline"
                                         >
                                             Forgot password?
                                         </a>
@@ -83,12 +84,32 @@ export default function LayoutLogin() {
                             </div>
                         </form>
 
-                        <p className="mt-6 text-center text-gray-500 relative">
+                        <p className="mt-3 text-center text-gray-500 relative">
                             <span className="mb-10 relative z-10 bg-white px-2 text-base">
                                 Or, login with{" "}
                             </span>
                             <span className="flex-1 absolute top-1/2 left-0 right-0 h-0.5 bg-gray-700/50"></span>
                         </p>
+
+                        <div className=' flex items-center justify-center my-3 h-12 rounded-xl border-2 cursor-pointer'>
+                            <img src={logo_google_1} alt="" className=' w-10' />
+                            <p href="" className=' mb-2 mr-5 ml-3 font-light text-xl'>|</p>
+                            <p href="" className=" mb-1 font-semibold text-2xl text-slate-500/90">
+                            Google
+                        </p>
+                        </div>
+
+                        <div className=" mt-5">
+                                        New member?&nbsp;
+                                        <a
+                                            href="#"
+                                            className="font-semibold text-slate-500 hover:text-black hover:underline"
+                                        >
+                                        {/* &nbsp; là dấu cách */}
+                                        Register
+                                        </a>
+                                        &nbsp;here.
+                        </div>
                     </div>
                 </div>
             </div>

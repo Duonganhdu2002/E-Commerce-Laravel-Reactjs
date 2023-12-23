@@ -6,225 +6,73 @@ import shield from "../../assets/public/shield.svg";
 
 export default function SubFooter() {
     return (
-        <div>
-            <div className="hidden sm:block">
-                <div className=" hidden 2xl:block">
-                    <div
-                        className="bg-slate-900 text-white flex justify-around px-52 h-auto"
-                        style={{ height: "150px" }}
-                    >
-                        <div className="flex items-center">
-                            <div>
-                                <img
-                                    className="h-30 w-20 mr-30"
-                                    src={shiped}
-                                    alt="icon"
-                                />
-                            </div>
-                            <div className=" w-80 ml-8">
-                                <div className=" text-xl font-bold">
-                                    <p>Free Shipping</p>
-                                </div>
-                                <div>
-                                    <p>Proin condimentu sagtties</p>
-                                </div>
-                            </div>
-                            <div>
-                                <img
-                                    className="h-30 w-20 mr-30"
-                                    src={returns}
-                                    alt="icon"
-                                />
-                            </div>
-                            <div className=" w-80 ml-8">
-                                <div className=" text-xl font-bold">
-                                    <p>Easy Returns</p>
-                                </div>
-                                <div>
-                                    <p>Proin condimentu sagtties</p>
-                                </div>
-                            </div>
-                            <div>
-                                <img
-                                    className="h-30 w-20 mr-30"
-                                    src={telephone}
-                                    alt="icon"
-                                />
-                            </div>
-                            <div className=" w-80 ml-8">
-                                <div className=" text-xl font-bold">
-                                    <p>24/7 Support</p>
-                                </div>
-                                <div>
-                                    <p>Proin condimentu sagtties</p>
-                                </div>
-                            </div>
-                            <div>
-                                <img
-                                    className="h-30 w-20 mr-30"
-                                    src={shield}
-                                    alt="icon"
-                                />
-                            </div>
-                            <div className=" w-80 ml-8">
-                                <div className=" text-xl font-bold">
-                                    <p>100% Seacure and Safe</p>
-                                </div>
-                                <div>
-                                    <p>Proin condimentu sagtties</p>
-                                </div>
-                            </div>
+        <div className="flex justify-center items-center bg-slate-800 mt-2 md:mt-6 lg:mt-8 xl:mt-10 2xl:mt-10">
+            <div className="text-white h-auto justify-center w-[95%] md:w-[90%] lg:w-[80%] xl:w-[80%] 2xl:w-[80%] md:flex md:flex-wrap">
+                
+                {/* div 1 */}
+
+                <div className="flex h-[10vh] justify-center items-center  md:w-[50%] xl:w-[25%] 2xl:w-[25%] md:float-left ">
+                    <div className="w-[20%] flex justify-center items-center">
+                        <img className="h-12 w-12" src={shiped} alt="" />
+                    </div>
+                    <div className="w-[80%]">
+                        <div className="text-xl font-bold">
+                            <p>Free Shipping</p>
+                        </div>
+                        <div>
+                            <p>Proin condimentum sagittis</p>
                         </div>
                     </div>
                 </div>
 
-                <div className=" block 2xl:hidden">
-                    <div
-                        className="bg-slate-900 text-white flex justify-around"
-                        style={{ height: "170px" }}
-                    >
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <img
-                                    className="h-12 w-16"
-                                    src={shiped}
-                                    alt="icon"
-                                />
-                            </div>
-                            <div className=" w-40 ml-2">
-                                <div className=" text-lg font-bold">
-                                    <p>Free Shipping</p>
-                                </div>
-                                <div>
-                                    <p>Proin condimentu sagtties</p>
-                                </div>
-                            </div>
-                            <div>
-                                <img
-                                    className="h-12 w-16"
-                                    src={returns}
-                                    alt="icon"
-                                />
-                            </div>
-                            <div className=" w-40 ml-2">
-                                <div className=" text-lg font-bold">
-                                    <p>Easy Returns</p>
-                                </div>
-                                <div>
-                                    <p>Proin condimentu sagtties</p>
-                                </div>
-                            </div>
-                            <div>
-                                <img
-                                    className="h-12 w-16"
-                                    src={telephone}
-                                    alt="icon"
-                                />
-                            </div>
-                            <div className=" w-40 ml-2">
-                                <div className=" text-lg font-bold">
-                                    <p>24/7 Support</p>
-                                </div>
-                                <div>
-                                    <p>Proin condimentu sagtties</p>
-                                </div>
-                            </div>
-                            <div>
-                                <img
-                                    className="h-12 w-16"
-                                    src={shield}
-                                    alt="icon"
-                                />
-                            </div>
-                            <div className=" w-40 ml-2">
-                                <div className=" text-lg font-bold">
-                                    <p>100% Seacure and Safe</p>
-                                </div>
-                                <div>
-                                    <p>Proin condimentu sagtties</p>
-                                </div>
-                            </div>
+                {/* div 2 */}
+                
+                <div className="flex h-[10vh] justify-center items-center  md:w-[50%] xl:w-[25%] 2xl:w-[25%] md:float-left">
+                    <div className="w-[20%] flex justify-center items-center">
+                        <img className="h-12 w-12" src={returns} alt="" />
+                    </div>
+                    <div className="w-[80%]">
+                        <div className="text-xl font-bold">
+                            <p>Easy Returns</p>
+                        </div>
+                        <div>
+                            <p>Proin condimentum sagittis</p>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div className="block sm:hidden">
-                <div
-                    className="bg-slate-900 text-white"
-                    style={{ height: "450px" }}
-                >
-                    <div>
-                        <div className="flex items-center justify-center py-5">
-                            <div className=" pr-10">
-                                <img
-                                    className=" h-16 w-16"
-                                    src={shiped}
-                                    alt="icon"
-                                />
-                            </div>
-                            <div className="">
-                                <div className=" text-xl font-bold">
-                                    <p>Free Shipping</p>
-                                </div>
-                                <div>
-                                    <p>Proin condimentu sagtties</p>
-                                </div>
-                            </div>
+                {/* div 3 */}
+
+                <div className="flex h-[10vh] justify-center items-center  md:w-[50%] xl:w-[25%] 2xl:w-[25%] md:float-left">
+                    <div className="w-[20%] flex justify-center items-center">
+                        <img className="h-12 w-12" src={telephone} alt="" />
+                    </div>
+                    <div className="w-[80%]">
+                        <div className="text-xl font-bold">
+                            <p>24/7 Support</p>
                         </div>
-                        <div className="flex items-center justify-center py-5">
-                            <div className="pr-10">
-                                <img
-                                    className="h-16 w-16"
-                                    src={returns}
-                                    alt="icon"
-                                />
-                            </div>
-                            <div className="">
-                                <div className=" text-xl font-bold">
-                                    <p>Easy Returns</p>
-                                </div>
-                                <div>
-                                    <p>Proin condimentu sagtties</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="flex items-center justify-center py-5">
-                            <div className="pr-10">
-                                <img
-                                    className="h-16 w-16"
-                                    src={telephone}
-                                    alt="icon"
-                                />
-                            </div>
-                            <div className="">
-                                <div className=" text-xl font-bold">
-                                    <p>24/7 Support</p>
-                                </div>
-                                <div>
-                                    <p>Proin condimentu sagtties</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="flex items-center justify-center py-5">
-                            <div className="pr-10">
-                                <img
-                                    className="h-16 w-16"
-                                    src={shield}
-                                    alt="icon"
-                                />
-                            </div>
-                            <div className=" w-48">
-                                <div className=" text-xl font-bold">
-                                    <p>100% Seacure and Safe</p>
-                                </div>
-                                <div>
-                                    <p>Proin condimentu sagtties</p>
-                                </div>
-                            </div>
+                        <div>
+                            <p>Proin condimentum sagittis</p>
                         </div>
                     </div>
                 </div>
+
+                {/* div 4 */}
+
+                <div className="flex h-[10vh] justify-center items-center  md:w-[50%] xl:w-[25%] 2xl:w-[25%] md:float-left">
+                    <div className="w-[20%] flex justify-center items-center">
+                        <img className="h-12 w-12" src={shield} alt="" />
+                    </div>
+                    <div className="w-[80%]">
+                        <div className="text-xl font-bold">
+                            <p>Easy Returns</p>
+                        </div>
+                        <div>
+                            <p>Proin condimentum sagittis</p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     );

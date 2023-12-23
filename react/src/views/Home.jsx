@@ -16,17 +16,17 @@ import PopupAdvertisement from "../components/public/popupadvertisement";
 export default function Home() {
     return (
         <div>
-            <PopupAdvertisement />
+            {/* <PopupAdvertisement /> */}
             <Header />
             <Navbar />
             <MenuBar />
             <Container />
             <Banner1 />
             <FurniturePrview />
-            <SmartPhone />
-            <Watch />
-            <Banner2 />
-            <HeadPhone />
+            {/* <SmartPhone /> */}
+            {/* <Watch /> */}
+            <Banner1 />
+            {/* <HeadPhone /> */}
             <SubFooter />
             <Footer />
         </div>
