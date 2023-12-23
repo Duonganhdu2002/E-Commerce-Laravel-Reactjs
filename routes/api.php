@@ -2,6 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\API\AuthController;
+
 use App\Http\Controllers\AccountType;
 use App\Http\Controllers\Discount;
 use App\Http\Controllers\OderItems;
@@ -17,12 +20,12 @@ use App\Http\Controllers\ProductSize;
 use App\Http\Controllers\ShippingMethod;
 use App\Http\Controllers\ShoppingCart;
 use App\Http\Controllers\Transaction;
-use App\Http\Controllers\UserAddress;
+use App\Http\Controllers\UserAddressController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserPayment;
 use App\Http\Controllers\UserReview;
 
-use App\Http\Controllers\API\AuthController;
+
 
 
 /*
@@ -42,30 +45,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
+Route::post('/auth/register', [AuthController::class, 'createUser']);
+Route::post('/auth/login', [AuthController::class, 'loginUser']);
 
-Route::prefix('form')->group(function () {
 
-    // Route cho trang đăng nhập và đăng ký
-    Route::get('/login', function () {
-        return view('login'); // Thay 'login' bằng tên file blade của form đăng nhập của bạn
-    })->name('login');
-
-    Route::get('/register', function () {
-        return view('register'); // Thay 'register' bằng tên file blade của form đăng ký của bạn
-    })->name('register');
-
-    // Route xử lý đăng nhập và đăng ký
-    Route::post('/api/login', [AuthController::class, 'login']);
-    Route::post('/api/register', [AuthController::class, 'register']);
-
-    // Route xử lý đăng xuất
-    Route::post('/api/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-});
 
 Route::prefix('public')->group(function () {
+    
+    Route::resource('User', UserController::class);
+    
+    Route::resource('Product', ProductController::class);
 
-    Route::resource('UserController', UserController::class);
-
+    Route::resource('UserAddress', UserAddressController::class);
 
     Route::resource('AccountType', AccountType::class);
 
@@ -83,9 +74,6 @@ Route::prefix('public')->group(function () {
 
 
     Route::resource('PaymentType', PaymentType::class);
-
-
-    Route::resource('Product', ProductController::class);
 
 
     Route::resource('ProductCategory', ProductCategory::class);
@@ -112,7 +100,7 @@ Route::prefix('public')->group(function () {
     Route::resource('Transaction', Transaction::class);
 
 
-    Route::resource('UserAddress', UserAddress::class);
+    
 
 
     Route::resource('UserPayment', UserPayment::class);

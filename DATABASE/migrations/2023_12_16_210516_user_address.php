@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user_address', function (Blueprint $table) {
-            $table->integer('user_address_id');
-            $table->integer('user_id');
+            $table->bigIncrements('user_address_id'); 
+            $table->unsignedBigInteger('user_id');
             $table->string('number', 50)->nullable();
             $table->string('street', 50)->nullable();
             $table->string('commune', 50)->nullable();
@@ -22,9 +22,6 @@ return new class extends Migration
             $table->string('country', 50)->nullable();
             $table->string('postal_code', 50)->nullable();
             $table->timestamps();
-
-            // Chỉ định cột là khóa chính
-            $table->primary('user_address_id');
 
             // Khóa ngoại user_id
             $table->foreign('user_id')->references('user_id')->on('user')->onDelete('cascade');

@@ -12,14 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('shopping_cart', function (Blueprint $table) {
-            $table->integer('shopping_cart_id');
-            $table->integer('user_id');
-            $table->integer('product_id');
+            $table->bigIncrements('shopping_cart_id'); 
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('product_id');
             $table->integer('quantity')->nullable();
             $table->timestamps();
-
-            // Chỉ định cột là khóa chính
-            $table->primary('shopping_cart_id');
 
             // Khóa ngoại user_id
             $table->foreign('user_id')->references('user_id')->on('user')->onDelete('cascade');

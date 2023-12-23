@@ -12,13 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('product_color', function (Blueprint $table) {
-            $table->integer('color_id');
+            $table->bigIncrements('color_id'); 
             $table->string('color_name', 20)->nullable();
 
-            // Chỉ định cột là khóa chính
-            $table->primary('color_id');
-
-            // Các cài đặt khác có thể được thêm vào tùy thuộc vào yêu cầu cụ thể của bạn
         });
     }
 

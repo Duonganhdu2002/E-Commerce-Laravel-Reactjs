@@ -12,21 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('product', function (Blueprint $table) {
-            $table->integer('product_id');
+            $table->bigIncrements('product_id'); 
             $table->string('name', 50)->nullable();
             $table->text('description')->nullable();
-            $table->integer('color_id');
-            $table->integer('size_id');
+            $table->unsignedBigInteger('color_id');
+            $table->unsignedBigInteger('size_id');
             $table->integer('created_by_user_id')->nullable();
-            $table->integer('product_category_id');
+            $table->unsignedBigInteger('product_category_id');
             $table->decimal('price', 11, 2)->nullable();
             $table->integer('stock')->nullable();
-            $table->integer('discount_id');
+            $table->unsignedBigInteger('discount_id');
             $table->timestamps();
             $table->softDeletes();
-
-            // Chỉ định cột là khóa chính
-            $table->primary('product_id');
 
             // Khóa ngoại discount_id
             $table->foreign('discount_id')->references('discount_id')->on('discount')->onDelete('cascade');

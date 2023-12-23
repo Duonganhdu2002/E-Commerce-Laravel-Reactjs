@@ -12,15 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('product_review', function (Blueprint $table) {
-            $table->integer('product_review_id');
-            $table->integer('user_id');
-            $table->integer('product_id');
+            $table->bigIncrements('product_review_id'); 
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('product_id');
             $table->integer('rating')->nullable();
             $table->string('comment', 150)->nullable();
             $table->timestamps();
-
-            // Chỉ định cột là khóa chính
-            $table->primary('product_review_id');
 
             // Khóa ngoại user_id
             $table->foreign('user_id')->references('user_id')->on('user')->onDelete('cascade');
