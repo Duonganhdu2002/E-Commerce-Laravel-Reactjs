@@ -19,7 +19,7 @@ export default function Home() {
             {/* <PopupAdvertisement /> */}
             <Header />
             <Navbar />
-            {/* <MenuBar /> */}
+            <MenuBar />
             <Container />
             <Banner1 />
             {/* <FurniturePrview /> */}
