@@ -13,7 +13,7 @@ class OrderStatus extends Controller
     }
     public function show(string $id)
     {
-        //
+        //theo trang thai
     }
     public function update(Request $request, string $id)
     {

@@ -39,33 +39,31 @@ class UserAddressController extends Controller
 
     public function store(Request $request)
     {
-        // Kiểm tra xem người dùng đã đăng nhập hay chưa
-        if (Auth::check()) {
-            // Lấy thông tin của người dùng hiện tại
-            $user = Auth::user();
+        $input = $request->all();
 
-            // Thực hiện thêm mới địa chỉ với user_id là ID của người dùng
-            $newAddress = new user_address([
-                'user_id' => $user->id, // Lấy user_id từ đối tượng người dùng
-                'address' => $request->input('address'),
-                // Thêm các trường dữ liệu khác tương ứng với đối tượng user_address
-            ]);
-
-            // Lưu địa chỉ mới vào cơ sở dữ liệu
-            $newAddress->save();
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Đã thêm mới địa chỉ thành công',
-                'data' => new UserAddressResource($newAddress),
-            ], 200);
-        } else {
-            return response()->json([
-                'status' => false,
-                'message' => 'Người dùng chưa đăng nhập',
-            ], 401);
+        $validator = Validator::make($input, [
+            'user_id' => 'required',
+            'commune' => 'required',
+            'district' => 'required',
+            'province' => 'required',
+        ]);
+        if ($validator->fails()) {
+            $arr = [
+                'success' => false,
+                'message' => 'Lỗi kiểm tra dữ liệu',
+                'data' => $validator->errors()
+            ];
+            return response()->json($arr, 200);
         }
+        $product = user_address::create($input);
+        $arr = [
+            'status' => true,
+            'message' => "Địa chỉ đã lưu thành công",
+            'data' => new UserAddressResource($product)
+        ];
+        return response()->json($arr, 201);
     }
+    
 
     public function show(string $id)
     {
@@ -94,54 +92,54 @@ class UserAddressController extends Controller
         }
     }
 
-    public function update(Request $request, string $id)
+   
+    public function update(Request $request, string $user_address_id)
     {
-        // Validate the incoming request data
-        $validator = Validator::make($request->all(), [
-            'user_id' => 'integer',
-            'address' => 'string|max:255',
-            'city' => 'string|max:255',
-            'state' => 'string|max:255',
-            'zip_code' => 'string|max:10',
-        ]);
+    $input = $request->all();
 
-        // Check if the validation fails
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Validation error',
-                'errors' => $validator->errors(),
-            ], 422);
-        }
 
-        try {
-            // Find the user address by ID
-            $userAddress = user_address::findOrFail($id);
+    $validator = Validator::make($input, [
+         'user_id' => 'required',
+         'user_address_id' => 'required',
+           
+        
+    ]);
 
-            // Update the user address with the new data
-            $userAddress->update($request->all());
-
-            $arr = [
-                'status' => true,
-                'message' => 'Cập nhật địa chỉ thành công',
-                'data' => new UserAddressResource($userAddress),
-            ];
-
-            return response()->json($arr, 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Không tìm thấy địa chỉ',
-                'error' => $e->getMessage(),
-            ], 404);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Có lỗi xảy ra khi cập nhật địa chỉ',
-                'error' => $e->getMessage(),
-            ], 500);
-        }
+    if ($validator->fails()) {
+        $arr = [
+            'status' => false,
+            'message' => 'Lỗi kiểm tra dữ liệu',
+            'data' => $validator->errors()
+        ];
+        return response()->json($arr, 200);
     }
+
+    $address = user_address::find($user_address_id);
+
+    if (!$address) {
+        $arr = [
+            'status' => false,
+            'message' => 'Sản phẩm không tồn tại',
+            'data' => null
+        ];
+        return response()->json($arr, 404);
+    }
+
+    $address->number = $input['number'] ?? $address->number;
+    $address->street = $input['street'] ?? $address->street;
+    $address->commune = $input['commune'] ?? $address->commune;
+    $address->district = $input['district'] ?? $address->district;
+    $address->province = $input['province'] ?? $address->province;
+    $address->save();
+
+    $arr = [
+        'status' => true,
+        'message' => 'Sản phẩm cập nhật thành công',
+        'data' => $address
+    ];
+
+    return response()->json($arr, 200);
+}
 
     public function destroy(string $id)
     {

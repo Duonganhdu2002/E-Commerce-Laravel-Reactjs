@@ -5,14 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class ProductColor extends Controller
+class FieldController extends Controller
 {
+   
     public function index()
     {
         //
     }
-
     public function store(Request $request)
+    {
+        //
+    }
+    public function show(string $id)
     {
         //
     }
@@ -20,7 +24,6 @@ class ProductColor extends Controller
     {
         //
     }
-
     public function destroy(string $id)
     {
         //

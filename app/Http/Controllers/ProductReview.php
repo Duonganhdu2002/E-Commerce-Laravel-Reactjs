@@ -16,18 +16,7 @@ class ProductReview extends Controller
     {
         //
     }
-
-    public function show(string $id)
-    {
-        //
-    }
-
     public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    public function destroy(string $id)
     {
         //
     }
