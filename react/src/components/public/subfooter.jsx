@@ -6,7 +6,7 @@ import shield from "../../assets/public/shield.svg";
 
 export default function SubFooter() {
     return (
-        <div className="flex justify-center items-center bg-slate-800">
+        <div className="flex justify-center items-center bg-slate-800 mt-2 md:mt-6 lg:mt-8 xl:mt-10 2xl:mt-10">
             <div className="text-white h-auto justify-center w-[95%] md:w-[90%] lg:w-[80%] xl:w-[80%] 2xl:w-[80%] md:flex md:flex-wrap">
                 
                 {/* div 1 */}
@@ -72,7 +72,7 @@ export default function SubFooter() {
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
     );
