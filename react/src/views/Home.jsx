@@ -16,19 +16,19 @@ import PopupAdvertisement from "../components/public/popupadvertisement";
 export default function Home() {
     return (
         <div>
-            <PopupAdvertisement />
+            {/* <PopupAdvertisement /> */}
             <Header />
             <Navbar />
-            <MenuBar />
+            {/* <MenuBar /> */}
             <Container />
             <Banner1 />
-            <FurniturePrview />
-            <SmartPhone />
+            {/* <FurniturePrview /> */}
+            {/* <SmartPhone />
             <Watch />
             <Banner2 />
             <HeadPhone />
             <SubFooter />
-            <Footer />
+            <Footer /> */}
         </div>
     );
 }
