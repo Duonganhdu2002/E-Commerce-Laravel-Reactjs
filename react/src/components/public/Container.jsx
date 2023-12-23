@@ -29,7 +29,7 @@ const Container = () => {
     }, [currentIndex, imagePaths.length]);
 
     return (
-        <div className=" flex items-center justify-around 2xl:px-48 sm:px-4 xl:px-48 lg:px-36 md:px-10 mt-2">
+        <div className=" flex items-center justify-around md:px-10 lg:px-32 xl:px-46  2xl:px-48 sm:px-4   mt-2 md:mt-6 lg:mt-8 xl:mt-10 2xl:mt-10">
             <div
                 className="flex justify-center items-center"
             >
