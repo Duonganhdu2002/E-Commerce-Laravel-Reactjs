@@ -5,7 +5,7 @@ import Banner_2 from "../../assets/public/banner/banner_2.png";
 export default function Banner1() {
     return (
         <div className=" flex justify-center">
-            <div className=" w-[80%] flex justify-center py-3 ">
+            <div className="2xl:w-[80%] md:w-[95%] sm:w-[95%] w-[95%] flex justify-center py-3 ">
                 <div className=" bg-slate-200 w-5/12 h-80 mr-4 rounded-2xl flex justify-between items-center">
                     <div className="justify-between items-center pl-10 w-9/12 hidden md:block">
                         <a href="" className="font-bold text-sm text-slate-800">
