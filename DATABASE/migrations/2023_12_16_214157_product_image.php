@@ -12,12 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('product_image', function (Blueprint $table) {
-            $table->integer('image_id');
-            $table->integer('product_id');
+            $table->bigIncrements('image_id'); 
+            $table->unsignedBigInteger('product_id');
             $table->string('image_url', 50)->nullable();
-
-            // Chỉ định cột là khóa chính
-            $table->primary('image_id');
 
             // Khóa ngoại product_id
             $table->foreign('product_id')->references('product_id')->on('product')->onDelete('cascade');

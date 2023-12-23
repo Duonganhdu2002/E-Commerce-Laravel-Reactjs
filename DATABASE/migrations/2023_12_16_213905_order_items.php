@@ -12,14 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('order_items', function (Blueprint $table) {
-            $table->integer('order_items_id');
-            $table->integer('order_id');
-            $table->integer('product_id');
+            $table->bigIncrements('order_items_id'); 
+            $table->unsignedBigInteger('order_id');
+            $table->unsignedBigInteger('product_id');
             $table->integer('quantity')->nullable();
             $table->timestamps();
-
-            // Chỉ định cột là khóa chính
-            $table->primary('order_items_id');
 
             // Khóa ngoại order_id
             $table->foreign('order_id')->references('order_id')->on('order')->onDelete('cascade');

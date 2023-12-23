@@ -12,17 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transaction', function (Blueprint $table) {
-            $table->integer('transaction_id');
-            $table->integer('buyer_id');
-            $table->integer('seller_id');
-            $table->integer('order_id');
-            $table->integer('payment_id');
+            $table->bigIncrements('transaction_id'); 
+            $table->unsignedBigInteger('buyer_id');
+            $table->unsignedBigInteger('seller_id');
+            $table->unsignedBigInteger('order_id');
+            $table->unsignedBigInteger('payment_id');
             $table->string('transaction_status', 20)->nullable();
             $table->decimal('total_amount', 11, 2)->nullable();
             $table->timestamps();
 
-            // Chỉ định cột là khóa chính
-            $table->primary('transaction_id');
 
             // Khóa ngoại buyer_id
             $table->foreign('buyer_id')->references('user_id')->on('user')->onDelete('cascade');

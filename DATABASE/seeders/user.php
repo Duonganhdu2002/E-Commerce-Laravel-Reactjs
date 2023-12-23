@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
-class user extends Seeder
+class User extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,10 +17,12 @@ class user extends Seeder
         // Thêm dữ liệu vào bảng user
         DB::table('user')->insert([
             [
-                'user_id' => 1,
                 'type_account_id' => 1,
                 'username' => 'john_doe',
+                'email' => 'john@example.com',
+                'email_verified_at' => Carbon::now(),
                 'password' => Hash::make('hashed_password'),
+                'remember_token' => '',
                 'avt_image' => 'avatar.jpg',
                 'first_name' => 'John',
                 'last_name' => 'Doe',
@@ -29,10 +31,12 @@ class user extends Seeder
                 'updated_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
             ],
             [
-                'user_id' => 2,
                 'type_account_id' => 2,
                 'username' => 'jane_smith',
+                'email' => 'jane_smith@gmail.com',
+                'email_verified_at' => Carbon::now(),
                 'password' => Hash::make('hashed_password'),
+                'remember_token' => '',
                 'avt_image' => 'avatar.jpg',
                 'first_name' => 'Jane',
                 'last_name' => 'Smith',

@@ -12,13 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('payment_type', function (Blueprint $table) {
-            $table->integer('payment_type_id');
+            $table->bigIncrements('payment_type_id'); 
             $table->string('payment_type_name', 50)->nullable();
 
-            // Chỉ định cột là khóa chính
-            $table->primary('payment_type_id');
-
-            // Các cài đặt khác có thể được thêm vào tùy thuộc vào yêu cầu cụ thể của bạn
         });
     }
 
