@@ -12,7 +12,7 @@ const Container = () => {
     // Mảng chứa các đường dẫn ảnh
     const imagePaths = [Sale3, Sale4, Sale5, Sale6, Sale7, Sale8];
 
-    // Thời gian giữa các lần thay đổi ảnh (5 giây)
+    // Thời gian giữa các lần thay đổi ảnh (7 giây)
     const intervalTime = 7000;
 
     useEffect(() => {
@@ -29,14 +29,14 @@ const Container = () => {
     }, [currentIndex, imagePaths.length]);
 
     return (
-        <div className=" flex items-center justify-around md:px-10 lg:px-32 xl:px-46  2xl:px-48 sm:px-4   mt-2 md:mt-6 lg:mt-8 xl:mt-10 2xl:mt-10">
+        <div className=" flex items-center justify-center   mt-2 md:mt-6 lg:mt-8 xl:mt-10 2xl:mt-10">
             <div
-                className="flex justify-center items-center"
+                className="2xl:w-[80%] xl:w-[80%] lg:w-[80%] md:w-[90%] w-[95%]"
             >
                 <img
                     src={imagePaths[currentIndex]}
                     alt=""
-                    className="transition-all duration-500 ease-in-out animate-slideLeft cursor-pointer sm:rounded-2xl"
+                    className="transition-all duration-500 ease-in-out animate-slideLeft cursor-pointer rounded-xl"
                     onClick={() =>
                         setCurrentIndex(
                             (prevIndex) => (prevIndex + 1) % imagePaths.length

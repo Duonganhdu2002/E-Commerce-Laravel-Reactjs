@@ -22,13 +22,13 @@ export default function Home() {
             <MenuBar />
             <Container />
             <Banner1 />
-            {/* <FurniturePrview /> */}
-            {/* <SmartPhone />
-            <Watch />
-            <Banner2 />
-            <HeadPhone />
+            <FurniturePrview />
+            {/* <SmartPhone /> */}
+            {/* <Watch /> */}
+            <Banner1 />
+            {/* <HeadPhone /> */}
             <SubFooter />
-            <Footer /> */}
+            <Footer />
         </div>
     );
 }
