@@ -12,7 +12,7 @@ use App\Http\Controllers\Order;
 use App\Http\Controllers\OrderStatus;
 use App\Http\Controllers\PaymentType;
 use App\Http\Controllers\ProductCategory;
-use App\Http\Controllers\ProductColor;
+use App\Http\Controllers\ProductColorController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImage;
 use App\Http\Controllers\ProductReview;
@@ -42,13 +42,15 @@ use App\Http\Controllers\UserReview;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});
+}); 
 
 
 Route::post('/auth/register', [AuthController::class, 'createUser']);
+
 Route::post('/auth/login', [AuthController::class, 'loginUser']);
 
 
+Route::get('/count', [UserController::class, 'getTotalUsers']);
 
 Route::prefix('public')->group(function () {
     
@@ -57,9 +59,6 @@ Route::prefix('public')->group(function () {
     Route::resource('Product', ProductController::class);
 
     Route::resource('UserAddress', UserAddressController::class);
-
-    Route::resource('AccountType', AccountType::class);
-
 
     Route::resource('Discount', Discount::class);
 
@@ -79,10 +78,15 @@ Route::prefix('public')->group(function () {
     Route::resource('ProductCategory', ProductCategory::class);
 
 
-    Route::resource('ProductColo', ProductColor::class);
+    Route::resource('ProductColo', ProductColorController::class);
 
 
-    Route::resource('ProductImage', ProductImage::class);
+Route::prefix('ProductImage')->group(function () {
+
+    Route::get('Display', [ProductImage::class,'Display']); 
+    Route::resource('template', ProductImage::class); 
+
+});
 
 
     Route::resource('ProductReview', ProductReview::class);
@@ -98,10 +102,6 @@ Route::prefix('public')->group(function () {
 
 
     Route::resource('Transaction', Transaction::class);
-
-
-    
-
 
     Route::resource('UserPayment', UserPayment::class);
 

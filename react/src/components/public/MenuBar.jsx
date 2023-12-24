@@ -1,27 +1,20 @@
-import React from 'react'
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function MenuBar() {
   return (
-    <div className=' flex justify-center'>
-      <div className=' w-[80%] flex border-2 h-[7vh]'>
+    <div className='flex justify-center'>
+      <div className='w-[100%] md:w-[90%] lg:w-[80%] xl:w-[80%] 2xl:w-[80%] flex border-2 h-[5vh] md:h-[6vh] lg:h-[7vh] xl:h-[7vh] 2xl:h-[7vh]'>
         <div className='w-1/4 bg-slate-900 justify-center items-center flex'>
-          <p className=' text-white text-xl'>Browser By Categorgy</p>
+          <p className='text-white text-sm'>Category</p>
         </div>
-        <div className='flex space-x-2 w-2/4 items-center'>
-          <a href="" className="px-6">Home</a>
-          <span className="text-gray-500">|</span>
-          <a href="" className="px-6">Shop</a>
-          <span className="text-gray-500">|</span>
-          <a href="" className="px-6">Blog</a>
-          <span className="text-gray-500">|</span>
-          <a href="" className="px-6">About</a>
-          <span className="text-gray-500">|</span>
-          <a href="" className="px-6">Buy</a>
-        </div>
-        <div className='w-1/4 flex items-center'>
-          <a href="">SPECIAL OFFERS</a>
+        <div className='flex w-3/4 justify-between items-center'>
+          <Link to="/" className="text-black w-1/4 pl-4">Home</Link>
+          <Link to="/shop" className="text-black w-1/4 pl-4">Shop</Link>
+          <Link to="/sale" className="text-black w-1/4 pl-4">Sale</Link>
+          <Link to="/combo" className="text-black w-1/4 pl-4">Combo</Link>
         </div>
       </div>
     </div>
-  )
+  );
 }

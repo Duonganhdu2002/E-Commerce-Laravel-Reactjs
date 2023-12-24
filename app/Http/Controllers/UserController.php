@@ -8,6 +8,9 @@ use App\Http\Resources\UserResource as UserResource;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+use Illuminate\Support\Facades\DB;
+
+
 
 class UserController extends Controller
 {
@@ -136,4 +139,19 @@ class UserController extends Controller
             return response()->json($arr, 404);
         }
     }
+
+    public function getTotalUsers()
+{
+    // Sử dụng SQL raw query để lấy tổng số người dùng
+    $totalUsers = DB::table('user')->selectRaw('COUNT(*) as total_users')->first();
+
+    // Trả về kết quả
+    return response()->json([
+        'status' => true,
+        'message' => 'Tổng số người dùng',
+        'data' => [
+            'total_users' => $totalUsers->total_users,
+        ],
+    ], 200);
+}
 }

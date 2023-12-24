@@ -48,7 +48,7 @@ export default function Banner2() {
                         </button>
                     </div>
                     <img className=" rounded-2xl" src={Banner_1} alt="banner" />
-                    <div className=" flex-col justify-between items-center w-8/12 h-auto ml-5 absolute md:hidden">
+                    <div className=" flex-col justify-between items-center w-7/12 h-auto ml-5 absolute md:hidden">
                         <a href="" className="font-bold text-sm text-white">
                             #New Gaming Platform
                         </a>

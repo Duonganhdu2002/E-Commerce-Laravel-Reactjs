@@ -1,61 +1,65 @@
-import React from 'react';
-import logo from '../../assets/public/logo.svg';
-import logoSingle from '../../assets/public/logo-single.svg';
-import search from '../../assets/public/search.svg';
-import heart from '../../assets/public/heart.svg';
-import cart from '../../assets/public/cart.svg';
+import { Link } from "react-router-dom";
+import React from "react";
+import logo from "../../assets/public/logo.svg";
+import logoSingle from "../../assets/public/logo-single.svg";
+import search from "../../assets/public/search.svg";
+import user from "../../assets/public/user-svgrepo-com.svg";
+import cart from "../../assets/public/cart.svg";
 
 export default function Navbar() {
     return (
-        <div className='bg-white px-2 md:px-8 lg:px-16 xl:px-24 2xl:px-60 flex justify-between items-center h-[10vh]'>
-            {/* Logo */}
-            <div className="flex hidden sm:block">
-                <a href="#">
-                    <img className='hidden md:block w-24 h-24' src={logo} alt="" />
-                    <img className='block md:hidden w-12 h-12 mx-6' src={logoSingle} alt="" />
-                </a>
-            </div>
+        <div className="flex justify-center items-center">
+            <div className="bg-white flex justify-between items-center h-[10vh] w-[100%] md:w-[90%] lg:w-[80%] xl:w-[80%] 2xl:w-[80%] px-2">
+                {/* Logo */}
+                <div className="flex w-2/12 justify-center items-center">
+                    <Link to="/">
+                        <a href="#">
+                            <img
+                                className=" lg:hidden xl:hidden 2xl:hidden w-12 h-12"
+                                src={logoSingle}
+                                alt=""
+                            />
+                            <img
+                                className="hidden lg:block xl:block 2xl:block w-20 h-20"
+                                src={logo}
+                                alt=""
+                            />
+                        </a>
+                    </Link>
+                </div>
 
-            {/* Search bar */}
-            <div className='w-11/12 flex justify-center px-2'>
-                <div className='w-[100%] flex justify-center items-center border rounded-md h-auto' style={{ border: '1px solid gray' }}>
-                    <div className=' w-3/12 h-full'>
-                        <select className='py-3 w-full border-r text-center border-zinc-400 rounded-md' name="" id="" style={{ backgroundColor: 'rgba(0, 0, 0, 0)' }}>
-                            <option value="">Chăn ga</option>
-                            <option value="">Điện thoại</option>
-                            <option value="">Gia dụng</option>
-                            <option value="">Quần áo</option>
-                        </select>
-                    </div>
-                    <div className=' w-8/12 ml-4'>Start your bill</div>
-                    <div className=' w-1/12'>
-                        <img src={search} alt="image" />
+                {/* Search bar */}
+                <div className="w-7/12 md:w-8/12 lg:w-8/12 xl:w-8/12 2xl:w-8/12 flex justify-center ">
+                    <div className="relative w-full md:w-[90%] lg:w-[80%] xl:w-[80%] 2xl:w-[80%]">
+                        <input
+                            placeholder="What do you need?"
+                            className="w-full border rounded-md p-2 pr-8"
+                            style={{ border: "1px solid gray" }}
+                        />
+                        <img
+                            src={search}
+                            alt="Search Icon"
+                            className="absolute right-2 top-1/2 transform -translate-y-1/2 w-5 h-5"
+                        />
                     </div>
                 </div>
-            </div>
 
-            {/* User/Login Section */}
-            <div>
-                <div className='sm:hidden flex items-center justify-center'>
-                    <img className='w-7 h-7' src={heart} alt="" />
-                    <img className='w-10 h-10' src={cart} alt="" />
+                {/* User/Login Section */}
+                <div className="w-3/12 md:w-2/12 lg:w-2/12 xl:w-2/12 2xl:w-2/12 ">
+                    <div className="flex justify-center items-center">
+                        <Link to="/login">
+                            <img
+                                className="w-8 h-8 mx-0 lg:mx-5 cursor-pointer"
+                                src={user}
+                            />
+                        </Link>
+                        <img
+                            className="w-11 h-11 cursor-pointer"
+                            src={cart}
+                            alt=""
+                        />
+                    </div>
                 </div>
-                {/* <div className='w-3/12 flex items-center hidden'>
-                    <div className='mr-2 w-3/6'>
-                        <a href="">Login</a> / <a href="">Register</a>
-                    </div>
-                    <div className='flex items-center w-2/6'>
-                        <div className='relative inline-block'>
-                            <img className='w-8 h-8' src={heart} alt="" />
-                        </div>
-                        <div className='relative inline-block ml-2'>
-                            <img className='w-11 h-11' src={cart} alt="" />
-                        </div>
-                    </div>
-                    <div className='ml-2 w-1/6'>
-                        <p>00.00$</p>
-                    </div>
-                </div> */}
             </div>
         </div>
     );
