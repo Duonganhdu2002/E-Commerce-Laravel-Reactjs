@@ -14,7 +14,7 @@ class User extends Authenticatable
     protected $table = 'user';
     protected $fillable = ['user_id', 'type_account_id', 'username', 'email','email_verified_at','password','remember_token', 'avt_image', 'first_name', 'last_name', 'telephone', 'created_at', 'modified_at'];
 
-    
+    protected $primaryKey = 'user_id';
 
     protected $hidden = [
         'password',
@@ -26,6 +26,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    // public function tokens()
+    // {
+    //     return $this->hasMany(PersonalAccessToken::class);
+    // }
 
 
     // Trong model User.php
