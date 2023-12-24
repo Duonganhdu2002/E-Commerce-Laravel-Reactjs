@@ -23,10 +23,10 @@ export default function Home() {
             <Container />
             <Banner1 />
             <FurniturePrview />
-            {/* <SmartPhone /> */}
-            {/* <Watch /> */}
+            <SmartPhone />
+            <Watch />
             <Banner1 />
-            {/* <HeadPhone /> */}
+            <HeadPhone />
             <SubFooter />
             <Footer />
         </div>
