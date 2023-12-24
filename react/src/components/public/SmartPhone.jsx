@@ -69,7 +69,7 @@ export default function SmartPhone() {
                             className="w-full h-full object-cover"
                         />
                     </div>
-                    <div className="h-1/2 relative text-center mt-8 ">
+                    <div className="h-1/2 relative text-center mt-4 ">
                         <div className=" absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-base">
                             <p>AVAILABLE NOW</p>
                             <p className=" font-bold text-2xl">
