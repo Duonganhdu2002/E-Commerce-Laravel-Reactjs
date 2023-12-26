@@ -8,7 +8,7 @@ export default function LayoutLogin() {
     return (
         <div className=" flex items-center justify-around bg-slate-200/50 lg:px-10 sm:px-10 h-[80vh]">
             <div
-                className="flex items-center px-8"
+                className="flex items-center px-8 w-[65vh]"
             >
                 <div className="flex flex-1 flex-col justify-center px-6 py-12 bg-white shadow-xl rounded-3xl">
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
