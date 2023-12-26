@@ -101,13 +101,13 @@ export default function LayoutLogin() {
 
                         <div className=" mt-5">
                                         New member?&nbsp;
+                                        <Link to="/register">
                                         <a
-                                            href="#"
                                             className="font-semibold text-slate-500 hover:text-black hover:underline"
                                         >
                                         {/* &nbsp; là dấu cách */}
                                         Register
-                                        </a>
+                                        </a></Link>
                                         &nbsp;here.
                         </div>
                     </div>
