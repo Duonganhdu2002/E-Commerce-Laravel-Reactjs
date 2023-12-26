@@ -12,14 +12,12 @@ import Watch from "../components/public/Watch";
 import Banner2 from "../components/public/Banner2";
 import HeadPhone from "../components/public/HeadPhone";
 import PopupAdvertisement from "../components/public/popupadvertisement";
-import MyComponent from "../components/public/API";
 
 export default function Home() {
     return (
         <div>
             {/* <PopupAdvertisement /> */}
             <Header />
-            <MyComponent/>
             <Navbar />
             <MenuBar />
             <Container />
