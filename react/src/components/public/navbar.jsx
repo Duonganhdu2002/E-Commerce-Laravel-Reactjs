@@ -53,11 +53,13 @@ export default function Navbar() {
                                 src={user}
                             />
                         </Link>
-                        <img
-                            className="w-11 h-11 cursor-pointer"
-                            src={cart}
-                            alt=""
-                        />
+                        <Link to="/cart">
+                            <img
+                                className="w-11 h-11 cursor-pointer"
+                                src={cart}
+                                alt=""
+                            />
+                        </Link>
                     </div>
                 </div>
             </div>
