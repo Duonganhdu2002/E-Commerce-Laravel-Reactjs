@@ -6,9 +6,8 @@ import logo_google_1 from "../../assets/public/Google__G__logo.svg"
 
 export default function LayoutLogin() {
     return (
-        <div className=" flex items-center justify-around bg-slate-200/50 lg:px-10 sm:px-10">
+        <div className=" flex items-center justify-around bg-slate-200/50 lg:px-10 sm:px-10 h-[80vh]">
             <div
-                style={{ width: "650px", height: "700px" }}
                 className="flex items-center px-8"
             >
                 <div className="flex flex-1 flex-col justify-center px-6 py-12 bg-white shadow-xl rounded-3xl">
@@ -113,18 +112,6 @@ export default function LayoutLogin() {
                     </div>
                 </div>
             </div>
-
-            <div className="hidden md:block">
-                <a href="">
-                    <img
-                        src={sale1}
-                        alt=""
-                        style={{ width: "550px", height: "auto" }}
-                    />
-                </a>
-            </div>
-
-            <div className="block md:hidden"></div>
         </div>
     );
 }
