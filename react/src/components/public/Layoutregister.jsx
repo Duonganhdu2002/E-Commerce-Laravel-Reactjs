@@ -2,16 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logo_google_1 from "../../assets/public/Google__G__logo.svg";
 import logo from "../../assets/public/logo.svg";
-import sale1 from "../../assets/public/sale/sale1.png";
 
 export default function LayoutRegister() {
     return (
-        <div className=" flex items-center justify-around bg-slate-200/50 lg:px-10 sm:px-10">
+        <div className=" flex items-center justify-around bg-slate-200/50">
             <div
-                style={{ width: "600px", height: "880px" }}
-                className="flex items-center px-6"
+                className="flex items-center px-10 h-[880px]"
             >
-                <div className="flex flex-1 flex-col justify-center px-10 py-8 bg-white shadow-xl rounded-3xl">
+                <div className="flex flex-1 flex-col justify-center px-14 py-8 bg-white shadow-xl rounded-3xl">
                     <Link to="/">
                         <img
                             className="mx-auto h-28"
@@ -26,7 +24,7 @@ export default function LayoutRegister() {
                     <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-xl md:max-w-xl">
                         <form className="space-y-4" action="#" method="POST">
                             <div className="flex justify-between">
-                                <div className=" w-56">
+                                <div className=" w-[47%] ">
                                     <label
                                         htmlFor="username"
                                         className="block text-sm font-medium leading-6 text-gray-900"
@@ -45,7 +43,7 @@ export default function LayoutRegister() {
                                     </div>
                                 </div>
 
-                                <div className="w-56">
+                                <div className="w-[47%]">
                                     <label className="block text-sm font-medium leading-6 text-gray-900">
                                         PhoneNumber *
                                     </label>
@@ -59,7 +57,7 @@ export default function LayoutRegister() {
                             </div>
 
                             <div className="flex justify-between ">
-                                <div className="w-56">
+                                <div className="w-[47%]">
                                     <label className="block text-sm font-medium leading-6 text-gray-900">
                                         Full name *
                                     </label>
@@ -68,7 +66,7 @@ export default function LayoutRegister() {
                                     </div>
                                 </div>
 
-                                <div className="w-56">
+                                <div className="w-[47%]">
                                     <label className="block text-sm font-medium leading-6 text-gray-900">
                                         Email
                                     </label>
@@ -82,7 +80,7 @@ export default function LayoutRegister() {
                             </div>
 
                             <div className="flex justify-between ">
-                                <div className="w-56">
+                                <div className="w-[47%] ">
                                     <label className="block text-sm font-medium leading-6 text-gray-900">
                                         Birthday
                                     </label>
@@ -94,7 +92,7 @@ export default function LayoutRegister() {
                                     </div>
                                 </div>
 
-                                <div className="w-56">
+                                <div className="w-[47%] ">
                                     <label className="block text-sm font-medium leading-6 text-gray-900">
                                         Gender
                                     </label>
@@ -184,18 +182,6 @@ export default function LayoutRegister() {
                     </div>
                 </div>
             </div>
-
-            <div className="hidden md:block">
-                <a href="">
-                    <img
-                        src={sale1}
-                        alt=""
-                        style={{ width: "550px", height: "auto" }}
-                    />
-                </a>
-            </div>
-
-            <div className="block md:hidden"></div>
         </div>
     );
 }
