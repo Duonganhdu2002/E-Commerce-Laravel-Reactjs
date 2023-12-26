@@ -32,7 +32,7 @@ const MyComponent = () => {
         <p>{error}</p>
       ) : (
         <div>
-          <h1>Data from API:</h1>
+          <h1>Data from User API:</h1>
           <pre>{JSON.stringify(data, null, 2)}</pre>
         </div>
       )}
