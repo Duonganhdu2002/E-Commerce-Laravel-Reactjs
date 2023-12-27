@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import facebook from "../assets/icon/facebook.svg";
-import instagram from "../assets/icon/instagram.svg";
-import linkedin from "../assets/icon/linkedin.svg";
-import message from "../assets/icon/message.svg";
-import more from "../assets/icon/more.svg";
+import facebook from "../../assets/icon/facebook.svg";
+import instagram from "../../assets/icon/instagram.svg";
+import linkedin from "../../assets/icon/linkedin.svg";
+import message from "../../assets/icon/message.svg";
+import more from "../../assets/icon/more.svg";
 
 const PopupMenu = ({ items, onClose }) => {
     return (

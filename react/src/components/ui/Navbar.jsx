@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import React from "react";
-import logo from "../assets/icon/logo.svg";
-import logoSingle from "../assets/icon/logo-single.svg";
-import search from "../assets/icon/search.svg";
-import user from "../assets/icon/user-svgrepo-com.svg";
-import cart from "../assets/icon/cart.svg";
+import logo from "../../assets/icon/logo.svg";
+import logoSingle from "../../assets/icon/logo-single.svg";
+import search from "../../assets/icon/search.svg";
+import user from "../../assets/icon/user-svgrepo-com.svg";
+import cart from "../../assets/icon/cart.svg";
 
 export default function Navbar() {
     return (

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Banner3 from "../assets/banner/banner_3.png";
+import Banner3 from "../../assets/banner/banner_3.png";
 
 const PopupAdvertisement = () => {
     const [isPopupVisible, setPopupVisible] = useState(

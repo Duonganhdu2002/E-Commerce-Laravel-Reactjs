@@ -1,9 +1,9 @@
-import Sale3 from "../assets/sale/sale3.png";
-import Sale4 from "../assets/sale/sale4.png";
-import Sale5 from "../assets/sale/sale5.png";
-import Sale6 from "../assets/sale/sale6.png";
-import Sale7 from "../assets/sale/sale7.png";
-import Sale8 from "../assets/sale/sale8.png";
+import Sale3 from "../../assets/sale/sale3.png";
+import Sale4 from "../../assets/sale/sale4.png";
+import Sale5 from "../../assets/sale/sale5.png";
+import Sale6 from "../../assets/sale/sale6.png";
+import Sale7 from "../../assets/sale/sale7.png";
+import Sale8 from "../../assets/sale/sale8.png";
 import { useState, useEffect } from "react";
 
 const Container = () => {

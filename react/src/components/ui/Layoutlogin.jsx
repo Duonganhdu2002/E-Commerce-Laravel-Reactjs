@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import React from "react";
-import logo from "../assets/icon/logo.svg";
-import sale1 from "../assets/sale/sale1.png";
-import logo_google_1 from "../assets/icon/Google__G__logo.svg"
+import logo from "../../assets/icon/logo.svg";
+import sale1 from "../../assets/sale/sale1.png";
+import logo_google_1 from "../../assets/icon/Google__G__logo.svg"
 
 export default function LayoutLogin() {
     return (

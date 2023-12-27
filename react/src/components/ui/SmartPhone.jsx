@@ -1,8 +1,8 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import img1 from '../assets/image/img1.jpg'
-import Banner6 from '../assets/banner/banner_6.png'
-import Banner7 from '../assets/banner/banner_7.png'
+import img1 from '../../assets/image/img1.jpg'
+import Banner6 from '../../assets/banner/banner_6.png'
+import Banner7 from '../../assets/banner/banner_7.png'
 
 export default function SmartPhone() {
     return (

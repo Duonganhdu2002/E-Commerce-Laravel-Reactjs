@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import LogoGoogle1 from "../assets/icon/Google__G__logo.svg";
-import Logo from "../assets/icon/logo.svg";
+import LogoGoogle1 from "../../assets/icon/Google__G__logo.svg";
+import Logo from "../../assets/icon/logo.svg";
 
 export default function LayoutRegister() {
     return (

@@ -1,6 +1,6 @@
 import React from "react";
-import Banner_1 from "../assets/banner/banner_1.png";
-import Banner_2 from "../assets/banner/banner_2.png";
+import Banner_1 from "../../assets/banner/banner_1.png";
+import Banner_2 from "../../assets/banner/banner_2.png";
 
 export default function Banner1() {
     return (

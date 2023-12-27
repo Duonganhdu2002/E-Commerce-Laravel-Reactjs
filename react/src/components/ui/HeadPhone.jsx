@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import img1 from '../assets/image/img1.jpg'
+import img1 from '../../assets/image/img1.jpg'
 
 export default function HeadPhone() {
     return (

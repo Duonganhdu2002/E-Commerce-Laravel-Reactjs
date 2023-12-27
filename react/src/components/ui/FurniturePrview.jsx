@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import img1 from "../assets/image/img1.jpg";
-import Banner4 from "../assets/banner/banner_4.png";
-import Banner5 from "../assets/banner/banner_5.png";
+import img1 from "../../assets/image/img1.jpg";
+import Banner4 from "../../assets/banner/banner_4.png";
+import Banner5 from "../../assets/banner/banner_5.png";
 
 export default function FurniturePrview() {
     return (

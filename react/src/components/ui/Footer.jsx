@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logo from "../assets/icon/logo.svg";
-import mail_black from "../assets/icon/mail_black.svg";
-import map_black from "../assets/icon/map_black.svg";
-import phone_black from "../assets/icon/phone_black.svg";
+import logo from "../../assets/icon/logo.svg";
+import mail_black from "../../assets/icon/mail_black.svg";
+import map_black from "../../assets/icon/map_black.svg";
+import phone_black from "../../assets/icon/phone_black.svg";
 
 const Footer = () => {
     const topCategoriesAndBrands = [

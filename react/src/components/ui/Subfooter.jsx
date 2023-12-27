@@ -1,8 +1,8 @@
 import React from "react";
-import shiped from "../assets/icon/shiped.svg";
-import returns from "../assets/icon/return.svg";
-import telephone from "../assets/icon/telephone.svg";
-import shield from "../assets/icon/shield.svg";
+import shiped from "../../assets/icon/shiped.svg";
+import returns from "../../assets/icon/return.svg";
+import telephone from "../../assets/icon/telephone.svg";
+import shield from "../../assets/icon/shield.svg";
 
 export default function SubFooter() {
     return (

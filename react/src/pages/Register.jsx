@@ -1,10 +1,10 @@
 import React from "react";
-import Header from "../components/Header";
-import Navbar from "../components/Navbar";
-import MenuBar from "../components/MenuBar";
-import SubFooter from "../components/Subfooter";
-import Footer from "../components/Footer";
-import LayoutRegister from "../components/Layoutregister";
+import Header from "../components/ui/Header";
+import Navbar from "../components/ui/Navbar";
+import MenuBar from "../components/ui/MenuBar";
+import SubFooter from "../components/ui/Subfooter";
+import Footer from "../components/ui/Footer";
+import LayoutRegister from "../components/ui/Layoutregister";
 
 export default function Register() {
     return (
