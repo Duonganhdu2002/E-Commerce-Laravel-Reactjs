@@ -9,10 +9,10 @@ export default function MenuBar() {
           <p className='text-white text-sm'>Category</p>
         </div>
         <div className='flex w-3/4 justify-between items-center'>
-          <Link to="/" className="text-black w-1/4 pl-4">Home</Link>
-          <Link to="/shop" className="text-black w-1/4 pl-4">Shop</Link>
-          <Link to="/sale" className="text-black w-1/4 pl-4">Sale</Link>
-          <Link to="/combo" className="text-black w-1/4 pl-4">Combo</Link>
+          <Link to="/" className="text-black w-1/4 text-center">Home</Link>
+          <Link to="/shop" className="text-black w-1/4 text-center">Shop</Link>
+          <Link to="/sale" className="text-black w-1/4 text-center">Sale</Link>
+          <Link to="/combo" className="text-black w-1/4 text-center">Combo</Link>
         </div>
       </div>
     </div>

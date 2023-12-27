@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 import img1 from '../../assets/public/furniture/img1.jpg'
 import Banner6 from '../../assets/public/banner/banner_6.png'
 import Banner7 from '../../assets/public/banner/banner_7.png'
@@ -6,14 +7,13 @@ import Banner7 from '../../assets/public/banner/banner_7.png'
 export default function SmartPhone() {
     return (
         <div className='flex justify-center'>
-            <div className='h-auto w-[80%] flex mt-8 mb-24'>
+            <div className='h-auto w-[80%] flex mb-8 justify-center items-center'>
 
-                <div className='w-[80%]'>
-                    <div className=' text-xl border-b-2 p-4'>
-                        <a className='p-6' href="">New arrivals</a>
-                        <a className='p-6' href="">Best sales</a>
-                        <a className='p-6' href="">SmartPhones</a>
-                        <a className='p-6' href="">HeadPhones</a>
+                <div className='w-[80%] hidden md:block'>
+                    <div className=' text-xl border-b-2 p-4 flex justify-between items-center'>
+                        <Link to="#" className='p-6'>New arrivals</Link>
+                        <Link to="#" className='p-6'>Best sales</Link>
+                        <Link to="#" className='p-6'>SmartPhones</Link>
                     </div>
                     <div>
                         <div className='w-[33%] p-4 float-left'>
@@ -54,14 +54,18 @@ export default function SmartPhone() {
                         </div>
                     </div>
                 </div>
-                <div className='w-[20%] mr-4'>
-                <div className="h-1/2 relative text-center ">
+                <div className='w-[100%] md:w-[20%]'>
+                    <h2 className='py-2 font-medium text-xl md:hidden' >Smart phone</h2>
+                    <div className="h-1/2 relative text-center ">
                         <div className=" absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-base">
                             <p>AVAILABLE NOW</p>
                             <p className=" font-bold text-2xl">
                                 IPhone X
                             </p>
                             <p className=" font-bold">$1120.00</p>
+                            <Link to="#">
+                                <button className=" md:hidden mt-4 bg-slate-800 bg-opacity-70 p-2 px-4 border rounded-full">See more</button>
+                            </Link>
                         </div>
                         <img
                             src={Banner6}
@@ -76,6 +80,9 @@ export default function SmartPhone() {
                                 IPhone 12 Pro Max
                             </p>
                             <p className=" font-bold">$1630.00</p>
+                            <Link to="#">
+                                <button className=" md:hidden mt-4 bg-slate-800 bg-opacity-70 p-2 px-4 border rounded-full">See more</button>
+                            </Link>
                         </div>
                         <img
                             src={Banner7}
