@@ -16,34 +16,10 @@ class User extends Authenticatable
 
     protected $primaryKey = 'user_id';
 
-    protected $hidden = [
-        'password',
-        'remember_token'
-        
-    ];
-
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    // public function tokens()
-    // {
-    //     return $this->hasMany(PersonalAccessToken::class);
-    // }
-
-
-    // Trong model User.php
-    // protected static function boot()
-    // {
-    //     parent::boot();
-
-    //     static::created(function ($user) {
-    //         $user->updated_at = now();
-    //         $user->save();
-    //     });
-    // }
-
 
     public function user_address()
     {

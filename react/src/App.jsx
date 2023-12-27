@@ -1,9 +1,9 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Home from './views/Home';
-import Login from './views/Login';
-import Register from './views/Register';
-import Cart from "./views/Cart";
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Cart from "./pages/Cart";
 
 
 export default function App() {
