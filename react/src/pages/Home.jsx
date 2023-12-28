@@ -12,16 +12,12 @@ import Watch from "../components/ui/Watch";
 import Banner2 from "../components/ui/Banner2";
 import HeadPhone from "../components/ui/HeadPhone";
 import PopupAdvertisement from "../components/ui/PopupAdvertisement";
-import MyComponent from "../data/userApi";
-import CheckPasswordComponent from "../data/PasswordCheck";
 
 export default function Home() {
     return (
         <div>
             {/* <PopupAdvertisement /> */}
             <Header />
-            <MyComponent/>
-            <CheckPasswordComponent/>
             <Navbar />
             <MenuBar />
             <Container />
