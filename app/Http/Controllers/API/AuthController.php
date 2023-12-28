@@ -70,8 +70,7 @@ class AuthController extends Controller
     public function loginUser(Request $request)
     {
         try {
-            // $input = $request->all();
-            // $input['type_account_id'] = $request->input('type_account_id', 1); // Tạo giá trị mặc định cho loại tài khoản khi đăng ký tài khoản khách
+            
             $validateUser = Validator::make(
                 $request->all(),
                 [
