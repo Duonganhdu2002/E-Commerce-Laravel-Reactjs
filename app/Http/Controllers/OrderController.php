@@ -4,23 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Resources\ProductColorResource ;
-use App\Models\product_color as PC;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\OrderResource ;
+use App\Models\order as OrderM;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class ProductColorController extends Controller
+class OrderController extends Controller
 {
- 
-    public function index(Request $request)
+    public function index()
     {
-        
-        $pc = PC::all();
+        $order = OrderM::all();
 
         $arr = [
             'status' => true,
             'message' => 'Danh sách',
-            'data' => ProductColorResource::collection($pc)
+            'data' => OrderResource::collection($order)
         ];
 
         return response()->json($arr, 200);
@@ -30,7 +28,7 @@ class ProductColorController extends Controller
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'color_name' => 'required',
+            'user_id' => 'required',
         ]);
         if ($validator->fails()) {
             $arr = [
@@ -40,20 +38,21 @@ class ProductColorController extends Controller
             ];
             return response()->json($arr, 200);
         }
-        $pc = PC::create($input);
+        $order = OrderM::create($input);
         $arr = [
             'status' => true,
             'message' => "đã lưu thành công",
-            'data' => new ProductColorResource($pc)
+            'data' => new OrderResource($order)
         ];
         return response()->json($arr, 201);
     }
+    
     public function update(Request $request, string $id)
     {
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'color_name' => 'required',
+            'user_id' => 'required',
             
             
         ]);
@@ -67,9 +66,9 @@ class ProductColorController extends Controller
             return response()->json($arr, 200);
         }
     
-        $pc = PC::find($id);
+        $order = OrderM::find($id);
     
-        if (!$pc) {
+        if (!$order) {
             $arr = [
                 'status' => false,
                 'message' => 'không tồn tại',
@@ -78,22 +77,21 @@ class ProductColorController extends Controller
             return response()->json($arr, 404);
         }
     
-        $pc->update($input);
+        $order->update($input);
     
         $arr = [
             'status' => true,
             'message' => 'cập nhật thành công',
-            'data' => new ProductColorResource($pc)
+            'data' => new OrderResource($order)
         ];
     
         return response()->json($arr, 200);
     }
     public function destroy(string $id)
     {
-      
         try {
-            $pc = PC::findOrFail($id);
-            $pc->delete();
+            $order = OrderM::findOrFail($id);
+            $order->delete();
 
             $arr = [
                 'status' => true,
@@ -111,5 +109,44 @@ class ProductColorController extends Controller
 
             return response()->json($arr, 404);
         }
+    }
+    public function total($id) //chua test
+    {
+        try {
+            $order = OrderM::findOrFail($id);
+
+            $products = $order->products;
+
+            $totalValue = $this->calculateTotal($products);
+
+            $arr = [
+                'status' => true,
+                'message' => ' tổng giá trị đơn hàng ',
+                'data' => ['total' => $totalValue],
+            ];
+
+            return response()->json($arr, 200);
+        } catch (ModelNotFoundException $e) {
+            $arr = [
+                'status' => false,
+                'message' => 'Đơn hàng không tồn tại',
+                'data' => null,
+            ];
+
+            return response()->json($arr, 404);
+        }
+    }
+
+    private function calculateTotal($products)
+    {
+        $totalValue = 0;
+
+        // Lặp qua từng sản phẩm trong đơn hàng
+        foreach ($products as $product) {
+            // Tính giá trị sản phẩm và cộng vào tổng giá trị đơn hàng
+            $totalValue += floatval($product->price) * $product->quantity;
+        }
+
+        return number_format($totalValue, 2, '.', ''); // Làm tròn tổng giá trị đến 2 chữ số sau dấu thập phân
     }
 }

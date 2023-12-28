@@ -4,33 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Resources\ProductColorResource ;
-use App\Models\product_color as PC;
+use App\Http\Resources\ShoppingCartResource ;
+use App\Models\shopping_cart;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class ProductColorController extends Controller
+
+class ShoppingCartController extends Controller
 {
- 
-    public function index(Request $request)
+    public function index()
     {
-        
-        $pc = PC::all();
+       
+        $sc = shopping_cart::all();
 
         $arr = [
             'status' => true,
             'message' => 'Danh sách',
-            'data' => ProductColorResource::collection($pc)
+            'data' => ShoppingCartResource::collection($sc)
         ];
 
         return response()->json($arr, 200);
     }
+
     public function store(Request $request)
     {
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'color_name' => 'required',
+            'name' => 'required',
         ]);
         if ($validator->fails()) {
             $arr = [
@@ -40,11 +41,11 @@ class ProductColorController extends Controller
             ];
             return response()->json($arr, 200);
         }
-        $pc = PC::create($input);
+        $sc = shopping_cart::create($input);
         $arr = [
             'status' => true,
             'message' => "đã lưu thành công",
-            'data' => new ProductColorResource($pc)
+            'data' => new ShoppingCartResource($sc)
         ];
         return response()->json($arr, 201);
     }
@@ -53,7 +54,7 @@ class ProductColorController extends Controller
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'color_name' => 'required',
+            'name' => 'required',
             
             
         ]);
@@ -67,9 +68,9 @@ class ProductColorController extends Controller
             return response()->json($arr, 200);
         }
     
-        $pc = PC::find($id);
+        $sc = shopping_cart::find($id);
     
-        if (!$pc) {
+        if (!$sc) {
             $arr = [
                 'status' => false,
                 'message' => 'không tồn tại',
@@ -78,22 +79,21 @@ class ProductColorController extends Controller
             return response()->json($arr, 404);
         }
     
-        $pc->update($input);
+        $sc->update($input);
     
         $arr = [
             'status' => true,
             'message' => 'cập nhật thành công',
-            'data' => new ProductColorResource($pc)
+            'data' => new ShoppingCartResource($sc)
         ];
     
         return response()->json($arr, 200);
     }
     public function destroy(string $id)
     {
-      
         try {
-            $pc = PC::findOrFail($id);
-            $pc->delete();
+            $sc = shopping_cart::findOrFail($id);
+            $sc->delete();
 
             $arr = [
                 'status' => true,

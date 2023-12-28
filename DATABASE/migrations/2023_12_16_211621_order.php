@@ -20,13 +20,13 @@ return new class extends Migration
             $table->timestamps();
 
             // Khóa ngoại user_id
-            $table->foreign('user_id')->references('user_id')->on('user')->onDelete('cascade');
+            $table->foreign('user_id')->references('user_id')->on('user')->onDelete('cascade')->onUpdate('cascade');
 
             // Khóa ngoại order_status_id
-            $table->foreign('order_status_id')->references('order_status_id')->on('order_status')->onDelete('cascade');
+            $table->foreign('order_status_id')->references('order_status_id')->on('order_status')->onDelete('cascade')->onUpdate('cascade');
 
             // Khóa ngoại shipping_method_id
-            $table->foreign('shipping_method_id')->references('shipping_method_id')->on('shipping_method')->onDelete('cascade');
+            $table->foreign('shipping_method_id')->references('shipping_method_id')->on('shipping_method')->onDelete('cascade')->onUpdate('cascade');
 
             // Các cài đặt khác có thể được thêm vào tùy thuộc vào yêu cầu cụ thể của bạn
         });

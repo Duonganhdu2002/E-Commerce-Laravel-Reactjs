@@ -6,24 +6,23 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 
 use App\Http\Controllers\AccountType;
-use App\Http\Controllers\Discount;
-use App\Http\Controllers\OderItems;
-use App\Http\Controllers\Order;
-use App\Http\Controllers\OrderStatus;
-use App\Http\Controllers\PaymentType;
-use App\Http\Controllers\ProductCategory;
+use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\OderItemsController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderStatusController;
+use App\Http\Controllers\PaymentTypeController;
+use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductColorController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProductImage;
-use App\Http\Controllers\ProductReview;
-use App\Http\Controllers\ProductSize;
-use App\Http\Controllers\ShippingMethod;
-use App\Http\Controllers\ShoppingCart;
-use App\Http\Controllers\Transaction;
+use App\Http\Controllers\ProductImageController;
+use App\Http\Controllers\ProductReviewController;
+use App\Http\Controllers\ProductSizeController;
+use App\Http\Controllers\ShippingMethodController;
+use App\Http\Controllers\ShoppingCartController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserAddressController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserPayment;
-use App\Http\Controllers\UserReview;
 
 
 
@@ -60,51 +59,48 @@ Route::prefix('public')->group(function () {
 
     Route::resource('UserAddress', UserAddressController::class);
 
-    Route::resource('Discount', Discount::class);
+    Route::resource('Discount', DiscountController::class);
 
 
-    Route::resource('OderItems', OderItems::class);
+    Route::resource('OderItems', OderItemsController::class);
 
 
-    Route::resource('Order', Order::class);
+    Route::resource('Order', OrderController::class);
 
 
-    Route::resource('OrderStatus', OrderStatus::class);
+    Route::resource('OrderStatus', OrderStatusController::class);
 
 
-    Route::resource('PaymentType', PaymentType::class);
+    Route::resource('PaymentType', PaymentTypeController::class);
 
 
-    Route::resource('ProductCategory', ProductCategory::class);
+    Route::resource('ProductCategory', ProductCategoryController::class);
 
 
     Route::resource('ProductColo', ProductColorController::class);
 
 
-Route::prefix('ProductImage')->group(function () {
+    Route::prefix('ProductImage')->group(function () {
 
-    Route::get('Display', [ProductImage::class,'Display']); 
-    Route::resource('template', ProductImage::class); 
+        Route::get('Display', [ProductImageController::class,'Display']); 
+        Route::resource('template', ProductImageController::class); 
 
-});
-
-
-    Route::resource('ProductReview', ProductReview::class);
+    });
 
 
-    Route::resource('ProductSize', ProductSize::class);
+    Route::resource('ProductReview', ProductReviewController::class);
 
 
-    Route::resource('ShippingMethod', ShippingMethod::class);
+    Route::resource('ProductSize', ProductSizeController::class);
 
 
-    Route::resource('ShoppingCart', ShoppingCart::class);
+    Route::resource('ShippingMethod', ShippingMethodController::class);
 
 
-    Route::resource('Transaction', Transaction::class);
+    Route::resource('ShoppingCart', ShoppingCartController::class);
+
+
+    Route::resource('Transaction', TransactionController::class);
 
     Route::resource('UserPayment', UserPayment::class);
-
-
-    Route::resource('UserReview', UserReview::class);
 });

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('image_url', 50)->nullable();
 
             // Khóa ngoại product_id
-            $table->foreign('product_id')->references('product_id')->on('product')->onDelete('cascade');
+            $table->foreign('product_id')->references('product_id')->on('product')->onDelete('cascade')->onUpdate('cascade');
 
             // Các cài đặt khác có thể được thêm vào tùy thuộc vào yêu cầu cụ thể của bạn
         });

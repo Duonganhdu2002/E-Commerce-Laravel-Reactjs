@@ -4,28 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Resources\ProductResource as ProductResource;
-use App\Models\Product;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\DiscountResource as DiscountResource;
+use App\Models\Discount as DiscountModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\DB;
 
-
-class ProductController extends Controller
+class DiscountController extends Controller
 {
     public function index()
     {
-        $product = Product::all();
+        $discount = DiscountModel::all();
 
         $arr = [
             'status' => true,
-            'message' => 'Danh sách sản phẩm',
-            'data' => ProductResource::collection($product)
+            'message' => 'Danh sách ma giam gia',
+            'data' => DiscountResource::collection($discount)
         ];
 
         return response()->json($arr, 200);
     }
-    
     public function store(Request $request)
     {
         $input = $request->all();
@@ -41,43 +38,40 @@ class ProductController extends Controller
             ];
             return response()->json($arr, 200);
         }
-        $product = Product::create($input);
+        $discount = DiscountModel::create($input);
         $arr = [
             'status' => true,
-            'message' => "Sản phẩm đã lưu thành công",
-            'data' => new ProductResource($product)
+            'message' => "đã lưu thành công",
+            'data' => new DiscountResource($discount)
         ];
         return response()->json($arr, 201);
     }
-    
     public function show(string $id)
     {
-        $product = Product::find($id);
+        $discount = DiscountModel::find($id);
 
-    if (empty($product)) {
-        $arr = [
-            'status' => false,
-            'message' => 'Không có sản phẩm này',
-            'data' => null
-        ];
-        return response()->json($arr, 404);
-    }
-
-    $arr = [
-        'status' => true,
-        'message' => "Thông tin sản phẩm",
-        'data' => $product, 
-    ];
-    return response()->json($arr, 200);
-    }
+        if (empty($discount)) {
+            $arr = [
+                'status' => false,
+                'message' => 'Vui long thu lai',
+                'data' => null
+            ];
+            return response()->json($arr, 404);
+        }
     
-    public function update(Request $request, string $product)
+        $arr = [
+            'status' => true,
+            'message' => "Thông tin chi tiet",
+            'data' => new DiscountResource($discount), 
+        ];
+        return response()->json($arr, 200);
+    }
+    public function update(Request $request, string $discount)
     {
     $input = $request->all();
 
     $validator = Validator::make($input, [
         'name' => 'required',
-        'price' => 'required',
         
         
     ]);
@@ -91,37 +85,48 @@ class ProductController extends Controller
         return response()->json($arr, 200);
     }
 
-    $product = Product::find($product);
+    $discount = DiscountModel::find($discount);
 
-    if (!$product) {
+    if (!$discount) {
         $arr = [
             'status' => false,
-            'message' => 'Sản phẩm không tồn tại',
+            'message' => 'không tồn tại',
             'data' => null
         ];
         return response()->json($arr, 404);
     }
+    // cách cập nhật 1
+    $discount->update($input);
+    //cách cập nhât 2
+    // $discount->name = $input['name'] ;
+    // cách cập nhật 3
+    // if (isset($input['discount_percent'])) {
+    //     $discount->discount_percent = str_replace(',', '.', $input['discount_percent']);
+    // }
 
-    $product->update($input);
+    // if (isset($input['description'])) {
+    //     $discount->description = $input['description'];
+    // }
+    // 2 va 3 can them save()
+    // $discount->save();
 
     $arr = [
         'status' => true,
-        'message' => 'Sản phẩm cập nhật thành công',
-        'data' => $product
+        'message' => ' cập nhật thành công',
+        'data' => new DiscountResource($discount)
     ];
 
     return response()->json($arr, 200);
 }
-
     public function destroy(string $id)
     {
         try {
-            $product = Product::findOrFail($id);
-            $product->delete();
+            $discount = DiscountModel::findOrFail($id);
+            $discount->delete();
 
             $arr = [
                 'status' => true,
-                'message' => 'Sản phẩm đã được xóa thành công',
+                'message' => 'đã được xóa thành công',
                 'data' => null
             ];
 
@@ -129,7 +134,7 @@ class ProductController extends Controller
         } catch (ModelNotFoundException $e) {
             $arr = [
                 'success' => false,
-                'message' => 'Sản phẩm không tồn tại',
+                'message' => ' không tồn tại',
                 'data' => null
             ];
 

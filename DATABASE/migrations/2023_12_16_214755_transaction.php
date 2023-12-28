@@ -23,16 +23,16 @@ return new class extends Migration
 
 
             // Khóa ngoại buyer_id
-            $table->foreign('buyer_id')->references('user_id')->on('user')->onDelete('cascade');
+            $table->foreign('buyer_id')->references('user_id')->on('user')->onDelete('cascade')->onUpdate('cascade');
 
             // Khóa ngoại seller_id
-            $table->foreign('seller_id')->references('user_id')->on('user')->onDelete('cascade');
+            $table->foreign('seller_id')->references('user_id')->on('user')->onDelete('cascade')->onUpdate('cascade');
 
             // Khóa ngoại order_id
-            $table->foreign('order_id')->references('order_id')->on('order')->onDelete('cascade');
+            $table->foreign('order_id')->references('order_id')->on('order')->onDelete('cascade')->onUpdate('cascade');
 
             // Khóa ngoại payment_id
-            $table->foreign('payment_id')->references('payment_id')->on('user_payment')->onDelete('cascade');
+            $table->foreign('payment_id')->references('payment_id')->on('user_payment')->onDelete('cascade')->onUpdate('cascade');
 
             // Các cài đặt khác có thể được thêm vào tùy thuộc vào yêu cầu cụ thể của bạn
         });

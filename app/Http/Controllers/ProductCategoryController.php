@@ -4,33 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Resources\ProductColorResource ;
-use App\Models\product_color as PC;
+use App\Http\Resources\ProductCategoryResource ;
+use App\Models\product_category as PC;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class ProductColorController extends Controller
+
+class ProductCategoryController extends Controller
 {
- 
-    public function index(Request $request)
+    public function index()
     {
-        
+       
         $pc = PC::all();
 
         $arr = [
             'status' => true,
             'message' => 'Danh sách',
-            'data' => ProductColorResource::collection($pc)
+            'data' => ProductCategoryResource::collection($pc)
         ];
 
         return response()->json($arr, 200);
     }
+
     public function store(Request $request)
     {
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'color_name' => 'required',
+            'name' => 'required',
         ]);
         if ($validator->fails()) {
             $arr = [
@@ -44,16 +45,36 @@ class ProductColorController extends Controller
         $arr = [
             'status' => true,
             'message' => "đã lưu thành công",
-            'data' => new ProductColorResource($pc)
+            'data' => new ProductCategoryResource($pc)
         ];
         return response()->json($arr, 201);
+    }
+    public function show(string $id)
+    {
+        $pc = PC::find($id);
+
+    if (empty($pc)) {
+        $arr = [
+            'status' => false,
+            'message' => 'Không có ',
+            'data' => null
+        ];
+        return response()->json($arr, 404);
+    }
+
+    $arr = [
+        'status' => true,
+        'message' => "Thông tin ",
+        'data' => $pc, 
+    ];
+    return response()->json($arr, 200);
     }
     public function update(Request $request, string $id)
     {
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'color_name' => 'required',
+            'name' => 'required',
             
             
         ]);
@@ -83,14 +104,13 @@ class ProductColorController extends Controller
         $arr = [
             'status' => true,
             'message' => 'cập nhật thành công',
-            'data' => new ProductColorResource($pc)
+            'data' => new ProductCategoryResource($pc)
         ];
     
         return response()->json($arr, 200);
     }
     public function destroy(string $id)
     {
-      
         try {
             $pc = PC::findOrFail($id);
             $pc->delete();

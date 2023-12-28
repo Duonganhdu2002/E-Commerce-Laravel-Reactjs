@@ -4,33 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Resources\ProductColorResource ;
-use App\Models\product_color as PC;
+use App\Http\Resources\ShippingMethodResource ;
+use App\Models\shipping_method;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class ProductColorController extends Controller
+class ShippingMethodController extends Controller
 {
- 
-    public function index(Request $request)
+    public function index()
     {
-        
-        $pc = PC::all();
+       
+        $sm = shipping_method::all();
 
         $arr = [
             'status' => true,
             'message' => 'Danh sách',
-            'data' => ProductColorResource::collection($pc)
+            'data' => ShippingMethodResource::collection($sm)
         ];
 
         return response()->json($arr, 200);
     }
+
     public function store(Request $request)
     {
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'color_name' => 'required',
+            'shipping_method_name' => 'required',
         ]);
         if ($validator->fails()) {
             $arr = [
@@ -40,11 +40,11 @@ class ProductColorController extends Controller
             ];
             return response()->json($arr, 200);
         }
-        $pc = PC::create($input);
+        $sm = shipping_method::create($input);
         $arr = [
             'status' => true,
             'message' => "đã lưu thành công",
-            'data' => new ProductColorResource($pc)
+            'data' => new ShippingMethodResource($sm)
         ];
         return response()->json($arr, 201);
     }
@@ -53,7 +53,7 @@ class ProductColorController extends Controller
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'color_name' => 'required',
+            'shipping_method_name' => 'required',
             
             
         ]);
@@ -67,9 +67,9 @@ class ProductColorController extends Controller
             return response()->json($arr, 200);
         }
     
-        $pc = PC::find($id);
+        $sm = shipping_method::find($id);
     
-        if (!$pc) {
+        if (!$sm) {
             $arr = [
                 'status' => false,
                 'message' => 'không tồn tại',
@@ -78,22 +78,21 @@ class ProductColorController extends Controller
             return response()->json($arr, 404);
         }
     
-        $pc->update($input);
+        $sm->update($input);
     
         $arr = [
             'status' => true,
             'message' => 'cập nhật thành công',
-            'data' => new ProductColorResource($pc)
+            'data' => new ShippingMethodResource($sm)
         ];
     
         return response()->json($arr, 200);
     }
     public function destroy(string $id)
     {
-      
         try {
-            $pc = PC::findOrFail($id);
-            $pc->delete();
+            $sm = shipping_method::findOrFail($id);
+            $sm->delete();
 
             $arr = [
                 'status' => true,
