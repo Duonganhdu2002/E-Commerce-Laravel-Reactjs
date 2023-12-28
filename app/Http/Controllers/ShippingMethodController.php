@@ -4,34 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Resources\FieldResource ;
-use App\Models\Field;
+use App\Http\Resources\ShippingMethodResource ;
+use App\Models\shipping_method;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class FieldController extends Controller //chua test
+class ShippingMethodController extends Controller
 {
-   
     public function index()
     {
        
-        $f = Field::all();
+        $sm = shipping_method::all();
 
         $arr = [
             'status' => true,
             'message' => 'Danh sách',
-            'data' => FieldResource::collection($f)
+            'data' => ShippingMethodResource::collection($sm)
         ];
 
         return response()->json($arr, 200);
     }
+
     public function store(Request $request)
     {
-        
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'name' => 'required',
+            'shipping_method_name' => 'required',
         ]);
         if ($validator->fails()) {
             $arr = [
@@ -41,11 +40,11 @@ class FieldController extends Controller //chua test
             ];
             return response()->json($arr, 200);
         }
-        $f = Field::create($input);
+        $sm = shipping_method::create($input);
         $arr = [
             'status' => true,
             'message' => "đã lưu thành công",
-            'data' => new FieldResource($f)
+            'data' => new ShippingMethodResource($sm)
         ];
         return response()->json($arr, 201);
     }
@@ -54,7 +53,7 @@ class FieldController extends Controller //chua test
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'name' => 'required',
+            'shipping_method_name' => 'required',
             
             
         ]);
@@ -68,9 +67,9 @@ class FieldController extends Controller //chua test
             return response()->json($arr, 200);
         }
     
-        $f = Field::find($id);
+        $sm = shipping_method::find($id);
     
-        if (!$f) {
+        if (!$sm) {
             $arr = [
                 'status' => false,
                 'message' => 'không tồn tại',
@@ -79,12 +78,12 @@ class FieldController extends Controller //chua test
             return response()->json($arr, 404);
         }
     
-        $f->update($input);
+        $sm->update($input);
     
         $arr = [
             'status' => true,
             'message' => 'cập nhật thành công',
-            'data' => new FieldResource($f)
+            'data' => new ShippingMethodResource($sm)
         ];
     
         return response()->json($arr, 200);
@@ -92,8 +91,8 @@ class FieldController extends Controller //chua test
     public function destroy(string $id)
     {
         try {
-            $f = Field::findOrFail($id);
-            $f->delete();
+            $sm = shipping_method::findOrFail($id);
+            $sm->delete();
 
             $arr = [
                 'status' => true,

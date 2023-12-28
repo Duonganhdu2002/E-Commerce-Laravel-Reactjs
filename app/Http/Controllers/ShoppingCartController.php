@@ -4,30 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Resources\FieldResource ;
-use App\Models\Field;
+use App\Http\Resources\ShoppingCartResource ;
+use App\Models\shopping_cart;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class FieldController extends Controller //chua test
+
+class ShoppingCartController extends Controller
 {
-   
     public function index()
     {
        
-        $f = Field::all();
+        $sc = shopping_cart::all();
 
         $arr = [
             'status' => true,
             'message' => 'Danh sách',
-            'data' => FieldResource::collection($f)
+            'data' => ShoppingCartResource::collection($sc)
         ];
 
         return response()->json($arr, 200);
     }
+
     public function store(Request $request)
     {
-        
         $input = $request->all();
 
         $validator = Validator::make($input, [
@@ -41,11 +41,11 @@ class FieldController extends Controller //chua test
             ];
             return response()->json($arr, 200);
         }
-        $f = Field::create($input);
+        $sc = shopping_cart::create($input);
         $arr = [
             'status' => true,
             'message' => "đã lưu thành công",
-            'data' => new FieldResource($f)
+            'data' => new ShoppingCartResource($sc)
         ];
         return response()->json($arr, 201);
     }
@@ -68,9 +68,9 @@ class FieldController extends Controller //chua test
             return response()->json($arr, 200);
         }
     
-        $f = Field::find($id);
+        $sc = shopping_cart::find($id);
     
-        if (!$f) {
+        if (!$sc) {
             $arr = [
                 'status' => false,
                 'message' => 'không tồn tại',
@@ -79,12 +79,12 @@ class FieldController extends Controller //chua test
             return response()->json($arr, 404);
         }
     
-        $f->update($input);
+        $sc->update($input);
     
         $arr = [
             'status' => true,
             'message' => 'cập nhật thành công',
-            'data' => new FieldResource($f)
+            'data' => new ShoppingCartResource($sc)
         ];
     
         return response()->json($arr, 200);
@@ -92,8 +92,8 @@ class FieldController extends Controller //chua test
     public function destroy(string $id)
     {
         try {
-            $f = Field::findOrFail($id);
-            $f->delete();
+            $sc = shopping_cart::findOrFail($id);
+            $sc->delete();
 
             $arr = [
                 'status' => true,

@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
             discount::class,
             order_status::class,
             payment_type::class,
+            field::class,
+            product_brand::class,
             product_category::class,
             product_color::class,
             product_size::class,

@@ -4,34 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Resources\FieldResource ;
-use App\Models\Field;
+use App\Http\Resources\ProductReviewResource ;
+use App\Models\product_review;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-
-class FieldController extends Controller //chua test
+class ProductReviewController extends Controller
 {
-   
     public function index()
     {
-       
-        $f = Field::all();
+      
+        $pr = product_review::all();
 
         $arr = [
             'status' => true,
             'message' => 'Danh sách',
-            'data' => FieldResource::collection($f)
+            'data' => ProductReviewResource::collection($pr)
         ];
 
         return response()->json($arr, 200);
     }
+
     public function store(Request $request)
     {
-        
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'name' => 'required',
+            'user_id' => 'required',
         ]);
         if ($validator->fails()) {
             $arr = [
@@ -41,11 +38,11 @@ class FieldController extends Controller //chua test
             ];
             return response()->json($arr, 200);
         }
-        $f = Field::create($input);
+        $pr = product_review::create($input);
         $arr = [
             'status' => true,
             'message' => "đã lưu thành công",
-            'data' => new FieldResource($f)
+            'data' => new ProductReviewResource($pr)
         ];
         return response()->json($arr, 201);
     }
@@ -54,7 +51,7 @@ class FieldController extends Controller //chua test
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'name' => 'required',
+            'user_id' => 'required',
             
             
         ]);
@@ -68,9 +65,9 @@ class FieldController extends Controller //chua test
             return response()->json($arr, 200);
         }
     
-        $f = Field::find($id);
+        $pr = product_review::find($id);
     
-        if (!$f) {
+        if (!$pr) {
             $arr = [
                 'status' => false,
                 'message' => 'không tồn tại',
@@ -79,37 +76,14 @@ class FieldController extends Controller //chua test
             return response()->json($arr, 404);
         }
     
-        $f->update($input);
+        $pr->update($input);
     
         $arr = [
             'status' => true,
             'message' => 'cập nhật thành công',
-            'data' => new FieldResource($f)
+            'data' => new ProductReviewResource($pr)
         ];
     
         return response()->json($arr, 200);
-    }
-    public function destroy(string $id)
-    {
-        try {
-            $f = Field::findOrFail($id);
-            $f->delete();
-
-            $arr = [
-                'status' => true,
-                'message' => 'đã được xóa thành công',
-                'data' => null
-            ];
-
-            return response()->json($arr, 200);
-        } catch (ModelNotFoundException $e) {
-            $arr = [
-                'success' => false,
-                'message' => ' không tồn tại',
-                'data' => null
-            ];
-
-            return response()->json($arr, 404);
-        }
     }
 }

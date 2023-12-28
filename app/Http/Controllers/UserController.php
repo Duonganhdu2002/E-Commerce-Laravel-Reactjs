@@ -7,9 +7,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\UserResource as UserResource;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Hash; // Mã hóa 
 
 
 class UserController extends Controller
@@ -44,6 +43,10 @@ class UserController extends Controller
             ];
             return response()->json($arr, 200);
         }
+
+        // Mã hóa mật khẩu trước khi lưu vào cơ sở dữ liệu
+        $input['password'] = Hash::make($input['password']);
+        
         $user = User::create($input);
         $arr = [
             'status' => true,
@@ -69,11 +72,9 @@ class UserController extends Controller
         $arr = [
             'status' => true,
             'message' => "Thông tin",
-            'data' => $user, 
+            'data' => $user,
         ];
         return response()->json($arr, 200);
-        
-    
     }
 
     public function update(Request $request, string $id)
@@ -141,17 +142,30 @@ class UserController extends Controller
     }
 
     public function getTotalUsers()
-{
-    // Sử dụng SQL raw query để lấy tổng số người dùng
-    $totalUsers = DB::table('user')->selectRaw('COUNT(*) as total_users')->first();
+    {
+        // Sử dụng SQL raw query để lấy tổng số người dùng
+        $totalUsers = DB::table('user')->selectRaw('COUNT(*) as total_users')->first();
 
-    // Trả về kết quả
-    return response()->json([
-        'status' => true,
-        'message' => 'Tổng số người dùng',
-        'data' => [
-            'total_users' => $totalUsers->total_users,
-        ],
-    ], 200);
-}
+        // Trả về kết quả
+        return response()->json([
+            'status' => true,
+            'message' => 'Tổng số người dùng',
+            'data' => [
+                'total_users' => $totalUsers->total_users,
+            ],
+        ], 200);
+    }
+
+    public function authenticate(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+
+        if ($user && Hash::check($request->password, $user->password)) {
+            // Mật khẩu đúng, thực hiện xác thực thành công
+            return response()->json(['message' => 'Authentication successful'], 200);
+        } else {
+            // Mật khẩu không đúng
+            return response()->json(['message' => 'Authentication failed'], 401);
+        }
+    }
 }

@@ -4,30 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Resources\FieldResource ;
-use App\Models\Field;
+use App\Http\Resources\ProductCategoryResource ;
+use App\Models\product_category as PC;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class FieldController extends Controller //chua test
+
+class ProductCategoryController extends Controller
 {
-   
     public function index()
     {
        
-        $f = Field::all();
+        $pc = PC::all();
 
         $arr = [
             'status' => true,
             'message' => 'Danh sách',
-            'data' => FieldResource::collection($f)
+            'data' => ProductCategoryResource::collection($pc)
         ];
 
         return response()->json($arr, 200);
     }
+
     public function store(Request $request)
     {
-        
         $input = $request->all();
 
         $validator = Validator::make($input, [
@@ -41,13 +41,33 @@ class FieldController extends Controller //chua test
             ];
             return response()->json($arr, 200);
         }
-        $f = Field::create($input);
+        $pc = PC::create($input);
         $arr = [
             'status' => true,
             'message' => "đã lưu thành công",
-            'data' => new FieldResource($f)
+            'data' => new ProductCategoryResource($pc)
         ];
         return response()->json($arr, 201);
+    }
+    public function show(string $id)
+    {
+        $pc = PC::find($id);
+
+    if (empty($pc)) {
+        $arr = [
+            'status' => false,
+            'message' => 'Không có ',
+            'data' => null
+        ];
+        return response()->json($arr, 404);
+    }
+
+    $arr = [
+        'status' => true,
+        'message' => "Thông tin ",
+        'data' => $pc, 
+    ];
+    return response()->json($arr, 200);
     }
     public function update(Request $request, string $id)
     {
@@ -68,9 +88,9 @@ class FieldController extends Controller //chua test
             return response()->json($arr, 200);
         }
     
-        $f = Field::find($id);
+        $pc = PC::find($id);
     
-        if (!$f) {
+        if (!$pc) {
             $arr = [
                 'status' => false,
                 'message' => 'không tồn tại',
@@ -79,12 +99,12 @@ class FieldController extends Controller //chua test
             return response()->json($arr, 404);
         }
     
-        $f->update($input);
+        $pc->update($input);
     
         $arr = [
             'status' => true,
             'message' => 'cập nhật thành công',
-            'data' => new FieldResource($f)
+            'data' => new ProductCategoryResource($pc)
         ];
     
         return response()->json($arr, 200);
@@ -92,8 +112,8 @@ class FieldController extends Controller //chua test
     public function destroy(string $id)
     {
         try {
-            $f = Field::findOrFail($id);
-            $f->delete();
+            $pc = PC::findOrFail($id);
+            $pc->delete();
 
             $arr = [
                 'status' => true,

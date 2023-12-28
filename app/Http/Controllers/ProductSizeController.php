@@ -4,34 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Resources\FieldResource ;
-use App\Models\Field;
+use App\Http\Resources\ProductSizeResource ;
+use App\Models\product_size;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class FieldController extends Controller //chua test
+class ProductSizeController extends Controller
 {
-   
     public function index()
     {
-       
-        $f = Field::all();
+      
+        $ps = product_size::all();
 
         $arr = [
             'status' => true,
             'message' => 'Danh sách',
-            'data' => FieldResource::collection($f)
+            'data' => ProductSizeResource::collection($ps)
         ];
 
         return response()->json($arr, 200);
     }
+
     public function store(Request $request)
     {
-        
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'name' => 'required',
+            'size_name' => 'required',
         ]);
         if ($validator->fails()) {
             $arr = [
@@ -41,11 +40,11 @@ class FieldController extends Controller //chua test
             ];
             return response()->json($arr, 200);
         }
-        $f = Field::create($input);
+        $ps = product_size::create($input);
         $arr = [
             'status' => true,
             'message' => "đã lưu thành công",
-            'data' => new FieldResource($f)
+            'data' => new ProductSizeResource($ps)
         ];
         return response()->json($arr, 201);
     }
@@ -54,7 +53,7 @@ class FieldController extends Controller //chua test
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'name' => 'required',
+            'size_name' => 'required',
             
             
         ]);
@@ -68,9 +67,9 @@ class FieldController extends Controller //chua test
             return response()->json($arr, 200);
         }
     
-        $f = Field::find($id);
+        $ps = product_size::find($id);
     
-        if (!$f) {
+        if (!$ps) {
             $arr = [
                 'status' => false,
                 'message' => 'không tồn tại',
@@ -79,21 +78,21 @@ class FieldController extends Controller //chua test
             return response()->json($arr, 404);
         }
     
-        $f->update($input);
+        $ps->update($input);
     
         $arr = [
             'status' => true,
             'message' => 'cập nhật thành công',
-            'data' => new FieldResource($f)
+            'data' => new ProductSizeResource($ps)
         ];
     
         return response()->json($arr, 200);
     }
-    public function destroy(string $id)
+     public function destroy(string $id)
     {
         try {
-            $f = Field::findOrFail($id);
-            $f->delete();
+            $ps = product_size::findOrFail($id);
+            $ps->delete();
 
             $arr = [
                 'status' => true,
