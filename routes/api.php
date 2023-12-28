@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\AuthController;
-
 use App\Http\Controllers\Discount;
 use App\Http\Controllers\OderItems;
 use App\Http\Controllers\Order;
@@ -43,10 +42,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 }); 
 
+Route::prefix('auth')->group(function () {
 
-Route::post('/auth/register', [AuthController::class, 'createUser']);
+    Route::post('register', [AuthController::class, 'createUser']);
 
-Route::post('/auth/login', [AuthController::class, 'loginUser']);
+    Route::post('login', [AuthController::class, 'loginUser']);
+
+});
+
+
+Route::get('/latest-products/{categoryId}', [ProductController::class, 'getLatestProductsInCategory']);
+
+Route::get('/best-selling-products/{categoryId}', [ProductController::class, 'getBestSellingProductsInCategory']);
 
 
 Route::get('/count', [UserController::class, 'getTotalUsers']);
