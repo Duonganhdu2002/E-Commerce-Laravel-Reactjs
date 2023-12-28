@@ -27,7 +27,7 @@ return new class extends Migration
 
 
             // Khóa ngoại type_account_id
-            $table->foreign('type_account_id')->references('type_account_id')->on('account_type')->onDelete('cascade');
+            $table->foreign('type_account_id')->references('type_account_id')->on('account_type')->onDelete('cascade')->onUpdate('cascade');
 
 
         });

@@ -12,12 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('product_category', function (Blueprint $table) {
-            $table->bigIncrements('product_category_id'); 
+            $table->bigIncrements('product_category_id');
+            $table->unsignedBigInteger('field_id');
             $table->string('name', 50)->nullable();
             $table->text('description')->nullable();
             $table->string('icon', 50)->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('field_id')->references('field_id')->on('field')->onDelete('cascade')->onUpdate('cascade');
+
 
         });
     }

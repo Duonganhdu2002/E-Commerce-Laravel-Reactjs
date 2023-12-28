@@ -14,26 +14,38 @@ class order_items extends Seeder
      */
     public function run(): void
     {
-        // Thêm dữ liệu vào bảng order_items
         DB::table('order_items')->insert([
             [
                 'order_items_id' => 1,
                 'order_id' => 1,
                 'product_id' => 1,
                 'quantity' => 2,
-                'created_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
-                'updated_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
+                'created_at' => now()->setTimezone('Asia/Ho_Chi_Minh'),
+                'updated_at' => now()->setTimezone('Asia/Ho_Chi_Minh'),
             ],
             [
                 'order_items_id' => 2,
                 'order_id' => 2,
                 'product_id' => 2,
                 'quantity' => 3,
-                'created_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
-                'updated_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
+                'created_at' => now()->setTimezone('Asia/Ho_Chi_Minh'),
+                'updated_at' => now()->setTimezone('Asia/Ho_Chi_Minh'),
             ],
+            // Add 30 more order items with incrementing values
+            // ...
         ]);
-
-        // Thêm dữ liệu vào các bảng khác ở đây (nếu cần)
+        
+        // Generate 30 more order items with incrementing values
+        
+        for ($i = 3; $i <= 30; $i++) {
+            DB::table('order_items')->insert([
+                'order_items_id' => $i,
+                'order_id' => 1, // Assuming order_id should also increment
+                'product_id' => $i, // Assuming product_id should also increment
+                'quantity' => rand(1, 5), // Adjust as needed
+                'created_at' => now()->setTimezone('Asia/Ho_Chi_Minh'),
+                'updated_at' => now()->setTimezone('Asia/Ho_Chi_Minh'),
+            ]);
+        }
     }
 }

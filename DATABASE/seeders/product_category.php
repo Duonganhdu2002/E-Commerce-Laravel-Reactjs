@@ -18,6 +18,7 @@ class product_category extends Seeder
         DB::table('product_category')->insert([
             [
                 'product_category_id' => 1,
+                'field_id' => 1,
                 'name' => 'Electronics',
                 'description' => 'Electronic devices and gadgets',
                 'icon' => 'icon-electronics',
@@ -27,12 +28,23 @@ class product_category extends Seeder
             ],
             [
                 'product_category_id' => 2,
+                'field_id' => 2,
                 'name' => 'Clothing',
                 'description' => 'Apparel and fashion items',
                 'icon' => 'icon-clothing',
                 'created_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
                 'updated_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
                 'deleted_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
+            ],
+            [
+                'product_category_id' => 3,
+                'field_id' => 3,
+                'name' => 'Furniture',
+                'description' => 'Furniture items for home and office',
+                'icon' => 'icon-furniture', // Thay icon tùy chọn
+                'created_at' => Carbon::now('Asia/Ho_Chi_Minh'),
+                'updated_at' => Carbon::now('Asia/Ho_Chi_Minh'),
+                'deleted_at' => Carbon::now('Asia/Ho_Chi_Minh'),
             ],
         ]);
 

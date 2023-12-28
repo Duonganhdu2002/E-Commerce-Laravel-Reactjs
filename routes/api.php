@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\AuthController;
 
-use App\Http\Controllers\AccountType;
 use App\Http\Controllers\Discount;
 use App\Http\Controllers\OderItems;
 use App\Http\Controllers\Order;
