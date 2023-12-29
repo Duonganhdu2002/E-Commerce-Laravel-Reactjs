@@ -3,7 +3,6 @@ import React from "react";
 import logo from "../../assets/icon/logo.svg";
 import logoSingle from "../../assets/icon/logo-single.svg";
 import search from "../../assets/icon/search.svg";
-import user from "../../assets/icon/user-svgrepo-com.svg";
 import cart from "../../assets/icon/cart.svg";
 
 export default function Navbar() {
@@ -30,7 +29,7 @@ export default function Navbar() {
 
                 {/* Search bar */}
                 <div className="w-7/12 md:w-8/12 lg:w-8/12 xl:w-8/12 2xl:w-8/12 flex justify-center ">
-                    <div className="relative w-full md:w-[90%] lg:w-[80%] xl:w-[80%] 2xl:w-[80%]">
+                    <div className="relative w-full md:w-[90%]">
                         <input
                             placeholder="What do you need?"
                             className="w-full border rounded-md p-2 pr-8"
@@ -45,14 +44,8 @@ export default function Navbar() {
                 </div>
 
                 {/* User/Login Section */}
-                <div className="w-3/12 md:w-2/12 lg:w-2/12 xl:w-2/12 2xl:w-2/12 ">
+                <div className="w-1/12">
                     <div className="flex justify-center items-center">
-                        <Link to="/login">
-                            <img
-                                className="w-8 h-8 mx-0 lg:mx-5 cursor-pointer"
-                                src={user}
-                            />
-                        </Link>
                         <Link to="/cart">
                             <img
                                 className="w-11 h-11 cursor-pointer"
