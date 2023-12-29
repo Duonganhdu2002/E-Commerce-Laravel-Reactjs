@@ -22,12 +22,10 @@ class AuthController extends Controller
         try {
             //Validated
             $input = $request->all();
-            $input['type_account_id'] = $request->input('type_account_id', 1); // Tạo giá trị mặc định cho loại tài khoản khi đăng ký tài khoản khách
             $validateUser = Validator::make(
                 $input,
                 [
                     'username' => 'required',
-                    'type_account_id' => 'required',
                     'email' => 'required|email|unique:user,email',
                     'password' => 'required'
                 ]
@@ -44,7 +42,7 @@ class AuthController extends Controller
             $user = User::create([
 
                 'username' => $request->username,
-                'type_account_id' =>$request->input('type_account_id', 1),
+                'type_account_id' => $request->input('type_account_id', 1),
                 'email' => $request->email,
                 'password' => Hash::make($request->password)
             ]);
@@ -54,6 +52,7 @@ class AuthController extends Controller
                 'message' => 'User Created Successfully',
                 'token' => $user->createToken("API TOKEN")->plainTextToken
             ], 200);
+
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
@@ -70,7 +69,7 @@ class AuthController extends Controller
     public function loginUser(Request $request)
     {
         try {
-            
+
             $validateUser = Validator::make(
                 $request->all(),
                 [
