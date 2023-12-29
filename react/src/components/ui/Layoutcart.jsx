@@ -4,12 +4,14 @@ import ImagePoduct from "../../assets/public/smart-phone/tecnocamon20_5.jpg";
 import Back from "../../assets/icon/back-svgrepo-com.svg";
 import Next from "../../assets/icon/next-svgrepo-com.svg";
 import Voucher from "../../assets/icon/voucher-discount-tag-svgrepo-com.svg";
+import Delivery from "../../assets/icon/delivery-truck-svgrepo-com.svg";
 
 export default function Layoutcart() {
     return (
         <div>
             <div className=" bg-slate-400/30 hidden md:block">
                 <div className="flex flex-col w-[100%] md:w-[90%] lg:w-[80%] xl:w-[80%] 2xl:w-[80%] mx-auto">
+                    {/* Div của dòng đầu tiên */}
                     <div className=" flex items-center bg-white px-4 h-[5vh] mt-4 font-bold shadow-2xl rounded-lg">
                         <div className=" flex items-center justify-center h-full w-[6vh]">
                             {" "}
@@ -31,6 +33,7 @@ export default function Layoutcart() {
                             Operation
                         </div>
                     </div>
+                    {/* Div của sản phẩm */}
                     <div className=" mt-6 bg-white px-4 rounded-lg shadow-xl">
                         <div className=" flex items-center border-b-4 h-[6vh]">
                             <div className=" flex items-center justify-center h-full w-[6vh]">
@@ -88,8 +91,8 @@ export default function Layoutcart() {
                                 Hoho
                             </div>
                         </div>
-
-                        <div className="flex justify-between border-t-2 px-10 h-10">
+                        {/* Div của voucher */}
+                        <div className="flex justify-between border-t-2 px-10 h-10 cursor-pointer hover:bg-slate-300/30">
                             <div className="flex items-center">
                                 <img
                                     src={Voucher}
@@ -102,8 +105,25 @@ export default function Layoutcart() {
                                 <img src={Next} alt="" className=" w-5 ml-2" />
                             </div>
                         </div>
+                        {/* Div của phương thức vận chuyển */}
+                        <div className="flex justify-between border-t-2 px-10 h-10 cursor-pointer hover:bg-slate-300/30">
+                            <div className="flex items-center">
+                                <img
+                                    src={Delivery}
+                                    alt=""
+                                    className="w-7 mr-5"
+                                />
+                                <p>Shipping method: &nbsp;</p>
+                                <p>Freeship</p>
+                            </div>
+                            <div className="flex items-center">
+                                <img src={Next} alt="" className=" w-5 ml-2" />
+                            </div>
+                        </div>
                     </div>
 
+
+                    {/* Div của  Tổng tiền sản phẩm và các tính năng xóa, chọn toàn bộ sản phẩm*/}
                     <div className=" bg-white/80 flex px-4 items-center justify-between rounded-xl shadow-2xl my-6 h-20 ">
                         <div className=" flex items-center justify-center h-full w-[6vh]">
                             <input type="checkbox" className=" w-5 h-5" />
@@ -132,7 +152,7 @@ export default function Layoutcart() {
                     </div>
                 </div>
             </div>
-
+            {/* Div dành riêng cho thiết bị điện thoại */}
             <div className=" block md:hidden bg-slate-400/30 flex-col">
                 <div className=" flex justify-between h-11 bg-white border-b-2">
                     <div className=" flex">
@@ -196,6 +216,16 @@ export default function Layoutcart() {
                         <div className="flex items-center">
                             <img src={Voucher} alt="" className="w-8 mr-4" />
                             <p>Add Voucher</p>
+                        </div>
+                        <div className="flex items-center">
+                            <img src={Next} alt="" className=" w-5 ml-2" />
+                        </div>
+                    </div>
+                    <div className="flex justify-between border-t-2 px-10 h-10">
+                        <div className="flex items-center">
+                            <img src={Delivery} alt="" className="w-7 mr-5" />
+                            <p>Shipping method: &nbsp;</p>
+                            <p>Freeship</p>
                         </div>
                         <div className="flex items-center">
                             <img src={Next} alt="" className=" w-5 ml-2" />
