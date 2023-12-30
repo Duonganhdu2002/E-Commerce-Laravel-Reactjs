@@ -21,6 +21,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserAddressController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserPaymentController;
+use App\Http\Controllers\FieldController;
 
 
 
@@ -123,6 +124,8 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
     Route::resource('Transaction', TransactionController::class);
 
     Route::resource('UserPayment', UserPaymentController::class);
+
+    Route::resource('Field', FieldController::class);
 });
 
 
