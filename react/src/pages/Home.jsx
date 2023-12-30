@@ -13,6 +13,7 @@ import Banner2 from "../components/ui/Banner2";
 import HeadPhone from "../components/ui/HeadPhone";
 import PopupAdvertisement from "../components/ui/PopupAdvertisement";
 import TableUser from "../components/ui/gsgs";
+import FiledLayout from "../components/ui/FiledLayout";
 
 export default function Home() {
     return (
@@ -21,7 +22,7 @@ export default function Home() {
             <Header />
             <Navbar />
             <MenuBar />
-            <TableUser/>
+            <FiledLayout/>
             <Container />
             <Banner1 />
             <FurniturePrview />
