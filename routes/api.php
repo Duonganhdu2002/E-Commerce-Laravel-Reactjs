@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\AuthController;
-
 use App\Http\Controllers\AccountType;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\OderItemsController;
@@ -22,7 +21,7 @@ use App\Http\Controllers\ShoppingCartController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserAddressController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserPayment;
+use App\Http\Controllers\UserPaymentController;
 
 
 
@@ -48,7 +47,6 @@ Route::prefix('auth')->group(function () {
     Route::post('register', [AuthController::class, 'createUser']);
 
     Route::post('login', [AuthController::class, 'loginUser']);
-
 });
 
 
@@ -63,7 +61,15 @@ Route::prefix('public')->group(function () {
     
     Route::resource('User', UserController::class);
     
-    Route::resource('Product', ProductController::class);
+    // Route::resource('Product', ProductController::class);
+    Route::prefix('Product')->group(function () {
+
+        Route::get('indexByCate/{categoryId}', [ProductController::class, 'indexByCategory']); 
+        Route::get('bestseller/{categoryId}', [ProductController::class, 'getBestSellingProductsInCategory']);
+        Route::get('lasted/{categoryId}', [ProductController::class, 'getLatestProductsInCategory']); 
+        Route::resource('template', ProductController::class);
+    
+    });
 
     Route::resource('UserAddress', UserAddressController::class);
 
@@ -91,8 +97,9 @@ Route::prefix('public')->group(function () {
     Route::prefix('ProductImage')->group(function () {
 
         Route::get('Display', [ProductImageController::class,'Display']); 
+        Route::get('Display/{productId}', [ProductImageController::class, 'displayByProductId']);
+        Route::post('upload/{productId}', [ProductImageController::class,'upload']); 
         Route::resource('template', ProductImageController::class); 
-
     });
 
 
@@ -110,5 +117,5 @@ Route::prefix('public')->group(function () {
 
     Route::resource('Transaction', TransactionController::class);
 
-    Route::resource('UserPayment', UserPayment::class);
+    Route::resource('UserPayment', UserPaymentController::class);
 });
