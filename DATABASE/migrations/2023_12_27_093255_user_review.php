@@ -20,10 +20,10 @@ return new class extends Migration
             $table->timestamps();
 
             // Khóa ngoại reviewer_id
-            $table->foreign('reviewer_id')->references('user_id')->on('user')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('reviewer_id')->references('user_id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
             // Khóa ngoại reviewee_id
-            $table->foreign('reviewee_id')->references('user_id')->on('user')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('reviewee_id')->references('user_id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
             // Các cài đặt khác có thể được thêm vào tùy thuộc vào yêu cầu cụ thể của bạn
         });

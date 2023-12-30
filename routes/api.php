@@ -40,29 +40,41 @@ use App\Http\Controllers\UserReview;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-}); 
+});
 
 Route::prefix('auth')->group(function () {
 
-    Route::post('register', [AuthController::class, 'createUser']);
+    Route::post('register', [AuthController::class, 'createUser'])->name('register');
 
-    Route::post('login', [AuthController::class, 'loginUser']);
+    Route::post('login', [AuthController::class, 'loginUser'])->name('login');
 
+    Route::post('logout', [AuthController::class, 'logoutUser'])->name('logout');
 });
 
 
-Route::get('/latest-products/{categoryId}', [ProductController::class, 'getLatestProductsInCategory']);
-
-Route::get('/best-selling-products/{categoryId}', [ProductController::class, 'getBestSellingProductsInCategory']);
-
-
-Route::get('/count', [UserController::class, 'getTotalUsers']);
-
-Route::prefix('public')->group(function () {
+Route::prefix('admin')->middleware(['auth:sanctum', 'check.role:1'])->group(function () {
     
+});
+
+
+Route::prefix('seller')->middleware(['auth:sanctum', 'check.role:2'])->group(function () {
+    
+});
+
+Route::prefix('customer')->middleware(['auth:sanctum', 'check.role:3'])->group(function () {
+    
+});
+
+
+Route::prefix('public')->middleware(['auth:sanctum', 'check.role:3'])->group(function () {
+
     Route::resource('User', UserController::class);
-    
-    Route::resource('Product', ProductController::class);
+
+    Route::prefix('product')->group(function () {
+        Route::resource('/', ProductController::class);
+        Route::get('/latest-products/{categoryId}', [ProductController::class, 'getLatestProductsInCategory'])->name('latest-products');
+        Route::get('/best-selling-products/{categoryId}', [ProductController::class, 'getBestSellingProductsInCategory'])->name('best-selling-products');
+    });
 
     Route::resource('UserAddress', UserAddressController::class);
 
@@ -87,12 +99,11 @@ Route::prefix('public')->group(function () {
     Route::resource('ProductColo', ProductColorController::class);
 
 
-Route::prefix('ProductImage')->group(function () {
+    Route::prefix('ProductImage')->group(function () {
 
-    Route::get('Display', [ProductImage::class,'Display']); 
-    Route::resource('template', ProductImage::class); 
-
-});
+        Route::get('Display', [ProductImage::class, 'Display']);
+        Route::resource('template', ProductImage::class);
+    });
 
 
     Route::resource('ProductReview', ProductReview::class);
@@ -114,3 +125,5 @@ Route::prefix('ProductImage')->group(function () {
 
     Route::resource('UserReview', UserReview::class);
 });
+
+

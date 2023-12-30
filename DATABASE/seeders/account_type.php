@@ -19,8 +19,9 @@ class account_type extends Seeder
     {
         // Thêm dữ liệu vào bảng account_type
         DB::table('account_type')->insert([
-            ['type_account_id' => 1, 'type_account_name' => 'Regular'],
-            ['type_account_id' => 2, 'type_account_name' => 'Premium'],
+            ['type_account_id' => 1, 'type_account_name' => 'Admin'],
+            ['type_account_id' => 2, 'type_account_name' => 'Seller'],
+            ['type_account_id' => 3, 'type_account_name' => 'Customer'],
         ]);
     }
 }

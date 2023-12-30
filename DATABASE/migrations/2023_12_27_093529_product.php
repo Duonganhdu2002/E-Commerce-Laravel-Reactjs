@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_category_id');
             $table->decimal('price', 11, 2)->nullable();
             $table->integer('stock')->nullable();
-            $table->unsignedBigInteger('discount_id');
+            $table->unsignedBigInteger('discount_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

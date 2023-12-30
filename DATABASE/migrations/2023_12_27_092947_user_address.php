@@ -24,7 +24,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Khóa ngoại user_id
-            $table->foreign('user_id')->references('user_id')->on('user')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
             // Các cài đặt khác có thể được thêm vào tùy thuộc vào yêu cầu cụ thể của bạn
         });
