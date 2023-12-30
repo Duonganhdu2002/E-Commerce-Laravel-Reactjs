@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Khóa ngoại user_id
-            $table->foreign('user_id')->references('user_id')->on('user')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
             // Khóa ngoại order_status_id
             $table->foreign('order_status_id')->references('order_status_id')->on('order_status')->onDelete('cascade')->onUpdate('cascade');

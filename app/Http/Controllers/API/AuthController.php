@@ -107,4 +107,29 @@ class AuthController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Logout the user
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logoutUser(Request $request)
+    {
+        try {
+            // Đăng xuất người dùng
+            Auth::logout();
+
+            // Trả về một phản hồi JSON chỉ ra rằng quá trình đăng xuất thành công
+            return response()->json([
+                'status' => true,
+                'message' => 'Người dùng đã đăng xuất thành công',
+            ], 200);
+        } catch (\Throwable $th) {
+            // Xử lý mọi ngoại lệ có thể xảy ra trong quá trình đăng xuất
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
 }

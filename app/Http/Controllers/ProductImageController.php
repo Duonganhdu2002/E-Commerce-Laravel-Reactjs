@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 
 
-class ProductImageController extends Controller //chua test
+class ProductImageController extends Controller 
 {
     public function display() 
     {
@@ -24,32 +24,63 @@ class ProductImageController extends Controller //chua test
 
         return response()->json($arr, 200);
     }
-    public function upload(Request $request, string $productId) 
+    public function displayByProductId(string $productId) //lấy hình ảnh của 1 sp 
     {
-        $request->validate([
-            'image_url' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+        try {
+            $pi = PI::where('product_id', $productId)->get();
 
-      
-        $image = $request->file('image');
+            $arr = [
+                'status' => true,
+                'message' => 'hình ảnh cho sản phẩm có ID ' . $productId,
+                'data' => ProductImageResource::collection($pi),
+            ];
+
+            return response()->json($arr, 200);
+        } catch (ModelNotFoundException $e) {
+            $arr = [
+                'success' => false,
+                'message' => 'Sản phẩm không tồn tại hoặc không có hình ảnh',
+                'data' => null,
+            ];
+
+            return response()->json($arr, 404);
+        }
+    }
+    public function upload(Request $request, string $productId) 
+{
+    $request->validate([
+        'image_url' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+
+    ]);
+
+    if ($request->hasFile('image_url')) {
+        $image = $request->file('image_url');
         $imageName = time().'.'.$image->extension();
-        $image->move(public_path('images'), $imageName);
+        $image->move(public_path('image_url'), $imageName);
 
-     
         $pi = new PI([
             'product_id' => $productId,
-            'image_url' => 'images/'.$imageName,
+            'image_url' => $imageName,
         ]);
         $pi->save();
 
         $arr = [
             'status' => true,
-            'message' => 'đã lưu thành công',
+            'message' => 'Đã lưu thành công',
             'data' => new ProductImageResource($pi),
         ];
 
         return response()->json($arr, 201);
+    } else {
+        $arr = [
+            'status' => false,
+            'message' => 'Không tìm thấy tệp hình ảnh trong yêu cầu',
+            'data' => null,
+        ];
+
+        return response()->json($arr, 400);
     }
+}
 
     public function destroy(string $id)
     {

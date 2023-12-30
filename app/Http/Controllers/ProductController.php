@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\ProductResource as ProductResource;
 use App\Models\Product;
+use App\Models\product_category;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -24,6 +25,29 @@ class ProductController extends Controller
         ];
 
         return response()->json($arr, 200);
+    }
+    public function indexByCategory($categoryId)
+    {
+        try {
+            // Assuming you have a relationship between Product and ProductCategory
+            $products = product_category::findOrFail($categoryId)->products;
+
+            $arr = [
+                'status' => true,
+                'message' => 'Danh sách sản phẩm theo danh mục',
+                'data' => ProductResource::collection($products)
+            ];
+
+            return response()->json($arr, 200);
+        } catch (ModelNotFoundException $e) {
+            $arr = [
+                'status' => false,
+                'message' => 'Danh mục sản phẩm không tồn tại hoặc không có sản phẩm nào',
+                'data' => null,
+            ];
+
+            return response()->json($arr, 404);
+        }
     }
 
     public function store(Request $request)
@@ -169,4 +193,6 @@ class ProductController extends Controller
         // Trả về dữ liệu JSON chứa thông tin về 6 sản phẩm best sale trong danh mục cụ thể
         return response()->json(['bestSellingProducts' => $bestSellingProducts]);
     }
+
+    
 }
