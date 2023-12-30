@@ -27,7 +27,7 @@ class AuthController extends Controller
                 $input,
                 [
                     'username' => 'required',
-                    'email' => 'required|email|unique:user,email',
+                    'email' => 'required|email|unique:users,email',
                     'password' => 'required'
                 ]
             );
