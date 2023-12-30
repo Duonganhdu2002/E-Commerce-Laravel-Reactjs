@@ -127,11 +127,6 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
     Route::resource('Transaction', TransactionController::class);
 
     Route::resource('UserPayment', UserPaymentController::class);
-
-    Route::resource('Field', FieldController::class);
-
-    Route::resource('Brand', BrandController::class);
-
 });
 
 
