@@ -22,12 +22,10 @@ class AuthController extends Controller
         try {
             //Validated
             $input = $request->all();
-            $input['type_account_id'] = $request->input('type_account_id', 1); // Tạo giá trị mặc định cho loại tài khoản khi đăng ký tài khoản khách
             $validateUser = Validator::make(
                 $input,
                 [
                     'username' => 'required',
-                    'type_account_id' => 'required',
                     'email' => 'required|email|unique:user,email',
                     'password' => 'required'
                 ]
@@ -35,7 +33,7 @@ class AuthController extends Controller
 
             if ($validateUser->fails()) {
                 return response()->json([
-                    'status' => false,
+                    'status' => 401,
                     'message' => 'validation error',
                     'errors' => $validateUser->errors()
                 ], 401);
@@ -44,19 +42,20 @@ class AuthController extends Controller
             $user = User::create([
 
                 'username' => $request->username,
-                'type_account_id' =>$request->input('type_account_id', 1),
+                'type_account_id' => $request->input('type_account_id', 1),
                 'email' => $request->email,
                 'password' => Hash::make($request->password)
             ]);
 
             return response()->json([
-                'status' => true,
+                'status' => 200,
                 'message' => 'User Created Successfully',
                 'token' => $user->createToken("API TOKEN")->plainTextToken
             ], 200);
+
         } catch (\Throwable $th) {
             return response()->json([
-                'status' => false,
+                'status' => 500,
                 'message' => $th->getMessage()
             ], 500);
         }
@@ -70,7 +69,7 @@ class AuthController extends Controller
     public function loginUser(Request $request)
     {
         try {
-            
+
             $validateUser = Validator::make(
                 $request->all(),
                 [
@@ -81,7 +80,7 @@ class AuthController extends Controller
 
             if ($validateUser->fails()) {
                 return response()->json([
-                    'status' => false,
+                    'status' => 401,
                     'message' => 'validation error',
                     'errors' => $validateUser->errors()
                 ], 401);
@@ -89,7 +88,7 @@ class AuthController extends Controller
 
             if (!Auth::attempt($request->only(['email', 'password']))) {
                 return response()->json([
-                    'status' => false,
+                    'status' => 401,
                     'message' => 'Email & Password does not match with our record.',
                 ], 401);
             }
@@ -97,11 +96,36 @@ class AuthController extends Controller
             $user = User::where('email', $request->email)->first();
 
             return response()->json([
-                'status' => true,
+                'status' => 200,
                 'message' => 'User Logged In Successfully',
                 'token' => $user->createToken("API TOKEN")->plainTextToken
             ], 200);
         } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 500,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Logout the user
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logoutUser(Request $request)
+    {
+        try {
+            // Đăng xuất người dùng
+            Auth::logout();
+
+            // Trả về một phản hồi JSON chỉ ra rằng quá trình đăng xuất thành công
+            return response()->json([
+                'status' => true,
+                'message' => 'Người dùng đã đăng xuất thành công',
+            ], 200);
+        } catch (\Throwable $th) {
+            // Xử lý mọi ngoại lệ có thể xảy ra trong quá trình đăng xuất
             return response()->json([
                 'status' => false,
                 'message' => $th->getMessage()

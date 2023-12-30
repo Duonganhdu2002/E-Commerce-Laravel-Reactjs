@@ -15,7 +15,7 @@ class User extends Seeder
     public function run(): void
     {
         // Thêm dữ liệu vào bảng user
-        DB::table('user')->insert([
+        DB::table('users')->insert([
             [
                 'type_account_id' => 1,
                 'username' => 'john_doe',

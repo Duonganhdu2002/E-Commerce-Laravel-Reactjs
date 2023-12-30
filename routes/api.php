@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\AuthController;
-use App\Http\Controllers\AccountType;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\OderItemsController;
 use App\Http\Controllers\OrderController;
@@ -40,34 +39,43 @@ use App\Http\Controllers\UserPaymentController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-}); 
+});
 
 Route::prefix('auth')->group(function () {
 
-    Route::post('register', [AuthController::class, 'createUser']);
+    Route::post('register', [AuthController::class, 'createUser'])->name('register');
 
     Route::post('login', [AuthController::class, 'loginUser']);
+    Route::post('logout', [AuthController::class, 'logoutUser'])->name('logout');
 });
 
 
-Route::get('/latest-products/{categoryId}', [ProductController::class, 'getLatestProductsInCategory']);
-
-Route::get('/best-selling-products/{categoryId}', [ProductController::class, 'getBestSellingProductsInCategory']);
-
-
-Route::get('/count', [UserController::class, 'getTotalUsers']);
-
-Route::prefix('public')->group(function () {
+Route::prefix('admin')->middleware(['auth:sanctum', 'check.role:1'])->group(function () {
     
+});
+
+
+Route::prefix('seller')->middleware(['auth:sanctum', 'check.role:2'])->group(function () {
+    
+});
+
+Route::prefix('customer')->middleware(['auth:sanctum', 'check.role:3'])->group(function () {
+    
+});
+
+
+Route::prefix('public')->middleware(['auth:sanctum', 'check.role:3'])->group(function () {
+
     Route::resource('User', UserController::class);
     
     // Route::resource('Product', ProductController::class);
     Route::prefix('Product')->group(function () {
-
+        Route::resource('/', ProductController::class);
+        Route::get('/latest-products/{categoryId}', [ProductController::class, 'getLatestProductsInCategory'])->name('latest-products');
+        Route::get('/best-selling-products/{categoryId}', [ProductController::class, 'getBestSellingProductsInCategory'])->name('best-selling-products');
         Route::get('indexByCate/{categoryId}', [ProductController::class, 'indexByCategory']); 
-        Route::get('bestseller/{categoryId}', [ProductController::class, 'getBestSellingProductsInCategory']);
-        Route::get('lasted/{categoryId}', [ProductController::class, 'getLatestProductsInCategory']); 
-        Route::resource('template', ProductController::class);
+       
+        
     
     });
 
@@ -99,7 +107,7 @@ Route::prefix('public')->group(function () {
         Route::get('Display', [ProductImageController::class,'Display']); 
         Route::get('Display/{productId}', [ProductImageController::class, 'displayByProductId']);
         Route::post('upload/{productId}', [ProductImageController::class,'upload']); 
-        Route::resource('template', ProductImageController::class); 
+        Route::resource('/', ProductImageController::class); 
     });
 
 
@@ -119,3 +127,5 @@ Route::prefix('public')->group(function () {
 
     Route::resource('UserPayment', UserPaymentController::class);
 });
+
+

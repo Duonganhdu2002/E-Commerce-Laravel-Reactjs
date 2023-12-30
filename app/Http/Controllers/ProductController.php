@@ -193,4 +193,6 @@ class ProductController extends Controller
         // Trả về dữ liệu JSON chứa thông tin về 6 sản phẩm best sale trong danh mục cụ thể
         return response()->json(['bestSellingProducts' => $bestSellingProducts]);
     }
+
+    
 }

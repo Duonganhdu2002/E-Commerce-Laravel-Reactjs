@@ -14,9 +14,9 @@ use App\Models\user;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
+// Route::get('/', function () {
+//     return view('home');
+// });
 
 // Route::get('test', function () {
 //     // return DB::table('user')->where('user_id',1)->get();

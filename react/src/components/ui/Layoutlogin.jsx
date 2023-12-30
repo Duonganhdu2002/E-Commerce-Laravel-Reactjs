@@ -1,10 +1,37 @@
-import { Link } from 'react-router-dom';
-import React from "react";
+import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import axios from 'axios';
 import logo from "../../assets/icon/logo.svg";
-import sale1 from "../../assets/sale/sale1.png";
 import logo_google_1 from "../../assets/icon/Google__G__logo.svg"
 
 export default function LayoutLogin() {
+
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate(); // Use useNavigate instead of useHistory
+
+    // Trong component đăng nhập
+    const handleLogin = async () => {
+        try {
+            const response = await axios.post('http://localhost:8000/api/auth/login', {
+                email: email,
+                password: password,
+            });
+
+            localStorage.setItem('token', response.data.token);
+            console.log('User logged in successfully:', response.data);
+
+            // Lấy thông tin về trang trước đó từ localStorage
+            const redirectFrom = localStorage.getItem('redirectFrom');
+
+            // Chuyển hướng đến trang trước đó hoặc một trang mặc định nếu không có thông tin
+            navigate(redirectFrom || '/');
+        } catch (error) {
+            console.error('Error during login:', error.response.data);
+        }
+    };
+
     return (
         <div className=" flex items-center justify-around bg-slate-200/50 lg:px-10 sm:px-10 h-[80vh]">
             <div
@@ -12,7 +39,7 @@ export default function LayoutLogin() {
             >
                 <div className="flex flex-1 flex-col justify-center px-6 py-12 bg-white shadow-xl rounded-3xl">
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <Link to="/">
+                        <Link to="/">
                             <img
                                 className="mx-auto h-28"
                                 src={logo}
@@ -40,6 +67,7 @@ export default function LayoutLogin() {
                                         autoComplete=" username"
                                         required
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-600 sm:text-sm sm:leading-6"
+                                        onChange={(e) => setEmail(e.target.value)}
                                     />
                                 </div>
                             </div>
@@ -69,13 +97,13 @@ export default function LayoutLogin() {
                                         autoComplete="current-password"
                                         required
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-600 sm:text-sm sm:leading-6"
+                                        onChange={(e) => setPassword(e.target.value)}
                                     />
                                 </div>
                             </div>
 
                             <div>
-                                <button
-                                    type="submit"
+                                <button type="button" onClick={handleLogin}
                                     className="flex w-full justify-center rounded-md bg-slate-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600"
                                 >
                                     Sign in
@@ -94,20 +122,20 @@ export default function LayoutLogin() {
                             <img src={logo_google_1} alt="" className=' w-10' />
                             <p href="" className=' mb-2 mr-5 ml-3 font-light text-xl'>|</p>
                             <p href="" className=" mb-1 font-semibold text-2xl text-slate-500/90">
-                            Google
-                        </p>
+                                Google
+                            </p>
                         </div>
 
                         <div className=" mt-5">
-                                        New member?&nbsp;
-                                        <Link to="/register">
-                                        <a
-                                            className="font-semibold text-slate-500 hover:text-black hover:underline"
-                                        >
-                                        {/* &nbsp; là dấu cách */}
-                                        Register
-                                        </a></Link>
-                                        &nbsp;here.
+                            New member?&nbsp;
+                            <Link to="/register">
+                                <a
+                                    className="font-semibold text-slate-500 hover:text-black hover:underline"
+                                >
+                                    {/* &nbsp; là dấu cách */}
+                                    Register
+                                </a></Link>
+                            &nbsp;here.
                         </div>
                     </div>
                 </div>
