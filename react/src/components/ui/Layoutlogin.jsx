@@ -80,12 +80,11 @@ export default function LayoutLogin() {
                                         Password *
                                     </label>
                                     <div className="text-sm">
-                                        <a
-                                            href="#"
+                                        <Link to="#"
                                             className="font-semibold text-slate-500 hover:text-slate-900 hover:underline"
                                         >
                                             Forgot password?
-                                        </a>
+                                        </Link>
                                     </div>
                                 </div>
                                 <div className="mt-2">
@@ -119,21 +118,17 @@ export default function LayoutLogin() {
 
                         <div className=' flex items-center justify-center my-3 h-12 rounded-xl border-2 cursor-pointer'>
                             <img src={logo_google_1} alt="" className=' w-10' />
-                            <p href="" className=' mb-2 mr-5 ml-3 font-light text-xl'>|</p>
-                            <p href="" className=" mb-1 font-semibold text-2xl text-slate-500/90">
+                            <p className=' mb-2 mr-5 ml-3 font-light text-xl'>|</p>
+                            <p className=" mb-1 font-semibold text-2xl text-slate-500/90">
                                 Google
                             </p>
                         </div>
 
                         <div className=" mt-5">
                             New member?&nbsp;
-                            <Link to="/register">
-                                <a
-                                    className="font-semibold text-slate-500 hover:text-black hover:underline"
-                                >
-                                    {/* &nbsp; là dấu cách */}
-                                    Register
-                                </a></Link>
+                            <Link to="/register" className="font-semibold text-slate-500 hover:text-black hover:underline">
+                                Register
+                            </Link>
                             &nbsp;here.
                         </div>
                     </div>

@@ -5,6 +5,7 @@ import Back from "../../assets/icon/back-svgrepo-com.svg";
 import Next from "../../assets/icon/next-svgrepo-com.svg";
 import Voucher from "../../assets/icon/voucher-discount-tag-svgrepo-com.svg";
 import Delivery from "../../assets/icon/delivery-truck-svgrepo-com.svg";
+import { Link } from "react-router-dom";
 
 export default function Layoutcart() {
     return (
@@ -129,10 +130,10 @@ export default function Layoutcart() {
                             <input type="checkbox" className=" w-5 h-5" />
                         </div>
                         <div className="flex">
-                            <a href="" className=" mr-4">
+                            <Link to="#" className=" mr-4">
                                 Check All (1) &nbsp;
-                            </a>
-                            <a href="">Delete</a>
+                            </Link>
+                            <Link to="#">Delete</Link>
                         </div>
 
                         <div className="flex flex-col justify-center text-base ml-auto mr-8 ">
@@ -160,9 +161,9 @@ export default function Layoutcart() {
                         <p className=" flex items-center ml-2">Cart</p>
                     </div>
                     <div className="flex">
-                        <a href="#" className="flex items-center mr-5">
+                        <Link to="#" className="flex items-center mr-5">
                             Edit
-                        </a>
+                        </Link>
                     </div>
                 </div>
                 <div className=" bg-white mb-4">

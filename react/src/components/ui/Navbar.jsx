@@ -12,18 +12,16 @@ export default function Navbar() {
                 {/* Logo */}
                 <div className="flex w-2/12 justify-center items-center">
                     <Link to="/">
-                        <a href="#">
-                            <img
-                                className=" lg:hidden xl:hidden 2xl:hidden w-12 h-12"
-                                src={logoSingle}
-                                alt=""
-                            />
-                            <img
-                                className="hidden lg:block xl:block 2xl:block w-20 h-20"
-                                src={logo}
-                                alt=""
-                            />
-                        </a>
+                        <img
+                            className=" lg:hidden xl:hidden 2xl:hidden w-12 h-12"
+                            src={logoSingle}
+                            alt=""
+                        />
+                        <img
+                            className="hidden lg:block xl:block 2xl:block w-20 h-20"
+                            src={logo}
+                            alt=""
+                        />
                     </Link>
                 </div>
 

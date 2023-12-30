@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import Banner_1 from "../../assets/banner/banner_1.png";
 import Banner_2 from "../../assets/banner/banner_2.png";
 
@@ -8,9 +9,9 @@ export default function Banner2() {
             <div className="2xl:w-[80%] md:w-[95%] sm:w-[95%] w-[95%] flex justify-center py-3 ">
                 <div className=" bg-slate-200 w-5/12 h-80 mr-4 rounded-2xl flex justify-between items-center">
                     <div className="justify-between items-center pl-10 w-9/12 hidden md:block">
-                        <a href="" className="font-bold text-sm text-slate-800">
+                        <Link to="#" className="font-bold text-sm text-slate-800">
                             #New Collection
-                          </a>
+                          </Link>
                         <p className=" font-bold text-3xl text-slate-800">
                             Under Armour Men's Running Shoe
                         </p>
@@ -20,9 +21,9 @@ export default function Banner2() {
                     </div>
 
                     <div className="justify-between items-center w-9/12 px-2 block md:hidden">
-                        <a href="" className="font-bold text-sm text-slate-800">
+                        <Link to="#" className="font-bold text-sm text-slate-800">
                             #New Collection
-                        </a>
+                        </Link>
                         <p className=" font-bold text-2xl text-slate-800">
                             Under Armour Men's Running Shoe
                         </p>
@@ -37,9 +38,9 @@ export default function Banner2() {
                 </div>
                 <div className=" flex justify-between items-center bg-slate-800 rounded-2xl  w-7/12 h-80 relative ">
                     <div className="justify-between items-center w-6/12 w h-auto pl-10  absolute hidden md:block">
-                        <a href="" className=" font-bold text-sm text-white">
+                        <Link to="#" className=" font-bold text-sm text-white">
                             #New Gaming Platform
-                        </a>
+                        </Link>
                         <p className="font-bold text-3xl text-white">
                             Oculus Quest 2 Virtual Reality Headset
                         </p>
@@ -49,9 +50,9 @@ export default function Banner2() {
                     </div>
                     <img className=" rounded-2xl" src={Banner_1} alt="banner" />
                     <div className=" flex-col justify-between items-center w-7/12 h-auto ml-5 absolute md:hidden">
-                        <a href="" className="font-bold text-sm text-white">
+                        <Link to="#" className="font-bold text-sm text-white">
                             #New Gaming Platform
-                        </a>
+                        </Link>
                         <p className="font-bold text-2xl text-white">
                             Oculus Quest 2 Virtual Reality Headset
                         </p>

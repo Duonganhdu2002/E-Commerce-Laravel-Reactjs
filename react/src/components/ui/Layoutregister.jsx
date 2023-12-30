@@ -156,13 +156,11 @@ export default function LayoutRegister() {
                         <div className=" flex items-center justify-center my-3 h-12 rounded-xl border-2 cursor-pointer">
                             <img src={LogoGoogle1} alt="" className=" w-10" />
                             <p
-                                href=""
                                 className=" mb-2 mr-5 ml-3 font-light text-xl"
                             >
                                 |
                             </p>
                             <p
-                                href=""
                                 className=" mb-1 font-semibold text-2xl text-slate-500/90"
                             >
                                 Google
@@ -171,11 +169,9 @@ export default function LayoutRegister() {
 
                         <div className=" mt-5">
                             Already member?&nbsp;
-                            <Link to="/Login">
-                                <a className="font-semibold text-slate-500 hover:text-black hover:underline">
-                                    {/* &nbsp; là dấu cách */}
-                                    Login
-                                </a>
+                            <Link to="/Login" className="font-semibold text-slate-500 hover:text-black hover:underline">
+                                {/* &nbsp; là dấu cách */}
+                                Login
                             </Link>
                             &nbsp;here.
                         </div>
