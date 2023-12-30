@@ -1,9 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from '../../services/axiosCustom';
 import logo from "../../assets/icon/logo.svg";
 import logo_google_1 from "../../assets/icon/Google__G__logo.svg"
-
 export default function LayoutLogin() {
 
 
@@ -14,13 +13,13 @@ export default function LayoutLogin() {
     // Trong component đăng nhập
     const handleLogin = async () => {
         try {
-            const response = await axios.post('http://localhost:8000/api/auth/login', {
+            const response = await axios.post("/auth/login", {
                 email: email,
                 password: password,
             });
 
-            localStorage.setItem('token', response.data.token);
-            console.log('User logged in successfully:', response.data);
+            localStorage.setItem('token', response.token);
+            console.log('User logged in successfully:', response);
 
             // Lấy thông tin về trang trước đó từ localStorage
             const redirectFrom = localStorage.getItem('redirectFrom');
@@ -28,7 +27,7 @@ export default function LayoutLogin() {
             // Chuyển hướng đến trang trước đó hoặc một trang mặc định nếu không có thông tin
             navigate(redirectFrom || '/');
         } catch (error) {
-            console.error('Error during login:', error.response.data);
+            console.error('Error during login:', error.response);
         }
     };
 

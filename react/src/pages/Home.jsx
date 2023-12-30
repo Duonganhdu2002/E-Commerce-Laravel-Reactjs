@@ -12,6 +12,7 @@ import Watch from "../components/ui/Watch";
 import Banner2 from "../components/ui/Banner2";
 import HeadPhone from "../components/ui/HeadPhone";
 import PopupAdvertisement from "../components/ui/PopupAdvertisement";
+import TableUser from "../components/ui/gsgs";
 
 export default function Home() {
     return (
@@ -20,6 +21,7 @@ export default function Home() {
             <Header />
             <Navbar />
             <MenuBar />
+            <TableUser/>
             <Container />
             <Banner1 />
             <FurniturePrview />
