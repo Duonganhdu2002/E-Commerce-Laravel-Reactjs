@@ -13,18 +13,22 @@ use Illuminate\Support\Facades\Hash; // Mã hóa
 
 class UserController extends Controller
 {
-    public function index()
-    {
-        $user = User::all();
+    public function index(Request $request)
+{
+    // Số lượng user trên mỗi trang
+    $perPage = $request->input('page', 7);
 
-        $arr = [
-            'status' => true,
-            'message' => 'Danh sách tài khoản',
-            'data' => UserResource::collection($user)
-        ];
+    // Truy vấn dữ liệu từ bảng users với phân trang
+    $users = User::paginate($perPage);
 
-        return response()->json($arr, 200);
-    }
+    $arr = [
+        'status' => true,
+        'message' => 'Danh sách tài khoản',
+        'data' => UserResource::collection($users)
+    ];
+
+    return response()->json($arr, 200);
+}
 
     public function store(Request $request)
     {
