@@ -42,7 +42,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('auth')->group(function () {
+Route::prefix('auth')->group(function () { // làm sau
 
     Route::post('register', [AuthController::class, 'createUser'])->name('register');
 
@@ -53,7 +53,10 @@ Route::prefix('auth')->group(function () {
 
 
 Route::prefix('admin')->middleware(['auth:sanctum', 'check.role:1'])->group(function () {
-    
+    // Vào trang admin
+    // Chỉnh sửa Payment_type
+    // Ban seller và customer
+    // 
 });
 
 
@@ -62,11 +65,11 @@ Route::prefix('seller')->middleware(['auth:sanctum', 'check.role:2'])->group(fun
 });
 
 Route::prefix('customer')->middleware(['auth:sanctum', 'check.role:3'])->group(function () {
-    
+     
 });
 
 
-Route::prefix('public')->middleware(['auth:sanctum', 'check.role:3'])->group(function () {
+Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang public 
 
     Route::resource('User', UserController::class);
 
@@ -123,4 +126,8 @@ Route::prefix('public')->middleware(['auth:sanctum', 'check.role:3'])->group(fun
     Route::resource('UserPayment', UserPayment::class);
 });
 
+
+Route::prefix('pageAdmin')->group(function () { // truy vấn dữ liệu ra trang admin
+
+});
 
