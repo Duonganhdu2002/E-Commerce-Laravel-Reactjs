@@ -23,6 +23,7 @@ class OrderController extends Controller
 
         return response()->json($arr, 200);
     }
+
     public function store(Request $request)
     {
         $input = $request->all();
@@ -87,6 +88,7 @@ class OrderController extends Controller
     
         return response()->json($arr, 200);
     }
+
     public function destroy(string $id)
     {
         try {
@@ -110,6 +112,7 @@ class OrderController extends Controller
             return response()->json($arr, 404);
         }
     }
+    
     public function total($id) //chua test
     {
         try {

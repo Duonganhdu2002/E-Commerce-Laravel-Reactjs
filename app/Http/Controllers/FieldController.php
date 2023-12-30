@@ -9,7 +9,7 @@ use App\Models\Field;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class FieldController extends Controller //chua test
+class FieldController extends Controller 
 {
    
     public function index()

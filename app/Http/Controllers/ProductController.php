@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 
+
 class ProductController extends Controller
 {
     public function index()
@@ -43,6 +44,28 @@ class ProductController extends Controller
             $arr = [
                 'status' => false,
                 'message' => 'Danh mục sản phẩm không tồn tại hoặc không có sản phẩm nào',
+                'data' => null,
+            ];
+
+            return response()->json($arr, 404);
+        }
+    }
+    public function indexByUser($userId)
+    {
+        try {
+            $products = Product::where('created_by_user_id', $userId)->get();
+
+            $arr = [
+                'status' => true,
+                'message' => 'Danh sách sản phẩm của người dùng',
+                'data' => ProductResource::collection($products)
+            ];
+
+            return response()->json($arr, 200);
+        } catch (ModelNotFoundException $e) {
+            $arr = [
+                'status' => false,
+                'message' => 'Người dùng không tồn tại hoặc không có sản phẩm nào được tạo bởi người dùng này',
                 'data' => null,
             ];
 
