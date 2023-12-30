@@ -11,28 +11,59 @@ class field extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run(): void
+    public function run()
     {
         DB::table('field')->insert([
             [
-
                 'field_id' => 1,
-                'field_name' => 'Field 1',
-                'product_category_id' => 1,
+                'field_name' => 'Smart phone',
+                'icon_field' => 'icon_field.jpg',
             ],
             [
-
                 'field_id' => 2,
-                'field_name' => 'Field 2',
-                'product_category_id' => 2,
+                'field_name' => 'Electronic device',
+                'icon_field' => 'icon_field.jpg',
             ],
             [
-
                 'field_id' => 3,
-                'field_name' => 'Field 3',
-                'product_category_id' => 3,
+                'field_name' => 'Computers and laptops',
+                'icon_field' => 'icon_field.jpg',
             ],
-            // Thêm các dòng dữ liệu khác tương ứng
+            [
+                'field_id' => 4,
+                'field_name' => 'Watch',
+                'icon_field' => 'icon_field.jpg',
+            ],
+            [
+                'field_id' => 5,
+                'field_name' => 'Book',
+                'icon_field' => 'icon_field.jpg',
+            ],
+            [
+                'field_id' => 6,
+                'field_name' => 'Toy',
+                'icon_field' => 'icon_field.jpg',
+            ],
+            [
+                'field_id' => 7,
+                'field_name' => 'Furniture',
+                'icon_field' => 'icon_field.jpg',
+            ],
+            [
+                'field_id' => 8,
+                'field_name' => 'Vehicle',
+                'icon_field' => 'icon_field.jpg',
+            ],
+            [
+                'field_id' => 9,
+                'field_name' => 'Jewelry',
+                'icon_field' => 'icon_field.jpg',
+            ],
+            [
+                'field_id' => 10,
+                'field_name' => 'Houseware',
+                'icon_field' => 'icon_field.jpg',
+            ],
         ]);
     }
 }
