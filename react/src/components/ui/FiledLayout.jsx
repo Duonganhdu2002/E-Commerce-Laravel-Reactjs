@@ -26,12 +26,10 @@ export default function FiledLayout() {
                 listField && listField.length > 0 &&
                 listField.map((fields, index) => {
                     return (
-                        <Link to="#">
                             <div className=' float-left w-96 h-96' key={`users-${index}`}>
-                                <img className=' w-14 h-14' src={`../../assets/icon_field/${fields.icon_field}`} alt="" />
+                                <img className=' w-14 h-14' src={`/src/assets/icon_field/${fields.icon_field}`} alt="" />
                                 <p>{fields.field_name}</p>
                             </div>
-                        </Link>
                     )
                 })
             }
