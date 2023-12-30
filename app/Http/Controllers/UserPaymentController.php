@@ -5,20 +5,20 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\PaymentTypeResource ;
-use App\Models\payment_type;
+use App\Http\Resources\UserPaymentResource ;
+use App\Models\user_payment;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class PaymentTypeController extends Controller
+class UserPaymentController extends Controller
 {
     public function index()
     {
-            $pt = payment_type::all();
+            $up = user_payment::all();
     
             $arr = [
                 'status' => true,
                 'message' => 'Danh sách ma giam gia',
-                'data' => PaymentTypeResource::collection($pt)
+                'data' => UserPaymentResource::collection($up)
             ];
     
             return response()->json($arr, 200);
@@ -30,7 +30,9 @@ class PaymentTypeController extends Controller
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'payment_type_name' => 'required',
+            'card_name_hash' => 'required',
+            'card_number_hash' => 'required',
+            'paypal_email' => 'required',
         ]);
         if ($validator->fails()) {
             $arr = [
@@ -40,20 +42,19 @@ class PaymentTypeController extends Controller
             ];
             return response()->json($arr, 200);
         }
-        $pt = payment_type::create($input);
+        $up = user_payment::create($input);
         $arr = [
             'status' => true,
             'message' => "đã lưu thành công",
-            'data' => new PaymentTypeResource($pt)
+            'data' => new UserPaymentResource($up)
         ];
         return response()->json($arr, 201);
     }
     public function destroy(string $id)
     {
-        //chỉ admin được chỉnh sửa
         try {
-            $pt = payment_type::findOrFail($id);
-            $pt->delete();
+            $up = user_payment::findOrFail($id);
+            $up->delete();
 
             $arr = [
                 'status' => true,

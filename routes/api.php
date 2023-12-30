@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\AuthController;
-
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\OderItemsController;
 use App\Http\Controllers\OrderController;
@@ -21,7 +20,7 @@ use App\Http\Controllers\ShoppingCartController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserAddressController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserPayment;
+use App\Http\Controllers\UserPaymentController;
 
 
 
@@ -46,8 +45,7 @@ Route::prefix('auth')->group(function () { // làm sau
 
     Route::post('register', [AuthController::class, 'createUser'])->name('register');
 
-    Route::post('login', [AuthController::class, 'loginUser'])->name('login');
-
+    Route::post('login', [AuthController::class, 'loginUser']);
     Route::post('logout', [AuthController::class, 'logoutUser'])->name('logout');
 });
 
@@ -72,11 +70,16 @@ Route::prefix('customer')->middleware(['auth:sanctum', 'check.role:3'])->group(f
 Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang public 
 
     Route::resource('User', UserController::class);
-
-    Route::prefix('product')->group(function () {
+    
+    // Route::resource('Product', ProductController::class);
+    Route::prefix('Product')->group(function () {
         Route::resource('/', ProductController::class);
         Route::get('/latest-products/{categoryId}', [ProductController::class, 'getLatestProductsInCategory'])->name('latest-products');
         Route::get('/best-selling-products/{categoryId}', [ProductController::class, 'getBestSellingProductsInCategory'])->name('best-selling-products');
+        Route::get('indexByCate/{categoryId}', [ProductController::class, 'indexByCategory']); 
+       
+        
+    
     });
 
     Route::resource('UserAddress', UserAddressController::class);
@@ -104,8 +107,10 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
 
     Route::prefix('ProductImage')->group(function () {
 
-        Route::get('Display', [ProductImageController::class, 'Display']);
-        Route::resource('template', ProductImageController::class);
+        Route::get('Display', [ProductImageController::class,'Display']); 
+        Route::get('Display/{productId}', [ProductImageController::class, 'displayByProductId']);
+        Route::post('upload/{productId}', [ProductImageController::class,'upload']); 
+        Route::resource('/', ProductImageController::class); 
     });
 
 
@@ -123,7 +128,7 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
 
     Route::resource('Transaction', TransactionController::class);
 
-    Route::resource('UserPayment', UserPayment::class);
+    Route::resource('UserPayment', UserPaymentController::class);
 });
 
 
