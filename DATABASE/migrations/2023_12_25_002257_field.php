@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('field', function (Blueprint $table) {
             $table->bigIncrements('field_id');
             $table->string('field_name', 255)->nullable();
-            $table->unsignedBigInteger('product_category_id');
+            $table->string('icon_field', 50)->nullable();
 
         });
     }

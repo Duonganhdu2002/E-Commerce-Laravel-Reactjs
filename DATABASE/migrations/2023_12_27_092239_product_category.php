@@ -20,9 +20,6 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('field_id')->references('field_id')->on('field')->onDelete('cascade')->onUpdate('cascade');
-
-
         });
     }
 
