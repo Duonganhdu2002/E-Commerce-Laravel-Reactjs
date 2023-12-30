@@ -13,14 +13,24 @@ use Illuminate\Support\Facades\Hash; // Mã hóa
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $user = User::all();
+        // Số lượng user trên mỗi trang
+        $perPage = 7;
+
+        // Lấy số trang được yêu cầu
+        $page = $request->input('page', 1);
+
+        // Tính toán offset để bắt đầu từ đâu
+        $offset = ($page - 1) * $perPage;
+
+        // Truy vấn dữ liệu từ bảng users với phân trang
+        $users = User::offset($offset)->limit($perPage)->get();
 
         $arr = [
             'status' => true,
             'message' => 'Danh sách tài khoản',
-            'data' => UserResource::collection($user)
+            'data' => UserResource::collection($users)
         ];
 
         return response()->json($arr, 200);
@@ -46,7 +56,7 @@ class UserController extends Controller
 
         // Mã hóa mật khẩu trước khi lưu vào cơ sở dữ liệu
         $input['password'] = Hash::make($input['password']);
-        
+
         $user = User::create($input);
         $arr = [
             'status' => true,
