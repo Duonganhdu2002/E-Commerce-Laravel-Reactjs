@@ -154,7 +154,7 @@ export default function ProductDetails() {
                 <div className="flex items-center flex-col float-left px-4 w-[100%]">
                     <p className=" my-2 text-xl font-bold">PRODUCT REVIEWS</p>
                     {/* Div lọc sao đánh giá */}
-                    <div className=" flex items-center justify-center py-2 w-full mb-4">
+                    <div className=" flex items-center justify-center py-2 w-full mb-2">
                         <button className=" flex items-center justify-center h-10 w-20 border-slate-800 border rounded-xl mr-2 bg-white">
                             All
                         </button>
@@ -175,7 +175,7 @@ export default function ProductDetails() {
                         </button>
                     </div>
                     {/* Div đánh giá */}
-                    <div className=" flex flex-col bg-slate-200 w-full px-4 border-b-2 border-slate-800">
+                    <div className=" flex flex-col mt-8 bg-slate-200 w-full px-4 border-b-2 border-slate-800">
                         {/* Div của profile và đánh giá sao, ngày giờ đánh giá */}
                         <div className="flex my-4">
                             <div>
