@@ -30,7 +30,7 @@ class BrandController extends Controller
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'name' => 'required',
+            'product_brand_name' => 'required',
         ]);
         if ($validator->fails()) {
             $arr = [
@@ -73,7 +73,7 @@ class BrandController extends Controller
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'name' => 'required',
+            'product_brand_name' => 'required',
             
             
         ]);

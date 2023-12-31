@@ -31,7 +31,7 @@ class FieldController extends Controller
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'name' => 'required',
+            'field_name' => 'required',
         ]);
         if ($validator->fails()) {
             $arr = [
@@ -54,7 +54,7 @@ class FieldController extends Controller
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'name' => 'required',
+            'field_name' => 'required',
             
             
         ]);
