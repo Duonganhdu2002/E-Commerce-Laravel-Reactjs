@@ -241,7 +241,7 @@ export default function ProductDetails() {
                         </div>
                     </div>
                 </div>
-                <div className="items-center justify-center flex-col hidden lg:block">
+                <div className="items-center justify-center flex-col hidden lg:block w-[30%]">
                     <div className=" flex flex-col p-4 float-left">
                         <img className="w-full h-full" src={Img1} alt="" />
                         <p className=" text-xl">Product name</p>
