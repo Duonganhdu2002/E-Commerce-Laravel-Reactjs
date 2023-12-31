@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { fetchAllUser } from '../../services/authService';
 
 const TableUser = (props) => {
+    
     useEffect(() => {
         getAllUser();
     }, []);
