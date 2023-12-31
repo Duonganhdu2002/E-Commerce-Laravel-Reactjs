@@ -13,57 +13,124 @@ use Illuminate\Support\Facades\Hash; // Mã hóa
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+
+    public function createUser(Request $request)
     {
-        // Số lượng user trên mỗi trang
-        $perPage = 7;
+        try {
+            
+            $input = $request->all();
+            $validateUser = Validator::make(
+                $input,
+                [
+                    'username' => 'required',
+                    'email' => 'required|email|unique:users,email',
+                    'password' => 'required'
+                ]
+            );
 
-        // Lấy số trang được yêu cầu
-        $page = $request->input('page', 1);
+            if ($validateUser->fails()) {
+                return response()->json([
+                    'status' => 401,
+                    'message' => 'validation error',
+                    'errors' => $validateUser->errors()
+                ], 401);
+            }
 
-        // Tính toán offset để bắt đầu từ đâu
-        $offset = ($page - 1) * $perPage;
+            $user = User::create([
 
-        // Truy vấn dữ liệu từ bảng users với phân trang
-        $users = User::offset($offset)->limit($perPage)->get();
+                'username' => $request->username,
+                'type_account_id' => $request->input('type_account_id', 1),
+                'email' => $request->email,
+                'password' => Hash::make($request->password)
+            ]);
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'User Created Successfully',
+                'token' => $user->createToken("API TOKEN")->plainTextToken
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 500,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function loginUser(Request $request)
+    {
+        try {
+
+            $validateUser = Validator::make(
+                $request->all(),
+                [
+                    'email' => 'required|email',
+                    'password' => 'required'
+                ]
+            );
+
+            if ($validateUser->fails()) {
+                return response()->json([
+                    'status' => 401,
+                    'message' => 'validation error',
+                    'errors' => $validateUser->errors()
+                ], 401);
+            }
+
+            if (!User::attempt($request->only(['email', 'password']))) {
+                return response()->json([
+                    'status' => 401,
+                    'message' => 'Email & Password does not match with our record.',
+                ], 401);
+            }
+
+            $user = User::where('email', $request->email)->first();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'User Logged In Successfully',
+                'token' => $user->createToken("API TOKEN")->plainTextToken
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 500,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function logoutUser(Request $request)
+    {
+        try {
+            // Đăng xuất người dùng
+            User::logout();
+
+            // Trả về một phản hồi JSON chỉ ra rằng quá trình đăng xuất thành công
+            return response()->json([
+                'status' => true,
+                'message' => 'Người dùng đã đăng xuất thành công',
+            ], 200);
+        } catch (\Throwable $th) {
+            // Xử lý mọi ngoại lệ có thể xảy ra trong quá trình đăng xuất
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function userList()
+    {
+        $this->middleware('auth:sanctum');
+        $user = User::all();
 
         $arr = [
             'status' => true,
             'message' => 'Danh sách tài khoản',
-            'data' => UserResource::collection($users)
+            'data' => UserResource::collection($user)
         ];
 
         return response()->json($arr, 200);
-    }
-
-    public function store(Request $request)
-    {
-        $input = $request->all();
-        $input['type_account_id'] = $request->input('type_account_id', 1); // Tạo giá trị mặc định cho loại tài khoản khi đăng ký tài khoản khách
-
-        $validator = Validator::make($input, [
-            'username' => 'required',
-            'password' => 'required',
-        ]);
-        if ($validator->fails()) {
-            $arr = [
-                'success' => false,
-                'message' => 'Lỗi kiểm tra dữ liệu',
-                'data' => $validator->errors()
-            ];
-            return response()->json($arr, 200);
-        }
-
-        // Mã hóa mật khẩu trước khi lưu vào cơ sở dữ liệu
-        $input['password'] = Hash::make($input['password']);
-
-        $user = User::create($input);
-        $arr = [
-            'status' => true,
-            'message' => "Tài khoản đã lưu thành công",
-            'data' => new UserResource($user)
-        ];
-        return response()->json($arr, 201);
     }
 
     public function show(string $id)
@@ -127,7 +194,7 @@ class UserController extends Controller
     }
 
 
-    public function destroy(string $id)
+    public function delete(string $id)
     {
         try {
             $user = User::findOrFail($id);

@@ -3,7 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\OderItemsController;
 use App\Http\Controllers\OrderController;
@@ -25,30 +24,16 @@ use App\Http\Controllers\FieldController;
 use App\Http\Controllers\BrandController;
 
 
-
-
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
-
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 Route::prefix('auth')->group(function () { // làm sau
-    Route::get('auth-list', [AuthController::class, 'userList'])->name('userList');
-    Route::post('register', [AuthController::class, 'createUser'])->name('register');
-    Route::post('login', [AuthController::class, 'loginUser']);
-    Route::post('logout', [AuthController::class, 'logoutUser'])->name('logout');
+    Route::get('auth-total', [UserController::class, 'getTotalUsers']);
+    Route::get('auth-list', [UserController::class, 'userList'])->name('userList');
+    Route::post('register', [UserController::class, 'createUser'])->name('register');
+    Route::post('login', [UserController::class, 'loginUser']);
+    Route::post('logout', [UserController::class, 'logoutUser'])->name('logout');
 });
 
 
@@ -69,9 +54,6 @@ Route::prefix('customer')->middleware(['auth:sanctum', 'check.role:3'])->group(f
 
 Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang public 
 
-    Route::resource('User', UserController::class);
-
-    // Route::resource('Product', ProductController::class);
     Route::prefix('Product')->group(function () {
         Route::resource('/', ProductController::class);
         Route::get('/latest-products/{categoryId}', [ProductController::class, 'getLatestProductsInCategory'])->name('latest-products');

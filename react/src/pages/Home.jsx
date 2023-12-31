@@ -12,7 +12,6 @@ import Watch from "../components/ui/Watch";
 import Banner2 from "../components/ui/Banner2";
 import HeadPhone from "../components/ui/HeadPhone";
 import PopupAdvertisement from "../components/ui/PopupAdvertisement";
-import TableUser from "../components/ui/gsgs";
 import FiledLayout from "../components/ui/FiledLayout";
 
 export default function Home() {

@@ -1,21 +1,21 @@
+// App.jsx
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Cart from "./pages/Cart";
-import ProductDetails from './pages/ProductDetails';
-
+import Field from './pages/Field';
 
 export default function App() {
   return (
     <div>
       <Routes>
-        <Route path='/' element={<Home/>}></Route>
+        <Route path='/' element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/productdetails" element={<ProductDetails />} />
+        <Route path="/fields/:fieldId" element={<Field/>} />
       </Routes>
     </div>
   );
