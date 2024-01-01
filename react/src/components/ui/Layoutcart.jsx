@@ -231,7 +231,7 @@ export default function Layoutcart() {
                         </div>
                     </div>
                 </div>
-                <nav className="sticky top-0 z-40 bg-white flex px-4 items-center justify-between h-20 bottom-0 w-full border-t-sky-950 border-y-2">
+                <nav className="sticky top-0 z-30 bg-white flex px-4 items-center justify-between h-20 bottom-0 w-full border-t-sky-950 border-y-2">
                     <div className=" flex flex-col my-2">
                         <p>Total Price:</p>
                         <p className=" font-bold text-2xl">$2640</p>
