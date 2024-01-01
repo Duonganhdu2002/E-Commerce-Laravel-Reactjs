@@ -7,7 +7,7 @@ import cart from "../../assets/icon/cart.svg";
 
 const Navbar = () => {
     return (
-        <nav className="sticky top-0 z-50 bg-white border-y-2">
+        <nav className="sticky top-0 z-40 bg-white border-y-2">
             <div className="flex justify-center items-center">
                 <div className="bg-white flex justify-between items-center h-[10vh] w-[100%] md:w-[90%] lg:w-[80%] xl:w-[80%] 2xl:w-[80%] px-2">
                     {/* Logo */}
