@@ -9,25 +9,24 @@ import user from "../../assets/icon/user-svgrepo-com.svg";
 
 const PopupMenu = ({ items, onClose }) => (
     <div className="absolute right-2 bg-slate-900 text-white p-4 rounded-xl shadow-xl z-50 mt-2">
-      <ul>
-        {items.map((item, index) => (
-          <li key={index} className="py-2.5">
-            <Link to={item.link} className="flex items-center">
-              {item.imageSrc && (
-                <img
-                  className="w-6 h-6 mr-2"
-                  src={item.imageSrc}
-                  alt={`icon-${index}`}
-                />
-              )}
-              <span>{item.title}</span>
-            </Link>
-          </li>
-        ))}
-      </ul>
+        <ul>
+            {items.map((item, index) => (
+                <li key={index} className="py-2.5">
+                    <Link to={item.link} className="flex items-center">
+                        {item.imageSrc && (
+                            <img
+                                className="w-6 h-6 mr-2"
+                                src={item.imageSrc}
+                                alt={`icon-${index}`}
+                            />
+                        )}
+                        <span>{item.title}</span>
+                    </Link>
+                </li>
+            ))}
+        </ul>
     </div>
-  );
-
+);
 
 const Header = () => {
     const [isPopupOpen, setPopupOpen] = useState(false);
@@ -36,7 +35,7 @@ const Header = () => {
         title: " ",
         link: "#",
         imageSrc: user,
-      };
+    };
 
     const menuItems = [
         { title: "NEWSLATER", link: "#" },
@@ -52,9 +51,7 @@ const Header = () => {
     return (
         <div>
             <div className="hidden lg:block">
-                <div
-                    className="bg-slate-900 text-white flex justify-between px-52 items-center h-[5vh]"
-                >
+                <div className="bg-slate-900 text-white flex justify-between px-52 items-center h-[5vh]">
                     <div className="hidden xl:block">
                         <Link to="#">BUSINESS LOGIN</Link>
                     </div>
@@ -147,7 +144,11 @@ const Header = () => {
                                 </Link>
                                 <Link to="" className="flex items-center">
                                     <div>
-                                        <img className=" w-6 h-6" src={user} alt="" />
+                                        <img
+                                            className=" w-6 h-6"
+                                            src={user}
+                                            alt=""
+                                        />
                                     </div>
                                 </Link>
                             </div>
@@ -211,7 +212,11 @@ const Header = () => {
                                 </Link>
                                 <Link to="" className="flex items-center">
                                     <div>
-                                        <img className=" w-6 h-6" src={user} alt="" />
+                                        <img
+                                            className=" w-6 h-6"
+                                            src={user}
+                                            alt=""
+                                        />
                                     </div>
                                 </Link>
                             </div>
