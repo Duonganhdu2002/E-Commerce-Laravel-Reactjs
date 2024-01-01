@@ -8,7 +8,7 @@ import more from "../../assets/icon/more.svg";
 import user from "../../assets/icon/user-svgrepo-com.svg";
 
 const PopupMenu = ({ items, onClose }) => (
-    <div className="absolute right-2 bg-slate-900 text-white p-4 rounded-xl shadow-xl z-10">
+    <div className="absolute right-2 bg-slate-900 text-white p-4 rounded-xl shadow-xl z-50 mt-2">
       <ul>
         {items.map((item, index) => (
           <li key={index} className="py-2.5">
@@ -27,7 +27,7 @@ const PopupMenu = ({ items, onClose }) => (
       </ul>
     </div>
   );
-  
+
 
 const Header = () => {
     const [isPopupOpen, setPopupOpen] = useState(false);
@@ -35,7 +35,7 @@ const Header = () => {
     const newImageItem = {
         title: " ",
         link: "#",
-        imageSrc: user, 
+        imageSrc: user,
       };
 
     const menuItems = [
