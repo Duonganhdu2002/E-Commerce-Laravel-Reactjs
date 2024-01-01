@@ -20,7 +20,7 @@ export default function Home() {
         <div>
             {/* <PopupAdvertisement /> */}
             <Header />
-            <Navbar className="fixed top-0 w-full z-50" />
+            <Navbar/>
             <MenuBar />
             <FiledLayout/>
             <Container />
