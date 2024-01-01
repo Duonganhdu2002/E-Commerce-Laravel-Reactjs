@@ -22,7 +22,7 @@ export default function Category() {
         }
     }
 
-    console.log(listCategoryById);
+    // console.log(listCategoryById);
     // console.log(fieldId);
 
     return (
@@ -33,7 +33,7 @@ export default function Category() {
                     listCategoryById && listCategoryById.length > 0 && listCategoryById.map((category, index) => (
                         <div className='flex-shrink-0 flex-col flex justify-center items-center max-w-[25%]' key={index}>
                             <img src={img} alt="" className='w-full h-auto mb-2' />
-                            <p className='text-center'>{category.name}</p>
+                            <p className='text-center text-sm'>{category.name}</p>
                         </div>
                     ))
                 }

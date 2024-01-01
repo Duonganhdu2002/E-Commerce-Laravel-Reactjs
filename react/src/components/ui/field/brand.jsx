@@ -23,8 +23,9 @@ export default function Brand() {
     }
   }
 
-  console.log(listBrandById);
-  console.log(fieldId);
+  // console.log(listBrandById);
+  
+  // console.log(fieldId);
 
   return (
     <div>
