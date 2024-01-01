@@ -10,7 +10,7 @@ export default function Brand() {
 
   useEffect(() => {
     getFetchBrandsByFieldId();
-  }, [fieldId]); 
+  }, [fieldId]);
 
   const getFetchBrandsByFieldId = async () => {
     try {
@@ -22,6 +22,9 @@ export default function Brand() {
       console.error('Error fetching fields:', error);
     }
   }
+
+  console.log(listBrandById);
+  console.log(fieldId);
 
   return (
     <div>

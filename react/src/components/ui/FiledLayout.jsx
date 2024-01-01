@@ -21,6 +21,8 @@ export default function FiledLayout() {
         }
     }
 
+    console.log(listField);
+
     return (
         <div className='flex justify-center items-center mt-2 md:mt-4 lg:mt-8'>
             <div className='w-[95%] md:w-[90%] lg:w-[80%]'>

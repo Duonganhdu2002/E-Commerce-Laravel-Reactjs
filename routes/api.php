@@ -7,7 +7,7 @@ use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FieldController;
 use App\Http\Controllers\BrandController;
-
+use App\Http\Controllers\ProductCategoryController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -40,8 +40,8 @@ Route::prefix('customer')->middleware(['auth:sanctum', 'check.role:3'])->group(f
 Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang public 
 
     Route::prefix('product')->group(function () {
-        Route::get('/latest-products/{categoryId}', [ProductController::class, 'getLatestProductsInCategory'])->name('latest-products');
-        Route::get('/best-selling-products/{categoryId}', [ProductController::class, 'getBestSellingProductsInCategory'])->name('best-selling-products');
+        Route::get('latest-products/{categoryId}', [ProductController::class, 'getLatestProductsInCategory'])->name('latest-products');
+        Route::get('best-selling-products/{categoryId}', [ProductController::class, 'getBestSellingProductsInCategory'])->name('best-selling-products');
         Route::get('indexByCate/{categoryId}', [ProductController::class, 'indexByCategory']);
         Route::get('products/user/{userId}', [ProductController::class, 'indexByUser']);
     });
@@ -52,7 +52,12 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
 
     Route::prefix('brand')->group(function () {
         Route::get('list', [BrandController::class, 'index']);
-        Route::get('field/{fieldId}', [BrandController::class, 'showByField']);
+        Route::get('id={fieldId}', [BrandController::class, 'showByld']);
+    });
+
+    Route::prefix('category')->group(function () {
+        Route::get('list', [ProductCategoryController::class, 'index']);
+        Route::get('id={categoryId}', [ProductCategoryController::class, 'showById']);
     });
 
     Route::prefix('ProductImage')->group(function () { //Sao chưa có api của product lại thêm api này
@@ -62,7 +67,6 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
         Route::post('upload/{productId}', [ProductImageController::class, 'upload']);
         Route::resource('/', ProductImageController::class);
     });
-
 });
 
 

@@ -5,6 +5,7 @@ import MenuBar from '../components/ui/MenuBar'
 import SubFooter from '../components/ui/Subfooter'
 import Footer from '../components/ui/Footer'
 import Brand from '../components/ui/field/brand'
+import Category from '../components/ui/field/Category'
 
 export default function Field() {
     return (
@@ -13,6 +14,7 @@ export default function Field() {
             <Navbar />
             <MenuBar />
             <Brand/>
+            <Category/>
             <SubFooter />
             <Footer />
         </div>

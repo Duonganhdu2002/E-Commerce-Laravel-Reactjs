@@ -25,7 +25,7 @@ class BrandController extends Controller
         return response()->json($arr, 200);
     }
 
-    public function showByField($fieldId)
+    public function showByld($fieldId)
     {
         try {
             // Tìm các brand có field_id tương ứng
@@ -46,6 +46,7 @@ class BrandController extends Controller
             ];
 
             return response()->json($arr, 200);
+            
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => false,

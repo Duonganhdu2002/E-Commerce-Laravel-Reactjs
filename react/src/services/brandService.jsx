@@ -5,7 +5,7 @@ const fetchAllBrand = () => {
 }
 
 const fetchBrandsByFieldId = (fieldId) => {
-    return axios.get(`/public/brand/field/${fieldId}`);
+    return axios.get(`/public/brand/id=${fieldId}`);
 }
 
 export { fetchAllBrand, fetchBrandsByFieldId };
