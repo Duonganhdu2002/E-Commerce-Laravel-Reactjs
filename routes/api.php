@@ -88,8 +88,14 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
     Route::resource('OderItems', OderItemsController::class);
 
 
-    Route::resource('Order', OrderController::class);
+    // Route::resource('Order', OrderController::class);
+    Route::prefix('Order')->group(function () {
 
+        Route::get('ordersByUser/{userId}', [OrderController::class, 'ordersByUser']);
+        // Route::get('Display/{productId}', [OrderController::class, 'displayByProductId']);
+        // Route::post('upload/{productId}', [OrderController::class, 'upload']);
+        Route::resource('/', OrderController::class);
+    });
 
     Route::resource('OrderStatus', OrderStatusController::class);
 

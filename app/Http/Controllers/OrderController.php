@@ -24,6 +24,29 @@ class OrderController extends Controller
         return response()->json($arr, 200);
     }
 
+    public function ordersByUser($userId) // danh sach don mua cua nguoi dung
+    {
+        try {
+            $orders = OrderM::where('user_id', $userId)->get();
+
+            $arr = [
+                'status' => true,
+                'message' => 'Danh sách đơn hàng của người dùng',
+                'data' => OrderResource::collection($orders)
+            ];
+
+            return response()->json($arr, 200);
+        } catch (ModelNotFoundException $e) {
+            $arr = [
+                'status' => false,
+                'message' => 'Người dùng không tồn tại hoặc không có đơn hàng nào được tạo bởi người dùng này',
+                'data' => null,
+            ];
+
+            return response()->json($arr, 404);
+        }
+    }
+
     public function store(Request $request)
     {
         $input = $request->all();
