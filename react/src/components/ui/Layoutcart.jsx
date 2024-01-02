@@ -122,10 +122,8 @@ export default function Layoutcart() {
                             </div>
                         </div>
                     </div>
-
-
                     {/* Div của  Tổng tiền sản phẩm và các tính năng xóa, chọn toàn bộ sản phẩm*/}
-                    <div className=" bg-white/80 flex px-4 items-center justify-between rounded-xl shadow-2xl my-6 h-20 ">
+                    <nav className="sticky top-0 z-40 bg-white flex px-4 items-center justify-between rounded-xl shadow-2xl my-6 h-20 bottom-4 w-full">
                         <div className=" flex items-center justify-center h-full w-[6vh]">
                             <input type="checkbox" className=" w-5 h-5" />
                         </div>
@@ -150,7 +148,7 @@ export default function Layoutcart() {
                                 Buy Now
                             </button>
                         </div>
-                    </div>
+                    </nav>
                 </div>
             </div>
             {/* Div dành riêng cho thiết bị điện thoại */}
@@ -233,7 +231,7 @@ export default function Layoutcart() {
                         </div>
                     </div>
                 </div>
-                <div className="flex justify-between border-t-2 px-6 bg-white">
+                <nav className="sticky top-0 z-30 bg-white flex px-4 items-center justify-between h-20 bottom-0 w-full border-t-sky-950 border-y-2">
                     <div className=" flex flex-col my-2">
                         <p>Total Price:</p>
                         <p className=" font-bold text-2xl">$2640</p>
@@ -243,7 +241,7 @@ export default function Layoutcart() {
                             Buy Now
                         </button>
                     </div>
-                </div>
+                </nav>
             </div>
         </div>
     );

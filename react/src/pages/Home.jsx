@@ -12,15 +12,15 @@ import Watch from "../components/ui/Watch";
 import Banner2 from "../components/ui/Banner2";
 import HeadPhone from "../components/ui/HeadPhone";
 import PopupAdvertisement from "../components/ui/PopupAdvertisement";
-import TableUser from "../components/ui/gsgs";
 import FiledLayout from "../components/ui/FiledLayout";
+import SuggestedProducts from '../components/ui/SuggestedProducts';
 
 export default function Home() {
     return (
         <div>
             {/* <PopupAdvertisement /> */}
             <Header />
-            <Navbar />
+            <Navbar/>
             <MenuBar />
             <FiledLayout/>
             <Container />
@@ -30,6 +30,7 @@ export default function Home() {
             <Watch />
             <Banner1 />
             <HeadPhone />
+            <SuggestedProducts/>
             <SubFooter />
             <Footer />
         </div>

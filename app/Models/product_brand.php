@@ -9,7 +9,6 @@ class product_brand extends Model
 {
     use HasFactory;
     public $table = 'product_brand';
-    protected $fillable = ['product_brand_id','product_brand_name','description','logo','created_at','modified_at','deleted_at'];
-
+    protected $fillable = ['product_brand_id', 'field_id', 'product_brand_name','description','logo','created_at','modified_at','deleted_at'];
     protected $primaryKey = 'product_brand_id';
 }

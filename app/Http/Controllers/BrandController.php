@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Resources\BrandResource ;
-use App\Models\product_brand as brand;
+use App\Http\Resources\BrandResource;
+use App\Models\product_brand as Brand;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -13,8 +13,8 @@ class BrandController extends Controller
 {
     public function index()
     {
-       
-        $b = brand::all();
+
+        $b = Brand::all();
 
         $arr = [
             'status' => true,
@@ -25,110 +25,34 @@ class BrandController extends Controller
         return response()->json($arr, 200);
     }
 
-    public function store(Request $request)
-    {
-        $input = $request->all();
-
-        $validator = Validator::make($input, [
-            'product_brand_name' => 'required',
-        ]);
-        if ($validator->fails()) {
-            $arr = [
-                'success' => false,
-                'message' => 'Lỗi kiểm tra dữ liệu',
-                'data' => $validator->errors()
-            ];
-            return response()->json($arr, 200);
-        }
-        $b = brand::create($input);
-        $arr = [
-            'status' => true,
-            'message' => "đã lưu thành công",
-            'data' => new BrandResource($b)
-        ];
-        return response()->json($arr, 201);
-    }
-    public function show(string $id)
-    {
-        $b = brand::find($id);
-
-    if (empty($b)) {
-        $arr = [
-            'status' => false,
-            'message' => 'Không có ',
-            'data' => null
-        ];
-        return response()->json($arr, 404);
-    }
-
-    $arr = [
-        'status' => true,
-        'message' => "Thông tin ",
-        'data' => $b, 
-    ];
-    return response()->json($arr, 200);
-    }
-    public function update(Request $request, string $id)
-    {
-        $input = $request->all();
-
-        $validator = Validator::make($input, [
-            'product_brand_name' => 'required',
-            
-            
-        ]);
-    
-        if ($validator->fails()) {
-            $arr = [
-                'status' => false,
-                'message' => 'Lỗi kiểm tra dữ liệu',
-                'data' => $validator->errors()
-            ];
-            return response()->json($arr, 200);
-        }
-    
-        $b = brand::find($id);
-    
-        if (!$b) {
-            $arr = [
-                'status' => false,
-                'message' => 'không tồn tại',
-                'data' => null
-            ];
-            return response()->json($arr, 404);
-        }
-    
-        $b->update($input);
-    
-        $arr = [
-            'status' => true,
-            'message' => 'cập nhật thành công',
-            'data' => new BrandResource($b)
-        ];
-    
-        return response()->json($arr, 200);
-    }
-    public function destroy(string $id)
+    public function showByld($fieldId)
     {
         try {
-            $b = brand::findOrFail($id);
-            $b->delete();
+            // Tìm các brand có field_id tương ứng
+            $brands = Brand::where('field_id', $fieldId)->get();
+
+            if ($brands->isEmpty()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Không có brand nào có field_id tương ứng.',
+                    'data' => null,
+                ], 404);
+            }
 
             $arr = [
                 'status' => true,
-                'message' => 'đã được xóa thành công',
-                'data' => null
+                'message' => 'Danh sách các brand có field_id ' . $fieldId,
+                'data' => BrandResource::collection($brands)
             ];
 
             return response()->json($arr, 200);
+            
         } catch (ModelNotFoundException $e) {
-            $arr = [
-                'success' => false,
-                'message' => ' không tồn tại',
-                'data' => null
-            ];
-
-            return response()->json($arr, 404);
+            return response()->json([
+                'status' => false,
+                'message' => 'Lỗi khi truy vấn cơ sở dữ liệu.',
+                'data' => null,
+            ], 500);
         }
     }
 }
