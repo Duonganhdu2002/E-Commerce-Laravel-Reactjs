@@ -38,7 +38,7 @@ export default function Brand() {
                             <img
                                 className="w-full h-auto"
                                 src={`/src/assets/icon_brand/${brands.logo}`}
-                                alt="img "
+                                alt="img"
                             />
                         </div>
                     ))}
