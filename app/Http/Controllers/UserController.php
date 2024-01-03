@@ -280,13 +280,11 @@ class UserController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Danh sách người dùng phân trang',
+                'total_users' => $totalUsers,
+                'total_pages' => $totalPages,
+                'current_page' => $currentPage,
+                'per_page' => $perPage,
                 'data' => UserResource::collection($users),
-                'pagination' => [
-                    'total_users' => $totalUsers,
-                    'total_pages' => $totalPages,
-                    'current_page' => $currentPage,
-                    'per_page' => $perPage,
-                ],
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([

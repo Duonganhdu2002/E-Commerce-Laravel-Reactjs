@@ -30,7 +30,6 @@ Route::prefix('auth')->group(function () {
     Route::get('auth-list', [UserController::class, 'userList'])->name('userList');
 
     // Phân trang người dùng
-    // GET /auth/auth?page=2 hoặc GET /auth/auth (mặc định là trang 1).
     Route::get('auth', [UserController::class, 'userPagination']);
 });
 

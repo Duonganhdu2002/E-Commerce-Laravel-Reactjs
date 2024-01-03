@@ -14,6 +14,7 @@ import HeadPhone from "../components/ui/HeadPhone";
 import PopupAdvertisement from "../components/ui/PopupAdvertisement";
 import FiledLayout from "../components/ui/FiledLayout";
 import SuggestedProducts from '../components/ui/SuggestedProducts';
+import UserPagination from "../components/ui/UserPagination";
 
 export default function Home() {
     return (
@@ -23,6 +24,7 @@ export default function Home() {
             <Navbar/>
             <MenuBar />
             <FiledLayout/>
+            <UserPagination/>
             <Container />
             <Banner1 />
             <FurniturePrview />
