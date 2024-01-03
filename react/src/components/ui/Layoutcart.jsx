@@ -123,7 +123,7 @@ export default function Layoutcart() {
                         </div>
                     </div>
                     {/* Div của  Tổng tiền sản phẩm và các tính năng xóa, chọn toàn bộ sản phẩm*/}
-                    <nav className="sticky top-0 z-40 bg-white flex px-4 items-center justify-between rounded-xl shadow-2xl my-6 h-20 bottom-4 w-full">
+                    <nav className="sticky top-0 z-30 bg-white flex px-4 items-center justify-between rounded-xl shadow-2xl my-6 h-20 bottom-4 w-full">
                         <div className=" flex items-center justify-center h-full w-[6vh]">
                             <input type="checkbox" className=" w-5 h-5" />
                         </div>

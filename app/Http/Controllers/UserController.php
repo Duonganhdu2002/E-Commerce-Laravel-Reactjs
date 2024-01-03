@@ -17,7 +17,7 @@ class UserController extends Controller
     public function createUser(Request $request)
     {
         try {
-            
+
             $input = $request->all();
             $validateUser = Validator::make(
                 $input,
@@ -243,6 +243,54 @@ class UserController extends Controller
         } else {
             // Mật khẩu không đúng
             return response()->json(['message' => 'Authentication failed'], 401);
+        }
+    }
+
+    public function userPagination(Request $request)
+    {
+        try {
+            // Số lượng người dùng trên mỗi trang
+            $perPage = 7;
+
+            // Trang hiện tại (mặc định là 1 nếu không được xác định)
+            $currentPage = $request->query('page', 1);
+
+            // Tính toán offset để lấy bắt đầu của trang hiện tại
+            $offset = ($currentPage - 1) * $perPage;
+
+            // Lấy danh sách người dùng sử dụng câu truy vấn phân trang
+            $users = User::offset($offset)->limit($perPage)->get();
+
+            // Kiểm tra xem có người dùng nào không
+            if ($users->isEmpty()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Không có người dùng',
+                    'data' => null,
+                ], 404);
+            }
+
+            // Lấy tổng số lượng người dùng
+            $totalUsers = User::count();
+
+            // Tính toán số lượng trang
+            $totalPages = ceil($totalUsers / $perPage);
+
+            // Trả về kết quả
+            return response()->json([
+                'status' => true,
+                'message' => 'Danh sách người dùng phân trang',
+                'total_users' => $totalUsers,
+                'total_pages' => $totalPages,
+                'current_page' => $currentPage,
+                'per_page' => $perPage,
+                'data' => UserResource::collection($users),
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage(),
+            ], 500);
         }
     }
 }

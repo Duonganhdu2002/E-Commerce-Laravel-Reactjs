@@ -4,4 +4,8 @@ const fetchAllUser = () => {
     return axios.get("/auth/auth-list");
 }
 
-export { fetchAllUser };
+const fetchUserPagination = (pageNumber) => {
+    return axios.get(`/auth/auth?page=${pageNumber}`);
+}
+
+export { fetchAllUser, fetchUserPagination };

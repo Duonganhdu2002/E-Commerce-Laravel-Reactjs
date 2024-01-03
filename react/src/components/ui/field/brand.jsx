@@ -23,16 +23,16 @@ export default function Brand() {
     }
   }
 
-  // console.log(listBrandById);
-  
+  console.log(listBrandById);
+
   // console.log(fieldId);
 
   return (
     <div>
       {
         listBrandById && listBrandById.length > 0 && listBrandById.map((brands, index) => (
-          <div key={index}>
-            <p>{brands.product_brand_name}</p>
+          <div className='flex-shrink-0 flex justify-center items-center max-w-[25%]' key={index}>
+            <img className='w-full h-auto mb-2' src={`src/assets/icon_brand/${brands.logo}`} alt="img" />
           </div>
         ))
       }
