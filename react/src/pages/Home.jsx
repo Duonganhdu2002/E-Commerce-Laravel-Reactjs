@@ -24,7 +24,7 @@ export default function Home() {
             <Navbar/>
             <MenuBar />
             <FiledLayout/>
-            <UserPagination/>
+            {/* <UserPagination/> */}
             <Container />
             <Banner1 />
             <FurniturePrview />
