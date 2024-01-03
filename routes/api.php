@@ -13,12 +13,25 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('auth')->group(function () { // làm sau
-    Route::get('auth-total', [UserController::class, 'getTotalUsers']);
-    Route::get('auth-list', [UserController::class, 'userList'])->name('userList');
+Route::prefix('auth')->group(function () {
+    // Đăng ký người dùng
     Route::post('register', [UserController::class, 'createUser'])->name('register');
+
+    // Đăng nhập người dùng
     Route::post('login', [UserController::class, 'loginUser']);
+
+    // Đăng xuất người dùng
     Route::post('logout', [UserController::class, 'logoutUser'])->name('logout');
+
+    // Lấy tổng số người dùng
+    Route::get('auth-total', [UserController::class, 'getTotalUsers']);
+
+    // Lấy danh sách người dùng
+    Route::get('auth-list', [UserController::class, 'userList'])->name('userList');
+
+    // Phân trang người dùng
+    // GET /auth/auth?page=2 hoặc GET /auth/auth (mặc định là trang 1).
+    Route::get('auth', [UserController::class, 'userPagination']);
 });
 
 
