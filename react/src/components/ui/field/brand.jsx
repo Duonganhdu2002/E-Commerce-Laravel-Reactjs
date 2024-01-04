@@ -27,7 +27,7 @@ export default function Brand() {
 
     const scrollLeft = () => {
         // Tính toán khoảng cách cuộn về bên trái
-        const scrollDistance = -400; // Điều chỉnh giá trị theo ý muốn
+        const scrollDistance = -420; // Điều chỉnh giá trị theo ý muốn
         document.getElementById("brandContainer").scrollBy({
             left: scrollDistance,
             behavior: "smooth",
@@ -36,7 +36,7 @@ export default function Brand() {
 
     const scrollRight = () => {
         // Tính toán khoảng cách cuộn về bên phải
-        const scrollDistance = 400; // Điều chỉnh giá trị theo ý muốn
+        const scrollDistance = 420; // Điều chỉnh giá trị theo ý muốn
         document.getElementById("brandContainer").scrollBy({
             left: scrollDistance,
             behavior: "smooth",
@@ -44,16 +44,16 @@ export default function Brand() {
     };
 
     return (
-        <div className="relative px-0 2xl:px-[10%] xl:px-[10%] lg:px-[10%] md:px-[5%] sm:px-4 overflow-hidden">
+        <div className="relative px-0 2xl:px-[10%] xl:px-[10%] lg:px-[10%] md:px-[5%] sm:px-4 overflow-hidde mt-4">
             <div
                 id="brandContainer"
-                className="flex px-8 items-center overflow-x-hidden relative"
+                className="flex px-8 sm:px-4 md:px-8 xl:px-0 items-center overflow-x-hidden relative"
             >
                 {listBrandById &&
                     listBrandById.length > 0 &&
                     listBrandById.map((brands, index) => (
                         <div
-                            className="flex-shrink-0 flex justify-center items-center p-3 w-[20%] sm:w-[16%] md:w-[14%] lg:w-[12%] xl:w-[10%] relative z-10"
+                            className="flex-shrink-0 flex justify-center items-center p-3 w-[20%] sm:w-[20%] md:w-[14%] lg:w-[12%] xl:w-[10%] relative z-10 sm:h-28 lg:h-32"
                             key={index}
                         >
                             <img
@@ -64,7 +64,7 @@ export default function Brand() {
                         </div>
                     ))}
             </div>
-            <div className="flex justify-between h-full absolute top-0 left-0 right-0 z-20  px-0 2xl:px-[10%] xl:px-[10%] lg:px-[10%] md:px-[5%] sm:px-4  xl:hidden">
+            <div className="flex justify-between h-full absolute top-0 left-0 right-0 z-20  px-0 2xl:px-[10%] xl:px-[10%] lg:px-[10%] md:px-[5%] sm:px-0  xl:hidden">
                 <button
                     onClick={scrollLeft}
                     className=" w-8 bg-gray-200/70 hover:bg-gray-500/60"
