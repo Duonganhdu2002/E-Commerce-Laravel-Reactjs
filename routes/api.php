@@ -56,6 +56,12 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
         Route::get('best-selling-products/{categoryId}', [ProductController::class, 'getBestSellingProductsInCategory'])->name('best-selling-products');
         Route::get('indexByCate/{categoryId}', [ProductController::class, 'indexByCategory']);
         Route::get('products/user/{userId}', [ProductController::class, 'indexByUser']);
+        
+        Route::prefix('img')->group(function () { 
+            Route::get('display/{productId}', [ProductImageController::class, 'displayByProductId']);
+            Route::post('upload/{productId}', [ProductImageController::class, 'upload']);
+            Route::resource('/', ProductImageController::class);
+        });
     });
 
     Route::prefix('field')->group(function () {
@@ -70,14 +76,6 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
     Route::prefix('category')->group(function () {
         Route::get('list', [ProductCategoryController::class, 'index']);
         Route::get('id={categoryId}', [ProductCategoryController::class, 'showById']);
-    });
-
-    Route::prefix('ProductImage')->group(function () { //Sao chưa có api của product lại thêm api này
-
-        Route::get('Display', [ProductImageController::class, 'Display']);
-        Route::get('Display/{productId}', [ProductImageController::class, 'displayByProductId']);
-        Route::post('upload/{productId}', [ProductImageController::class, 'upload']);
-        Route::resource('/', ProductImageController::class);
     });
 });
 
