@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axios from '../../services/axiosCustom';
 import logo from "../../assets/icon/logo.svg";
 import logo_google_1 from "../../assets/icon/Google__G__logo.svg"
@@ -32,7 +32,7 @@ export default function LayoutLogin() {
     };
 
     return (
-        <div className=" flex items-center justify-around bg-slate-200/50 lg:px-10 sm:px-10 h-[80vh]">
+        <div className=" flex items-center justify-around bg-slate-200/50 lg:px-10 sm:px-10 py-10">
             <div
                 className="flex items-center px-8 w-[65vh]"
             >
