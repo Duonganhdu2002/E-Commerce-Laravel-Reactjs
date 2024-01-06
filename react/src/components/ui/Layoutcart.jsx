@@ -1,11 +1,11 @@
 import React from "react";
-import Checked from "../../assets/icon/check-badge-svgrepo-com.svg";
-import ImagePoduct from "../../assets/public/smart-phone/tecnocamon20_5.jpg";
+import { Link } from "react-router-dom";
 import Back from "../../assets/icon/back-svgrepo-com.svg";
+import Checked from "../../assets/icon/check-badge-svgrepo-com.svg";
+import Delivery from "../../assets/icon/delivery-truck-svgrepo-com.svg";
 import Next from "../../assets/icon/next-svgrepo-com.svg";
 import Voucher from "../../assets/icon/voucher-discount-tag-svgrepo-com.svg";
-import Delivery from "../../assets/icon/delivery-truck-svgrepo-com.svg";
-import { Link } from "react-router-dom";
+import ImagePoduct from "../../assets/public/smart-phone/tecnocamon20_5.jpg";
 
 export default function Layoutcart() {
     return (
@@ -144,9 +144,11 @@ export default function Layoutcart() {
                             </div>
                         </div>
                         <div>
-                            <button className=" w-52 h-14 bg-slate-600 text-white rounded-xl hover:bg-neutral-700">
-                                Buy Now
-                            </button>
+                            <Link to="/shop">
+                                <button className=" w-52 h-14 bg-slate-600 text-white rounded-xl hover:bg-neutral-700">
+                                    Buy Now
+                                </button>
+                            </Link>
                         </div>
                     </nav>
                 </div>
@@ -237,9 +239,11 @@ export default function Layoutcart() {
                         <p className=" font-bold text-2xl">$2640</p>
                     </div>
                     <div className=" flex items-center">
-                        <button className=" w-40 h-14 bg-slate-600 text-white rounded-xl">
-                            Buy Now
-                        </button>
+                        <Link to="/shop">
+                            <button className=" w-40 h-14 bg-slate-600 text-white rounded-xl">
+                                Buy Now
+                            </button>
+                        </Link>
                     </div>
                 </nav>
             </div>
