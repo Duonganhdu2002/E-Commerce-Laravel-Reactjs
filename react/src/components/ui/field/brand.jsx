@@ -7,7 +7,7 @@ export default function Brand() {
     const [listBrandById, setListBrandById] = useState([]);
 
     useEffect(() => {
-        getFetchBrandsByFieldId();
+        getFetchBrandsByFieldId(fieldId);
     }, [fieldId]);
 
     const getFetchBrandsByFieldId = async () => {
@@ -21,7 +21,7 @@ export default function Brand() {
         }
     };
 
-    console.log(listBrandById);
+    // console.log(listBrandById);
 
     // console.log(fieldId);
 
