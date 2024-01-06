@@ -12,6 +12,7 @@ import Img1 from "../../assets/image/img1.jpg";
 import Chair1 from "../../assets/public/furniture/bed-1.jpg";
 import Profile from "../../assets/public/profile/1703940723832khunghinh.net.png";
 import ImageReviews from "../../assets/public/reviews/bed-5.jpg";
+import BackgroundShop from "../../assets/sale/sale3.png";
 export default function ProductDetails() {
     return (
         <div className="flex flex-col justify-center">
@@ -139,15 +140,25 @@ export default function ProductDetails() {
             </div>
             {/* Div của shop */}
             <div className=" flex items-center border-b-2 border-t-2 p-4 px-4 2xl:px-[10%] xl:px-[10%] lg:px-[10%] md:px-[5%] sm:px-4 my-10">
-                <img
-                    src={Profile}
-                    alt=""
-                    className=" rounded-3xl border-sky-900 border-2 w-20"
-                />
-                <p className=" font-semibold text-lg ml-4">
-                    Shop uy tin so 1 VietNam
-                </p>
-                <img src={Checked} alt="" className=" w-5 ml-2" />
+                <div className=" flex items-center bg-black w-full rounded-xl">
+                    <img
+                        src={BackgroundShop}
+                        alt=""
+                        className="object-cover aspect-ratio opacity-50 relative w-full h-28 rounded-xl"
+                    />
+                </div>
+
+                <div className=" absolute flex items-center ml-8">
+                    <img
+                        src={Profile}
+                        alt=""
+                        className=" rounded-3xl border-sky-900 border-2 w-20"
+                    />
+                    <p className=" font-semibold text-lg ml-4 text-white">
+                        Shop uy tin so 1 VietNam
+                    </p>
+                    <img src={Checked} alt="" className=" w-5 ml-2" />
+                </div>
             </div>
             {/* Div dánh giá sản phẩm */}
             <div className="flex justify-around float-left px-4 2xl:px-[10%] xl:px-[10%] lg:px-[10%] md:px-[5%] sm:px-4">
