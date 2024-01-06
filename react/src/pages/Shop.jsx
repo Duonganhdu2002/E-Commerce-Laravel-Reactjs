@@ -5,6 +5,9 @@ import Navbar from "../components/ui/Navbar";
 import SuggestedProducts from "../components/ui/SuggestedProducts";
 import SubFooter from "../components/ui/Subfooter";
 import Footer from "../components/ui/Footer";
+import SellingProducts from "../components/ui/SellingProducts";
+import BestSellingProducts from "../components/ui/BestSellingProducts";
+
 
 export default function Shop() {
     return (
@@ -12,6 +15,8 @@ export default function Shop() {
             <Header />
             <Navbar />
             <LayoutShop />
+            <BestSellingProducts/>
+            <SellingProducts/>
             <SuggestedProducts />
             <SubFooter />
             <Footer />
