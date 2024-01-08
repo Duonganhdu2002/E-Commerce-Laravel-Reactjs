@@ -9,6 +9,8 @@ use App\Http\Controllers\FieldController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ShoppingCartController;
+use App\Http\Controllers\OrderController;
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -82,6 +84,12 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
     Route::prefix('cart')->group(function () {
        Route::post('/', [ShoppingCartController::class, 'store']);
     });
+
+    Route::prefix('order')->group(function () {
+        Route::post('/', [OrderController::class, 'checkout']);
+        Route::post('/{id}', [OrderController::class, 'total']);
+     });
+
 });
 
 

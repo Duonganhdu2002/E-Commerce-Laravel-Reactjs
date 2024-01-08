@@ -6,14 +6,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\OrderResource ;
-use App\Models\order as OrderM;
+use App\Models\order ;
+use App\Models\product ;
+
+
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class OrderController extends Controller
 {
     public function index()
     {
-        $order = OrderM::all();
+        $order = order::all();
 
         $arr = [
             'status' => true,
@@ -24,10 +27,10 @@ class OrderController extends Controller
         return response()->json($arr, 200);
     }
 
-    public function ordersByUser($userId) // danh sach don mua cua nguoi dung
+    public function showByUser($userId) // danh sach don mua cua nguoi dung
     {
         try {
-            $orders = OrderM::where('user_id', $userId)->get();
+            $orders = order::where('user_id', $userId)->get();
 
             $arr = [
                 'status' => true,
@@ -45,30 +48,6 @@ class OrderController extends Controller
 
             return response()->json($arr, 404);
         }
-    }
-
-    public function store(Request $request)
-    {
-        $input = $request->all();
-
-        $validator = Validator::make($input, [
-            'user_id' => 'required',
-        ]);
-        if ($validator->fails()) {
-            $arr = [
-                'success' => false,
-                'message' => 'Lỗi kiểm tra dữ liệu',
-                'data' => $validator->errors()
-            ];
-            return response()->json($arr, 200);
-        }
-        $order = OrderM::create($input);
-        $arr = [
-            'status' => true,
-            'message' => "đã lưu thành công",
-            'data' => new OrderResource($order)
-        ];
-        return response()->json($arr, 201);
     }
     
     public function update(Request $request, string $id)
@@ -90,7 +69,7 @@ class OrderController extends Controller
             return response()->json($arr, 200);
         }
     
-        $order = OrderM::find($id);
+        $order = order::find($id);
     
         if (!$order) {
             $arr = [
@@ -115,7 +94,7 @@ class OrderController extends Controller
     public function destroy(string $id)
     {
         try {
-            $order = OrderM::findOrFail($id);
+            $order = order::findOrFail($id);
             $order->delete();
 
             $arr = [
@@ -135,44 +114,73 @@ class OrderController extends Controller
             return response()->json($arr, 404);
         }
     }
-    
-    public function total($id) //chua test
+
+    public function checkout(Request $request) //tuy chon san pham de tao don hang
     {
+        $input = $request->all();
+
+        $validator = Validator::make($input, [
+            'user_id' => 'required',
+            'product' => 'required|array',
+            'product.*.product_id' => 'required|exists:product,product_id',
+            'product.*.quantity' => 'required|integer|min:1',
+            'shipping_method_id' => 'required|exists:shipping_method,shipping_method_id'
+           
+        ]);
+
+        if ($validator->fails()) {
+            $arr = [
+                'status' => false,
+                'message' => 'Lỗi kiểm tra dữ liệu',
+                'data' => $validator->errors()
+            ];
+            return response()->json($arr, 400);
+        }
+
+        $user_id = $input['user_id'];
+        $product = $input['product'];
+        $shipping_method_id = $input['shipping_method_id'];
+      
+        $totalQuantity = count($product);
+
+        if ($totalQuantity > 20) {
+        $arr = [
+            'status' => false,
+            'message' => 'Số lượng sản phẩm vượt quá giới hạn (20 sản phẩm)',
+            'data' => null,
+        ];
+
+        return response()->json($arr, 400);
+    }
+
         try {
-            $order = OrderM::findOrFail($id);
+            $order = order::create([
+                'user_id' => $user_id,
+                'order_status_id' => 1, 
+                'shipping_method_id' => $shipping_method_id,
+            ]);
 
-            $products = $order->products;
-
-            $totalValue = $this->calculateTotal($products);
+            // Thêm các sản phẩm vào đơn hàng
+            foreach ($product as $product) {
+                $productModel = Product::findOrFail($product['product_id']);
+                $order->products()->attach($productModel->product_id, ['quantity' => $product['quantity']]);
+            }
 
             $arr = [
                 'status' => true,
-                'message' => ' tổng giá trị đơn hàng ',
-                'data' => ['total' => $totalValue],
+                'message' => 'Đặt hàng thành công',
+                'data' => new OrderResource($order)
             ];
 
-            return response()->json($arr, 200);
+            return response()->json($arr, 201);
         } catch (ModelNotFoundException $e) {
             $arr = [
                 'status' => false,
-                'message' => 'Đơn hàng không tồn tại',
+                'message' => 'Lỗi khi thực hiện thanh toán',
                 'data' => null,
             ];
 
-            return response()->json($arr, 404);
+            return response()->json($arr, 500);
         }
-    }
-
-    private function calculateTotal($products)
-    {
-        $totalValue = 0;
-
-        // Lặp qua từng sản phẩm trong đơn hàng
-        foreach ($products as $product) {
-            // Tính giá trị sản phẩm và cộng vào tổng giá trị đơn hàng
-            $totalValue += floatval($product->price) * $product->quantity;
-        }
-
-        return number_format($totalValue, 2, '.', ''); // Làm tròn tổng giá trị đến 2 chữ số sau dấu thập phân
     }
 }
