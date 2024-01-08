@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\ShoppingCartResource ;
+use App\Models\product;
 use App\Models\shopping_cart;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 
 
 class ShoppingCartController extends Controller
@@ -26,12 +28,14 @@ class ShoppingCartController extends Controller
         return response()->json($arr, 200);
     }
 
-    public function store(Request $request)
+    public function store(Request $request) // thêm mới vào giỏ hàng có giới hạn số lượng
     {
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'name' => 'required',
+            'user_id' => 'required',
+            'product_id' => 'required|exists:product,product_id',
+            'quantity' => 'required|integer|min:1',
         ]);
         if ($validator->fails()) {
             $arr = [
@@ -41,14 +45,47 @@ class ShoppingCartController extends Controller
             ];
             return response()->json($arr, 200);
         }
-        $sc = shopping_cart::create($input);
-        $arr = [
-            'status' => true,
-            'message' => "đã lưu thành công",
-            'data' => new ShoppingCartResource($sc)
-        ];
-        return response()->json($arr, 201);
+
+        $user_id = $input['user_id'];
+        $product_id = $input['product_id'];
+        $quantity = $input['quantity'];
+
+        $Count = shopping_cart::where('user_id', $user_id)->count();
+
+        if ($Count >= 50) {
+            $arr = [
+                'status' => false,
+                'message' => 'Giỏ hàng chỉ được phép chứa tối đa 50 sản phẩm',
+                'data' => null,
+            ];
+
+            return response()->json($arr, 400);
+        }
+
+        try {
+            shopping_cart::create([
+                'user_id' => $user_id,
+                'product_id' => $product_id,
+                'quantity' => $quantity,
+            ]);
+
+            $arr = [
+                'status' => true,
+                'message' => 'Đã thêm sản phẩm vào giỏ hàng',
+            ];
+
+            return response()->json($arr, 201);
+        } 
+        catch (ModelNotFoundException $e) {
+            $arr = [
+                'status' => false,
+                'message' => 'Lỗi khi thêm sản phẩm vào giỏ hàng',
+            ];
+
+            return response()->json($arr, 500);
+        }
     }
+
     public function update(Request $request, string $id)
     {
         $input = $request->all();
