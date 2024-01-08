@@ -53,11 +53,11 @@ export default function Brand() {
                     listBrandById.length > 0 &&
                     listBrandById.map((brands, index) => (
                         <div
-                            className="flex-shrink-0 flex justify-center items-center p-3 w-[20%] sm:w-[20%] md:w-[14%] lg:w-[12%] xl:w-[10%] relative z-10 sm:h-28 lg:h-32"
+                            className="flex-shrink-0 flex justify-center items-center cursor-pointer w-[20%] sm:w-[20%] md:w-[14%] lg:w-[12%] xl:w-[10%] relative z-10 sm:h-28 lg:h-32 h-20 border px-2"
                             key={index}
                         >
                             <img
-                                className="w-full h-auto"
+                                className=" w-[60%]"
                                 src={`/src/assets/icon_brand/${brands.logo}`}
                                 alt="img"
                             />
