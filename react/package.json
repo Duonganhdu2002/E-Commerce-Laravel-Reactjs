@@ -20,6 +20,7 @@
     "react-paginate": "8.2.0",
     "react-redux": "^9.0.4",
     "react-router-dom": "^6.21.1",
+    "react-spring": "^9.7.3",
     "redux": "^5.0.1"
   },
   "devDependencies": {
