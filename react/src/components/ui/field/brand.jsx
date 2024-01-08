@@ -26,8 +26,7 @@ export default function Brand() {
     // console.log(fieldId);
 
     const scrollLeft = () => {
-        // Tính toán khoảng cách cuộn về bên trái
-        const scrollDistance = -420; // Điều chỉnh giá trị theo ý muốn
+        const scrollDistance = -420; 
         document.getElementById("brandContainer").scrollBy({
             left: scrollDistance,
             behavior: "smooth",
@@ -35,8 +34,7 @@ export default function Brand() {
     };
 
     const scrollRight = () => {
-        // Tính toán khoảng cách cuộn về bên phải
-        const scrollDistance = 420; // Điều chỉnh giá trị theo ý muốn
+        const scrollDistance = 420;
         document.getElementById("brandContainer").scrollBy({
             left: scrollDistance,
             behavior: "smooth",
@@ -46,7 +44,8 @@ export default function Brand() {
     return (
         <div className=" flex justify-center items-center">
             <div className=" w-[100%] md:[w-90%] lg:[80%]">
-                <div className="relative px-0 lg:px-[10%] md:px-[5%] overflow-hidde mt-4">
+                <p className='text-sm md:text-lg lg:text-xl text-gray-700 ml-2 my-2 md:my-4 lg:my-6 md:ml-[5%] lg:ml-[10%]'>BRAND</p>
+                <div className="relative px-0 lg:px-[10%] md:px-[5%] overflow-hidde">
                     <div
                         id="brandContainer"
                         className="flex px-8 sm:px-4 md:px-8 xl:px-0 items-center overflow-x-hidden relative"
