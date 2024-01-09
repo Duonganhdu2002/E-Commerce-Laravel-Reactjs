@@ -240,54 +240,39 @@ class ProductController extends Controller
         }
     }
 
-    // public function listProductWithCategory(Request $request, $categoryId)
-    // {
-    //     try {
-    //         $products = Product::select(
-    //             'product.*',
-    //             'product_review.rating',
-    //             DB::raw('SUM(order_items.quantity) as total_sales')
-    //         )
-    //             ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
-    //             ->leftJoin('order_items', 'product.product_id', '=', 'order_items.product_id')
-    //             ->where('product.product_category_id', $categoryId)
-    //             ->groupBy(
-    //                 'product.product_id',
-    //                 'product.name',
-    //                 'product.description',
-    //                 'product.price',
-    //                 'product.stock',
-    //                 'product.color_id',
-    //                 'product.size_id',
-    //                 'product.created_by_user_id',
-    //                 'product.product_brand_id',
-    //                 'product.product_category_id',
-    //                 'product.discount_id',
-    //                 'product.created_at',
-    //                 'product.updated_at',
-    //                 'product.deleted_at',
-    //                 'product_review.rating'
-    //             )
-    //             ->orderByDesc('product_review.rating')
-    //             ->orderByDesc('total_sales')
-    //             ->get();
+    public function listProductWithCategory(Request $request, $categoryId)
+    {
+        try {
+            $products = Product::select(
+                'product.*',
+                'product_review.rating',
+                DB::raw('SUM(order_items.quantity) as total_sales')
+            )
+                ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
+                ->leftJoin('order_items', 'product.product_id', '=', 'order_items.product_id')
+                ->where('product.product_category_id', $categoryId)
+                ->where('order.order_status_id', 3)
+                ->groupBy('product.product_id',)
+                ->orderByDesc('product_review.rating')
+                ->orderByDesc('total_sales')
+                ->get();
 
-    //         foreach ($products as &$product) {
-    //             $productImages = ProductImage::where('product_id', $product->product_id)->pluck('image_url');
-    //             $product->images = $productImages;
-    //         }
+            foreach ($products as &$product) {
+                $productImages = ProductImage::where('product_id', $product->product_id)->pluck('image_url');
+                $product->images = $productImages;
+            }
 
-    //         return response()->json([
-    //             'status' => 200,
-    //             'message' => 'Danh sách sản phẩm theo danh mục sắp xếp theo độ đánh giá và lượt bán',
-    //             'data' => $products
-    //         ]);
-    //     } catch (\Exception $e) {
-    //         return response()->json([
-    //             'status' => 500,
-    //             'message' => 'Internal Server Error',
-    //             'error' => $e->getMessage()
-    //         ], 500);
-    //     }
-    // }
+            return response()->json([
+                'status' => 200,
+                'message' => 'Danh sách sản phẩm theo danh mục sắp xếp theo độ đánh giá và lượt bán',
+                'data' => $products
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Internal Server Error',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
