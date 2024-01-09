@@ -250,9 +250,26 @@ class ProductController extends Controller
             )
                 ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
                 ->leftJoin('order_items', 'product.product_id', '=', 'order_items.product_id')
+                ->leftJoin('order', 'order_items.order_id', '=', 'order.order_id')
                 ->where('product.product_category_id', $categoryId)
                 ->where('order.order_status_id', 3)
-                ->groupBy('product.product_id',)
+                ->groupBy(
+                    'product.product_id',
+                    'product.name',
+                    'product.description',
+                    'product.price',
+                    'product.stock',
+                    'product.color_id',
+                    'product.size_id',
+                    'product.created_by_user_id',
+                    'product.product_brand_id',
+                    'product.product_category_id',
+                    'product.discount_id',
+                    'product.created_at',
+                    'product.updated_at',
+                    'product.deleted_at',
+                    'product_review.rating'
+                )
                 ->orderByDesc('product_review.rating')
                 ->orderByDesc('total_sales')
                 ->get();
