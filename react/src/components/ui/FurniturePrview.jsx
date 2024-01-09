@@ -2,28 +2,28 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Banner4 from "../../assets/banner/banner_4.png";
 import Banner5 from "../../assets/banner/banner_5.png";
-import { fetchTop6Category27Sale } from "../../services/productService";
+import { fetchTop6CategoryById } from "../../services/productService";
 
 export default function FurniturePrview() {
 
-    const [listTop6Product, setListTop6Product] = useState([]);
+    const [listTop6Furniture, setListTop6Furniture] = useState([]);
 
     useEffect(() => {
-        getFetchTop6Category27Sale();
+        getFetchTop6CategoryById();
     }, []);
 
-    const getFetchTop6Category27Sale = async () => {
+    const getFetchTop6CategoryById = async () => {
         try {
-            let res = await fetchTop6Category27Sale();
+            let res = await fetchTop6CategoryById(27);
             if (res && res.data) {
-                setListTop6Product(res.data);
+                setListTop6Furniture(res.data);
             }
         } catch (error) {
             console.error("Error: ", error);
         }
     }
 
-    // console.log(listTop6Product);
+    // console.log(listTop6Furniture);
 
     return (
         <div className="flex justify-center">
@@ -104,7 +104,7 @@ export default function FurniturePrview() {
                     </div>
                     <div className="">
                         {
-                            listTop6Product && listTop6Product.length > 0 && listTop6Product.map((product, index) => (
+                            listTop6Furniture && listTop6Furniture.length > 0 && listTop6Furniture.map((product, index) => (
                                 <div key={index} className="w-[33%] p-4 float-left">
                                     <img className="w-full h-[220px] lg:h-[300px] xl:h-[330px] 2xl:h-[500px]" src={`/src/assets/image/${product.images[0]}`} alt="img" />
                                     <p className="text-xl">{product.name}</p>

@@ -1,7 +1,7 @@
 import axios from "./axiosCustom";
 
-const fetchTop6Category27Sale = () => {
-    return axios.get("/public/product/best-selling-products/27");
+const fetchTop6CategoryById = (id) => {
+    return axios.get(`/public/product/best-selling-products/${id}`);
 }
 
-export { fetchTop6Category27Sale };
+export { fetchTop6CategoryById };
