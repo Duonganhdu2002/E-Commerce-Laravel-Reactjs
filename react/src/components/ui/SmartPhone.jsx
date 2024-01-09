@@ -41,10 +41,10 @@ export default function SmartPhone() {
                         {
                             listTop6SmartPhone && listTop6SmartPhone.length > 0 && listTop6SmartPhone.map((product, index) => (
                                 <div key={index} className="w-[33%] p-4 float-left">
-                                    <img className="w-full h-[220px] lg:h-[300px] xl:h-[330px] 2xl:h-[500px]" src={`/src/assets/image/${product.images[0]}`} alt="img" />
-                                    <p className="text-xl">{product.name}</p>
+                                    <img className="w-full h-[220px] lg:h-[300px] xl:h-[330px] 2xl:h-[500px] object-cover rounded-xl" src={`/src/assets/image/${product.images[0]}`} alt="img" />
+                                    <p className="mt-2 text-xl font-semibold">{product.name}</p>
                                     <p className="text-neutral-500">Best sales</p>
-                                    <p className="text-lg text-slate-800">${product.price}</p>
+                                    <p className="text-lg text-slate-700 font-medium">${product.price}</p>
                                 </div>
                             ))
                         }
