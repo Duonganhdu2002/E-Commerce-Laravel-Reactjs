@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { fetchAllCategoryByFieldId } from '../../../services/categoryService';
 
 export default function Category() {
@@ -53,17 +53,19 @@ export default function Category() {
                         {listCategoryById &&
                             listCategoryById.length > 0 &&
                             listCategoryById.map((categories, index) => (
-                                <div
-                                    className="flex-shrink-0 flex flex-col justify-center items-center cursor-pointer w-[100px] h-[80px] md:w-[120px] md:h-[120px] lg:w-[140px] lg:h-[140px] relative border px-2"
-                                    key={index}
-                                >
-                                    <img
-                                        className=" w-[60%] h-[70%]"
-                                        src={`/src/assets/icon_category/${categories.icon}`}
-                                        alt="img"
-                                    />
-                                    <p className=' h-[20%] text-xs md:text-sm lg:text-lg'>{categories.name}</p>
-                                </div>
+                                <Link key={index} to={`/category/${categories.product_category_id}`}>
+                                    <div
+                                        className="flex-shrink-0 flex flex-col justify-center items-center cursor-pointer w-[100px] h-[80px] md:w-[120px] md:h-[120px] lg:w-[140px] lg:h-[140px] relative border px-2"
+                                        key={index}
+                                    >
+                                        <img
+                                            className=" w-[60%] h-[70%]"
+                                            src={`/src/assets/icon_category/${categories.icon}`}
+                                            alt="img"
+                                        />
+                                        <p className=' h-[20%] text-xs md:text-sm lg:text-lg'>{categories.name}</p>
+                                    </div>
+                                </Link>
                             ))}
                     </div>
                     <div className="flex justify-between h-full absolute top-0 left-0 right-0 z-20  px-0 2xl:px-[10%] xl:px-[10%] lg:px-[10%] md:px-[5%] sm:px-0  xl:hidden">
