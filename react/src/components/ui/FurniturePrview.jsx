@@ -1,10 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import img1 from "../../assets/image/img1.jpg";
 import Banner4 from "../../assets/banner/banner_4.png";
 import Banner5 from "../../assets/banner/banner_5.png";
+import { fetchTop6Category27Sale } from "../../services/productService";
 
 export default function FurniturePrview() {
+
+    const [listTop6Product, setListTop6Product] = useState([]);
+
+    useEffect(() => {
+        getFetchTop6Category27Sale();
+    }, []);
+
+    const getFetchTop6Category27Sale = async () => {
+        try {
+            let res = await fetchTop6Category27Sale();
+            if (res && res.data) {
+                setListTop6Product(res.data);
+            }
+        } catch (error) {
+            console.error("Error: ", error);
+        }
+    }
+
+    // console.log(listTop6Product);
+
     return (
         <div className="flex justify-center">
 
@@ -82,43 +102,17 @@ export default function FurniturePrview() {
                             New arrivals
                         </Link>
                     </div>
-                    <div>
-                        <div className="w-[33%] p-4 float-left">
-                            <img className="w-full h-full" src={img1} alt="" />
-                            <p className=" text-xl">Product name</p>
-                            <p className=" text-neutral-500">Best sales</p>
-                            <p className=" text-lg text-slate-800">$193.00</p>
-                        </div>
-                        <div className="w-[33%] p-4 float-left">
-                            <img className="w-full h-full" src={img1} alt="" />
-                            <p className=" text-xl">Product name</p>
-                            <p className=" text-neutral-500">Best sales</p>
-                            <p className=" text-lg text-slate-800">$193.00</p>
-                        </div>
-                        <div className="w-[33%] p-4 float-left">
-                            <img className="w-full h-full" src={img1} alt="" />
-                            <p className=" text-xl">Product name</p>
-                            <p className=" text-neutral-500">Best sales</p>
-                            <p className=" text-lg text-slate-800">$193.00</p>
-                        </div>
-                        <div className="w-[33%] p-4 float-left">
-                            <img className="w-full h-full" src={img1} alt="" />
-                            <p className=" text-xl">Product name</p>
-                            <p className=" text-neutral-500">Best sales</p>
-                            <p className=" text-lg text-slate-800">$193.00</p>
-                        </div>
-                        <div className="w-[33%] p-4 float-left">
-                            <img className="w-full h-full" src={img1} alt="" />
-                            <p className=" text-xl">Product name</p>
-                            <p className=" text-neutral-500">Best sales</p>
-                            <p className=" text-lg text-slate-800">$193.00</p>
-                        </div>
-                        <div className="w-[33%] p-4 float-left">
-                            <img className="w-full h-full" src={img1} alt="" />
-                            <p className=" text-xl">Product name</p>
-                            <p className=" text-neutral-500">Best sales</p>
-                            <p className=" text-lg text-slate-800">$193.00</p>
-                        </div>
+                    <div className="">
+                        {
+                            listTop6Product && listTop6Product.length > 0 && listTop6Product.map((product, index) => (
+                                <div key={index} className="w-[33%] p-4 float-left">
+                                    <img className="w-full h-[220px] lg:h-[300px] xl:h-[330px] 2xl:h-[500px]" src={`/src/assets/image/${product.images[0]}`} alt="img" />
+                                    <p className="text-xl">{product.name}</p>
+                                    <p className="text-neutral-500">Best sales</p>
+                                    <p className="text-lg text-slate-800">${product.price}</p>
+                                </div>
+                            ))
+                        }
                     </div>
                 </div>
 

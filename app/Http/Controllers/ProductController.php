@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\ProductResource as ProductResource;
 use App\Models\Product;
 use App\Models\product_category;
+use App\Models\product_image as ProductImage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -203,19 +204,41 @@ class ProductController extends Controller
         return response()->json(['latestProducts' => $latestProducts]);
     }
 
-    public function getBestSellingProductsInCategory(Request $request, $categoryId) // Lấy ra 6 sản phẩm best sale trong 1 category bất kì
+    public function getBestSellingProductsInCategory(Request $request, $categoryId)
     {
-        // Sử dụng Eloquent và DB facade để truy vấn và lấy 6 sản phẩm best sale trong một danh mục cụ thể
-        $bestSellingProducts = Product::join('order_items', 'product.product_id', '=', 'order_items.product_id')
-            ->where('product.product_category_id', $categoryId) // Lọc theo category_id
-            ->groupBy('product.product_id', 'product.name') // Group by để tổng hợp theo sản phẩm
-            ->orderBy(DB::raw('SUM(order_items.quantity)'), 'desc') // Sắp xếp theo tổng số lượng giảm dần
-            ->limit(6)
-            ->get(['product.product_id', 'product.name']); // Chỉ lấy các trường cần thiết
+        try {
+            $topProducts = Product::select(
+                'product.product_id',
+                'product.name',
+                'product.description',
+                'product.price',
+                'product.stock',
+                DB::raw('SUM(order_items.quantity) as total_sales')
+            )
+                ->join('order_items', 'product.product_id', '=', 'order_items.product_id')
+                ->where('product.product_category_id', $categoryId)
+                ->groupBy('product.product_id', 'product.name', 'product.description', 'product.price', 'product.stock')
+                ->orderByDesc('total_sales')
+                ->take(6)
+                ->get();
 
-        // Trả về dữ liệu JSON chứa thông tin về 6 sản phẩm best sale trong danh mục cụ thể
-        return response()->json(['bestSellingProducts' => $bestSellingProducts]);
+            // Additional information like images
+            foreach ($topProducts as &$product) {
+                $productImages = ProductImage::where('product_id', $product->product_id)->pluck('image_url');
+                $product->images = $productImages;
+            }
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Top 6 sản phẩm của 1 danh mục bán chạy nhất',
+                'data' => $topProducts
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Internal Server Error',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
-
-    
 }
