@@ -57,6 +57,7 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
     Route::prefix('product')->group(function () {
         Route::get('latest-products/{categoryId}', [ProductController::class, 'getLatestProductsInCategory'])->name('latest-products');
         Route::get('best-selling-products/{categoryId}', [ProductController::class, 'getBestSellingProductsInCategory'])->name('best-selling-products');
+        Route::get('product-with-category/{categoryId}', [ProductController::class, 'listProductWithCategory']);
         Route::get('indexByCate/{categoryId}', [ProductController::class, 'indexByCategory']);
         Route::get('products/user/{userId}', [ProductController::class, 'indexByUser']);
         

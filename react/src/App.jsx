@@ -8,6 +8,8 @@ import Cart from "./pages/Cart";
 import Field from "./pages/Field";
 import ProductDetails from "./pages/ProductDetails";
 import Shop from "./pages/Shop";
+import BrandPage from "./pages/BrandPage";
+import CategoryPage from "./pages/CategoryPage";
 
 export default function App() {
     return (
@@ -18,6 +20,8 @@ export default function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/fields/:fieldId" element={<Field />} />
+                <Route path="/brand/:brandId" element={<BrandPage/>} />
+                <Route path="/category/:categoryId" element={<CategoryPage/>} />
                 <Route path="/productdetails" element={<ProductDetails />} />
                 <Route path="/shop" element={<Shop />} />
             </Routes>

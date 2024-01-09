@@ -11,8 +11,7 @@ use App\Models\product_image as ProductImage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
-
-
+use PhpParser\Node\Stmt\TryCatch;
 
 class ProductController extends Controller
 {
@@ -222,7 +221,6 @@ class ProductController extends Controller
                 ->take(6)
                 ->get();
 
-            // Additional information like images
             foreach ($topProducts as &$product) {
                 $productImages = ProductImage::where('product_id', $product->product_id)->pluck('image_url');
                 $product->images = $productImages;
@@ -241,4 +239,55 @@ class ProductController extends Controller
             ], 500);
         }
     }
+
+    // public function listProductWithCategory(Request $request, $categoryId)
+    // {
+    //     try {
+    //         $products = Product::select(
+    //             'product.*',
+    //             'product_review.rating',
+    //             DB::raw('SUM(order_items.quantity) as total_sales')
+    //         )
+    //             ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
+    //             ->leftJoin('order_items', 'product.product_id', '=', 'order_items.product_id')
+    //             ->where('product.product_category_id', $categoryId)
+    //             ->groupBy(
+    //                 'product.product_id',
+    //                 'product.name',
+    //                 'product.description',
+    //                 'product.price',
+    //                 'product.stock',
+    //                 'product.color_id',
+    //                 'product.size_id',
+    //                 'product.created_by_user_id',
+    //                 'product.product_brand_id',
+    //                 'product.product_category_id',
+    //                 'product.discount_id',
+    //                 'product.created_at',
+    //                 'product.updated_at',
+    //                 'product.deleted_at',
+    //                 'product_review.rating'
+    //             )
+    //             ->orderByDesc('product_review.rating')
+    //             ->orderByDesc('total_sales')
+    //             ->get();
+
+    //         foreach ($products as &$product) {
+    //             $productImages = ProductImage::where('product_id', $product->product_id)->pluck('image_url');
+    //             $product->images = $productImages;
+    //         }
+
+    //         return response()->json([
+    //             'status' => 200,
+    //             'message' => 'Danh sách sản phẩm theo danh mục sắp xếp theo độ đánh giá và lượt bán',
+    //             'data' => $products
+    //         ]);
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'status' => 500,
+    //             'message' => 'Internal Server Error',
+    //             'error' => $e->getMessage()
+    //         ], 500);
+    //     }
+    // }
 }

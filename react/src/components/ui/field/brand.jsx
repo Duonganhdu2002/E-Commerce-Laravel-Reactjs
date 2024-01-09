@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { fetchBrandsByFieldId } from "../../../services/brandService";
 
 export default function Brand() {
@@ -26,7 +26,7 @@ export default function Brand() {
     // console.log(fieldId);
 
     const scrollLeft = () => {
-        const scrollDistance = -420; 
+        const scrollDistance = -420;
         document.getElementById("brandContainer").scrollBy({
             left: scrollDistance,
             behavior: "smooth",
@@ -53,16 +53,17 @@ export default function Brand() {
                         {listBrandById &&
                             listBrandById.length > 0 &&
                             listBrandById.map((brands, index) => (
-                                <div
-                                    className="flex-shrink-0 flex justify-center items-center cursor-pointer w-[70px] h-[70px] md:w-[90px] md:h-[90px] lg:w-[100px] lg:h-[100px] relative border px-2"
-                                    key={index}
-                                >
-                                    <img
-                                        className=" w-[80%]"
-                                        src={`/src/assets/icon_brand/${brands.logo}`}
-                                        alt="img"
-                                    />
-                                </div>
+                                <Link key={index} to={`/brand/${brands.product_brand_id}`}>
+                                    <div
+                                        className="flex-shrink-0 flex justify-center items-center cursor-pointer w-[70px] h-[70px] md:w-[90px] md:h-[90px] lg:w-[100px] lg:h-[100px] relative border px-2"
+                                    >
+                                        <img
+                                            className="w-[80%]"
+                                            src={`/src/assets/icon_brand/${brands.logo}`}
+                                            alt="img"
+                                        />
+                                    </div>
+                                </Link>
                             ))}
                     </div>
                     <div className="flex justify-between h-full absolute top-0 left-0 right-0 z-20  px-0 2xl:px-[10%] xl:px-[10%] lg:px-[10%] md:px-[5%] sm:px-0  xl:hidden">
