@@ -9,7 +9,7 @@ export default function Example() {
 
     useEffect(() => {
         getUserPagination(currentPage);
-    }, [currentPage]); 
+    }, [currentPage]);
 
     const getUserPagination = async (page) => {
         try {
