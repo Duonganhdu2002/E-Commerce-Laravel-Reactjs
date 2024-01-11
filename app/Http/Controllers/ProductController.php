@@ -240,9 +240,6 @@ class ProductController extends Controller
             ], 500);
         }
     }
-
-<<<<<<< HEAD
-
     // Hàm để tìm kiếm sản phẩm dựa trên tên, brand và category
     public function search(Request $request)
     {
@@ -292,9 +289,6 @@ class ProductController extends Controller
             'data' => $products,
         ], 200);
     }
-
-}
-=======
     public function listProductWithCategory(Request $request, $categoryId)
     {
         try {
@@ -348,4 +342,3 @@ class ProductController extends Controller
         }
     }
 }
->>>>>>> 93a33997233a4efdddb75b7fdcb239e62b72c95e
