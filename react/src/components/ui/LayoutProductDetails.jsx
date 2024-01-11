@@ -23,121 +23,137 @@ export default function ProductDetails() {
                     Back to results
                 </a>
             </div>
-            <div className="md:flex w-full px-0 2xl:px-[10%] xl:px-[10%] lg:px-[10%] md:px-[5%] sm:px-0">
-                {/* Div ảnh */}
-                <div className=" flex h-[55vh] w-[100%] justify-center bg-slate-200/50">
-                    <img src={Chair1} alt="" className=" rounded-2xl" />
-                </div>
-                {/* Div tiêu đề và giá sản phẩm */}
-                <div className="flex flex-col my-2 px-8">
-                    {/* Div tiêu đề */}
-                    <div className=" flex">
-                        <p className=" text-xl font-medium">
-                            Sumptuous Slumber: Unveiling the Elegance of Our
-                            Premium Bed Collection
-                        </p>
-                    </div>
-                    <div className=" flex justify-between items-center mb-2">
-                        {/* Div giá sản phẩm niêm yết và giá sản phẩm đã giảm */}
-                        <div className="flex items-center">
-                            <p className=" text-3xl font-bold mr-4 text-slate-800">
-                                $2,989.00
+            <div className="py-8">
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex flex-col md:flex-row -mx-4">
+                        <div className="flex-1 px-4">
+                            <div className=" flex">
+                                <div className=" w-[120px] h-[460px] overflow-y-auto">
+                                    <img
+                                        className="w-full object-cover p-1"
+                                        src={Chair1}
+                                    />
+                                    <img
+                                        className="w-full object-cover p-1"
+                                        src={Chair1}
+                                    />
+                                    <img
+                                        className="w-full object-cover p-1"
+                                        src={Chair1}
+                                    />
+                                    <img
+                                        className="w-full object-cover p-1"
+                                        src={Chair1}
+                                    />
+                                    <img
+                                        className="w-full object-cover p-1"
+                                        src={Chair1}
+                                    />
+                                </div>
+                                <div className=" w-full h-[460px] rounded-2xl bg-gray-300 mb-4">
+                                    <img
+                                        className="w-full h-full object-cover rounded-2xl"
+                                        src={Chair1}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex -mx-2 mb-4">
+                                <div className="w-1/2 px-2">
+                                    <button className="w-full bg-gray-900  text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 ">
+                                        Buy now
+                                    </button>
+                                </div>
+                                <div className="w-1/2 px-2">
+                                    <button className="w-full bg-gray-200  text-gray-800  py-2 px-4 rounded-full font-bold hover:bg-gray-300 ">
+                                        Add to Cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="md:flex-1 px-4">
+                            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                                Product Name
+                            </h2>
+                            <p className="text-gray-600  text-sm mb-4">
+                                Lorem ipsum dolor sit amet, consectetur
+                                adipiscing elit. Sed sed ante justo. Integer
+                                euismod libero id mauris malesuada tincidunt.
                             </p>
-                            <p className=" text-xl  line-through text-slate-500">
-                                $3,589.00
-                            </p>
+                            <div className="flex mb-4">
+                                <div className="mr-4">
+                                    <span className="font-bold text-gray-700 ">
+                                        Price:
+                                    </span>
+                                    <span className="text-gray-600 ">
+                                        $29.99
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="font-bold text-gray-700 ">
+                                        Availability:
+                                    </span>
+                                    <span className="text-gray-600">
+                                        In Stock
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="mb-4">
+                                <span className="font-bold text-gray-700">
+                                    Select Color:
+                                </span>
+                                <div className="flex items-center mt-2">
+                                    <button className="w-6 h-6 rounded-full bg-gray-800  mr-2"></button>
+                                    <button className="w-6 h-6 rounded-full bg-red-500  mr-2"></button>
+                                    <button className="w-6 h-6 rounded-full bg-blue-500  mr-2"></button>
+                                    <button className="w-6 h-6 rounded-full bg-yellow-500  mr-2"></button>
+                                </div>
+                            </div>
+                            <div className="mb-4">
+                                <span className="font-bold text-gray-700 ">
+                                    Select Size:
+                                </span>
+                                <div className="flex items-center mt-2">
+                                    <button className="bg-gray-300  text-gray-700  py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 ">
+                                        S
+                                    </button>
+                                    <button className="bg-gray-300  text-gray-700  py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 ">
+                                        M
+                                    </button>
+                                    <button className="bg-gray-300  text-gray-700  py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 ">
+                                        L
+                                    </button>
+                                    <button className="bg-gray-300  text-gray-700  py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 ">
+                                        XL
+                                    </button>
+                                    <button className="bg-gray-300  text-gray-700  py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 ">
+                                        XXL
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <span className="font-bold text-gray-700 ">
+                                    Product Description:
+                                </span>
+                                <p className="text-gray-600 text-sm mt-2">
+                                    Lorem ipsum dolor sit amet, consectetur
+                                    adipiscing elit. Sed sed ante justo. Integer
+                                    euismod libero id mauris malesuada
+                                    tincidunt. Vivamus commodo nulla ut lorem
+                                    rhoncus aliquet. Duis dapibus augue vel
+                                    ipsum pretium, et venenatis sem blandit.
+                                    Quisque ut erat vitae nisi ultrices placerat
+                                    non eget velit. Integer ornare mi sed ipsum
+                                    lacinia, non sagittis mauris blandit. Morbi
+                                    fermentum libero vel nisl suscipit, nec
+                                    tincidunt mi consectetur.
+                                </p>
+                            </div>
                         </div>
-                        {/* Div riêng để icon tượng trưng là sản phẩm có hỗ trợ ship và có voucher*/}
-                        <div className=" flex items-center">
-                            <img src={Delivery} alt="" className="w-8 mr-2" />
-                            <img src={Voucher} alt="" className="w-8" />
-                        </div>
-                    </div>
-                    {/* Div dưới về đánh giá sao, tổng review, tổng mặt hàng đã bán  */}
-                    <div className="flex items-center border-t-2 border-b-2">
-                        {/* Div về sao đánh giá */}
-                        <div className="flex items-center my-2 mr-4 ">
-                            <p className=" mr-2">3.6</p>
-                            <img src={Star} alt="" className="w-5" />
-                            <img src={Star} alt="" className="w-5" />
-                            <img src={Star} alt="" className="w-5" />
-                            <img src={StarHalfLeftO} alt="" className="w-5" />
-                            <img src={StarO} alt="" className="w-5" />
-                        </div>
-                        {/* Div tổng reviews */}
-                        <div className=" flex items-center my-2 border-l border-black">
-                            <a href="" className=" mx-4">
-                                41 Reviews
-                            </a>
-                        </div>
-                        {/* Div tổng lượng hàng đã bán ra */}
-                        <div className=" flex items-center my-2 border-l border-black">
-                            <a href="" className=" mx-4">
-                                149 Sold
-                            </a>
-                        </div>
-                    </div>
-                    {/* Div chọn phương thức giao sản phẩm và voucher giảm giá */}
-                    <div className=" flex flex-col">
-                        <div className="flex items-center my-2">
-                            <img src={Delivery} alt="" className="w-7 mr-3" />
-                            <p className="mr-4">Shipping Method:</p>
-                            <select
-                                id="gender"
-                                name="gender"
-                                className=" border-2 w-28 h-10 rounded-lg"
-                            >
-                                <option value="male">Medium</option>
-                                <option value="female">Fast</option>
-                            </select>
-                        </div>
-                        <div className="flex items-center my-2">
-                            <img src={Voucher} alt="" className="w-7 mr-3" />
-                            <p className="mr-4">Voucher:</p>
-                            <select
-                                id="gender"
-                                name="gender"
-                                className=" border-2 w-28 h-10 rounded-lg"
-                            >
-                                <option value="male">sale 50%</option>
-                                <option value="female">sale 20%</option>
-                                <option value="female">sale 70%</option>
-                                <option value="female">sale 15%</option>
-                            </select>
-                        </div>
-                        <div className="flex items-center my-2">
-                            <img src={Size} alt="" className="w-6 mr-4" />
-                            <p className="mr-4">Size:</p>
-                            <select
-                                id="gender"
-                                name="gender"
-                                className=" border-2 w-32 h-10 rounded-lg"
-                            >
-                                <option value="male">100 x 102</option>
-                                <option value="female">200 x 402</option>
-                                <option value="female">202 x 602</option>
-                                <option value="female">105 x 808</option>
-                            </select>
-                        </div>
-                        <div className="flex items-center my-2">
-                            <p className="mr-4">Quantity:</p>
-                            <input
-                                type="number"
-                                className="border-2 w-32 h-10 rounded-lg px-2"
-                            />
-                        </div>
-                    </div>
-                    {/* Div để ấn vào mua ngay và thêm vào giỏ hàng */}
-                    <div className=" flex items-center justify-between my-6">
-                        <button className=" bg-slate-800 text-white w-[45%] h-14 rounded-2xl text-xl font-medium hover:bg-slate-800/80">
-                            Buy now
-                        </button>
-                        <button className=" text-slate-800 border-slate-800 border-2 w-[45%] h-14 rounded-2xl text-xl font-medium hover:bg-slate-400/20">
-                            Add to Cart
-                        </button>
                     </div>
                 </div>
             </div>
+
             {/* Div của shop */}
             <div className=" flex items-center border-b-2 border-t-2 p-4 px-4 2xl:px-[10%] xl:px-[10%] lg:px-[10%] md:px-[5%] sm:px-4 my-10">
                 <div className=" flex items-center bg-black w-full rounded-xl">
