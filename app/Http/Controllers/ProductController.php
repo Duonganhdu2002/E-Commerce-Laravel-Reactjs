@@ -252,7 +252,7 @@ class ProductController extends Controller
                 ->leftJoin('order_items', 'product.product_id', '=', 'order_items.product_id')
                 ->leftJoin('order', 'order_items.order_id', '=', 'order.order_id')
                 ->where('product.product_category_id', $categoryId)
-                ->where('order.order_status_id', 3)
+                // ->where('order.order_status_id', 3)
                 ->groupBy(
                     'product.product_id',
                     'product.name',
