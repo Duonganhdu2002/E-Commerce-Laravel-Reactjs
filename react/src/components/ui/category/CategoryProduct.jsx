@@ -79,8 +79,7 @@ export default function CategoryProduct() {
                                 </svg>
                             </div>
                             <h1 className="text-md my-5">{product.name}</h1>
-                            <p className="mb-5">{product.description}</p>
-                            <h2 className="font-semibold mb-2">
+                            <h2 className=" text-xl font-semibold mb-2">
                                 ${product.price}
                             </h2>
                             {/* <div className=" flex flex-wrap mt-auto ml-auto">
