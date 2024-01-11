@@ -16,7 +16,7 @@ import FiledLayout from "../components/ui/FiledLayout";
 import SuggestedProducts from '../components/ui/SuggestedProducts';
 import UserPagination from "../components/ui/UserPagination";
 import Modal from "../components/modal/modal";
-import PopupChat from "../components/ui/PopupChat"
+
 
 export default function Home() {
     return (
@@ -36,7 +36,6 @@ export default function Home() {
             <Banner1 />
             <HeadPhone />
             <SuggestedProducts/>
-            <PopupChat/>
             <SubFooter />
             <Footer />
         </div>

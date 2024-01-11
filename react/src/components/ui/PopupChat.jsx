@@ -306,14 +306,14 @@ const PopupChat = () => {
             {!isOpen && (
                 <motion.div
                     className="fixed bottom-0 right-0 p-6"
-                    initial={{ scale: 0, opacity: 0 }}
+                    initial={{ scale: 1, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0, opacity: 0 }}
                     transition={{ duration: 0.5 }}
                 >
                     <button
                         onClick={togglePopup}
-                        className="fixed bottom-0 right-0 mr-8 mb-8 p-4 bg-sky-900 text-white rounded-2xl transform hover:scale-110 transition-transform w-32"
+                        className="fixed bottom-0 right-0 mr-4 p-3 bg-sky-900 text-white rounded-t-2xl transform hover:scale-110 transition-transform w-32 hidden md:block"
                     >
                         Open Chat
                     </button>
