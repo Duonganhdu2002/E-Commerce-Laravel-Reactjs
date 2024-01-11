@@ -60,6 +60,8 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
         Route::get('product-with-category/{categoryId}', [ProductController::class, 'listProductWithCategory']);
         Route::get('indexByCate/{categoryId}', [ProductController::class, 'indexByCategory']);
         Route::get('products/user/{userId}', [ProductController::class, 'indexByUser']);
+        Route::get('/search-products', [ProductController::class, 'search']);
+
         
         Route::prefix('img')->group(function () { 
             Route::get('display/{productId}', [ProductImageController::class, 'displayByProductId']);

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\ProductResource as ProductResource;
 use App\Models\Product;
 use App\Models\product_category;
+use App\Models\product_brand;
 use App\Models\product_image as ProductImage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -240,6 +241,60 @@ class ProductController extends Controller
         }
     }
 
+<<<<<<< HEAD
+
+    // Hàm để tìm kiếm sản phẩm dựa trên tên, brand và category
+    public function search(Request $request)
+    {
+        // Lấy các tham số tìm kiếm từ yêu cầu
+        $productName = $request->input('name');
+        $brandName = $request->input('product_brand_name');
+        $categoryName = $request->input('product_category_name');
+
+        // Bắt đầu truy vấn từ model Product
+        $query = Product::query();
+
+        // Thêm điều kiện tìm kiếm nếu tên sản phẩm được cung cấp
+        if ($productName) {
+            $query->where('product.name', 'like', "%$productName%");
+        }
+
+        // Thêm điều kiện tìm kiếm nếu tên nhãn hàng được cung cấp
+        if ($brandName) {
+            $query->orWhereHas('productBrand', function ($query) use ($brandName) {
+                $query->where('product_brand_name', 'like', "%$brandName%");
+            });
+        }
+
+        // Thêm điều kiện tìm kiếm nếu tên danh mục được cung cấp
+        if ($categoryName) {
+            $query->orWhereHas('productCategory', function ($query) use ($categoryName) {
+                $query->where('product_category_name', 'like', "%$categoryName%");
+            });
+        }
+
+        // Thực hiện truy vấn và lấy danh sách sản phẩm
+        $products = $query->get();
+
+        if ($products->isEmpty()) {
+            // Nếu không có sản phẩm, trả về thông báo
+            return response()->json([
+                'status' => false,
+                'message' => 'Không có sản phẩm nào được tìm thấy',
+                'data' => null,
+            ], 404);
+        }
+
+        // Trả về JSON response
+        return response()->json([
+            'status' => true,
+            'message' => 'Danh sách sản phẩm',
+            'data' => $products,
+        ], 200);
+    }
+
+}
+=======
     public function listProductWithCategory(Request $request, $categoryId)
     {
         try {
@@ -293,3 +348,4 @@ class ProductController extends Controller
         }
     }
 }
+>>>>>>> 93a33997233a4efdddb75b7fdcb239e62b72c95e
