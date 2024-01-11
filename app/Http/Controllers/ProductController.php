@@ -150,16 +150,8 @@ class ProductController extends Controller
             return response()->json($arr, 404);
         }
 
-        $product->name = $input['name'] ?? null;
-        $product->price = $input['price'] ?? null;
-        $product->description = $input['description'] ?? null;
-        $product->color_id = $input['color_id'] ?? null;
-        $product->size_id = $input['size_id'] ?? null;
-        $product->created_by_user_id = $input['created_by_user_id'] ?? null;
-        $product->product_category_id = $input['product_category_id'] ?? null;
-        $product->stock = $input['stock'] ?? null;
-        $product->discount_id = $input['discount_id'] ?? null;
-        $product->save();
+        $product->update($input);
+        
 
         $arr = [
             'status' => true,
