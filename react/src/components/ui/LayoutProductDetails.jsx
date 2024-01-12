@@ -1,5 +1,5 @@
 import React from "react";
-import Back from "../../assets/icon/back-svgrepo-com.svg";
+import { Link, useParams } from "react-router-dom";
 import Checked from "../../assets/icon/check-badge-svgrepo-com.svg";
 import Delivery from "../../assets/icon/delivery-truck-svgrepo-com.svg";
 import Reply from "../../assets/icon/reply-arrow-direction-right-svgrepo-com.svg";
@@ -13,16 +13,19 @@ import Chair1 from "../../assets/public/furniture/bed-1.jpg";
 import Profile from "../../assets/public/profile/1703940723832khunghinh.net.png";
 import ImageReviews from "../../assets/public/reviews/bed-5.jpg";
 import BackgroundShop from "../../assets/sale/sale3.png";
+
+
+
 export default function ProductDetails() {
+
+    const { productId } = useParams(); 
+    console.log(productId)
+
+    
+
     return (
         <div className="flex flex-col justify-center">
-            {/* Div Để quay lại trang trước */}
-            <div className=" flex my-2 px-0 2xl:px-[10%] xl:px-[10%] lg:px-[10%] md:px-[5%] sm:px-0">
-                <a href="" className=" flex">
-                    <img src={Back} alt="" className=" w-5" />
-                    Back to results
-                </a>
-            </div>
+            
             <div className="py-8">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col md:flex-row -mx-4">

@@ -101,33 +101,44 @@ class ProductController extends Controller
     // Hàm xử lý hiển thị thông tin sản phẩm và danh sách ảnh
     public function show(string $id)
     {
-        $product = Product::find($id);
+        try {
+            $product = Product::findOrFail($id);
 
-        if (empty($product)) {
+            // Lấy danh sách ảnh sản phẩm chỉ với trường 'image_url'
+            $imageUrls = $product->images->pluck('image_url');
+
+            $arr = [
+                'status' => true,
+                'message' => 'Thông tin sản phẩm',
+                'data' => [
+                    'product_id' => $product->product_id,
+                    'name' => $product->name,
+                    'description' => $product->description,
+                    'color_id' => $product->color_id,
+                    'size_id' => $product->size_id,
+                    'created_by_user_id' => $product->created_by_user_id,
+                    'product_brand_id' => $product->product_brand_id,
+                    'product_category_id' => $product->product_category_id,
+                    'price' => $product->price,
+                    'stock' => $product->stock,
+                    'discount_id' => $product->discount_id,
+                    'created_at' => $product->created_at,
+                    'updated_at' => $product->updated_at,
+                    'deleted_at' => $product->deleted_at,
+                    'image_urls' => $imageUrls,
+                ],
+            ];
+
+            return response()->json($arr, 200);
+        } catch (ModelNotFoundException $e) {
             $arr = [
                 'status' => false,
                 'message' => 'Không có sản phẩm này',
-                'data' => null
+                'data' => null,
             ];
+
             return response()->json($arr, 404);
         }
-
-        // Lấy danh sách ảnh sản phẩm
-        $images = $product->images;
-
-        // Tạo mảng dữ liệu chứa thông tin sản phẩm và danh sách ảnh
-        $data = [
-            'product_info' => $product,
-            'images' => $images,
-        ];
-
-        $arr = [
-            'status' => true,
-            'message' => "Thông tin sản phẩm",
-            'data' => $data,
-        ];
-
-        return response()->json($arr, 200);
     }
 
 
@@ -258,7 +269,7 @@ class ProductController extends Controller
                 ->leftJoin('order', 'order_items.order_id', '=', 'order.order_id')
                 ->where('product.product_category_id', $categoryId)
                 ->where('order.order_status_id', 3)
-                ->groupBy('product.product_id', )
+                ->groupBy('product.product_id',)
                 ->groupBy(
                     'product.product_id',
                     'product.name',
@@ -310,7 +321,7 @@ class ProductController extends Controller
                 ->leftJoin('order', 'order_items.order_id', '=', 'order.order_id')
                 ->where('product.product_brand_id', $brandId)
                 ->where('order.order_status_id', 3)
-                ->groupBy('product.product_id', )
+                ->groupBy('product.product_id',)
                 ->groupBy(
                     'product.product_id',
                     'product.name',
