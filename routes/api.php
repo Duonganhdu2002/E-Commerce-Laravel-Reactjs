@@ -55,15 +55,36 @@ Route::prefix('customer')->middleware(['auth:sanctum', 'check.role:3'])->group(f
 Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang public 
 
     Route::prefix('product')->group(function () {
+        //xuất ra 6 sản phẩm mới nhất
         Route::get('latest-products/{categoryId}', [ProductController::class, 'getLatestProductsInCategory'])->name('latest-products');
+
+        // xuất ra 6 sản phẩm best seller
         Route::get('best-selling-products/{categoryId}', [ProductController::class, 'getBestSellingProductsInCategory'])->name('best-selling-products');
-        Route::get('product-with-category/{categoryId}', [ProductController::class, 'listProductWithCategory']);
-        Route::get('indexByCate/{categoryId}', [ProductController::class, 'indexByCategory']);
+
+        // xuất ra những sản phẩm bởi id của category
+        Route::get('indexByCate/{categoryId}', [ProductController::class, 'indexByCategory']); 
+
+        // xuất ra những sản phẩm của user tạo ra
         Route::get('products/user/{userId}', [ProductController::class, 'indexByUser']);
+
+        // chức năng tìm kiếm sản phẩm theo tên của sản phẩm, brand, category
         Route::get('/search-products', [ProductController::class, 'search']);
 
+        // Lọc sản phẩm theo giá
+        Route::get('/filter-by-price', [ProductController::class, 'filterByPrice']);
+
+        // Lọc sản phẩm theo đánh giá
+        Route::get('/filter-by-rating', [ProductController::class, 'filterByRating']);
+
+        // Lọc sản phẩm theo địa chỉ của shop
+        Route::get('/filter-by-address', [ProductController::class, 'filterByAddress']); 
+
         
-        Route::prefix('img')->group(function () { 
+
+
+
+
+        Route::prefix('img')->group(function () {
             Route::get('display/{productId}', [ProductImageController::class, 'displayByProductId']);
             Route::post('upload/{productId}', [ProductImageController::class, 'upload']);
             Route::resource('/', ProductImageController::class);
@@ -85,13 +106,13 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
     });
 
     Route::prefix('cart')->group(function () {
-       Route::post('/', [ShoppingCartController::class, 'store']);
+        Route::post('/', [ShoppingCartController::class, 'store']);
     });
 
     Route::prefix('order')->group(function () {
         Route::post('/', [OrderController::class, 'checkout']);
         Route::post('/{id}', [OrderController::class, 'total']);
-     });
+    });
 
 });
 

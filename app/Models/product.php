@@ -26,4 +26,15 @@ class product extends Model
         return $this->belongsTo(product_category::class, 'product_category_id', 'product_category_id');
     }
 
+    public function productReviews()
+    {
+        return $this->hasMany(product_review::class, 'product_id', 'product_id');
+    }
+
+    public function userAddress()
+    {
+        return $this->belongsTo(user_address::class, 'created_by_user_id', 'user_id');
+    }
+
+    
 }

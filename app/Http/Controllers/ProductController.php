@@ -138,7 +138,7 @@ class ProductController extends Controller
             ];
             return response()->json($arr, 200);
         }
-
+  
         $product = Product::find($product);
 
         if (!$product) {
@@ -163,7 +163,7 @@ class ProductController extends Controller
 
         $arr = [
             'status' => true,
-            'message' => 'Sản phẩm cập nhật thành công',
+            'message' => 'Sản phẩm cập nhật thành công',   
             'data' => $product
         ];
 
@@ -241,7 +241,6 @@ class ProductController extends Controller
         }
     }
 
-<<<<<<< HEAD
 
     // Hàm để tìm kiếm sản phẩm dựa trên tên, brand và category
     public function search(Request $request)
@@ -293,59 +292,98 @@ class ProductController extends Controller
         ], 200);
     }
 
-}
-=======
-    public function listProductWithCategory(Request $request, $categoryId)
+
+    // Hàm xử lý chức năng lọc sản phẩm theo giá
+    public function filterByPrice(Request $request)
     {
-        try {
-            $products = Product::select(
-                'product.*',
-                'product_review.rating',
-                DB::raw('SUM(order_items.quantity) as total_sales')
-            )
-                ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
-                ->leftJoin('order_items', 'product.product_id', '=', 'order_items.product_id')
-                ->leftJoin('order', 'order_items.order_id', '=', 'order.order_id')
-                ->where('product.product_category_id', $categoryId)
-                ->where('order.order_status_id', 3)
-                ->groupBy(
-                    'product.product_id',
-                    'product.name',
-                    'product.description',
-                    'product.price',
-                    'product.stock',
-                    'product.color_id',
-                    'product.size_id',
-                    'product.created_by_user_id',
-                    'product.product_brand_id',
-                    'product.product_category_id',
-                    'product.discount_id',
-                    'product.created_at',
-                    'product.updated_at',
-                    'product.deleted_at',
-                    'product_review.rating'
-                )
-                ->orderByDesc('product_review.rating')
-                ->orderByDesc('total_sales')
-                ->get();
+        // Lấy giá trị tối thiểu và tối đa từ yêu cầu
+        $minPrice = $request->input('min_price');
+        $maxPrice = $request->input('max_price');
 
-            foreach ($products as &$product) {
-                $productImages = ProductImage::where('product_id', $product->product_id)->pluck('image_url');
-                $product->images = $productImages;
-            }
+        // Bắt đầu truy vấn từ model Product
+        $query = Product::query();
 
-            return response()->json([
-                'status' => 200,
-                'message' => 'Danh sách sản phẩm theo danh mục sắp xếp theo độ đánh giá và lượt bán',
-                'data' => $products
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 500,
-                'message' => 'Internal Server Error',
-                'error' => $e->getMessage()
-            ], 500);
+        // Thêm điều kiện tìm kiếm theo giá nếu có
+        if ($minPrice !== null) {
+            $query->where('price', '>=', $minPrice);
         }
+
+        if ($maxPrice !== null) {
+            $query->where('price', '<=', $maxPrice);
+        }
+
+        // Lấy danh sách sản phẩm sau khi áp dụng điều kiện
+        $products = $query->get();
+
+        // Trả về JSON response chứa danh sách sản phẩm
+        return response()->json([
+            'status' => true,
+            'message' => 'Danh sách sản phẩm được lọc theo giá',
+            'data' => $products,
+        ], 200);
+    }
+
+    // Hàm xử lý chức năng lọc sản phẩm theo đánh giá
+    public function filterByRating(Request $request)
+    {
+        // Lấy giá trị đánh giá từ yêu cầu
+        $rating = $request->input('rating');
+
+        // Bắt đầu truy vấn từ model Product
+        $query = Product::query();
+
+        // Nếu có giá trị đánh giá, thêm điều kiện tìm kiếm
+        if ($rating !== null) {
+            $query->whereHas('productReviews', function ($subQuery) use ($rating) {
+                $subQuery->where('rating', '=', $rating);
+            });
+        }
+
+        // Lấy danh sách sản phẩm sau khi áp dụng điều kiện
+        $products = $query->get();
+
+        // Trả về JSON response chứa danh sách sản phẩm
+        return response()->json([
+            'status' => true,
+            'message' => 'Danh sách sản phẩm được lọc theo đánh giá',
+            'data' => $products,
+        ], 200);
+    }
+
+    // Hàm xử lý chức năng lọc sản phẩm theo địa chỉ của shop
+    public function filterByAddress(Request $request)
+    {
+        // Lấy các thông tin địa chỉ từ yêu cầu
+        $number = $request->input('number');
+        $street = $request->input('street');
+        $commune = $request->input('commune');
+        $district = $request->input('district');
+        $province = $request->input('province');
+        $country = $request->input('country');
+        $postalCode = $request->input('postal_code');
+
+        // Bắt đầu truy vấn từ model Product
+        $query = Product::query();
+
+        // Thêm điều kiện tìm kiếm dựa trên mối quan hệ userAddress
+        $query->whereHas('userAddress', function ($subQuery) use ($number, $street, $commune, $district, $province, $country, $postalCode) {
+            $subQuery->where('number', 'like', "%$number%")
+                ->where('street', 'like', "%$street%")
+                ->where('commune', 'like', "%$commune%")
+                ->where('district', 'like', "%$district%")
+                ->where('province', 'like', "%$province%")
+                ->where('country', 'like', "%$country%")
+                ->where('postal_code', 'like', "%$postalCode%");
+        });
+
+        // Lấy danh sách sản phẩm sau khi áp dụng điều kiện
+        $products = $query->get();
+
+        // Trả về JSON response chứa danh sách sản phẩm
+        return response()->json([
+            'status' => true,
+            'message' => 'Danh sách sản phẩm được lọc theo địa chỉ của shop',
+            'data' => $products,
+        ], 200);
     }
 }
->>>>>>> 93a33997233a4efdddb75b7fdcb239e62b72c95e
