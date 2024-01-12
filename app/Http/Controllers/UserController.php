@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource as UserResource;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash; // Mã hóa 
 
 
@@ -60,7 +61,6 @@ class UserController extends Controller
     public function loginUser(Request $request)
     {
         try {
-
             $validateUser = Validator::make(
                 $request->all(),
                 [
@@ -77,10 +77,10 @@ class UserController extends Controller
                 ], 401);
             }
 
-            if (!User::attempt($request->only(['email', 'password']))) {
+            if (!Auth::attempt($request->only(['email', 'password']))) {
                 return response()->json([
                     'status' => 401,
-                    'message' => 'Email & Password does not match with our record.',
+                    'message' => 'Email & Password do not match with our records.',
                 ], 401);
             }
 
@@ -98,6 +98,7 @@ class UserController extends Controller
             ], 500);
         }
     }
+
 
     public function logoutUser(Request $request)
     {

@@ -17,6 +17,7 @@ import SuggestedProducts from '../components/ui/SuggestedProducts';
 import UserPagination from "../components/ui/UserPagination";
 import Modal from "../components/modal/modal";
 
+
 export default function Home() {
     return (
         <div>

@@ -11,8 +11,8 @@ export default function BrandPage() {
         <div>
             <Header />
             <Navbar />
-            <BrandProduct/>
             <MenuBar />
+            <BrandProduct/>
             <SubFooter />
             <Footer />
         </div>

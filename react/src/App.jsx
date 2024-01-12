@@ -22,7 +22,7 @@ export default function App() {
                 <Route path="/fields/:fieldId" element={<Field />} />
                 <Route path="/brand/:brandId" element={<BrandPage/>} />
                 <Route path="/category/:categoryId" element={<CategoryPage/>} />
-                <Route path="/productdetails" element={<ProductDetails />} />
+                <Route path="/product/:productId" element={<ProductDetails />} />
                 <Route path="/shop" element={<Shop />} />
             </Routes>
         </div>

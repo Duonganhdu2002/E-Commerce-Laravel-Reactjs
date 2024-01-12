@@ -150,16 +150,8 @@ class ProductController extends Controller
             return response()->json($arr, 404);
         }
 
-        $product->name = $input['name'] ?? null;
-        $product->price = $input['price'] ?? null;
-        $product->description = $input['description'] ?? null;
-        $product->color_id = $input['color_id'] ?? null;
-        $product->size_id = $input['size_id'] ?? null;
-        $product->created_by_user_id = $input['created_by_user_id'] ?? null;
-        $product->product_category_id = $input['product_category_id'] ?? null;
-        $product->stock = $input['stock'] ?? null;
-        $product->discount_id = $input['discount_id'] ?? null;
-        $product->save();
+        $product->update($input);
+        
 
         $arr = [
             'status' => true,
@@ -240,8 +232,11 @@ class ProductController extends Controller
             ], 500);
         }
     }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 0325f3a4a50d388b32a9959bbad53a2a5351be9c
     // Hàm để tìm kiếm sản phẩm dựa trên tên, brand và category
     public function search(Request $request)
     {
@@ -291,6 +286,7 @@ class ProductController extends Controller
             'data' => $products,
         ], 200);
     }
+<<<<<<< HEAD
 
 
     // Hàm xử lý chức năng lọc sản phẩm theo giá
@@ -299,6 +295,41 @@ class ProductController extends Controller
         // Lấy giá trị tối thiểu và tối đa từ yêu cầu
         $minPrice = $request->input('min_price');
         $maxPrice = $request->input('max_price');
+=======
+    public function listProductWithCategory(Request $request, $categoryId)
+    {
+        try {
+            $products = Product::select(
+                'product.*',
+                'product_review.rating',
+                DB::raw('SUM(order_items.quantity) as total_sales')
+            )
+                ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
+                ->leftJoin('order_items', 'product.product_id', '=', 'order_items.product_id')
+                ->leftJoin('order', 'order_items.order_id', '=', 'order.order_id')
+                ->where('product.product_category_id', $categoryId)
+                // ->where('order.order_status_id', 3)
+                ->groupBy(
+                    'product.product_id',
+                    'product.name',
+                    'product.description',
+                    'product.price',
+                    'product.stock',
+                    'product.color_id',
+                    'product.size_id',
+                    'product.created_by_user_id',
+                    'product.product_brand_id',
+                    'product.product_category_id',
+                    'product.discount_id',
+                    'product.created_at',
+                    'product.updated_at',
+                    'product.deleted_at',
+                    'product_review.rating'
+                )
+                ->orderByDesc('product_review.rating')
+                ->orderByDesc('total_sales')
+                ->get();
+>>>>>>> 0325f3a4a50d388b32a9959bbad53a2a5351be9c
 
         // Bắt đầu truy vấn từ model Product
         $query = Product::query();
@@ -322,6 +353,7 @@ class ProductController extends Controller
             'data' => $products,
         ], 200);
     }
+<<<<<<< HEAD
 
     // Hàm xử lý chức năng lọc sản phẩm theo đánh giá
     public function filterByRating(Request $request)
@@ -387,3 +419,6 @@ class ProductController extends Controller
         ], 200);
     }
 }
+=======
+}
+>>>>>>> 0325f3a4a50d388b32a9959bbad53a2a5351be9c
