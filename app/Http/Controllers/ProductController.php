@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Resources\ProductResource as ProductResource;
 use App\Models\Product;
 use App\Models\product_category;
-use App\Models\product_brand;
+use App\Models\user;
 use App\Models\search_history;
+use App\Models\product_review;
 use App\Models\product_image as ProductImage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -100,11 +101,12 @@ class ProductController extends Controller
     }
 
     // Hàm xử lý hiển thị thông tin sản phẩm và danh sách ảnh
-    public function show(string $id)
+    public function show($id)
     {
         try {
             $product = Product::findOrFail($id);
-
+            $creator = User::find($product->created_by_user_id);
+            $reviews = product_review::where('product_id', $id)->get();
             // Lấy danh sách ảnh sản phẩm chỉ với trường 'image_url'
             $imageUrls = $product->images->pluck('image_url');
 
@@ -117,7 +119,13 @@ class ProductController extends Controller
                     'description' => $product->description,
                     'color_id' => $product->color_id,
                     'size_id' => $product->size_id,
-                    'created_by_user_id' => $product->created_by_user_id,
+                    'created_by_user_id' => [
+                        'user_id' => $creator->user_id,
+                        'username' => $creator->username,
+                        'avt_image' => $creator->avt_image,
+                        'first_name' => $creator->first_name,
+                        'last_name' => $creator->last_name,
+                    ],
                     'product_brand_id' => $product->product_brand_id,
                     'product_category_id' => $product->product_category_id,
                     'price' => $product->price,
@@ -127,6 +135,7 @@ class ProductController extends Controller
                     'updated_at' => $product->updated_at,
                     'deleted_at' => $product->deleted_at,
                     'image_urls' => $imageUrls,
+                    'reviews' => $reviews,
                 ],
             ];
 
