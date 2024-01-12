@@ -8,4 +8,8 @@ const fetchProductWithCategory = (id) => {
     return axios.get(`/public/product/listProductWithCategory/${id}`);
 }
 
-export { fetchTop6CategoryById, fetchProductWithCategory };
+const productInformation = (id) => {
+    return axios.get(`/public/product/${id}`)
+}
+
+export { fetchTop6CategoryById, fetchProductWithCategory, productInformation };
