@@ -9,7 +9,7 @@ const fetchUserPagination = (pageNumber) => {
 }
 
 const userLogin = (email, password) => {
-    return axios.post()
+    return axios.post("/auth/login", { email, password });
 }
 
-export { fetchAllUser, fetchUserPagination };
+export { fetchAllUser, fetchUserPagination, userLogin };
