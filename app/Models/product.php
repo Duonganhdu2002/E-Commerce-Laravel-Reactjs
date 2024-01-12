@@ -36,5 +36,10 @@ class product extends Model
         return $this->belongsTo(user_address::class, 'created_by_user_id', 'user_id');
     }
 
-    
+    public function images()
+    {
+        return $this->hasMany(product_image::class, 'product_id', 'product_id');
+    }
+
+
 }

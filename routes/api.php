@@ -55,6 +55,12 @@ Route::prefix('customer')->middleware(['auth:sanctum', 'check.role:3'])->group(f
 Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang public 
 
     Route::prefix('product')->group(function () {
+
+        // index, store, show, update, destroy
+        // Route::resource('/', ProductController::class);
+
+        Route::get('/{id}', [ProductController::class, 'show']);
+
         //xuất ra 6 sản phẩm mới nhất
         Route::get('latest-products/{categoryId}', [ProductController::class, 'getLatestProductsInCategory'])->name('latest-products');
 
@@ -62,7 +68,13 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
         Route::get('best-selling-products/{categoryId}', [ProductController::class, 'getBestSellingProductsInCategory'])->name('best-selling-products');
 
         // xuất ra những sản phẩm bởi id của category
-        Route::get('indexByCate/{categoryId}', [ProductController::class, 'indexByCategory']); 
+        Route::get('indexByCate/{categoryId}', [ProductController::class, 'indexByCategory']);
+
+        // Lọc sản phẩm theo danh mục và có trạng thái là 3
+        Route::get('listProductWithCategory/{categoryId}', [ProductController::class, 'listProductWithCategory']);
+
+        // Lọc sản phẩm theo thương hiệu và có trạng thái là 3
+        Route::get('listProductWithBrand/{categoryId}', [ProductController::class, 'listProductWithBrand']);
 
         // xuất ra những sản phẩm của user tạo ra
         Route::get('products/user/{userId}', [ProductController::class, 'indexByUser']);
@@ -77,10 +89,7 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
         Route::get('/filter-by-rating', [ProductController::class, 'filterByRating']);
 
         // Lọc sản phẩm theo địa chỉ của shop
-        Route::get('/filter-by-address', [ProductController::class, 'filterByAddress']); 
-
-        
-
+        Route::get('/filter-by-address', [ProductController::class, 'filterByAddress']);
 
 
 
