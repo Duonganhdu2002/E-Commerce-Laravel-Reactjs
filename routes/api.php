@@ -71,7 +71,7 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
         Route::get('indexByCate/{categoryId}', [ProductController::class, 'indexByCategory']);
 
         // Lọc sản phẩm theo danh mục và có trạng thái là 3
-        Route::get('listProductWithCategory/{categoryId}', [ProductController::class, 'listProductWithCategory']);
+        Route::get('listProductWithCategory/{categoryId}', [ProductController::class, 'listProductWithCategory'])->name('product-with-category');
 
         // Lọc sản phẩm theo thương hiệu và có trạng thái là 3
         Route::get('listProductWithBrand/{categoryId}', [ProductController::class, 'listProductWithBrand']);
