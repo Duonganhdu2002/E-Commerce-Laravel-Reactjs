@@ -30,9 +30,8 @@ export default function CategoryProduct() {
                 {data &&
                     data.length > 0 &&
                     data.map((product, index) => (
-                        <Link to={`/product/${product.product_id}`}>
+                        <Link key={index} to={`/product/${product.product_id}`}>
                             <section
-                                key={index}
                                 className="flex flex-col items-center justify-around py-8 mt-4 bg-slate-100 text-center transform duration-500 h-[500px] w-1/2 md:w-1/4 xl:w-1/4 2xl:w-1/5 float-left cursor-pointer"
                             >
                                 <div className=" flex justify-center transform duration-500 hover:-translate-y-2  ">

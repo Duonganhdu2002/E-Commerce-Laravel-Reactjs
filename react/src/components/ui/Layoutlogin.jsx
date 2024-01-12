@@ -1,35 +1,44 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import axios from '../../services/axiosCustom';
+import { useEffect, useState } from 'react';
 import logo from "../../assets/icon/logo.svg";
 import logo_google_1 from "../../assets/icon/Google__G__logo.svg"
-export default function LayoutLogin() {
 
+import { userLogin } from '../../services/authService';
+
+
+export default function LayoutLogin() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const navigate = useNavigate(); // Use useNavigate instead of useHistory
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
-    // Trong component đăng nhập
+    useEffect(() => {
+        let token = localStorage.getItem("token");
+        if (token) {
+            navigate("/");
+        }
+    })
+
     const handleLogin = async () => {
+        if (!email || !password) {
+            setError("Please enter both email and password.");
+            return;
+        }
+
         try {
-            const response = await axios.post("/auth/login", {
-                email: email,
-                password: password,
-            });
-
-            localStorage.setItem('token', response.token);
-            console.log('User logged in successfully:', response);
-
-            // Lấy thông tin về trang trước đó từ localStorage
-            const redirectFrom = localStorage.getItem('redirectFrom');
-
-            // Chuyển hướng đến trang trước đó hoặc một trang mặc định nếu không có thông tin
-            navigate(redirectFrom || '/');
+            let res = await userLogin(email, password);
+            if (res && res.token) {
+                localStorage.setItem("token", res.token);
+                navigate("/");
+            }
+            console.log(res);
         } catch (error) {
-            console.error('Error during login:', error.response);
+            setError("Invalid credentials. Please try again.");
+            console.error(error);
         }
     };
+
 
     return (
         <div className=" flex items-center justify-around bg-slate-200/50 lg:px-10 sm:px-10 py-10">
@@ -60,10 +69,10 @@ export default function LayoutLogin() {
                                 </label>
                                 <div className="mt-2">
                                     <input
-                                        id=" username"
-                                        name=" username"
-                                        type=" username"
-                                        autoComplete=" username"
+                                        id=" email"
+                                        name=" email"
+                                        type=" email"
+                                        autoComplete=" email"
                                         required
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-600 sm:text-sm sm:leading-6"
                                         onChange={(e) => setEmail(e.target.value)}
