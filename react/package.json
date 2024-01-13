@@ -4,14 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --port=3000",
+    "dev": "vite --port=3000 --force",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
+    
   },
   "dependencies": {
-    "@heroicons/react": "^1.0.6",
-    "@reduxjs/toolkit": "^2.0.1",
+    "@heroicons/react": "^2.1.1",
+    "@material-tailwind/react": "^2.1.8",
     "@tailwindcss/forms": "^0.5.7",
     "axios": "^1.6.3",
     "framer-motion": "^10.17.12",
