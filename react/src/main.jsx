@@ -13,7 +13,7 @@ import MenuBar from './components/ui/MenuBar';
 ReactDOM.createRoot(document.getElementById('root')).render(
   <UserProvider>
     <BrowserRouter>
-      <Header />
+      {/* <Header /> */}
       <MenuBar/>
       <App />
       <PopupChat />
