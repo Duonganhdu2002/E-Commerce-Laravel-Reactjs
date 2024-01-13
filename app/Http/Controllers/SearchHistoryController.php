@@ -86,7 +86,29 @@ class SearchHistoryController extends Controller
         }
     }
 
-
+    public function getRecentSearches(Request $request, $id)
+    {
+        try {
+            
+            $recentSearches = search_history::where('user_id', $id)
+                ->orderByDesc('created_at')
+                ->pluck('keyword')
+                ->take(5)
+                ->toArray();
+            
+            return response()->json([
+                'status' => true,
+                'message' => 'Recent search history',
+                'data' => $recentSearches,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Error retrieving recent searches',
+                'data' => null,
+            ], 500);
+        }
+    }
 
 
 
@@ -183,4 +205,6 @@ class SearchHistoryController extends Controller
            'data' => $products,
        ], 200);
    }
+
+
 }
