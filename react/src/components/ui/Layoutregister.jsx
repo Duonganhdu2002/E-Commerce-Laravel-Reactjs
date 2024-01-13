@@ -1,14 +1,13 @@
 // import React from "react";
 import { Link } from "react-router-dom";
+import { Button } from "@material-tailwind/react";
 import LogoGoogle1 from "../../assets/icon/Google__G__logo.svg";
 import Logo from "../../assets/icon/logo.svg";
 
 export default function LayoutRegister() {
     return (
         <div className=" flex items-center justify-around bg-slate-200/50">
-            <div
-                className="flex items-center px-10 h-[880px]"
-            >
+            <div className="flex items-center px-10 h-[880px]">
                 <div className="flex flex-1 flex-col justify-center px-14 py-8 bg-white shadow-xl rounded-3xl">
                     <Link to="/">
                         <img
@@ -103,7 +102,9 @@ export default function LayoutRegister() {
                                             className=" block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-600 sm:text-sm sm:leading-6 px-4"
                                         >
                                             <option value="male">Male</option>
-                                            <option value="female">Female</option>
+                                            <option value="female">
+                                                Female
+                                            </option>
                                             <option value="other">Other</option>
                                         </select>
                                     </div>
@@ -132,17 +133,25 @@ export default function LayoutRegister() {
                             </div>
 
                             <div className="flex items-center">
-                                <input type="checkbox" name="" id="" className=" w-8 h-4" />
-                                <p className=" ml-2">I have agreed to all terms of Company e-commerce platform</p>
+                                <input
+                                    type="checkbox"
+                                    name=""
+                                    id=""
+                                    className=" w-8 h-4"
+                                />
+                                <p className=" ml-2">
+                                    I have agreed to all terms of Company
+                                    e-commerce platform
+                                </p>
                             </div>
 
                             <div>
-                                <button
-                                    type="submit"
-                                    className="flex w-full justify-center rounded-md bg-slate-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600"
+                                <Button
+                                    type="button"
+                                    className="flex w-full justify-center bg-[#1e293b] text-white "
                                 >
-                                    Sign in
-                                </button>
+                                    Sign up
+                                </Button>
                             </div>
                         </form>
 
@@ -153,23 +162,26 @@ export default function LayoutRegister() {
                             <span className="flex-1 absolute top-1/2 left-0 right-0 h-0.5 bg-gray-700/50"></span>
                         </p>
 
-                        <div className=" flex items-center justify-center my-3 h-12 rounded-xl border-2 cursor-pointer">
-                            <img src={LogoGoogle1} alt="" className=" w-10" />
-                            <p
-                                className=" mb-2 mr-5 ml-3 font-light text-xl"
-                            >
-                                |
-                            </p>
-                            <p
-                                className=" mb-1 font-semibold text-2xl text-slate-500/90"
-                            >
-                                Google
-                            </p>
-                        </div>
+                        <div>                        <Button
+                            size="lg"
+                            variant="outlined"
+                            color="blue-gray"
+                            className="flex w-full justify-center items-center mt-4"
+                        >
+                            <img
+                                src="https://docs.material-tailwind.com/icons/google.svg"
+                                alt="metamask"
+                                className="h-6 w-6"
+                            />
+                            GOOGLE
+                        </Button></div>
 
                         <div className=" mt-5">
                             Already member?&nbsp;
-                            <Link to="/Login" className="font-semibold text-slate-500 hover:text-black hover:underline">
+                            <Link
+                                to="/Login"
+                                className="font-semibold text-slate-500 hover:text-black hover:underline"
+                            >
                                 {/* &nbsp; là dấu cách */}
                                 Login
                             </Link>

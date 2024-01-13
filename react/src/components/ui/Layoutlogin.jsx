@@ -1,16 +1,15 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Button } from "@material-tailwind/react";
 import logo from "../../assets/icon/logo.svg";
-import logo_google_1 from "../../assets/icon/Google__G__logo.svg"
+import logo_google_1 from "../../assets/icon/Google__G__logo.svg";
 
-import { userLogin } from '../../services/authService';
-
+import { userLogin } from "../../services/authService";
 
 export default function LayoutLogin() {
-
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -18,7 +17,7 @@ export default function LayoutLogin() {
         if (token) {
             navigate("/");
         }
-    })
+    });
 
     const handleLogin = async () => {
         if (!email || !password) {
@@ -39,12 +38,9 @@ export default function LayoutLogin() {
         }
     };
 
-
     return (
         <div className=" flex items-center justify-around bg-slate-200/50 lg:px-10 sm:px-10 py-10">
-            <div
-                className="flex items-center px-8 w-[65vh]"
-            >
+            <div className="flex items-center px-8 w-[65vh]">
                 <div className="flex flex-1 flex-col justify-center px-6 py-12 bg-white shadow-xl rounded-3xl">
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                         <Link to="/">
@@ -52,7 +48,8 @@ export default function LayoutLogin() {
                                 className="mx-auto h-28"
                                 src={logo}
                                 alt="Your Company"
-                            /></Link>
+                            />
+                        </Link>
                         <h2 className="mt-6 text-center text-xl font-semibold leading-9 tracking-tight text-gray-900">
                             Welcome to company! Please Login.
                         </h2>
@@ -75,7 +72,9 @@ export default function LayoutLogin() {
                                         autoComplete=" email"
                                         required
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-600 sm:text-sm sm:leading-6"
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        onChange={(e) =>
+                                            setEmail(e.target.value)
+                                        }
                                     />
                                 </div>
                             </div>
@@ -89,7 +88,8 @@ export default function LayoutLogin() {
                                         Password *
                                     </label>
                                     <div className="text-sm">
-                                        <Link to="#"
+                                        <Link
+                                            to="#"
                                             className="font-semibold text-slate-500 hover:text-slate-900 hover:underline"
                                         >
                                             Forgot password?
@@ -104,17 +104,21 @@ export default function LayoutLogin() {
                                         autoComplete="current-password"
                                         required
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-600 sm:text-sm sm:leading-6"
-                                        onChange={(e) => setPassword(e.target.value)}
+                                        onChange={(e) =>
+                                            setPassword(e.target.value)
+                                        }
                                     />
                                 </div>
                             </div>
 
                             <div>
-                                <button type="button" onClick={handleLogin}
-                                    className="flex w-full justify-center rounded-md bg-slate-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600"
+                                <Button
+                                    type="button"
+                                    onClick={handleLogin}
+                                    className="flex w-full justify-center bg-[#1e293b] text-white "
                                 >
                                     Sign in
-                                </button>
+                                </Button>
                             </div>
                         </form>
 
@@ -125,17 +129,26 @@ export default function LayoutLogin() {
                             <span className="flex-1 absolute top-1/2 left-0 right-0 h-0.5 bg-gray-700/50"></span>
                         </p>
 
-                        <div className=' flex items-center justify-center my-3 h-12 rounded-xl border-2 cursor-pointer'>
-                            <img src={logo_google_1} alt="" className=' w-10' />
-                            <p className=' mb-2 mr-5 ml-3 font-light text-xl'>|</p>
-                            <p className=" mb-1 font-semibold text-2xl text-slate-500/90">
-                                Google
-                            </p>
-                        </div>
+                        <Button
+                            size="lg"
+                            variant="outlined"
+                            color="blue-gray"
+                            className="flex w-full justify-center items-center mt-4"
+                        >
+                            <img
+                                src="https://docs.material-tailwind.com/icons/google.svg"
+                                alt="metamask"
+                                className="h-6 w-6"
+                            />
+                            GOOGLE
+                        </Button>
 
                         <div className=" mt-5">
                             New member?&nbsp;
-                            <Link to="/register" className="font-semibold text-slate-500 hover:text-black hover:underline">
+                            <Link
+                                to="/register"
+                                className="font-semibold text-slate-500 hover:text-black hover:underline"
+                            >
                                 Register
                             </Link>
                             &nbsp;here.
