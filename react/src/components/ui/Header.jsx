@@ -51,7 +51,7 @@ const Header = () => {
     return (
         <div>
             <div className="hidden lg:block">
-                <div className="bg-slate-900 text-white flex justify-between px-52 items-center h-[5vh]">
+                <div className=" bg-[#1e293b] text-white flex justify-between px-52 items-center h-[5vh]">
                     <div className="hidden xl:block">
                         <Link to="#">BUSINESS LOGIN</Link>
                     </div>
