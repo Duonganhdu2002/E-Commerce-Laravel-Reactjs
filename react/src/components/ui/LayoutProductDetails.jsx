@@ -62,7 +62,7 @@ export default function ProductDetails() {
                                             <img
                                             onClick={() => handleClickIndexImage(index)}
                                             key={index}
-                                                className="w-[100px] h-[100px] object-cover p-1"
+                                                className="w-[120px] h-[120px] object-cover mb-1 rounded-xl cursor-pointer"
                                                 src={`../../../src/assets/image/${image}`}
                                                 alt={`Image ${index}`}
                                             />
@@ -71,7 +71,7 @@ export default function ProductDetails() {
                                 </div>
                                 {/* In sản phẩm lớn  */}
                                 {productInfor.image_urls && productInfor.image_urls.length > 1 && (
-                                    <div className="w-full h-[460px] rounded-2xl bg-gray-300 mb-4">
+                                    <div className="w-full h-[460px] rounded-2xl bg-gray-300 mb-4 mx-2">
                                         <img
                                             className="w-full h-full object-cover rounded-2xl"
                                             src={`../../../src/assets/image/${productInfor.image_urls[indexImage]}`}
@@ -176,7 +176,7 @@ export default function ProductDetails() {
                     <img
                         src={Profile}
                         alt=""
-                        className=" rounded-3xl border-sky-900 border-2 w-20"
+                        className=" rounded-3xl border-light-blue-900 border-2 w-20"
                     />
                     <p className=" font-semibold text-lg ml-4 text-white">
                         Shop uy tin so 1 VietNam
@@ -190,27 +190,27 @@ export default function ProductDetails() {
                     <p className=" my-2 text-xl font-bold">PRODUCT REVIEWS</p>
                     {/* Div lọc sao đánh giá */}
                     <div className=" flex items-center justify-center py-2 w-full mb-2">
-                        <button className=" flex items-center justify-center h-10 w-20 border-slate-800 border rounded-xl mr-2 bg-white">
+                        <button className=" flex items-center justify-center h-10 w-20 border-[#1e293b] border rounded-xl mr-2 bg-white">
                             All
                         </button>
-                        <button className="flex items-center justify-center h-10 w-20 border-slate-800 border rounded-xl mr-2 bg-white">
+                        <button className="flex items-center justify-center h-10 w-20 border-[#1e293b] border rounded-xl mr-2 bg-white">
                             5 Star
                         </button>
-                        <button className="flex items-center justify-center h-10 w-20 border-slate-800 border rounded-xl mr-2 bg-white">
+                        <button className="flex items-center justify-center h-10 w-20 border-[#1e293b] border rounded-xl mr-2 bg-white">
                             4 Star
                         </button>
-                        <button className="flex items-center justify-center h-10 w-20 border-slate-800 border rounded-xl mr-2 bg-white">
+                        <button className="flex items-center justify-center h-10 w-20 border-[#1e293b] border rounded-xl mr-2 bg-white">
                             3 Star
                         </button>
-                        <button className="flex items-center justify-center h-10 w-20 border-slate-800 border rounded-xl mr-2 bg-white">
+                        <button className="flex items-center justify-center h-10 w-20 border-[#1e293b] border rounded-xl mr-2 bg-white">
                             2 Star
                         </button>
-                        <button className="flex items-center justify-center h-10 w-20 border-slate-800 border rounded-xl mr-2 bg-white">
+                        <button className="flex items-center justify-center h-10 w-20 border-[#1e293b] border rounded-xl mr-2 bg-white">
                             1 Star
                         </button>
                     </div>
                     {/* Div đánh giá */}
-                    <div className=" flex flex-col mt-8 bg-slate-200 w-full px-4 border-b-2 border-slate-800">
+                    <div className=" flex flex-col mt-8 bg-[#e2e8f0]/70 w-full px-4 border-b-2 border-[#1e293b] rounded-t-3xl">
                         {/* Div của profile và đánh giá sao, ngày giờ đánh giá */}
                         <div className="flex my-4">
                             <div>
@@ -267,7 +267,7 @@ export default function ProductDetails() {
                             </div>
                         </div>
                         {/* Div phản hồi của nhà bán hàng */}
-                        <div className=" flex bg-white/70 my-4">
+                        <div className=" flex bg-white/90 my-4 p-3 rounded-xl">
                             <img src={Reply} alt="" className="w-5 mr-2" />
                             <p>
                                 Thank you so much for taking the time to share
@@ -281,19 +281,19 @@ export default function ProductDetails() {
                         <img className="w-full h-full" src={Img1} alt="" />
                         <p className=" text-xl">Product name</p>
                         <p className=" text-neutral-500">Best sales</p>
-                        <p className=" text-lg text-slate-800">$193.00</p>
+                        <p className=" text-lg text-[#1e293b]">$193.00</p>
                     </div>
                     <div className=" flex flex-col p-4 float-left">
                         <img className="w-full h-full" src={Img1} alt="" />
                         <p className=" text-xl">Product name</p>
                         <p className=" text-neutral-500">Best sales</p>
-                        <p className=" text-lg text-slate-800">$193.00</p>
+                        <p className=" text-lg text-[#1e293b]">$193.00</p>
                     </div>
                     <div className=" flex flex-col p-4 float-left">
                         <img className="w-full h-full" src={Img1} alt="" />
                         <p className=" text-xl">Product name</p>
                         <p className=" text-neutral-500">Best sales</p>
-                        <p className=" text-lg text-slate-800">$193.00</p>
+                        <p className=" text-lg text-[#1e293b]">$193.00</p>
                     </div>
                 </div>
             </div>

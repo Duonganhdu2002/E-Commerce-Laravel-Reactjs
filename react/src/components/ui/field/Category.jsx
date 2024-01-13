@@ -45,10 +45,10 @@ export default function Category() {
         <div className=" flex justify-center items-center">
             <div className=" w-[100%] md:[w-90%] lg:[80%]">
                 <p className='text-sm md:text-lg lg:text-xl text-gray-700 ml-2 my-2 md:my-4 lg:my-6 md:ml-[5%] lg:ml-[10%]'>CATGEGORY</p>
-                <div className="relative px-0 lg:px-[10%] md:px-[5%] overflow-hidde">
+                <div className="relative px-0 lg:px-[10%] md:px-[5%] overflow-hidden">
                     <div
                         id="categoryContainer"
-                        className="flex px-8 sm:px-4 md:px-8 xl:px-0 items-center overflow-x-hidden relative"
+                        className="flex px-8 sm:px-4 md:px-8 xl:px-0 items-center overflow-x-hidden relative z-10"
                     >
                         {listCategoryById &&
                             listCategoryById.length > 0 &&
@@ -68,17 +68,17 @@ export default function Category() {
                                 </Link>
                             ))}
                     </div>
-                    <div className="flex justify-between h-full absolute top-0 left-0 right-0 z-20  px-0 2xl:px-[10%] xl:px-[10%] lg:px-[10%] md:px-[5%] sm:px-0  xl:hidden">
+                    <div className="flex justify-between h-full absolute top-0 left-0 right-0 px-0 2xl:px-[10%] xl:px-[10%] lg:px-[10%] md:px-[5%] sm:px-0  xl:hidden">
                         <button
                             onClick={scrollLeft}
-                            className=" w-6 bg-gray-200/80 hover:bg-gray-500/40"
+                            className=" w-6 bg-gray-200/80 hover:bg-gray-500/40 z-20"
                         >
                             <p className=" text-xl text-slate-500">&lt;</p>
 
                         </button>
                         <button
                             onClick={scrollRight}
-                            className="  w-6 bg-gray-200/80 hover:bg-gray-500/40"
+                            className="  w-6 bg-gray-200/80 hover:bg-gray-500/40 z-20"
                         >
                             <p className=" text-xl text-slate-500">&gt;</p>
                         </button>
