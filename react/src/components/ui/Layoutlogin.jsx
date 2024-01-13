@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Button } from "@material-tailwind/react";
 import logo from "../../assets/icon/logo.svg";
-import logo_google_1 from "../../assets/icon/Google__G__logo.svg";
+import LogoGoogle1 from "../../assets/icon/Google__G__logo.svg";
 
 import { userLogin } from "../../services/authService";
 
@@ -136,7 +136,7 @@ export default function LayoutLogin() {
                             className="flex w-full justify-center items-center mt-4"
                         >
                             <img
-                                src="https://docs.material-tailwind.com/icons/google.svg"
+                                src={LogoGoogle1}
                                 alt="metamask"
                                 className="h-6 w-6"
                             />

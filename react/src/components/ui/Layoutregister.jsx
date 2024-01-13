@@ -169,7 +169,7 @@ export default function LayoutRegister() {
                             className="flex w-full justify-center items-center mt-4"
                         >
                             <img
-                                src="https://docs.material-tailwind.com/icons/google.svg"
+                                src={LogoGoogle1}
                                 alt="metamask"
                                 className="h-6 w-6"
                             />
