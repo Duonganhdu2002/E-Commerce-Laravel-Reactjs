@@ -33,7 +33,7 @@ const Container = () => {
                 loop={true}
             >
                 {imagePaths.map((path, index) => (
-                    <img key={index} src={path} alt="" className="rounded-xl" />
+                    <img key={index} src={path} alt="" className="rounded-3xl p-2 object-cover object-center" />
                 ))}
             </Carousel>
         </div>
