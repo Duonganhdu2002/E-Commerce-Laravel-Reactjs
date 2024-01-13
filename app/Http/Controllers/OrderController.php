@@ -183,4 +183,45 @@ class OrderController extends Controller
             return response()->json($arr, 500);
         }
     }
+
+    public function getOrderDetails($orderId)
+    {
+        try {
+           
+            $order = Order::with(['items.product'])->findOrFail($orderId);
+
+            
+            $items = $order->items->map(function ($item) {
+                return [
+                    'product_id' => $item->product->product_id,
+                    'product_name' => $item->product->name,
+                    'quantity' => $item->quantity,
+                ];
+            });
+
+          
+            $details = [
+                'order_id' => $order->order_id,
+                'user_id' => $order->user_id,
+                'order_status_id' => $order->order_status_id,
+                'shipping_method_id' => $order->shipping_method_id,
+                'total' => $order->total,
+                'created_at' => $order->created_at,
+                'modified_at' => $order->modified_at,
+                'items' => $items,
+            ];
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Chi tiết đơn hàng',
+                'data' => $details,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Đơn hàng không tồn tại',
+                'data' => null,
+            ], 404);
+        }
+    }
 }

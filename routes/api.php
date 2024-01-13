@@ -95,6 +95,8 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
         //Gợi ý sản phẩm
         Route::get('/recommend/{user_id}', [ProductController::class, 'recommendBaseOnSearch']);
 
+        Route::get('/details/{order_id}', [OrderController::class, 'getOrderDetails']);
+
 
 
         Route::prefix('img')->group(function () {
@@ -125,6 +127,8 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
     Route::prefix('order')->group(function () {
         Route::post('/', [OrderController::class, 'checkout']);
         Route::post('/{id}', [OrderController::class, 'total']);
+        //chi tiết đơn hàng
+        Route::get('/details/{order_id}', [OrderController::class, 'getOrderDetails']);
     });
 
 });
