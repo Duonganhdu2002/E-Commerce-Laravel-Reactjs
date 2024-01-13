@@ -15,6 +15,7 @@ import FiledLayout from "../components/ui/FiledLayout";
 import SuggestedProducts from '../components/ui/SuggestedProducts';
 import UserPagination from "../components/ui/UserPagination";
 import Modal from "../components/modal/modal";
+import CategoryBar from "../components/ui/CategoryBar";
 
 
 export default function Home() {
@@ -26,6 +27,7 @@ export default function Home() {
             {/* <Modal/> */}
             {/* <UserPagination/> */}
             <Container />
+            <CategoryBar/>
             <Banner1 />
             <FurniturePrview />
             <SmartPhone />
