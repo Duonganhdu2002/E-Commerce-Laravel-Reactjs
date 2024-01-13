@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Banner4 from "../../assets/banner/banner_4.png";
 import Banner5 from "../../assets/banner/banner_5.png";
+import Cart from "../../assets/icon/add-to-cart.svg"
 import { fetchTop6CategoryById } from "../../services/productService";
 
 export default function FurniturePrview() {
@@ -28,26 +29,11 @@ export default function FurniturePrview() {
     return (
         <div className="flex justify-center">
 
-            <div className="h-auto w-[80%] flex mt-8 mb-8 justify-center items-center">
+            <div className="h-auto w-[80%] mt-8 mb-8">
 
-                <div className="w-[100%] md:w-[20%]">
+                <div className="my-auto justify-between items-center grid grid-cols-1 md:grid-cols-2 justify-items-center gap-y-8 gap-x-6 ">
 
-                    <h2 className='py-2 font-medium text-xl md:hidden' >Furniture</h2>
-
-
-                    <div className="hidden text-md border-b-2 p-4 px-8 justify-between">
-                        <Link to="#" className="">
-                            Best sale
-                        </Link>
-                        <Link to="#" className="">
-                            Featured
-                        </Link>
-                        <Link to="#" className="" >
-                            New arrivals
-                        </Link>
-                    </div>
-
-                    <div className="h-1/2 relative text-center ">
+                    <div className="h-[200px] w-full relative text-center flex">
                         <div className=" absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-base">
                             <p>NEW ARRIVALS</p>
                             <p>
@@ -56,19 +42,19 @@ export default function FurniturePrview() {
                             <p>Temport sem finibus</p>
                             <p className=" font-bold">$299.00</p>
                             <Link to="#">
-                                <button className=" md:hidden mt-4 bg-slate-800 bg-opacity-70 p-2 px-4 border rounded-full">See more</button>
+                                <button className=" mt-4 bg-slate-800 bg-opacity-70 p-2 px-4 border rounded-full">See more</button>
                             </Link>
                         </div>
                         <img
                             src={Banner4}
                             alt=""
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover rounded-xl"
                         />
                     </div>
 
 
 
-                    <div className="h-1/2 relative text-center mt-4 ">
+                    <div className="h-[200px] w-full relative text-center mt-4 ">
                         <div className=" absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-base">
                             <p>BEST OFFERS</p>
                             <p>
@@ -77,43 +63,47 @@ export default function FurniturePrview() {
                             <p>Temport sem finibus</p>
                             <p className=" font-bold">$179.00</p>
                             <Link to="#">
-                                <button className=" md:hidden mt-4 bg-slate-800 bg-opacity-70 p-2 px-4 border rounded-full">See more</button>
+                                <button className=" mt-4 bg-slate-800 bg-opacity-70 p-2 px-4 border rounded-full">See more</button>
                             </Link>
 
                         </div>
                         <img
                             src={Banner5}
                             alt=""
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover rounded-xl"
                         />
                     </div>
 
                 </div>
 
-                <div className="w-[80%] hidden md:block">
-                    <div className=" text-xl border-b-2 p-4">
-                        <Link to="#" className="p-6">
-                            Best sale
-                        </Link>
-                        <Link to="#" className="p-6">
-                            Featured
-                        </Link>
-                        <Link to="#" className="p-6">
-                            New arrivals
-                        </Link>
-                    </div>
-                    <div className="">
+                <div className="w-[100%] mt-12">
+
+                    <section id="Projects"
+                        class=" mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-8 gap-x-6 mt-6 mb-5">
                         {
                             listTop6Furniture && listTop6Furniture.length > 0 && listTop6Furniture.map((product, index) => (
-                                <div key={index} className="w-[33%] p-4 float-left">
-                                    <img className="w-full h-[220px] lg:h-[300px] xl:h-[330px] 2xl:h-[500px] object-cover rounded-xl" src={`/src/assets/image/${product.images[0]}`} alt="img" />
-                                    <p className=" mt-2 text-xl font-semibold">{product.name}</p>
-                                    <p className="text-neutral-500">Best sales</p>
-                                    <p className="text-lg text-slate-700 font-medium">${product.price}</p>
+                                <div key={index} class="w-full bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+                                    <a href="#">
+                                        <img src={`/src/assets/image/${product.images[1]}`}
+                                            alt="Product" class=" h-120 w-full object-cover rounded-t-xl" />
+                                        <div class="px-4 py-3 w-full">
+                                            <span class="text-gray-400 mr-3 uppercase text-xs">Brand</span>
+                                            <p class="text-lg font-bold text-black truncate block capitalize">{product.name}</p>
+                                            <div class="flex items-center">
+                                                <p class="text-lg font-semibold text-black cursor-auto my-3">${product.price - (product.price) * 0.1}</p>
+                                                <del>
+                                                    <p class="text-sm text-gray-600 cursor-auto ml-2">${product.price}</p>
+                                                </del>
+                                                <div class="ml-auto">
+                                                    <img src={Cart} alt="" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
                                 </div>
                             ))
                         }
-                    </div>
+                    </section>
                 </div>
 
             </div>

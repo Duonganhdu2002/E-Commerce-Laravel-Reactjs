@@ -24,8 +24,8 @@ export default function FiledLayout() {
     // console.log(listField);
 
     return (
-        <div className='flex justify-center items-center '>
-            <div className='w-[95%] md:w-[90%] lg:w-[80%] my-4 xl:flex xl:justify-between'>
+        <div className='flex justify-center items-center my-8 '>
+            <div className='w-[95%] md:w-[90%] lg:w-[80%] mx-auto grid grid-cols-5 lg:grid-cols-8 xl:grid-cols-10 md:grid-cols-6 justify-items-center justify-center gap-y-8 gap-x-6'>
                 {
                     listField && listField.length > 0 && listField.map((fields, index) => (
                         <Link to={`/fields/${fields.field_id}`} key={`fields-${index}`}>
