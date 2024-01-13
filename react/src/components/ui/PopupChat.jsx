@@ -38,7 +38,7 @@ const PopupChat = () => {
                     >
                         {/* Your chat content goes here */}
                         <div className=" fixed bottom-0 right-0 mr-4 mb-4 bg-white p-4 shadow-2xl rounded-lg w-[700px] hidden md:block">
-                            <div className=" flex">
+                            <div className=" flex ">
                                 <div>
                                     <button
                                         onClick={togglePopup}
@@ -70,11 +70,8 @@ const PopupChat = () => {
                                         />
                                     </div>
                                     <div className=" flex flex-col">
-                                        <p className=" font-medium inline-block bg-white/70 px-2 rounded-lg mb-2 w-fit">
+                                        <p className=" font-bold text-lg inline-block bg-white/60 px-2 rounded-lg mb-2 w-fit">
                                             Thai Cong Shop
-                                        </p>
-                                        <p className="text-green-800 inline bg-white/70 px-2 rounded-lg w-fit">
-                                            Online
                                         </p>
                                     </div>
                                 </div>
@@ -100,12 +97,11 @@ const PopupChat = () => {
                                                 Thai Cong Shop
                                             </p>
                                             <p className=" text-gray-500">
-                                                Offline
+                                            This is the cha...
                                             </p>
                                         </div>
                                     </div>
-
-                                    <div className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-gray-100/40 bg-gray-300">
+                                    <div className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-blue-gray-100/40">
                                         <div className=" flex relative">
                                             <img
                                                 src={Avatar}
@@ -122,13 +118,12 @@ const PopupChat = () => {
                                             <p className=" font-medium">
                                                 Thai Cong Shop
                                             </p>
-                                            <p className="text-green-800">
-                                                Online
+                                            <p className=" text-gray-500">
+                                            This is the cha...
                                             </p>
                                         </div>
                                     </div>
-
-                                    <div className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-gray-300/30">
+                                    <div className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-blue-gray-100/40">
                                         <div className=" flex relative">
                                             <img
                                                 src={Avatar}
@@ -145,13 +140,12 @@ const PopupChat = () => {
                                             <p className=" font-medium">
                                                 Thai Cong Shop
                                             </p>
-                                            <p className="text-green-800">
-                                                Online
+                                            <p className=" text-gray-500">
+                                            This is the cha...
                                             </p>
                                         </div>
                                     </div>
-
-                                    <div className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-gray-300/30">
+                                    <div className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-blue-gray-100/40">
                                         <div className=" flex relative">
                                             <img
                                                 src={Avatar}
@@ -168,13 +162,12 @@ const PopupChat = () => {
                                             <p className=" font-medium">
                                                 Thai Cong Shop
                                             </p>
-                                            <p className="text-green-800">
-                                                Online
+                                            <p className=" text-gray-500">
+                                            This is the cha...
                                             </p>
                                         </div>
                                     </div>
-
-                                    <div className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-gray-300/30">
+                                    <div className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-blue-gray-100/40">
                                         <div className=" flex relative">
                                             <img
                                                 src={Avatar}
@@ -191,13 +184,12 @@ const PopupChat = () => {
                                             <p className=" font-medium">
                                                 Thai Cong Shop
                                             </p>
-                                            <p className="text-green-800">
-                                                Online
+                                            <p className=" text-gray-500">
+                                            This is the cha...
                                             </p>
                                         </div>
                                     </div>
-
-                                    <div className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-gray-300/30">
+                                    <div className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-blue-gray-100/40">
                                         <div className=" flex relative">
                                             <img
                                                 src={Avatar}
@@ -214,31 +206,8 @@ const PopupChat = () => {
                                             <p className=" font-medium">
                                                 Thai Cong Shop
                                             </p>
-                                            <p className="text-green-800">
-                                                Online
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-gray-300/30">
-                                        <div className=" flex relative">
-                                            <img
-                                                src={Avatar}
-                                                alt=""
-                                                className="w-14 h-14 mr-4 rounded-xl border-2 border-gray-500"
-                                            />
-                                            <img
-                                                src={Checked}
-                                                alt=""
-                                                className="w-6 absolute bg-white rounded-full ml-10 mt-9"
-                                            />
-                                        </div>
-                                        <div className="">
-                                            <p className=" font-medium">
-                                                Thai Cong Shop
-                                            </p>
-                                            <p className="text-green-800">
-                                                Online
+                                            <p className=" text-gray-500">
+                                            This is the cha...
                                             </p>
                                         </div>
                                     </div>
