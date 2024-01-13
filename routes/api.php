@@ -10,6 +10,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ShoppingCartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\SearchHistoryController;
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -80,7 +81,7 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
         Route::get('products/user/{userId}', [ProductController::class, 'indexByUser']);
 
         // chức năng tìm kiếm sản phẩm theo tên của sản phẩm, brand, category
-        Route::get('/search-products', [ProductController::class, 'search']);
+        Route::get('/search-products', [SearchHistoryController::class, 'search']);
 
         // Lọc sản phẩm theo giá
         Route::get('/filter-by-price', [ProductController::class, 'filterByPrice']);
@@ -90,6 +91,9 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
 
         // Lọc sản phẩm theo địa chỉ của shop
         Route::get('/filter-by-address', [ProductController::class, 'filterByAddress']);
+
+        //Gợi ý sản phẩm
+        Route::get('/recommend/{user_id}', [ProductController::class, 'recommendBaseOnSearch']);
 
 
 
