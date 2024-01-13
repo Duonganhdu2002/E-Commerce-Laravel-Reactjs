@@ -71,7 +71,7 @@ export default function SmartPhone() {
                 <div className="w-[100%] mt-12">
                     <section
                         id="Projects"
-                        className=" mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-8 gap-x-6 mt-6 mb-5"
+                        className=" mx-auto grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-4 md:grid-cols-2 justify-items-center justify-center gap-y-8 gap-x-6 mt-6 mb-5"
                     >
                         {listTop6SmartPhone &&
                             listTop6SmartPhone.length > 0 &&
@@ -79,15 +79,15 @@ export default function SmartPhone() {
                                 <Link key={index} to={`/product/${product.product_id}`}>
                                     <div className="w-full h-[550px] bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
                                         <img
+                                            className=" h-[80%] w-[380px] object-cover rounded-t-xl"
                                             src={`/src/assets/image/${product.images[1]}`}
                                             alt="Product"
-                                            className=" h-[80%] w-full object-cover rounded-t-xl"
                                         />
-                                        <div className="px-4 py-3 w-full">
+                                        <div className="px-4 py-3 h-[20%] w-full">
                                             <span className="text-gray-400 mr-3 uppercase text-xs">Brand</span>
                                             <p className="text-lg font-bold text-black truncate block capitalize">{product.name}</p>
                                             <div className="flex items-center">
-                                                <p className="text-lg font-semibold text-black cursor-auto my-3">${product.price - (product.price) * 0.1}</p>
+                                                <p className="text-lg font-semibold text-black cursor-auto my-3">${(product.price - (product.price) * 0.1).toFixed(2)}</p>
                                                 <del>
                                                     <p className="text-sm text-gray-600 cursor-auto ml-2">${product.price}</p>
                                                 </del>

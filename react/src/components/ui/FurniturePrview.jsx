@@ -73,7 +73,7 @@ export default function FurniturePrview() {
                 <div className="w-[100%] mt-12">
                     <section
                         id="Projects"
-                        className=" mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-8 gap-x-6 mt-6 mb-5"
+                        className=" mx-auto grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-4 md:grid-cols-2 justify-items-center justify-center gap-y-8 gap-x-6 mt-6 mb-5"
                     >
                         {listTop6Furniture &&
                             listTop6Furniture.length > 0 &&
@@ -83,13 +83,13 @@ export default function FurniturePrview() {
                                         <img
                                             src={`/src/assets/image/${product.images[1]}`}
                                             alt="Product"
-                                            className=" h-[80%] w-full object-cover rounded-t-xl"
+                                            className=" h-[80%] w-[380px] object-cover rounded-t-xl"
                                         />
                                         <div className="px-4 py-3 w-full">
                                             <span className="text-gray-400 mr-3 uppercase text-xs">Brand</span>
                                             <p className="text-lg font-bold text-black truncate block capitalize">{product.name}</p>
                                             <div className="flex items-center">
-                                                <p className="text-lg font-semibold text-black cursor-auto my-3">${product.price - (product.price) * 0.1}</p>
+                                                <p className="text-lg font-semibold text-black cursor-auto my-3">${(product.price - (product.price) * 0.1).toFixed(2)}</p>
                                                 <del>
                                                     <p className="text-sm text-gray-600 cursor-auto ml-2">${product.price}</p>
                                                 </del>

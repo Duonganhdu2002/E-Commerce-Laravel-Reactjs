@@ -30,7 +30,7 @@ export default function FiledLayout() {
                     listField && listField.length > 0 && listField.map((fields, index) => (
                         <Link to={`/fields/${fields.field_id}`} key={`fields-${index}`}>
 
-                            <div className=' flex flex-col float-left w-[60px] lg:w-[90px] h-auto mx-2 '>
+                            <div className='flex flex-col float-left w-[60px] lg:w-[90px] h-auto mx-2 duration-500 hover:scale-110 hover:transform hover:-translate-y-2'>
 
                                 <div className='h-[60px] lg:h-[90px] border border-gray-300 rounded-xl flex justify-center items-center'>
                                     <img className=' w-6 h-6' src={`src/assets/icon_field/${fields.icon_field}`} alt="" />
