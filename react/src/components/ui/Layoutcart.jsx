@@ -15,7 +15,6 @@ export default function Layoutcart() {
                     {/* Div của dòng đầu tiên */}
                     <div className=" flex items-center bg-white px-4 h-[5vh] mt-4 font-bold shadow-2xl rounded-lg">
                         <div className=" flex items-center justify-center h-full w-[6vh]">
-                            {" "}
                             <input type="checkbox" className=" w-5 h-5" />
                         </div>
                         <div className=" w-[48%] flex justify-center border-l ">
@@ -93,7 +92,7 @@ export default function Layoutcart() {
                             </div>
                         </div>
                         {/* Div của voucher */}
-                        <div className="flex justify-between border-t-2 px-10 h-10 cursor-pointer hover:bg-slate-300/30">
+                        <div className="flex justify-between border-t-2 px-10 h-10 cursor-pointer hover:bg-[#90a1b96c]/10">
                             <div className="flex items-center">
                                 <img
                                     src={Voucher}
@@ -107,7 +106,7 @@ export default function Layoutcart() {
                             </div>
                         </div>
                         {/* Div của phương thức vận chuyển */}
-                        <div className="flex justify-between border-t-2 px-10 h-10 cursor-pointer hover:bg-slate-300/30">
+                        <div className="flex justify-between border-t-2 px-10 h-10 cursor-pointer hover:bg-[#90a1b96c]/10">
                             <div className="flex items-center">
                                 <img
                                     src={Delivery}
@@ -145,7 +144,7 @@ export default function Layoutcart() {
                         </div>
                         <div>
                             <Link to="/shop">
-                                <button className=" w-52 h-14 bg-slate-600 text-white rounded-xl hover:bg-neutral-700">
+                                <button className=" w-52 h-14 bg-[#1e293b] text-white rounded-xl hover:bg-[#1e293b]/70">
                                     Buy Now
                                 </button>
                             </Link>
@@ -240,7 +239,7 @@ export default function Layoutcart() {
                     </div>
                     <div className=" flex items-center">
                         <Link to="/shop">
-                            <button className=" w-40 h-14 bg-slate-600 text-white rounded-xl">
+                            <button className=" w-40 h-14 bg-[#1e293b] text-white rounded-xl">
                                 Buy Now
                             </button>
                         </Link>
