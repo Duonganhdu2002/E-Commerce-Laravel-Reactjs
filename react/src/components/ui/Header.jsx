@@ -8,7 +8,7 @@ import more from "../../assets/icon/more.svg";
 import user from "../../assets/icon/user-svgrepo-com.svg";
 
 const PopupMenu = ({ items, onClose }) => (
-    <div className="absolute right-2 bg-slate-900 text-white p-4 rounded-xl shadow-xl z-50 mt-2">
+    <div className="absolute right-2 bg-[#1e293b] text-white p-4 rounded-xl shadow-xl z-50 mt-2">
         <ul>
             {items.map((item, index) => (
                 <li key={index} className="py-2.5">
@@ -225,7 +225,7 @@ const Header = () => {
                 </div>
             </div>
             <div className="block lg:hidden">
-                <div className="bg-slate-900 text-white flex justify-between px-100 h-12 items-center">
+                <div className="bg-[#1e293b] text-white flex justify-between px-100 h-12 items-center">
                     <div className="flex justify-between px-5 items-center">
                         <div className="flex items-center">
                             <Link to="" className="px-2">

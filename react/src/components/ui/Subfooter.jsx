@@ -6,7 +6,7 @@ import shield from "../../assets/icon/shield.svg";
 
 export default function SubFooter() {
     return (
-        <div className="flex justify-center items-center bg-slate-800">
+        <div className="flex justify-center items-center bg-[#1e293b]">
             <div className="text-white h-auto justify-center w-[95%] md:w-[90%] lg:w-[80%] xl:w-[80%] 2xl:w-[80%] md:flex md:flex-wrap">
 
                 {/* div 1 */}
