@@ -27,7 +27,7 @@ export default function FurniturePrview() {
     // console.log(listTop6Furniture);
 
     return (
-        <div className="flex justify-center">
+        <div className="flex justify-center items-center">
 
             <div className="h-auto w-[80%] mt-8 mb-8">
 
@@ -82,10 +82,10 @@ export default function FurniturePrview() {
                         class=" mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-8 gap-x-6 mt-6 mb-5">
                         {
                             listTop6Furniture && listTop6Furniture.length > 0 && listTop6Furniture.map((product, index) => (
-                                <div key={index} class="w-full bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+                                <div key={index} class="w-full h-120 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
                                     <a href="#">
                                         <img src={`/src/assets/image/${product.images[1]}`}
-                                            alt="Product" class=" h-120 w-full object-cover rounded-t-xl" />
+                                            alt="Product" class=" h-[80%] w-full object-cover rounded-t-xl" />
                                         <div class="px-4 py-3 w-full">
                                             <span class="text-gray-400 mr-3 uppercase text-xs">Brand</span>
                                             <p class="text-lg font-bold text-black truncate block capitalize">{product.name}</p>

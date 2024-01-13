@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import useSWR from "swr";
 import { Link } from 'react-router-dom'
 import Banner6 from '../../assets/banner/banner_6.png'
 import Banner7 from '../../assets/banner/banner_7.png'
 import { fetchTop6CategoryById } from '../../services/productService'
+import Cart from "../../assets/icon/add-to-cart.svg"
+
 
 
 export default function SmartPhone() {
@@ -29,65 +30,88 @@ export default function SmartPhone() {
     // console.log(listTop6SmartPhone);
 
     return (
-        <div className='flex justify-center'>
-            <div className='h-auto w-[80%] flex mb-8 justify-center items-center'>
+        <div className="flex justify-center items-center">
 
-                <div className='w-[80%] hidden md:block'>
-                    <div className=' text-xl border-b-2 p-4 flex justify-between items-center'>
-                        <Link to="#" className='p-6'>New arrivals</Link>
-                        <Link to="#" className='p-6'>Best sales</Link>
-                        <Link to="#" className='p-6'>SmartPhones</Link>
-                    </div>
-                    <div className="">
-                        {
-                            listTop6SmartPhone && listTop6SmartPhone.length > 0 && listTop6SmartPhone.map((product, index) => (
-                                <div key={index} className="w-[33%] p-4 float-left">
-                                    <img className="w-full h-[220px] lg:h-[300px] xl:h-[330px] 2xl:h-[500px] object-cover rounded-xl" src={`/src/assets/image/${product.images[0]}`} alt="img" />
-                                    <p className="mt-2 text-xl font-semibold">{product.name}</p>
-                                    <p className="text-neutral-500">Best sales</p>
-                                    <p className="text-lg text-slate-700 font-medium">${product.price}</p>
-                                </div>
-                            ))
-                        }
-                    </div>
-                </div>
-                <div className='w-[100%] md:w-[20%]'>
-                    <h2 className='py-2 font-medium text-xl md:hidden' >Smart phone</h2>
-                    <div className="h-1/2 relative text-center ">
+            <div className="h-auto w-[80%] mt-8 mb-8">
+
+                <div className="my-auto justify-between items-center grid grid-cols-1 md:grid-cols-2 justify-items-center gap-y-8 gap-x-6 ">
+
+                    <div className="h-[200px] w-full relative text-center flex">
                         <div className=" absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-base">
-                            <p>AVAILABLE NOW</p>
-                            <p className=" font-bold text-2xl">
-                                IPhone X
+                            <p>NEW ARRIVALS</p>
+                            <p>
+                                <span className=" font-bold text-2xl">Bedroom</span> <span>Sets</span>
                             </p>
-                            <p className=" font-bold">$1120.00</p>
+                            <p>Temport sem finibus</p>
+                            <p className=" font-bold">$299.00</p>
                             <Link to="#">
-                                <button className=" md:hidden mt-4 bg-slate-800 bg-opacity-70 p-2 px-4 border rounded-full">See more</button>
+                                <button className=" mt-4 bg-slate-800 bg-opacity-70 p-2 px-4 border rounded-full">See more</button>
                             </Link>
                         </div>
                         <img
                             src={Banner6}
                             alt=""
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover rounded-xl"
                         />
                     </div>
-                    <div className="h-1/2 relative text-center mt-4 ">
+
+
+
+                    <div className="h-[200px] w-full relative text-center mt-4 ">
                         <div className=" absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-base">
-                            <p>AVAILABLE NOW</p>
-                            <p className=" font-bold text-2xl">
-                                IPhone 12 Pro Max
+                            <p>BEST OFFERS</p>
+                            <p>
+                                <span className=" font-bold text-2xl">Soft</span> <span>Chairs</span>
                             </p>
-                            <p className=" font-bold">$1630.00</p>
+                            <p>Temport sem finibus</p>
+                            <p className=" font-bold">$179.00</p>
                             <Link to="#">
-                                <button className=" md:hidden mt-4 bg-slate-800 bg-opacity-70 p-2 px-4 border rounded-full">See more</button>
+                                <button className=" mt-4 bg-slate-800 bg-opacity-70 p-2 px-4 border rounded-full">See more</button>
                             </Link>
+
                         </div>
                         <img
                             src={Banner7}
                             alt=""
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover rounded-xl"
                         />
                     </div>
+
                 </div>
+
+                <div className="w-[100%] mt-12">
+
+                    <section id="Projects"
+                        class=" mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-8 gap-x-6 mt-6 mb-5">
+                        {
+                            listTop6SmartPhone && listTop6SmartPhone.length > 0 && listTop6SmartPhone.map((product, index) => (
+                                <div key={index} class="w-full h-120 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+                                    <a href="#">
+                                        <img src={`/src/assets/image/${product.images[0]}`}
+                                            alt="Product" class=" h-[80%] w-full object-cover rounded-t-xl" />
+                                        <div class="px-4 py-3 w-full">
+                                            <span class="text-gray-400 mr-3 uppercase text-xs">Brand</span>
+                                            <p class="text-lg font-bold text-black truncate block capitalize">{product.name}</p>
+                                            <div class="flex items-center">
+                                                <p class="text-lg font-semibold text-black cursor-auto my-3">${product.price - (product.price) * 0.1}</p>
+                                                <del>
+                                                    <p class="text-sm text-gray-600 cursor-auto ml-2">${product.price}</p>
+                                                </del>
+                                                <div class="ml-auto">
+                                                    <img src={Cart} alt="" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            ))
+                        }
+                    </section>
+                </div>
+
+
+
+
             </div>
         </div>
     )
