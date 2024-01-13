@@ -51,7 +51,7 @@ const Header = () => {
     return (
         <div>
             <div className="hidden lg:block">
-                <div className=" bg-[#1e293b] text-white flex justify-between px-52 items-center h-[5vh]">
+                <div className=" bg-[#1e293b] text-white flex justify-between px-52 items-center h-[4vh]">
                     <div className="hidden xl:block">
                         <Link to="#">BUSINESS LOGIN</Link>
                     </div>
@@ -225,33 +225,33 @@ const Header = () => {
                 </div>
             </div>
             <div className="block lg:hidden">
-                <div className="bg-[#1e293b] text-white flex justify-between px-100 h-12 items-center">
+                <div className="bg-[#1e293b] text-white flex justify-between px-100 h-8 items-center">
                     <div className="flex justify-between px-5 items-center">
                         <div className="flex items-center">
                             <Link to="" className="px-2">
                                 <img
-                                    className="h-6 w-6 mr-2"
+                                    className="h-4 w-4"
                                     src={message}
                                     alt="icon"
                                 />
                             </Link>
                             <Link to="" className="px-2">
                                 <img
-                                    className="h-6 w-6 mr-2"
+                                    className="h-4 w-4"
                                     src={linkedin}
                                     alt="icon"
                                 />
                             </Link>
                             <Link to="" className="px-2">
                                 <img
-                                    className="h-6 w-6 mr-2"
+                                    className="h-4 w-4"
                                     src={facebook}
                                     alt="icon"
                                 />
                             </Link>
                             <Link to="" className="px-2">
                                 <img
-                                    className="h-6 w-6 mr-2"
+                                    className="h-4 w-4"
                                     src={instagram}
                                     alt="icon"
                                 />
@@ -261,7 +261,7 @@ const Header = () => {
                     <div className="flex items-center px-2">
                         <Link to="#" className="px-2" onClick={togglePopup}>
                             <img
-                                className="h-6 w-6 mr-2"
+                                className="h-4 w-4 mr-2"
                                 src={more}
                                 alt="icon"
                             />

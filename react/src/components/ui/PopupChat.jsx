@@ -30,7 +30,7 @@ const PopupChat = () => {
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        className="fixed bottom-0 right-0 p-6"
+                        className="fixed bottom-0 right-0 p-6 z-50"
                         initial={{ scale: 0, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0, opacity: 0 }}
