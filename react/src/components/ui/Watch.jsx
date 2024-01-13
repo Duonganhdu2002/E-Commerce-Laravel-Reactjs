@@ -1,44 +1,78 @@
-import React from 'react'
-import img1 from '../../assets/image/img1.jpg'
-import { Link } from 'react-router-dom'
+import {
+    Tabs,
+    TabsHeader,
+    TabsBody,
+    Tab,
+    TabPanel,
+} from "@material-tailwind/react";
 
 export default function Watch() {
+    const data = [
+        {
+            label: "Books",
+            value: "html",
+            desc: `It really matters and then like it really doesn't matter.
+        What matters is the people who are sparked by it. And the people
+        who are like offended by it, it doesn't matter.`,
+        },
+        {
+            label: "Plush Toys",
+            value: "react",
+            desc: `Because it's about motivating the doers. Because I'm here
+        to follow my dreams and inspire other people to follow their dreams, too.`,
+        },
+
+        {
+            label: "Electric Scooters",
+            value: "vue",
+            desc: `We're not always in the position that we want to be at.
+        We're constantly growing. We're constantly making mistakes. We're
+        constantly trying to express ourselves and actualize our dreams.`,
+        },
+
+        {
+            label: "Rings",
+            value: "angular",
+            desc: `Because it's about motivating the doers. Because I'm here
+        to follow my dreams and inspire other people to follow their dreams, too.`,
+        },
+
+        {
+            label: "Bedding",
+            value: "svelte",
+            desc: `We're not always in the position that we want to be at.
+        We're constantly growing. We're constantly making mistakes. We're
+        constantly trying to express ourselves and actualize our dreams.`,
+        },
+    ];
+
     return (
-        <div className='flex justify-center'>
-            <div className='h-auto w-[80%] mt-4 mb-4 hidden md:block'>
-                <div className=' text-xl w-full border-b-2'>
-                    <Link to="#" className='p-6'>New arrivals</Link>
-                    <Link to="#" className='p-6'>Best sales</Link>
-                    <Link to="#" className='p-6'>SmartPhones</Link>
-                    <Link to="#" className='p-6'>HeadPhones</Link>
-                </div>
-                <div>
-                    <div className='w-1/4 p-2 float-left'>
-                        <img className='w-full h-full' src={img1} alt="" />
-                        <p className=' text-xl'>Product name</p>
-                        <p className=' text-neutral-500'>Best sales</p>
-                        <p className=' text-lg text-slate-800'>$193.00</p>
-                    </div>
-                    <div className='w-1/4 p-2 float-left'>
-                        <img className='w-full h-full' src={img1} alt="" />
-                        <p className=' text-xl'>Product name</p>
-                        <p className=' text-neutral-500'>Best sales</p>
-                        <p className=' text-lg text-slate-800'>$193.00</p>
-                    </div>
-                    <div className='w-1/4 p-2 float-left'>
-                        <img className='w-full h-full' src={img1} alt="" />
-                        <p className=' text-xl'>Product name</p>
-                        <p className=' text-neutral-500'>Best sales</p>
-                        <p className=' text-lg text-slate-800'>$193.00</p>
-                    </div>
-                    <div className='w-1/4 p-2 float-left'>
-                        <img className='w-full h-full' src={img1} alt="" />
-                        <p className=' text-xl'>Product name</p>
-                        <p className=' text-neutral-500'>Best sales</p>
-                        <p className=' text-lg text-slate-800'>$193.00</p>
-                    </div>
-                </div>
+        <div className=" flex justify-center items-center">
+            <div className=" w-[95%] md:w-[90%] lg:w-[80%]">
+                
+                <Tabs id="custom-animation" value="html">
+                    <TabsHeader>
+                        {data.map(({ label, value }) => (
+                            <Tab key={value} value={value}>
+                                {label}
+                            </Tab>
+                        ))}
+                    </TabsHeader>
+                    <TabsBody
+                        animate={{
+                            initial: { y: 250 },
+                            mount: { y: 0 },
+                            unmount: { y: 250 },
+                        }}
+                    >
+                        {data.map(({ value, desc }) => (
+                            <TabPanel key={value} value={value}>
+                                {desc}
+                            </TabPanel>
+                        ))}
+                    </TabsBody>
+                </Tabs>
             </div>
         </div>
-    )
+    );
 }

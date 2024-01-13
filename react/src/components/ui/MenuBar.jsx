@@ -284,7 +284,7 @@ export default function MenuBar() {
         </div>
 
         <div className="w-72 md:w-96 lg:w-[25%] mx-2">
-          <Input className="" label="What do you need?" icon={<i className="fas fa-search" />} />
+          <Input className=" cursor-pointer" label="What do you need?" icon={<i className="fas fa-search" />} />
         </div>
 
         <div className="hidden lg:block">
