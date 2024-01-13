@@ -7,4 +7,7 @@ export default defineConfig({
   resolve: {
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
   },
+  optimizeDeps: {
+    exclude: ['js-big-decimal']
+  }
 })

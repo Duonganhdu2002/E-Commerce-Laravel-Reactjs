@@ -2,7 +2,6 @@ import React from "react";
 import Header from "../components/ui/Header";
 import SubFooter from "../components/ui/Subfooter";
 import Footer from "../components/ui/Footer";
-import Navbar from "../components/ui/Navbar";
 import Banner1 from "../components/ui/Banner1";
 import MenuBar from "../components/ui/MenuBar";
 import Container from "../components/ui/Container";
@@ -22,9 +21,7 @@ export default function Home() {
     return (
         <div>
             {/* <PopupAdvertisement /> */}
-            <Header />
-            <Navbar/>
-            <MenuBar />
+        
             <FiledLayout/>
             {/* <Modal/> */}
             {/* <UserPagination/> */}
@@ -36,8 +33,7 @@ export default function Home() {
             <Banner1 />
             <HeadPhone />
             <SuggestedProducts/>
-            <SubFooter />
-            <Footer />
+        
         </div>
     );
 }
