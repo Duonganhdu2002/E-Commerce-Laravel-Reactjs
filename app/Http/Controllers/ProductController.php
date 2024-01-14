@@ -279,7 +279,7 @@ class ProductController extends Controller
                 ->leftJoin('order', 'order_items.order_id', '=', 'order.order_id')
                 ->where('product.product_category_id', $categoryId)
                 // ->where('order.order_status_id', 3)
-                ->groupBy('product.product_id',)
+                ->groupBy('product.product_id', )
                 ->groupBy(
                     'product.product_id',
                     'product.name',
@@ -331,7 +331,7 @@ class ProductController extends Controller
                 ->leftJoin('order', 'order_items.order_id', '=', 'order.order_id')
                 ->where('product.product_brand_id', $brandId)
                 ->where('order.order_status_id', 3)
-                ->groupBy('product.product_id',)
+                ->groupBy('product.product_id', )
                 ->groupBy(
                     'product.product_id',
                     'product.name',
@@ -370,40 +370,50 @@ class ProductController extends Controller
         }
     }
 
+    // Gợi ý sản phẩm
     public function recommendBaseOnSearch(Request $request, $user_id)
-{
-    // Lấy danh sách từ khóa tìm kiếm gần đây của người dùng
-    $recentSearches = search_history::where('user_id', $user_id)
-        ->orderByDesc('created_at')
-        ->pluck('keyword')
-        ->take(5)
-        ->toArray();
+    {
+        // Lấy danh sách từ khóa tìm kiếm gần đây của người dùng
+        $recentSearches = search_history::where('user_id', $user_id)
+            ->orderByDesc('created_at')
+            ->pluck('keyword')
+            ->take(5)
+            ->toArray();
 
-    // Kiểm tra nếu không có từ khóa tìm kiếm gần đây
-    if (empty($recentSearches)) {
-        $categoryId = $request->has('category_id') ? $request->input('category_id') : 1;
-        return $this->getBestSellingProductsInCategory($request, $categoryId);
-    }
+        // Kiểm tra nếu không có từ khóa tìm kiếm gần đây
+        if (empty($recentSearches)) {
+            $categoryId = $request->has('category_id') ? $request->input('category_id') : 1;
+            return $this->getBestSellingProductsInCategory($request, $categoryId);
+        }
 
-    // Lấy sản phẩm dựa trên từ khóa tìm kiếm gần đây
-    $relatedProducts = DB::table('product');
-    foreach ($recentSearches as $search) {
-    $relatedProducts->orWhere('name', 'like', "%$search%");
-    }
-    $relatedProducts = $relatedProducts->get();
+        $relatedProducts = collect();
 
-    if ($relatedProducts->isEmpty()) {
+        // Lấy sản phẩm dựa trên từ khóa tìm kiếm gần đây
+        foreach ($recentSearches as $search) {
+            $products = Product::where('name', 'like', "%$search%")->take(5)->get();
+            $relatedProducts = $relatedProducts->merge($products);
+        }
+
+        // Lấy ảnh của sản phẩm từ bảng product_image
+        $relatedProductsWithImages = $relatedProducts->map(function ($product) {
+            $images = ProductImage::where('product_id', $product->product_id)->pluck('image_url');
+            $product->images = $images;
+            return $product;
+        });
+
+        if ($relatedProductsWithImages->isEmpty()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Không có sản phẩm nào được tìm thấy dựa trên từ khóa tìm kiếm gần đây',
+                'data' => null,
+            ], 404);
+        }
+
         return response()->json([
-            'status' => false,
-            'message' => 'Không có sản phẩm nào được tìm thấy dựa trên từ khóa tìm kiếm gần đây',
-            'data' => null,
-        ], 404);
+            'status' => true,
+            'message' => 'Danh sách sản phẩm gợi ý dựa trên từ khóa tìm kiếm gần đây',
+            'data' => $relatedProductsWithImages,
+        ]);
     }
 
-    return response()->json([
-        'status' => true,
-        'message' => 'Danh sách sản phẩm gợi ý dựa trên từ khóa tìm kiếm gần đây',
-        'data' => $relatedProducts,
-    ]);
-}
 }

@@ -86,6 +86,7 @@ class SearchHistoryController extends Controller
         }
     }
 
+    //  Trả về lịch sử tìm kiếm gần đây của một người dùng cụ thể.
     public function getRecentSearches(Request $request, $id)
     {
         try {

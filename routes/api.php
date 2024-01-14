@@ -95,6 +95,7 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
         //Gợi ý sản phẩm
         Route::get('/recommend/{user_id}', [ProductController::class, 'recommendBaseOnSearch']);
 
+        // Xuất ra thông tin chi tiết đơn hàng theo order_id
         Route::get('/details/{order_id}', [OrderController::class, 'getOrderDetails']);
 
 
