@@ -12,4 +12,8 @@ const productInformation = (id) => {
     return axios.get(`/public/product/${id}`)
 }
 
-export { fetchTop6CategoryById, fetchProductWithCategory, productInformation };
+const productSugession = (userId) => {
+    return axios.get(`/public/product/recommend/${userId}`)
+}
+
+export { fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession };

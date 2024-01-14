@@ -4,7 +4,6 @@ import MenuBar from '../components/ui/MenuBar'
 import Layoutcart from '../components/ui/Layoutcart'
 import SubFooter from '../components/ui/Subfooter'
 import Footer from '../components/ui/Footer'
-import SuggestedProducts from '../components/ui/SuggestedProducts'
 
 
 
@@ -12,7 +11,6 @@ export default function Cart() {
   return (
     <div>
     <Layoutcart/>
-    <SuggestedProducts/>
     </div>
   )
 }
