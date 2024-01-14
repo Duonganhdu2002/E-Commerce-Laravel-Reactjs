@@ -92,7 +92,7 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
         // Lọc sản phẩm theo địa chỉ của shop
         Route::get('/filter-by-address', [ProductController::class, 'filterByAddress']);
 
-        //Gợi ý sản phẩm
+        //Gợi ý sản phẩm theo lịch sử tìm kiếm gần nhất theo 5 từ khóa gần nhất và mỗi từ khóa ứng vs 5 sản phẩm
         Route::get('/recommend/{user_id}', [ProductController::class, 'recommendBaseOnSearch']);
 
         // Xuất ra thông tin chi tiết đơn hàng theo order_id
