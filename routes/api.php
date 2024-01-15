@@ -57,10 +57,10 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
 
     Route::prefix('product')->group(function () {
 
-        // index, store, show, update, destroy
-        // Route::resource('/', ProductController::class);
+        // index, store, update, destroy
+        Route::resource('/', ProductController::class);
 
-        Route::get('/{id}', [ProductController::class, 'show']);
+        // Route::get('/{id}', [ProductController::class, 'show']);
 
         //xuất ra 6 sản phẩm mới nhất
         Route::get('latest-products/{categoryId}', [ProductController::class, 'getLatestProductsInCategory'])->name('latest-products');
@@ -95,8 +95,10 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
         //Gợi ý sản phẩm theo lịch sử tìm kiếm gần nhất theo 5 từ khóa gần nhất và mỗi từ khóa ứng vs 5 sản phẩm
         Route::get('/recommend/{user_id}', [ProductController::class, 'recommendBaseOnSearch']);
 
-        // Xuất ra thông tin chi tiết đơn hàng theo order_id
-        Route::get('/details/{order_id}', [OrderController::class, 'getOrderDetails']);
+        // Lấy NGẪU NHIÊN 5 danh mục và show 4 sản phẩm bán chạy nhất của 5 danh mục đó
+        Route::get('/getRandomCategories', [ProductController::class, 'getRandomCategories']);
+
+
 
 
 

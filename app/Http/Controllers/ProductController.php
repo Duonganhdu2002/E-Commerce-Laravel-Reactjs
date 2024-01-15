@@ -101,7 +101,7 @@ class ProductController extends Controller
     }
 
     // Hàm xử lý hiển thị thông tin sản phẩm và danh sách ảnh
-    public function show($id)
+    public function show(string $id)
     {
         try {
             $product = Product::findOrFail($id);
@@ -414,6 +414,58 @@ class ProductController extends Controller
             'message' => 'Danh sách sản phẩm gợi ý dựa trên từ khóa tìm kiếm gần đây',
             'data' => $relatedProductsWithImages,
         ]);
+    }
+
+    // Lấy NGẪU NHIÊN 5 danh mục và show 4 sản phẩm bán chạy nhất của 5 danh mục đó
+    public function getRandomCategories()
+    {
+        try {
+            // Lấy ngẫu nhiên 5 danh mục
+            $randomCategories = DB::table('product_category')->inRandomOrder()->limit(5)->pluck('product_category_id');
+
+            $result = [];
+
+            foreach ($randomCategories as $categoryId) {
+                // Lấy thông tin sản phẩm bán chạy nhất của từng danh mục
+                $topProducts = Product::select(
+                    'product.product_id',
+                    'product.name',
+                    'product.description',
+                    'product.price',
+                    'product.stock',
+                    DB::raw('SUM(order_items.quantity) as total_sales')
+                )
+                    ->join('order_items', 'product.product_id', '=', 'order_items.product_id')
+                    ->where('product.product_category_id', $categoryId)
+                    ->groupBy('product.product_id', 'product.name', 'product.description', 'product.price', 'product.stock')
+                    ->orderByDesc('total_sales')
+                    ->take(4)
+                    ->get();
+
+                foreach ($topProducts as &$product) {
+                    // Lấy danh sách ảnh của sản phẩm
+                    $productImages = ProductImage::where('product_id', $product->product_id)->pluck('image_url');
+                    $product->images = $productImages;
+                }
+
+                $result[] = [
+                    'category_id' => $categoryId,
+                    'top_products' => $topProducts,
+                ];
+            }
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Danh sách ngẫu nhiên 5 danh mục và top 4 sản phẩm bán chạy nhất của từng danh mục',
+                'data' => $result
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Internal Server Error',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
 }
