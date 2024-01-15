@@ -13,16 +13,13 @@ import Profile from "../../assets/public/profile/1703940723832khunghinh.net.png"
 import ImageReviews from "../../assets/public/reviews/bed-5.jpg";
 import BackgroundShop from "../../assets/sale/sale3.png";
 import { productInformation } from "../../services/productService";
-
-
+import { Breadcrumbs, Button } from "@material-tailwind/react";
 
 export default function ProductDetails() {
-
     const { productId } = useParams();
     const [productInfor, setProductInfor] = useState([]);
     // Lưu trữ index của ảnh
     const [indexImage, setIndexImage] = useState(0);
-
 
     useEffect(() => {
         getProductInformation(productId);
@@ -42,55 +39,70 @@ export default function ProductDetails() {
     // Cập nhật lại ảnh khi click vào các ảnh nhỏ
     const handleClickIndexImage = (index) => {
         setIndexImage(index);
-    }
+    };
 
     // console.log(productId)
     // console.log(productInfor)
 
     return (
         <div className="flex flex-col justify-center">
-
             <div className="py-8">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <Breadcrumbs className=" mb-8">
+                        <a href="#" className="opacity-60">
+                            Docs
+                        </a>
+                        <a href="#" className="opacity-60">
+                            Components
+                        </a>
+                        <a href="#">Breadcrumbs</a>
+                    </Breadcrumbs>
                     <div className="flex flex-col md:flex-row -mx-4">
                         <div className="flex-1 px-4">
                             <div className=" flex">
                                 <div className="w-[120px] h-[460px] overflow-y-auto">
                                     {/* In những hình ảnh của sản phẩm theo chiều dọc */}
-                                    {productInfor.image_urls && productInfor.image_urls.length > 0 && (
-                                        productInfor.image_urls.map((image, index) => (
-                                            <img
-                                            onClick={() => handleClickIndexImage(index)}
-                                            key={index}
-                                                className="w-[120px] h-[120px] object-cover mb-1 rounded-xl cursor-pointer"
-                                                src={`../../../src/assets/image/${image}`}
-                                                alt={`Image ${index}`}
-                                            />
-                                        ))
-                                    )}
+                                    {productInfor.image_urls &&
+                                        productInfor.image_urls.length > 0 &&
+                                        productInfor.image_urls.map(
+                                            (image, index) => (
+                                                <img
+                                                    onClick={() =>
+                                                        handleClickIndexImage(
+                                                            index
+                                                        )
+                                                    }
+                                                    key={index}
+                                                    className="w-[120px] h-[120px] object-cover mb-1 rounded-xl cursor-pointer"
+                                                    src={`../../../src/assets/image/${image}`}
+                                                    alt={`Image ${index}`}
+                                                />
+                                            )
+                                        )}
                                 </div>
                                 {/* In sản phẩm lớn  */}
-                                {productInfor.image_urls && productInfor.image_urls.length > 1 && (
-                                    <div className="w-full h-[460px] rounded-2xl bg-gray-300 mb-4 mx-2">
-                                        <img
-                                            className="w-full h-full object-cover rounded-2xl"
-                                            src={`../../../src/assets/image/${productInfor.image_urls[indexImage]}`}
-                                            alt={`Product Image 2`}
-                                        />
-                                    </div>
-                                )}
+                                {productInfor.image_urls &&
+                                    productInfor.image_urls.length > 1 && (
+                                        <div className="w-full h-[460px] rounded-2xl bg-gray-300 mb-4 mx-2">
+                                            <img
+                                                className="w-full h-full object-cover rounded-2xl"
+                                                src={`../../../src/assets/image/${productInfor.image_urls[indexImage]}`}
+                                                alt={`Product Image 2`}
+                                            />
+                                        </div>
+                                    )}
                             </div>
 
                             <div className="flex -mx-2 mb-4">
                                 <div className="w-1/2 px-2">
-                                    <button className="w-full bg-gray-900  text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 ">
+                                    <Button className="w-full h-12 bg-gray-900 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 ">
                                         Buy now
-                                    </button>
+                                    </Button>
                                 </div>
                                 <div className="w-1/2 px-2">
-                                    <button className="w-full bg-gray-200  text-gray-800  py-2 px-4 rounded-full font-bold hover:bg-gray-300 ">
+                                    <Button className="w-full h-12 bg-gray-200 text-gray-800 py-2 px-4 rounded-full font-bold hover:bg-gray-300 ">
                                         Add to Cart
-                                    </button>
+                                    </Button>
                                 </div>
                             </div>
                         </div>
