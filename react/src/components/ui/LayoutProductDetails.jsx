@@ -46,7 +46,7 @@ export default function ProductDetails() {
 
     return (
         <div className="flex flex-col justify-center">
-            <div className="py-8">
+            <div className="pb-8 pt-4">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <Breadcrumbs className=" mb-8">
                         <a href="#" className="opacity-60">
