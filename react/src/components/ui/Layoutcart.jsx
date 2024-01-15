@@ -1,4 +1,3 @@
-import React from "react";
 import { Select, Option } from "@material-tailwind/react";
 import { Button } from "@material-tailwind/react";
 import img from "../../assets/image/Bedroom10.jpg";
