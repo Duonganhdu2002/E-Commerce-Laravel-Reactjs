@@ -9,16 +9,20 @@ import Header from './components/ui/Header';
 import SubFooter from './components/ui/Subfooter';
 import Footer from './components/ui/Footer';
 import MenuBar from './components/ui/MenuBar';
+import { Provider } from 'react-redux'
+import { store } from './redux/Store';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <UserProvider>
-    <BrowserRouter>
-      {/* <Header /> */}
-      <MenuBar/>
-      <App />
-      <PopupChat />
-      <SubFooter />
-      <Footer />
-    </BrowserRouter>
-  </UserProvider>,
+  <Provider store={store}>
+    <UserProvider>
+      <BrowserRouter>
+        {/* <Header /> */}
+        <MenuBar />
+        <App />
+        <PopupChat />
+        <SubFooter />
+        <Footer />
+      </BrowserRouter>
+    </UserProvider>
+  </Provider>
 );
