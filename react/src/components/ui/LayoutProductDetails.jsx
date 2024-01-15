@@ -11,9 +11,16 @@ import Voucher from "../../assets/icon/voucher-discount-tag-svgrepo-com.svg";
 import Img1 from "../../assets/image/img1.jpg";
 import Profile from "../../assets/public/profile/1703940723832khunghinh.net.png";
 import ImageReviews from "../../assets/public/reviews/bed-5.jpg";
-import BackgroundShop from "../../assets/sale/sale3.png";
+import BackgroundShop from "../../assets/sale/sale5.png";
 import { productInformation } from "../../services/productService";
 import { Breadcrumbs, Button } from "@material-tailwind/react";
+import {
+    Card,
+    CardHeader,
+    CardBody,
+    CardFooter,
+    Typography,
+} from "@material-tailwind/react";
 
 export default function ProductDetails() {
     const { productId } = useParams();
@@ -108,7 +115,7 @@ export default function ProductDetails() {
                                 </div>
                                 <div className="w-1/2 px-2">
                                     <Button className="w-full h-12 bg-gray-200 text-gray-800 py-2 px-4 rounded-full font-bold hover:bg-gray-300 ">
-                                        Add to Cart
+                                        Buy now
                                     </Button>
                                 </div>
                             </div>
@@ -182,25 +189,34 @@ export default function ProductDetails() {
             </div>
 
             {/* Div của shop */}
-            <div className=" flex items-center border-b-2 border-t-2 p-4 px-4 2xl:px-[10%] xl:px-[10%] lg:px-[10%] md:px-[5%] sm:px-4 my-10">
-                <div className=" flex items-center bg-black w-full rounded-xl">
+            <div className=" flex items-center p-4 px-4 2xl:px-[10%] xl:px-[10%] lg:px-[10%] md:px-[5%] sm:px-4 mb-4">
+                <div className=" flex items-center w-full rounded-xl">
                     <img
                         src={BackgroundShop}
                         alt=""
-                        className="object-cover aspect-ratio opacity-50 relative w-full h-28 rounded-xl"
+                        className="object-cover aspect-ratio relative w-full h-36 rounded-xl"
+                        style={{ filter: "blur(10px)" }}
                     />
                 </div>
 
-                <div className=" absolute flex items-center ml-8">
-                    <img
-                        src={Profile}
-                        alt=""
-                        className=" rounded-3xl border-light-blue-900 border-2 w-20"
-                    />
-                    <p className=" font-semibold text-lg ml-4 text-white">
-                        Shop uy tin so 1 VietNam
-                    </p>
-                    <img src={Checked} alt="" className=" w-5 ml-2" />
+                <div className="absolute flex ">
+                    <div className="flex items-center pl-8 relative ">
+                        <img
+                            src={Profile}
+                            alt=""
+                            className="rounded-3xl border-light-blue-900 border-4 w-24"
+                        />
+                        <img
+                            src={Checked}
+                            alt=""
+                            className=" w-10 ml-12 sm:ml-16 mt-16 absolute bg-white rounded-full"
+                        />
+                    </div>
+                    <div className=" flex items-center">
+                        <p className=" font-semibold text-xl ml-6 mr-10 inline-block bg-white/60 p-2 px-4 rounded-lg w-fit">
+                            Shop uy tin so 1 VietNam
+                        </p>
+                    </div>
                 </div>
             </div>
             {/* Div dánh giá sản phẩm */}
@@ -296,24 +312,101 @@ export default function ProductDetails() {
                     </div>
                 </div>
                 <div className="items-center justify-center flex-col hidden lg:block w-[30%]">
-                    <div className=" flex flex-col p-4 float-left">
-                        <img className="w-full h-full" src={Img1} alt="" />
-                        <p className=" text-xl">Product name</p>
-                        <p className=" text-neutral-500">Best sales</p>
-                        <p className=" text-lg text-[#1e293b]">$193.00</p>
-                    </div>
-                    <div className=" flex flex-col p-4 float-left">
-                        <img className="w-full h-full" src={Img1} alt="" />
-                        <p className=" text-xl">Product name</p>
-                        <p className=" text-neutral-500">Best sales</p>
-                        <p className=" text-lg text-[#1e293b]">$193.00</p>
-                    </div>
-                    <div className=" flex flex-col p-4 float-left">
-                        <img className="w-full h-full" src={Img1} alt="" />
-                        <p className=" text-xl">Product name</p>
-                        <p className=" text-neutral-500">Best sales</p>
-                        <p className=" text-lg text-[#1e293b]">$193.00</p>
-                    </div>
+                    <Card className=" w-80 mb-8">
+                        <CardHeader
+                            shadow={false}
+                            floated={false}
+                            className="h-96"
+                        >
+                            <img
+                                src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=927&q=80"
+                                alt="card-image"
+                                className="h-full w-full object-cover"
+                            />
+                        </CardHeader>
+                        <CardBody>
+                            <div className="mb-2 flex items-center justify-between">
+                                <Typography
+                                    color="blue-gray"
+                                    className="font-medium"
+                                >
+                                    Apple AirPods
+                                </Typography>
+                                <Typography
+                                    color="blue-gray"
+                                    className="font-medium"
+                                >
+                                    $95.00
+                                </Typography>
+                            </div>
+                            <Typography
+                                variant="small"
+                                color="gray"
+                                className="font-normal opacity-75"
+                            >
+                                With plenty of talk and listen time,
+                                voice-activated Siri access, and an available
+                                wireless charging case.
+                            </Typography>
+                        </CardBody>
+                        <CardFooter className="pt-0">
+                            <Button
+                                ripple={false}
+                                fullWidth={true}
+                                className="bg-blue-gray-900/10 text-blue-gray-900 shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100"
+                            >
+                                Buy now
+                            </Button>
+                        </CardFooter>
+                    </Card>
+
+                    <Card className=" w-80 mb-8">
+                        <CardHeader
+                            shadow={false}
+                            floated={false}
+                            className="h-96"
+                        >
+                            <img
+                                src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=927&q=80"
+                                alt="card-image"
+                                className="h-full w-full object-cover"
+                            />
+                        </CardHeader>
+                        <CardBody>
+                            <div className="mb-2 flex items-center justify-between">
+                                <Typography
+                                    color="blue-gray"
+                                    className="font-medium"
+                                >
+                                    Apple AirPods
+                                </Typography>
+                                <Typography
+                                    color="blue-gray"
+                                    className="font-medium"
+                                >
+                                    $95.00
+                                </Typography>
+                            </div>
+                            <Typography
+                                variant="small"
+                                color="gray"
+                                className="font-normal opacity-75"
+                            >
+                                With plenty of talk and listen time,
+                                voice-activated Siri access, and an available
+                                wireless charging case.
+                            </Typography>
+                        </CardBody>
+                        <CardFooter className="pt-0">
+                            <Button
+                                ripple={false}
+                                fullWidth={true}
+                                className="bg-blue-gray-900/10 text-blue-gray-900 shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100"
+                            >
+                                Buy now
+                            </Button>
+                        </CardFooter>
+                    </Card>
                 </div>
             </div>
         </div>
