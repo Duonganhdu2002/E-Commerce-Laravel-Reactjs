@@ -5,6 +5,7 @@ import logo from "../../assets/icon/logo.svg";
 import LogoGoogle1 from "../../assets/icon/Google__G__logo.svg";
 
 import { userLogin } from "../../services/authService";
+import { Input } from "@material-tailwind/react";
 
 export default function LayoutLogin() {
     const [email, setEmail] = useState("");
@@ -58,34 +59,28 @@ export default function LayoutLogin() {
                     <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-sm">
                         <form className="space-y-6" action="#" method="POST">
                             <div>
-                                <label
-                                    htmlFor="email"
-                                    className="block text-sm font-medium leading-6 text-gray-900"
-                                >
-                                    Username or Email address or Phone number *
-                                </label>
-                                <div className="mt-2">
-                                    <input
+                                <div className="w-full">
+                                    <Input
+                                        label="Username or Email address or Phone number"
+                                        onChange={(e) =>
+                                            setEmail(e.target.value)
+                                        }
                                         id=" email"
                                         name=" email"
                                         type=" email"
                                         autoComplete=" email"
                                         required
-                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-600 sm:text-sm sm:leading-6"
-                                        onChange={(e) =>
-                                            setEmail(e.target.value)
-                                        }
                                     />
                                 </div>
                             </div>
 
                             <div>
-                                <div className="flex items-center justify-between">
+                                <div className="flex items-center justify-between mb-2">
                                     <label
                                         htmlFor="password"
                                         className="block text-sm font-medium leading-6 text-gray-900"
                                     >
-                                        Password *
+
                                     </label>
                                     <div className="text-sm">
                                         <Link
@@ -96,17 +91,17 @@ export default function LayoutLogin() {
                                         </Link>
                                     </div>
                                 </div>
-                                <div className="mt-2">
-                                    <input
+                                <div className="w-full">
+                                    <Input
+                                        label="Username or Email address or Phone number"
+                                        onChange={(e) =>
+                                            setPassword(e.target.value)
+                                        }
                                         id="password"
                                         name="password"
                                         type="password"
                                         autoComplete="current-password"
                                         required
-                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-600 sm:text-sm sm:leading-6"
-                                        onChange={(e) =>
-                                            setPassword(e.target.value)
-                                        }
                                     />
                                 </div>
                             </div>

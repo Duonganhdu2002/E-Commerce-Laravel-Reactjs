@@ -3,6 +3,13 @@ import { Link } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
 import LogoGoogle1 from "../../assets/icon/Google__G__logo.svg";
 import Logo from "../../assets/icon/logo.svg";
+import {
+    Input,
+    Select,
+    Option,
+    Checkbox,
+    Typography,
+} from "@material-tailwind/react";
 
 export default function LayoutRegister() {
     return (
@@ -22,127 +29,96 @@ export default function LayoutRegister() {
 
                     <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-xl md:max-w-xl">
                         <form className="space-y-4" action="#" method="POST">
-                            <div className="flex justify-between">
+                            <div className="flex justify-between pb-2">
                                 <div className=" w-[47%] ">
-                                    <label
-                                        htmlFor="username"
-                                        className="block text-sm font-medium leading-6 text-gray-900"
-                                    >
-                                        Username *
-                                    </label>
-                                    <div className="mt-2">
-                                        <input
-                                            id=" username"
-                                            name=" username"
-                                            type=" username"
-                                            autoComplete=" username"
+                                    <div className="w-full">
+                                        <Input
+                                            label="Username"
+                                            id=" email"
+                                            name=" email"
+                                            type=" email"
+                                            autoComplete=" email"
                                             required
-                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-600 sm:text-sm sm:leading-6 px-4"
                                         />
                                     </div>
                                 </div>
 
                                 <div className="w-[47%]">
-                                    <label className="block text-sm font-medium leading-6 text-gray-900">
-                                        PhoneNumber *
-                                    </label>
-                                    <div className="mt-2">
-                                        <input
-                                            type="text"
-                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-600 sm:text-sm sm:leading-6 px-4"
-                                        />
+                                    <div className="w-full">
+                                        <Input label="Phone number" required />
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="flex justify-between ">
+                            <div className="flex justify-between pb-2">
                                 <div className="w-[47%]">
-                                    <label className="block text-sm font-medium leading-6 text-gray-900">
-                                        Full name *
-                                    </label>
-                                    <div className="mt-2">
-                                        <input className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-600 sm:text-sm sm:leading-6 px-4" />
+                                    <div className="w-full">
+                                        <Input label="Full Name" required />
                                     </div>
                                 </div>
 
                                 <div className="w-[47%]">
-                                    <label className="block text-sm font-medium leading-6 text-gray-900">
-                                        Email
-                                    </label>
-                                    <div className="mt-2">
-                                        <input
-                                            type="email"
-                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-600 sm:text-sm sm:leading-6 px-4"
-                                        />
+                                    <div className="w-full">
+                                        <Input label="Email" required />
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="flex justify-between ">
+                            <div className="flex justify-between pb-2">
                                 <div className="w-[47%] ">
-                                    <label className="block text-sm font-medium leading-6 text-gray-900">
-                                        Birthday
-                                    </label>
-                                    <div className="mt-2">
-                                        <input
+                                    <div className="w-full">
+                                        <Input
+                                            label="Birthday"
                                             type="date"
-                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-600 sm:text-sm sm:leading-6 px-4"
+                                            required
                                         />
                                     </div>
                                 </div>
 
                                 <div className="w-[47%] ">
-                                    <label className="block text-sm font-medium leading-6 text-gray-900">
-                                        Gender
-                                    </label>
-                                    <div className="mt-2">
-                                        <select
-                                            id="gender"
-                                            name="gender"
-                                            className=" block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-600 sm:text-sm sm:leading-6 px-4"
-                                        >
-                                            <option value="male">Male</option>
-                                            <option value="female">
-                                                Female
-                                            </option>
-                                            <option value="other">Other</option>
-                                        </select>
+                                    <div className="w-full">
+                                        <Select label="Select Gender" required>
+                                            <Option>Male</Option>
+                                            <Option>Female</Option>
+                                            <Option>Other</Option>
+                                        </Select>
                                     </div>
                                 </div>
                             </div>
 
-                            <div>
-                                <div className="flex items-center justify-between">
-                                    <label
-                                        htmlFor="password"
-                                        className="block text-sm font-medium leading-6 text-gray-900"
-                                    >
-                                        Password *
-                                    </label>
-                                </div>
-                                <div className="mt-2">
-                                    <input
+                            <div className=" pb-2">
+                                <div className="w-full">
+                                    <Input
+                                        label="Password"
                                         id="password"
                                         name="password"
                                         type="password"
                                         autoComplete="current-password"
                                         required
-                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-600 sm:text-sm sm:leading-6 px-4"
                                     />
                                 </div>
                             </div>
 
-                            <div className="flex items-center">
-                                <input
-                                    type="checkbox"
-                                    name=""
-                                    id=""
-                                    className=" w-8 h-4"
+                            <div className="flex items-center text-black">
+                                <Checkbox
+                                    label={
+                                        <Typography
+                                            color="blue-gray"
+                                            className="flex font-medium"
+                                        >
+                                            I agree with the
+                                            <Typography
+                                                as="a"
+                                                href="#"
+                                                color="blue"
+                                                className="font-medium transition-colors hover:text-blue-700"
+                                            >
+                                                &nbsp;terms and conditions
+                                            </Typography>
+                                            .
+                                        </Typography>
+                                    }
                                 />
-                                <p className=" ml-2">
-                                    I have agreed to all terms of Company
-                                    e-commerce platform
-                                </p>
                             </div>
 
                             <div>
@@ -162,19 +138,22 @@ export default function LayoutRegister() {
                             <span className="flex-1 absolute top-1/2 left-0 right-0 h-0.5 bg-gray-700/50"></span>
                         </p>
 
-                        <div>                        <Button
-                            size="lg"
-                            variant="outlined"
-                            color="blue-gray"
-                            className="flex w-full justify-center items-center mt-4"
-                        >
-                            <img
-                                src={LogoGoogle1}
-                                alt="metamask"
-                                className="h-6 w-6"
-                            />
-                            GOOGLE
-                        </Button></div>
+                        <div>
+                            {" "}
+                            <Button
+                                size="lg"
+                                variant="outlined"
+                                color="blue-gray"
+                                className="flex w-full justify-center items-center mt-4"
+                            >
+                                <img
+                                    src={LogoGoogle1}
+                                    alt="metamask"
+                                    className="h-6 w-6"
+                                />
+                                GOOGLE
+                            </Button>
+                        </div>
 
                         <div className=" mt-5">
                             Already member?&nbsp;
