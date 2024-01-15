@@ -24,66 +24,31 @@ export default function Category() {
     // console.log(listCategoryById);
     // console.log(fieldId);
 
-    const scrollLeft = () => {
-        const scrollDistance = -420;
-        document.getElementById("categoryContainer").scrollBy({
-            left: scrollDistance,
-            behavior: "smooth",
-        });
-    };
-
-    const scrollRight = () => {
-        const scrollDistance = 420;
-        document.getElementById("categoryContainer").scrollBy({
-            left: scrollDistance,
-            behavior: "smooth",
-        });
-    };
-
 
     return (
-        <div className=" flex justify-center items-center">
-            <div className=" w-[100%] md:[w-90%] lg:[80%]">
-                <p className='text-sm md:text-lg lg:text-xl text-gray-700 ml-2 my-2 md:my-4 lg:my-6 md:ml-[5%] lg:ml-[10%]'>CATGEGORY</p>
-                <div className="relative px-0 lg:px-[10%] md:px-[5%] overflow-hidden">
-                    <div
-                        id="categoryContainer"
-                        className="flex px-8 sm:px-4 md:px-8 xl:px-0 items-center overflow-x-hidden relative z-10"
-                    >
-                        {listCategoryById &&
-                            listCategoryById.length > 0 &&
-                            listCategoryById.map((categories, index) => (
-                                <Link key={index} to={`/category/${categories.product_category_id}`}>
-                                    <div
-                                        className="flex-shrink-0 flex flex-col justify-center items-center cursor-pointer w-[100px] h-[80px] md:w-[120px] md:h-[120px] lg:w-[140px] lg:h-[140px] relative border px-2"
-                                        key={index}
-                                    >
-                                        <img
-                                            className=" w-[60%] h-[70%]"
-                                            src={`/src/assets/icon_category/${categories.icon}`}
-                                            alt="img"
-                                        />
-                                        <p className=' h-[20%] text-xs md:text-sm lg:text-lg'>{categories.name}</p>
-                                    </div>
-                                </Link>
-                            ))}
-                    </div>
-                    <div className="flex justify-between h-full absolute top-0 left-0 right-0 px-0 2xl:px-[10%] xl:px-[10%] lg:px-[10%] md:px-[5%] sm:px-0  xl:hidden">
-                        <button
-                            onClick={scrollLeft}
-                            className=" w-6 bg-gray-200/80 hover:bg-gray-500/40 z-20"
-                        >
-                            <p className=" text-xl text-slate-500">&lt;</p>
+        <div className='flex justify-center items-center my-8 flex-col'>
+            <p className=' font-medium text-gray-700 text-lg mb-8'>CATEGORY</p>
+            <div className='w-[95%] md:w-[90%] lg:w-[80%] mx-auto grid grid-cols-5 lg:grid-cols-8 xl:grid-cols-10 md:grid-cols-6 justify-items-center justify-center gap-y-8 gap-x-6'>
+                
+                {
+                    listCategoryById && listCategoryById.length > 0 && listCategoryById.map((categories, index) => (
+                        <Link key={index} to={`/category/${categories.product_category_id}`}>
 
-                        </button>
-                        <button
-                            onClick={scrollRight}
-                            className="  w-6 bg-gray-200/80 hover:bg-gray-500/40 z-20"
-                        >
-                            <p className=" text-xl text-slate-500">&gt;</p>
-                        </button>
-                    </div>
-                </div>
+                            <div className='flex flex-col float-left w-[60px] lg:w-[90px] h-auto mx-2 duration-500 hover:scale-110 hover:transform hover:-translate-y-2'>
+
+                                <div className='h-[60px] lg:h-[90px] border border-gray-300 rounded-xl flex justify-center items-center'>
+                                    <img className=' w-6 h-6' src={`/src/assets/icon_category/${categories.icon}`} alt="" />
+                                </div>
+
+                                <div className=' h-[20px] flex justify-center items-center my-2'>
+                                    <h3 className="text-[12px] lg:text-[14px] font-medium text-gray-600 dark:text-white">{categories.field_name}</h3>
+                                </div>
+
+                            </div>
+                        </Link>
+                    ))
+                }
+
             </div>
         </div>
 
