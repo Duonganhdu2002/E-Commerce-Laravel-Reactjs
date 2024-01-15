@@ -4,7 +4,6 @@ import Container from "../components/ui/Container";
 import FurniturePrview from "../components/ui/FurniturePrview";
 import SmartPhone from "../components/ui/SmartPhone";
 import Watch from "../components/ui/Watch";
-import HeadPhone from "../components/ui/HeadPhone";
 import PopupAdvertisement from "../components/ui/PopupAdvertisement";
 import FiledLayout from "../components/ui/FiledLayout";
 import Modal from "../components/modal/modal";
