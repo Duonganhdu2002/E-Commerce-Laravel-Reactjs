@@ -73,7 +73,7 @@ export default function ProductDetails() {
                                                         )
                                                     }
                                                     key={index}
-                                                    className="w-[120px] h-[120px] object-cover mb-1 rounded-xl cursor-pointer"
+                                                    className="w-[120px] h-[120px] object-cover mb-2 rounded-xl cursor-pointer"
                                                     src={`../../../src/assets/image/${image}`}
                                                     alt={`Image ${index}`}
                                                 />
