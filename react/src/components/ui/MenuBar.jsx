@@ -278,10 +278,12 @@ export default function MenuBar() {
     <Navbar className="mx-auto 2xl:min-w-[80%] py-4 px-2 ">
       <div className="flex items-center justify-between text-blue-gray-900">
 
-        <div className=" pl-0 md:pl-4">
-          <img className="w-8 h-8 md:hidden" src={logoSingle} alt="" />
-          <img className="w-12 h-12 hidden md:block" src={logo} alt="" />
-        </div>
+        <Link to="/">
+          <div className=" pl-0 md:pl-4">
+            <img className="w-8 h-8 md:hidden" src={logoSingle} alt="" />
+            <img className="w-12 h-12 hidden md:block" src={logo} alt="" />
+          </div>
+        </Link>
 
         <div className="w-72 md:w-96 lg:w-[25%] mx-2">
           <Input className=" cursor-pointer" label="What do you need?" icon={<i className="fas fa-search" />} />
@@ -292,9 +294,10 @@ export default function MenuBar() {
         </div>
 
         <div className="hidden gap-2 lg:flex">
-          <Button variant="text" size="sm" color="blue-gray">
-            Log In
-          </Button>
+          <Link to="/login">
+            <Button variant="text" size="sm" color="blue-gray">
+              Log In
+            </Button></Link>
           <Button size="sm">
             Sign In
           </Button>

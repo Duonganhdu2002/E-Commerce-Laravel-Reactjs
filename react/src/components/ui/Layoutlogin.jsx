@@ -15,7 +15,7 @@ export default function LayoutLogin() {
     useEffect(() => {
         let token = localStorage.getItem("token");
         if (token) {
-            navigate("/");
+            // navigate("/");
         }
     });
 
