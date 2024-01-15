@@ -212,11 +212,13 @@ function NavProductList() {
               selected={isMenuOpen || isMobileMenuOpen}
               onClick={() => setIsMobileMenuOpen((cur) => !cur)}
             >
-              <div className=" pr-5">
-                <Badge className=" w-3" content="0" withBorder>
-                  <ShoppingCartIcon className="h-6 w-6" strokeWidth={2} />
-                </Badge>
-              </div>
+              <Link to="/cart">
+                <div className=" pr-5">
+                  <Badge className=" w-3" content="0" withBorder>
+                    <ShoppingCartIcon className="h-6 w-6" strokeWidth={2} />
+                  </Badge>
+                </div>
+              </Link>
 
 
             </ListItem>
@@ -275,13 +277,13 @@ export default function MenuBar() {
   }, []);
 
   return (
-    <Navbar className="mx-auto 2xl:min-w-[80%] py-4 px-2 ">
+    <Navbar className="mx-auto 2xl:min-w-[80%] py-3 px-2 ">
       <div className="flex items-center justify-between text-blue-gray-900">
 
         <Link to="/">
           <div className=" pl-0 md:pl-4">
             <img className="w-8 h-8 md:hidden" src={logoSingle} alt="" />
-            <img className="w-12 h-12 hidden md:block" src={logo} alt="" />
+            <img className="w-16 h-16 hidden md:block" src={logo} alt="" />
           </div>
         </Link>
 
@@ -298,20 +300,24 @@ export default function MenuBar() {
             <Button variant="text" size="sm" color="blue-gray">
               Log In
             </Button></Link>
-          <Button size="sm">
-            Sign In
-          </Button>
+          <Link to="/register">
+            <Button size="sm">
+              Sign In
+            </Button>
+          </Link>
         </div>
 
         <div className=" hidden lg:block">
           <NavProductList />
         </div>
 
-        <div className=" lg:hidden">
-          <Badge className=" w-3" content="0" withBorder>
-            <ShoppingCartIcon className="h-6 w-6" strokeWidth={2} />
-          </Badge>
-        </div>
+        <Link to="/cart">
+          <div className=" lg:hidden">
+            <Badge className=" w-3" content="0" withBorder>
+              <ShoppingCartIcon className="h-6 w-6" strokeWidth={2} />
+            </Badge>
+          </div>
+        </Link>
 
         <IconButton
           variant="text"
