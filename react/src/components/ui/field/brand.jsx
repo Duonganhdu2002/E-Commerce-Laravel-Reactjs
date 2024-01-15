@@ -21,67 +21,29 @@ export default function Brand() {
         }
     };
 
-    // console.log(listBrandById);
-
-    // console.log(fieldId);
-
-    const scrollLeft = () => {
-        const scrollDistance = -420;
-        document.getElementById("brandContainer").scrollBy({
-            left: scrollDistance,
-            behavior: "smooth",
-        });
-    };
-
-    const scrollRight = () => {
-        const scrollDistance = 420;
-        document.getElementById("brandContainer").scrollBy({
-            left: scrollDistance,
-            behavior: "smooth",
-        });
-    };
+    console.log(listBrandById);
 
     return (
-        <div className=" flex justify-center items-center">
-            <div className=" w-[100%] md:[w-90%] lg:[80%]">
-                <p className='text-sm md:text-lg lg:text-xl text-gray-700 ml-2 my-2 md:my-4 lg:my-6 md:ml-[5%] lg:ml-[10%]'>BRAND</p>
-                <div className="relative px-0 lg:px-[10%] md:px-[5%] overflow-hidden">
-                    <div
-                        id="brandContainer"
-                        className="flex px-8 sm:px-4 md:px-8 xl:px-0 items-center overflow-x-hidden relative"
-                    >
-                        {listBrandById &&
-                            listBrandById.length > 0 &&
-                            listBrandById.map((brands, index) => (
-                                <Link key={index} to={`/brand/${brands.product_brand_id}`}>
-                                    <div
-                                        className="flex-shrink-0 flex justify-center items-center cursor-pointer w-[70px] h-[70px] md:w-[90px] md:h-[90px] lg:w-[100px] lg:h-[100px] relative border px-2 z-10"
-                                    >
-                                        <img
-                                            className="w-[80%]"
-                                            src={`/src/assets/icon_brand/${brands.logo}`}
-                                            alt="img"
-                                        />
-                                    </div>
-                                </Link>
-                            ))}
-                    </div>
-                    <div className="flex justify-between h-full absolute top-0 left-0 right-0 px-0 2xl:px-[10%] xl:px-[10%] lg:px-[10%] md:px-[5%] sm:px-0  xl:hidden">
-                        <button
-                            onClick={scrollLeft}
-                            className=" w-6 bg-gray-200/80 hover:bg-gray-500/40 z-20"
-                        >
-                            <p className=" text-xl text-slate-500">&lt;</p>
+        <div className='flex justify-center items-center my-8 '>
+            <div className='w-[95%] md:w-[90%] lg:w-[80%] mx-auto grid grid-cols-5 lg:grid-cols-8 xl:grid-cols-10 md:grid-cols-6 justify-items-center justify-center gap-y-8 gap-x-6'>
+                {
+                    listBrandById && listBrandById.length > 0 && listBrandById.map((fields, index) => (
+                        <Link to={`/fields/${fields.field_id}`} key={`fields-${index}`}>
 
-                        </button>
-                        <button
-                            onClick={scrollRight}
-                            className="  w-6 bg-gray-200/80 hover:bg-gray-500/40 z-20"
-                        >
-                            <p className=" text-xl text-slate-500">&gt;</p>
-                        </button>
-                    </div>
-                </div>
+                            <div className='flex flex-col float-left w-[60px] lg:w-[90px] h-auto mx-2 duration-500 hover:scale-110 hover:transform hover:-translate-y-2'>
+
+                                <div className='h-[60px] lg:h-[90px] border border-gray-300 rounded-xl flex justify-center items-center'>
+                                    <img className=' w-8' src={`/src/assets/icon_brand/${fields.logo}`} alt="" />
+                                </div>
+
+                                <div className=' h-[20px] flex justify-center items-center my-2'>
+                                    <h3 className="text-[12px] lg:text-[14px] font-medium text-gray-600 dark:text-white">{fields.field_name}</h3>
+                                </div>
+
+                            </div>
+                        </Link>
+                    ))
+                }
             </div>
         </div>
     );
