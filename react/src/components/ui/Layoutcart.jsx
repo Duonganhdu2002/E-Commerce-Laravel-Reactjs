@@ -83,7 +83,7 @@ export default function Layoutcart() {
                         </div>
                     </div>
 
-                    <div className=" flex flex-col justify-center w-full xl:w-[40%] h-auto lg:ml-10 xl:ml-20 ">
+                    <div className=" flex flex-col justify-center w-full xl:w-[40%] h-auto xl:ml-20 ">
                         <div className="rounded-2xl p-8 border">
                             <div className="">
                                 <p className=" text-2xl font-bold">
