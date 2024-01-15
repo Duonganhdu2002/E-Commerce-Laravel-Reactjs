@@ -22,7 +22,7 @@ export default function CategoryProduct() {
         }
     };
 
-    // console.log(data);
+    console.log(data);
     // console.log(categoryId);
 
     return (
