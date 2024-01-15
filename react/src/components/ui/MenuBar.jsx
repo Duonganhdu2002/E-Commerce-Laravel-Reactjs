@@ -242,12 +242,12 @@ function NavProductList() {
                         className="font-medium"
                     >
                         <ListItem
-                            className="flex items-center gap-2 py-2 pr-4 font-medium text-gray-900"
+                            className="flex items-center gap-2 pr-4 pt-4 font-medium text-gray-900"
                             selected={isMenuOpen || isMobileMenuOpen}
                             onClick={() => setIsMobileMenuOpen((cur) => !cur)}
                         >
                             <Link to="/cart">
-                                <div className=" pr-5">
+                                <div className="">
                                     <Badge
                                         className=" w-3"
                                         content="0"
