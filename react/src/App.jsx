@@ -10,6 +10,7 @@ import ProductDetails from "./pages/ProductDetails";
 import Shop from "./pages/Shop";
 import BrandPage from "./pages/BrandPage";
 import CategoryPage from "./pages/CategoryPage";
+import Profile from "./pages/Profile";
 
 export default function App() {
     return (
@@ -27,7 +28,7 @@ export default function App() {
                 <Route path="/category/:categoryId" element={<CategoryPage/>} />
                 <Route path="/product/:productId" element={<ProductDetails />} />
                 <Route path="/shop" element={<Shop />} />
-                
+                <Route path="/profile" element={<Profile/>}/>
             </Routes>
         </div>
     );
