@@ -3,7 +3,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Content from "./components/ui-bussiness/Content";
 
-export default function App() {
+export default function App2() {
     return (
         <div>
             <Routes>
