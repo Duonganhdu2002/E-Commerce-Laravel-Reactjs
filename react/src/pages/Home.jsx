@@ -6,7 +6,7 @@ import SmartPhone from "../components/ui/SmartPhone";
 import Watch from "../components/ui/Watch";
 import PopupAdvertisement from "../components/ui/PopupAdvertisement";
 import FiledLayout from "../components/ui/FiledLayout";
-import Modal from "../components/modal/modal";
+import Modal from "../components/commom/modal/modal";
 import CategoryBar from "../components/ui/CategoryBar";
 import ProductSuggestion from "../components/ui/ProductSuggestion";
 
