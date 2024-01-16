@@ -10,7 +10,6 @@ import ProductDetails from "./pages/ProductDetails";
 import Shop from "./pages/Shop";
 import BrandPage from "./pages/BrandPage";
 import CategoryPage from "./pages/CategoryPage";
-import HomePage from "./pages/bussiness/HomePage";
 
 export default function App() {
     return (
@@ -28,11 +27,6 @@ export default function App() {
                 <Route path="/category/:categoryId" element={<CategoryPage/>} />
                 <Route path="/product/:productId" element={<ProductDetails />} />
                 <Route path="/shop" element={<Shop />} />
-
-                {/* Bussiness Route */}
-
-                <Route path="/bussiness" element={<HomePage/>} />
-
                 
             </Routes>
         </div>

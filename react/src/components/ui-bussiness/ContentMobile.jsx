@@ -5,7 +5,7 @@ const ContentMobile = () => {
     return (
         <div>
             <div className=' flex'>
-                <Avatar/>
+                <Avatar src="../../assets/image/Bedroom1.1.jpg"/>
                 <Typography>ghghas</Typography>
                 <Button>Visit store</Button>
             </div>
