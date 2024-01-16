@@ -9,6 +9,8 @@ export default function App2() {
             <Routes>
                 {/* Bussiness Route */}
                 <Route path="/bussiness" element={<Content />} />
+                <Route path="/bussiness/products" element={<Content />} />
+
             </Routes>
         </div>
     );

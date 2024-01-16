@@ -1,16 +1,16 @@
 // App.jsx
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import ContentMobile from "./pages/bussiness/ContentMoblie";
 import ProductMobile from "./pages/bussiness/ProductMobile";
+import ContentMobile from "./pages/bussiness/ContentMoblie";
 
 export default function App3() {
     return (
         <div>
             <Routes>
-                {/* Bussiness Route */}
+                {/* Business Route */}
                 <Route path="/bussiness" element={<ContentMobile/>} />
-                <Route path="/bussiness/products" element={<ProductMobile/>} />
+                <Route path="/bussiness/products" element={<ProductMobile />} />
             </Routes>
         </div>
     );

@@ -117,7 +117,7 @@ function NavListMenu() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const renderItems = navListMenuItems.map(
         ({ icon, title, description }, key) => (
-            <Link to="#" key={key}>
+            <div key={key}>
                 <MenuItem className="flex items-center gap-3 rounded-lg">
                     <div className="flex items-center justify-center rounded-lg !bg-blue-gray-50 p-2">
                         {React.createElement(icon, {
@@ -141,7 +141,7 @@ function NavListMenu() {
                         </Typography>
                     </div>
                 </MenuItem>
-            </Link>
+            </div>
         )
     );
 
@@ -168,15 +168,13 @@ function NavListMenu() {
                             More
                             <ChevronDownIcon
                                 strokeWidth={2.5}
-                                className={`hidden h-3 w-3 transition-transform lg:block ${
-                                    isMenuOpen ? "rotate-180" : ""
-                                }`}
+                                className={`hidden h-3 w-3 transition-transform lg:block ${isMenuOpen ? "rotate-180" : ""
+                                    }`}
                             />
                             <ChevronDownIcon
                                 strokeWidth={2.5}
-                                className={`block h-3 w-3 transition-transform lg:hidden ${
-                                    isMobileMenuOpen ? "rotate-180" : ""
-                                }`}
+                                className={`block h-3 w-3 transition-transform lg:hidden ${isMobileMenuOpen ? "rotate-180" : ""
+                                    }`}
                             />
                         </ListItem>
                     </Typography>
@@ -198,7 +196,7 @@ function NavProductList() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const renderItems = navProductList.map(({ title, price, icon }, key) => (
-        <a href="#" key={key}>
+        <div key={key}>
             <MenuItem className="flex items-center gap-3 rounded-lg">
                 <div className="flex items-center justify-center rounded-lg !bg-blue-gray-50 p-2 ">
                     {" "}
@@ -223,7 +221,7 @@ function NavProductList() {
                     </Typography>
                 </div>
             </MenuItem>
-        </a>
+        </div>
     ));
 
     return (
@@ -279,24 +277,22 @@ function NavProductList() {
 function NavList() {
     return (
         <List className="mt-4 mb-6 p-0 lg:mt-0 lg:mb-0 lg:flex-row lg:p-1">
-            <Link to="/">
-                <Typography
-                    as="a"
-                    variant="small"
-                    color="blue-gray"
-                    className="font-medium"
-                >
-                    <ListItem className="flex items-center gap-2 py-2 pr-4">
-                        Home
-                    </ListItem>
-                </Typography>
-            </Link>
+            <Typography
+                as="a"
+                href="/"
+                variant="small"
+                color="blue-gray"
+                className="font-medium"
+            >
+                <ListItem className="flex items-center gap-2 py-2 pr-4">
+                    Home
+                </ListItem>
+            </Typography>
 
             <NavListMenu />
 
             <Typography
                 as="a"
-                href="#"
                 variant="small"
                 color="blue-gray"
                 className="font-medium"
@@ -348,9 +344,8 @@ export default function MenuBar() {
 
     return (
         <Navbar
-            className={`fixed top-0 left-0 right-0 mx-auto mt-1 z-50 2xl:min-w-[80%] py-3 px-2 rounded-b-2xl border-gray-300 border transition-transform duration-300 transform ${
-                !hidden ? "translate-y-0" : "-translate-y-24"
-            }`}
+            className={`fixed top-0 left-0 right-0 mx-auto mt-1 z-50 2xl:min-w-[80%] py-3 px-2 rounded-b-2xl border-gray-300 border transition-transform duration-300 transform ${!hidden ? "translate-y-0" : "-translate-y-24"
+                }`}
         >
             <div className="flex items-center justify-between text-blue-gray-900">
                 <Link to="/">
