@@ -224,7 +224,7 @@ function NavList() {
   );
 }
 
-export default function MenuBar() {
+export default function MenuBarBussiness() {
   const [isNavOpen, setIsNavOpen] = React.useState(false);
 
   const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
@@ -270,3 +270,4 @@ export default function MenuBar() {
     </Navbar>
   );
 }
+

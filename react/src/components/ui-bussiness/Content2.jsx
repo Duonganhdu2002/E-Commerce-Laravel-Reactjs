@@ -1,10 +1,15 @@
 import React from 'react';
+import { Outlet } from 'react-router-dom';
+
 
 const Content2 = () => {
     return (
         <div>
-            <h2>Main Content</h2>
+            {/* Content for /bussiness/product */}
+            <h1>Product Content</h1>
+            <Outlet />
         </div>
+
     );
 }
 
