@@ -5,7 +5,6 @@ import "./index.css";
 import App2 from "./App2";
 import MenuBar from "./components/ui-bussiness/MenuBar";
 import TaskBar from "./components/ui-bussiness/TaskBar";
-import App3 from "./App3";
 
 
 ReactDOM.createRoot(document.getElementById("root2")).render(
@@ -17,9 +16,6 @@ ReactDOM.createRoot(document.getElementById("root2")).render(
             </div>
             <div className=' hidden md:block w-[100%] md:w-[70%]'>
                 <App2 />
-            </div>
-            <div className=' md:hidden'>
-                <App3/>
             </div>
         </div>
     </BrowserRouter>
