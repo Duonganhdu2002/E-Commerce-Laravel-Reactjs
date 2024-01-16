@@ -52,15 +52,30 @@ const Bussiness = () => {
     );
 }
 
+const Admin = () => {
+    return (
+        <div>
+            <MenuBarBussiness />
+            <div className='flex flex-col md:flex-row'>
+                <div className='hidden md:block md:w-auto'>
+                    <TaskBar />
+                </div>
+                <div className='hidden md:block w-[100%] md:w-[70%]'>
+                    <Outlet />
+                </div>
+            </div>
+        </div>
+    );
+}
+
 ReactDOM.createRoot(document.getElementById("root")).render(
     <Provider store={store}>
         <UserProvider>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/bussiness" element={<Bussiness />}>
-                        <Route index element={<div>Default Page Content</div>} />
-                        <Route path="login" element={<div>Default Page login</div>} />
-                    </Route>
+
+                    {/* Public */}
+
                     <Route path="/" element={<Customer />}>
                         <Route index element={<Home />} />
                         <Route path="login" element={<Login />} />
@@ -73,6 +88,21 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                         <Route path="shop" element={<Shop />} />
                         <Route path="profile" element={<Profile />} />
                     </Route>
+
+                    {/* Bussiness */}
+
+                    <Route path="/bussiness" element={<Bussiness />}>
+                        <Route index element={<div>Default Page Content</div>} />
+                        <Route path="login" element={<div>Default Page login</div>} />
+                    </Route>
+
+                    {/* Admin */}
+
+                    <Route path="/admin" element={<Admin />}>
+                        <Route index element={<div>Default Admin</div>} />
+                        <Route path="login" element={<div>Default Admin login</div>} />
+                    </Route>
+
                 </Routes>
             </BrowserRouter>
         </UserProvider>
