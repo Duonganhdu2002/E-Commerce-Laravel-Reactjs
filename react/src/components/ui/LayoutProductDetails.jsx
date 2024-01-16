@@ -115,7 +115,7 @@ export default function ProductDetails() {
                                 </div>
                                 <div className="w-1/2 px-2">
                                     <Button className="w-full h-12 bg-gray-200 text-gray-800 py-2 px-4 rounded-full font-bold hover:bg-gray-300 ">
-                                        Buy now
+                                        Add to cart
                                     </Button>
                                 </div>
                             </div>
