@@ -27,7 +27,7 @@ const Customer = () => {
     return (
         <div>
             <BackgroundHeader />
-            <MenuBar/>
+            <MenuBar />
             <Outlet />
             <PopupChat />
             <SubFooter />
@@ -58,23 +58,20 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <BrowserRouter>
                 <Routes>
                     <Route path="/bussiness" element={<Bussiness />}>
+                        <Route index element={<div>Default Page Content</div>} />
                         <Route path="login" element={<div>Default Page login</div>} />
-                        <Route
-                            index
-                            element={<div>Default Page Content</div>}
-                        />
                     </Route>
                     <Route path="/" element={<Customer />}>
-                        <Route index element={<Home/>} />
-                        <Route path="login" element={<Login/>} />
-                        <Route path="register" element={<Register/>} />
-                        <Route path="cart" element={<Cart/>} />
-                        <Route path="fields/:fieldId" element={<Field/>} />
-                        <Route path="brand/:brandId" element={<BrandPage/>} />
-                        <Route path="category/:categoryId" element={<CategoryPage/>} />
-                        <Route path="product/:productId" element={<ProductDetails/>} />
-                        <Route path="shop" element={<Shop/>} />
-                        <Route path="profile" element={<Profile/>} />
+                        <Route index element={<Home />} />
+                        <Route path="login" element={<Login />} />
+                        <Route path="register" element={<Register />} />
+                        <Route path="cart" element={<Cart />} />
+                        <Route path="fields/:fieldId" element={<Field />} />
+                        <Route path="brand/:brandId" element={<BrandPage />} />
+                        <Route path="category/:categoryId" element={<CategoryPage />} />
+                        <Route path="product/:productId" element={<ProductDetails />} />
+                        <Route path="shop" element={<Shop />} />
+                        <Route path="profile" element={<Profile />} />
                     </Route>
                 </Routes>
             </BrowserRouter>
