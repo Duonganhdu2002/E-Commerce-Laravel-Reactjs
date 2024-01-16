@@ -24,7 +24,7 @@ const ShopOrder = () => {
                     </svg>
                 </Button>
             </div>
-            <div className=' grid-cols-4 gap-2 flex pt-0 py-2'>
+            <div className=' grid-cols-4 gap-2 flex pt-0 p-2'>
                 <div className=' cursor-pointer w-full py-2 bg-opacity-50 bg-gray-200  rounded-md flex flex-col justify-center items-center'>
                     <Typography className=' text-xl font-bold'>0</Typography>
                     <Typography className=' text-xs text-center text-gray-700'>Waiting for delivery</Typography>
