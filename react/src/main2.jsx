@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
-import App from "./App";
+import App2 from "./App2";
 import MenuBar from "./components/ui-bussiness/MenuBar";
 import TaskBar from "./components/ui-bussiness/TaskBar";
 import ContentMobile from "./components/ui-bussiness/ContentMobile";
@@ -16,7 +16,7 @@ ReactDOM.createRoot(document.getElementById("root2")).render(
                 <TaskBar />
             </div>
             <div className=' hidden md:block w-[100%] md:w-[70%]'>
-                <App />
+                <App2 />
             </div>
             <div className=' md:hidden'>
                 <ContentMobile />
