@@ -5,7 +5,7 @@ import "./index.css";
 import App2 from "./App2";
 import MenuBar from "./components/ui-bussiness/MenuBar";
 import TaskBar from "./components/ui-bussiness/TaskBar";
-import ContentMobile from "./components/ui-bussiness/ContentMobile";
+import ContentMobile from "./pages/bussiness/ContentMoblie";
 
 
 ReactDOM.createRoot(document.getElementById("root2")).render(
@@ -19,7 +19,7 @@ ReactDOM.createRoot(document.getElementById("root2")).render(
                 <App2 />
             </div>
             <div className=' md:hidden'>
-                <ContentMobile />
+                <ContentMobile/>
             </div>
         </div>
     </BrowserRouter>

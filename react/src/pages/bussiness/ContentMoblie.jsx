@@ -4,13 +4,13 @@ import { Button, Typography, Avatar, List, ListItem } from '@material-tailwind/r
 const ContentMobile = () => {
     return (
         <div>
-            <div className=' flex'>
-                <Avatar src="../../assets/image/Bedroom1.1.jpg"/>
+            <div className=' flex w-full h-12 bg-blue-gray-200'>
+                <Avatar src="../../assets/image/Bedroom1.1.jpg" />
                 <Typography>ghghas</Typography>
                 <Button>Visit store</Button>
             </div>
         </div>
-    );  
+    );
 }
 
 export default ContentMobile;
