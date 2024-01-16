@@ -18,6 +18,8 @@ import {
     Cog6ToothIcon,
     InboxIcon,
     PowerIcon,
+    ArchiveBoxIcon,
+    DocumentTextIcon,
 } from "@heroicons/react/24/solid";
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 
@@ -90,7 +92,7 @@ export default function TaskBar() {
                     <ListItem className="p-0" selected={open === 2}>
                         <AccordionHeader onClick={() => handleOpen(2)} className="border-b-0 p-3">
                             <ListItemPrefix>
-                                <ShoppingBagIcon className="h-5 w-5" />
+                                <DocumentTextIcon className="h-5 w-5" />
                             </ListItemPrefix>
                             <Typography color="blue-gray" className="mr-auto font-normal">
                                 Order
@@ -132,7 +134,7 @@ export default function TaskBar() {
                     <ListItem className="p-0" selected={open === 3}>
                         <AccordionHeader onClick={() => handleOpen(3)} className="border-b-0 p-3">
                             <ListItemPrefix>
-                                <ShoppingBagIcon className="h-5 w-5" />
+                                <ArchiveBoxIcon className="h-5 w-5" />
                             </ListItemPrefix>
                             <Typography color="blue-gray" className="mr-auto font-normal">
                                 Product
