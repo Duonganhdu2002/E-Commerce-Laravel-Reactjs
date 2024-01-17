@@ -121,6 +121,7 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
 
     Route::prefix('cart')->group(function () {
         Route::post('add-to-cart', [ShoppingCartController::class, 'store']);
+        Route::get('/delete/{product_id}', [ShoppingCartController::class, 'destroy']);
     });
 
     Route::prefix('order')->group(function () {
