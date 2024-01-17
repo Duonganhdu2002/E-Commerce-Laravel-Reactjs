@@ -3,7 +3,6 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Avatar from "../../assets/public/profile/thaicong.jpg";
 import Send from "../../assets/icon/send-2-svgrepo-com.svg";
-import Checked from "../../assets/icon/check-badge-svgrepo-com.svg";
 import BackgroundShop from "../../assets/sale/sale5.png";
 
 const PopupChat = () => {
@@ -48,17 +47,11 @@ const PopupChat = () => {
                                     </button>
                                 </div>
                                 <div className="flex ml-[225px]">
-                                    <div className=" flex relative">
+                                    <div className=" flex">
                                         <img
                                             src={Avatar}
                                             alt=""
                                             className="w-14 h-14 mr-4 rounded-xl border-2 border-gray-500"
-                                        />
-
-                                        <img
-                                            src={Checked}
-                                            alt=""
-                                            className="w-6 absolute bg-white rounded-full ml-10 mt-9"
                                         />
                                     </div>
                                     <div className="  fixed -z-40 w-[385px] h-[56px] rounded-l-xl">
@@ -80,16 +73,11 @@ const PopupChat = () => {
                             <div className="flex p-2">
                                 <div className="w-[40%] h-[366px] overflow-y-auto mr-2 border-gray-500 border-y-2">
                                     <div className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-blue-gray-100/40">
-                                        <div className=" flex relative">
+                                        <div className=" flex">
                                             <img
                                                 src={Avatar}
                                                 alt=""
                                                 className="w-14 h-14 mr-4 rounded-xl border-2 border-gray-500"
-                                            />
-                                            <img
-                                                src={Checked}
-                                                alt=""
-                                                className="w-6 absolute bg-white rounded-full ml-10 mt-9"
                                             />
                                         </div>
                                         <div className="">
@@ -97,21 +85,16 @@ const PopupChat = () => {
                                                 Thai Cong Shop
                                             </p>
                                             <p className=" text-gray-500">
-                                            This is the cha...
+                                                This is the cha...
                                             </p>
                                         </div>
                                     </div>
                                     <div className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-blue-gray-100/40">
-                                        <div className=" flex relative">
+                                        <div className=" flex">
                                             <img
                                                 src={Avatar}
                                                 alt=""
                                                 className="w-14 h-14 mr-4 rounded-xl border-2 border-gray-500"
-                                            />
-                                            <img
-                                                src={Checked}
-                                                alt=""
-                                                className="w-6 absolute bg-white rounded-full ml-10 mt-9"
                                             />
                                         </div>
                                         <div className="">
@@ -119,21 +102,16 @@ const PopupChat = () => {
                                                 Thai Cong Shop
                                             </p>
                                             <p className=" text-gray-500">
-                                            This is the cha...
+                                                This is the cha...
                                             </p>
                                         </div>
                                     </div>
                                     <div className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-blue-gray-100/40">
-                                        <div className=" flex relative">
+                                        <div className=" flex">
                                             <img
                                                 src={Avatar}
                                                 alt=""
                                                 className="w-14 h-14 mr-4 rounded-xl border-2 border-gray-500"
-                                            />
-                                            <img
-                                                src={Checked}
-                                                alt=""
-                                                className="w-6 absolute bg-white rounded-full ml-10 mt-9"
                                             />
                                         </div>
                                         <div className="">
@@ -141,21 +119,16 @@ const PopupChat = () => {
                                                 Thai Cong Shop
                                             </p>
                                             <p className=" text-gray-500">
-                                            This is the cha...
+                                                This is the cha...
                                             </p>
                                         </div>
                                     </div>
                                     <div className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-blue-gray-100/40">
-                                        <div className=" flex relative">
+                                        <div className=" flex">
                                             <img
                                                 src={Avatar}
                                                 alt=""
                                                 className="w-14 h-14 mr-4 rounded-xl border-2 border-gray-500"
-                                            />
-                                            <img
-                                                src={Checked}
-                                                alt=""
-                                                className="w-6 absolute bg-white rounded-full ml-10 mt-9"
                                             />
                                         </div>
                                         <div className="">
@@ -163,21 +136,16 @@ const PopupChat = () => {
                                                 Thai Cong Shop
                                             </p>
                                             <p className=" text-gray-500">
-                                            This is the cha...
+                                                This is the cha...
                                             </p>
                                         </div>
                                     </div>
                                     <div className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-blue-gray-100/40">
-                                        <div className=" flex relative">
+                                        <div className=" flex">
                                             <img
                                                 src={Avatar}
                                                 alt=""
                                                 className="w-14 h-14 mr-4 rounded-xl border-2 border-gray-500"
-                                            />
-                                            <img
-                                                src={Checked}
-                                                alt=""
-                                                className="w-6 absolute bg-white rounded-full ml-10 mt-9"
                                             />
                                         </div>
                                         <div className="">
@@ -185,21 +153,16 @@ const PopupChat = () => {
                                                 Thai Cong Shop
                                             </p>
                                             <p className=" text-gray-500">
-                                            This is the cha...
+                                                This is the cha...
                                             </p>
                                         </div>
                                     </div>
                                     <div className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-blue-gray-100/40">
-                                        <div className=" flex relative">
+                                        <div className=" flex ">
                                             <img
                                                 src={Avatar}
                                                 alt=""
                                                 className="w-14 h-14 mr-4 rounded-xl border-2 border-gray-500"
-                                            />
-                                            <img
-                                                src={Checked}
-                                                alt=""
-                                                className="w-6 absolute bg-white rounded-full ml-10 mt-9"
                                             />
                                         </div>
                                         <div className="">
@@ -207,7 +170,7 @@ const PopupChat = () => {
                                                 Thai Cong Shop
                                             </p>
                                             <p className=" text-gray-500">
-                                            This is the cha...
+                                                This is the cha...
                                             </p>
                                         </div>
                                     </div>
