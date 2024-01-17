@@ -373,8 +373,8 @@ export default function MenuBar() {
 
     return (
         <Navbar
-            className={`fixed top-0 left - 0 right - 0 mx - auto mt - 1 z - 50 2xl: min - w - [80 %] py - 3 px - 2 rounded - b - 2xl border - gray - 300 border transition - transform duration - 300 transform ${!hidden ? "translate-y-0" : "-translate-y-24"
-                } `}
+            className={`fixed top-0 left-0 right-0 mx-auto mt-1 z-50 2xl:min-w-[80%] py-3 px-2 rounded-b-2xl border-gray-300 border transition-transform duration-300 transform ${!hidden ? "translate-y-0" : "-translate-y-24"
+                }`}
         >
             <div className="flex items-center justify-between text-blue-gray-900">
                 <Link to="/">
@@ -407,7 +407,7 @@ export default function MenuBar() {
                     <div
                         size="sm"
                         className="!absolute right-1 p-1 px-3 rounded cursor-pointer"
-                        onClick={handleOnclickSearchIcon}
+                        onClick={handleInputChange}
                     >
                         <img className=" w-6 h-6" src={Search} alt="" />
 
