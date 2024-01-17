@@ -279,7 +279,7 @@ class ProductController extends Controller
                 ->leftJoin('order', 'order_items.order_id', '=', 'order.order_id')
                 ->where('product.product_category_id', $categoryId)
                 // ->where('order.order_status_id', 3)
-                ->groupBy('product.product_id', )
+                ->groupBy('product.product_id',)
                 ->groupBy(
                     'product.product_id',
                     'product.name',
@@ -331,7 +331,7 @@ class ProductController extends Controller
                 ->leftJoin('order', 'order_items.order_id', '=', 'order.order_id')
                 ->where('product.product_brand_id', $brandId)
                 ->where('order.order_status_id', 3)
-                ->groupBy('product.product_id', )
+                ->groupBy('product.product_id',)
                 ->groupBy(
                     'product.product_id',
                     'product.name',
@@ -416,16 +416,20 @@ class ProductController extends Controller
         ]);
     }
 
-    // Lấy NGẪU NHIÊN 4 danh mục và show 4 sản phẩm bán chạy nhất của 4 danh mục đó
     public function getRandomCategories()
     {
         try {
-            // Lấy ngẫu nhiên 4 danh mục
-            $randomCategories = DB::table('product_category')->inRandomOrder()->limit(4)->pluck('product_category_id');
+            // Specify the unique category IDs you want to fetch
+            $categoryIds = [1, 27];
+
+            // Get the specified categories
+            $specificCategories = DB::table('product_category')
+                ->whereIn('product_category_id', $categoryIds)
+                ->get(['product_category_id', 'product_category_name']);
 
             $result = [];
 
-            foreach ($randomCategories as $categoryId) {
+            foreach ($specificCategories as $category) {
                 // Lấy thông tin sản phẩm bán chạy nhất của từng danh mục
                 $topProducts = Product::select(
                     'product.product_id',
@@ -436,7 +440,7 @@ class ProductController extends Controller
                     DB::raw('SUM(order_items.quantity) as total_sales')
                 )
                     ->join('order_items', 'product.product_id', '=', 'order_items.product_id')
-                    ->where('product.product_category_id', $categoryId)
+                    ->where('product.product_category_id', $category->product_category_id)
                     ->groupBy('product.product_id', 'product.name', 'product.description', 'product.price', 'product.stock')
                     ->orderByDesc('total_sales')
                     ->take(4)
@@ -449,14 +453,15 @@ class ProductController extends Controller
                 }
 
                 $result[] = [
-                    'category_id' => $categoryId,
+                    'category_id' => $category->product_category_id,
+                    'product_category_name' => $category->product_category_name,
                     'top_products' => $topProducts,
                 ];
             }
 
             return response()->json([
                 'status' => 200,
-                'message' => 'Danh sách ngẫu nhiên 5 danh mục và top 4 sản phẩm bán chạy nhất của từng danh mục',
+                'message' => 'Danh sách 4 danh mục và top 4 sản phẩm bán chạy nhất của từng danh mục',
                 'data' => $result
             ]);
         } catch (\Exception $e) {
@@ -467,5 +472,4 @@ class ProductController extends Controller
             ], 500);
         }
     }
-
 }

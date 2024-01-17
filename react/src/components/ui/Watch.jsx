@@ -5,61 +5,87 @@ import {
     Tab,
     TabPanel,
 } from "@material-tailwind/react";
+import { fetchRandomFourCategoryAndGetFourProduct } from "../../services/productService";
+import React, { useEffect } from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import Cart from "../../assets/icon/add-to-cart.svg";
+
 
 export default function Watch() {
-    const data = [
-        {
-            label: "Books",
-            value: "html",
-            desc: `It really matters and then like it really doesn't matter.
-        What matters is the people who are sparked by it. And the people
-        who are like offended by it, it doesn't matter.`,
-        },
-        {
-            label: "Plush Toys",
-            value: "react",
-            desc: `Because it's about motivating the doers. Because I'm here
-        to follow my dreams and inspire other people to follow their dreams, too.`,
-        },
 
-        {
-            label: "Electric Scooters",
-            value: "vue",
-            desc: `We're not always in the position that we want to be at.
-        We're constantly growing. We're constantly making mistakes. We're
-        constantly trying to express ourselves and actualize our dreams.`,
-        },
+    const [data, setData] = useState([]);
 
-        {
-            label: "Rings",
-            value: "angular",
-            desc: `Because it's about motivating the doers. Because I'm here
-        to follow my dreams and inspire other people to follow their dreams, too.`,
-        },
-    ];
+    useEffect(() => {
+        GetFetchRandomFourCategoryAndGetFourProduct();
+    }, []);
+
+    const GetFetchRandomFourCategoryAndGetFourProduct = async () => {
+        try {
+            let res = await fetchRandomFourCategoryAndGetFourProduct();
+            if (res && res.data) {
+                setData(res.data);
+            }
+        } catch (error) {
+            console.error("Error fetching fields:", error);
+        }
+    };
+
+    console.log(data);
+    // console.log(categoryId);
 
     return (
         <div className=" flex justify-center items-center">
             <div className=" w-[95%] md:w-[90%] lg:w-[80%]">
-                
+
                 <Tabs id="custom-animation" value="html">
                     <TabsHeader>
-                        {data.map(({ label, value }) => (
-                            <Tab key={value} value={value}>
-                                {label}
+                        {data.map(({ category_id, product_category_name }) => (
+                            <Tab key={category_id} value={category_id}>
+                                {product_category_name}
                             </Tab>
                         ))}
                     </TabsHeader>
                     <TabsBody
                         animate={{
-                            initial: { y: 250 },
+                            initial: { y: 500 },
                             mount: { y: 0 },
-                            unmount: { y: 250 },
+                            unmount: { y: 500 },
                         }}
                     >
-                        {data.map(({ value, desc }) => (
-                            <TabPanel key={value} value={value}>
-                                {desc}
+                        {data.map(({ category_id, top_products }) => (
+                            <TabPanel key={category_id} value={category_id}>
+                                <section
+                                    className=" mx-auto grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-4 md:grid-cols-2 justify-items-center justify-center gap-y-8 gap-x-6 mt-6 mb-5"
+                                >
+                                    {top_products &&
+                                        top_products.length > 0 &&
+                                        top_products.map((product, index) => (
+                                            <Link key={index} to={`/product/${product.product_id}`}>
+                                                <div className="w-full h-[550px] bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+                                                    <img
+                                                        className=" h-[80%] w-[380px] object-cover rounded-t-xl"
+                                                        src={`/src/assets/image/${product.images[0]}`}
+                                                        alt="Product"
+                                                    />
+                                                    <div className="px-4 py-3 h-[20%] w-full">
+                                                        <span className="text-gray-400 mr-3 uppercase text-xs">Brand</span>
+                                                        <p className="text-lg font-bold text-black truncate block capitalize">{product.name}</p>
+                                                        <div className="flex items-center">
+                                                            <p className="text-lg font-semibold text-black cursor-auto my-3">${(product.price - (product.price) * 0.1).toFixed(2)}</p>
+                                                            <del>
+                                                                <p className="text-sm text-gray-600 cursor-auto ml-2">${product.price}</p>
+                                                            </del>
+                                                            <div className="ml-auto">
+                                                                <img src={Cart} alt="" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </Link>
+
+                                        ))}
+                                </section>
                             </TabPanel>
                         ))}
                     </TabsBody>

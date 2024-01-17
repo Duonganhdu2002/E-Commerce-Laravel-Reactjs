@@ -16,4 +16,8 @@ const productSugession = (userId) => {
     return axios.get(`/public/product/recommend/${userId}`)
 }
 
-export { fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession };
+const fetchRandomFourCategoryAndGetFourProduct = () => {
+    return axios.get("/public/product/getRandomCategories")
+}
+
+export { fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession,fetchRandomFourCategoryAndGetFourProduct };
