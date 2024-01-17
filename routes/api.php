@@ -98,10 +98,6 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
         // Lấy NGẪU NHIÊN 4 danh mục và show 4 sản phẩm bán chạy nhất của 4 danh mục đó
         Route::get('getRandomCategories', [ProductController::class, 'getRandomCategories']);
 
-
-
-
-
         Route::prefix('img')->group(function () {
             Route::get('display/{productId}', [ProductImageController::class, 'displayByProductId']);
             Route::post('upload/{productId}', [ProductImageController::class, 'upload']);
