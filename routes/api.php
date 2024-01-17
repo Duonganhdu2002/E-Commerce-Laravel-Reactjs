@@ -60,7 +60,7 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
         // index, store, update, destroy
         // Route::resource('/', ProductController::class);
 
-        Route::get('/{id}', [ProductController::class, 'show']);
+        Route::get('show/{id}', [ProductController::class, 'show']);
 
         //xuất ra 6 sản phẩm mới nhất
         Route::get('latest-products/{categoryId}', [ProductController::class, 'getLatestProductsInCategory'])->name('latest-products');
