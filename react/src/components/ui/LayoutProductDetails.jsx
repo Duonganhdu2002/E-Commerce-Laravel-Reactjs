@@ -20,6 +20,7 @@ import {
     CardBody,
     CardFooter,
     Typography,
+    Progress,
 } from "@material-tailwind/react";
 
 export default function ProductDetails() {
@@ -332,18 +333,22 @@ export default function ProductDetails() {
                                     />
                                 </div>
                             </div>
-                            <div className="flex flex-col justify-between mt-2 w-5/6 h-32 items-start">
-                                <div className="bg-[#eceff1] flex flex-row w-full items-start rounded-sm">
-                                    <div className="bg-[#ffc107] w-1/2 h-1 rounded-sm" />
+                            <div className="flex flex-col justify-between mt-2 w-5/6 h-36 items-start">
+                                <div className="flex w-full flex-col gap-4 mb-4">
+                                    <Progress value={75} color="amber" />
                                 </div>
-                                <div className="bg-[#eceff1] flex flex-row w-full items-start rounded-sm">
-                                    <div className="bg-[#ffc107] w-1/2 h-1 rounded-sm" />
+                                <div className="flex w-full flex-col gap-4 mb-4">
+                                    <Progress value={10} color="amber" />
                                 </div>
-                                <div className="bg-[#eceff1] flex flex-row w-full items-start rounded-sm">
-                                    <div className="bg-[#ffc107] w-1/2 h-1 rounded-sm" />
+                                <div className="flex w-full flex-col gap-4 mb-4">
+                                    <Progress value={25} color="amber" />
                                 </div>
-                                <div className="bg-[#eceff1] w-full h-1 rounded-sm" />
-                                <div className="bg-[#eceff1] w-full h-1 rounded-sm" />
+                                <div className="flex w-full flex-col gap-4 mb-4">
+                                    <Progress value={0} color="amber" />
+                                </div>
+                                <div className="flex w-full flex-col gap-4 mb-2">
+                                    <Progress value={0} color="amber" />
+                                </div>
                             </div>
                             <div className="flex flex-col justify-between mt-px gap-3 w-6 font-sans items-start">
                                 <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b]">
@@ -373,12 +378,12 @@ export default function ProductDetails() {
                                 great.{" "}
                             </div>
                         </div>
-                        <button
+                        <Button
                             id="ButtonFilled"
-                            className="text-xs font-bold leading-[18px] uppercase text-white shadow-[0px_2px_4px_-2px_rgba(33,_33,_33,_0.2),_0px_4px_6px_-1px_rgba(33,_33,_33,_0.2)] bg-[#212121] flex flex-row justify-center pt-3 w-full h-10 cursor-pointer items-start rounded-lg"
+                            className="w-full"
                         >
                             write a review
-                        </button>
+                        </Button>
                     </div>
                     {/* Div đánh giá */}
                     <div
