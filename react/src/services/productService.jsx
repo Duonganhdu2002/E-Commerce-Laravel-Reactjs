@@ -9,7 +9,7 @@ const fetchProductWithCategory = (id) => {
 }
 
 const productInformation = (id) => {
-    return axios.get(`/public/product/${id}`)
+    return axios.get(`/public/product/show/${id}`)
 }
 
 const productSugession = (userId) => {
