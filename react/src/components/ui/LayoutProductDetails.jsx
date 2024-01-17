@@ -9,9 +9,8 @@ import StarO from "../../assets/icon/star-o-svgrepo-com.svg";
 import Star from "../../assets/icon/star-svgrepo-com.svg";
 import Voucher from "../../assets/icon/voucher-discount-tag-svgrepo-com.svg";
 import Img1 from "../../assets/image/img1.jpg";
-import Profile from "../../assets/public/profile/1703940723832khunghinh.net.png";
+import Profile from "../../assets/public/profile/thaicong.jpg";
 import ImageReviews from "../../assets/public/reviews/bed-5.jpg";
-import BackgroundShop from "../../assets/sale/sale5.png";
 import { productInformation } from "../../services/productService";
 import { Breadcrumbs, Button } from "@material-tailwind/react";
 import {
@@ -22,6 +21,7 @@ import {
     Typography,
     Progress,
 } from "@material-tailwind/react";
+import outlined from "@material-tailwind/react/theme/components/timeline/timelineIconColors/outlined";
 
 export default function ProductDetails() {
     const { productId } = useParams();
@@ -54,7 +54,7 @@ export default function ProductDetails() {
 
     return (
         <div className="flex flex-col justify-center">
-            <div className="pb-8 pt-4">
+            <div className="pb-8 pt-4 ">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <Breadcrumbs className=" mb-8">
                         <a href="#" className="opacity-60">
@@ -190,34 +190,24 @@ export default function ProductDetails() {
             </div>
 
             {/* Div của shop */}
-            <div className=" flex items-center p-4 px-4 2xl:px-[10%] xl:px-[10%] lg:px-[10%] md:px-[5%] sm:px-4 mb-4">
-                <div className=" flex items-center w-full rounded-xl">
-                    <img
-                        src={BackgroundShop}
-                        alt=""
-                        className="object-cover aspect-ratio relative w-full h-36 rounded-xl"
-                        style={{ filter: "blur(10px)" }}
-                    />
-                </div>
-
-                <div className="absolute flex flex-row justify-center sm:px-10">
-                    <div className="flex items-center relative ">
+            <div className="md:flex items-center justify-center p-4 px-4 2xl:px-[10%] xl:px-[10%] lg:px-[10%] md:px-[5%] sm:px-4 mb-4 ">
+                <div className=" flex flex-row justify-center sm:px-4 py-4 bg-gray-900 w-full rounded-2xl">
+                    <div className="flex items-center ">
                         <img
                             src={Profile}
                             alt=""
-                            className="rounded-3xl border-light-blue-900 border-4 w-24"
-                        />
-                        <img
-                            src={Checked}
-                            alt=""
-                            className=" w-10 ml-16 mt-16 absolute bg-white rounded-full"
+                            className="rounded-3xl border-gray-300 border-4 w-24"
                         />
                     </div>
-                    <div className=" flex items-center ml-6 mr-10 w-1/4 sm:w-3/4">
-                        <p className=" font-semibold text-xl   inline-block bg-white/60 p-2 px-4 rounded-lg w-fit">
-                            Shop uy tin so 1 VietNam
+                    <div className=" flex items-center ml-10 mr-10 w-1/4 sm:w-3/4">
+                        <p className=" font-bold text-lg md:text-2xl text-white">
+                            Thai Cong Shop
                         </p>
                     </div>
+                </div>
+                <div className="flex flex-col justify-center md:px-4 py-3 md:w-[220px] ">
+                    <Button className=" mb-4" variant="outlined">Chat now</Button>
+                    <Button variant="outlined">View Store</Button>
                 </div>
             </div>
             {/* Div dánh giá sản phẩm */}
@@ -378,10 +368,7 @@ export default function ProductDetails() {
                                 great.{" "}
                             </div>
                         </div>
-                        <Button
-                            id="ButtonFilled"
-                            className="w-full"
-                        >
+                        <Button id="ButtonFilled" className="w-full">
                             write a review
                         </Button>
                     </div>
