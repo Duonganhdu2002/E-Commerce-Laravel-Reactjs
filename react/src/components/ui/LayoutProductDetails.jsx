@@ -4,7 +4,7 @@ import Checked from "../../assets/icon/check-badge-svgrepo-com.svg";
 import Delivery from "../../assets/icon/delivery-truck-svgrepo-com.svg";
 import Reply from "../../assets/icon/reply-arrow-direction-right-svgrepo-com.svg";
 import Size from "../../assets/icon/size-actual-svgrepo-com.svg";
-import StarHalfLeftO from "../../assets/icon/star-half-left-o-svgrepo-com.svg";
+import StarOutline from "../../assets/icon/star-outline.svg";
 import StarO from "../../assets/icon/star-o-svgrepo-com.svg";
 import Star from "../../assets/icon/star-svgrepo-com.svg";
 import Voucher from "../../assets/icon/voucher-discount-tag-svgrepo-com.svg";
@@ -199,8 +199,8 @@ export default function ProductDetails() {
                     />
                 </div>
 
-                <div className="absolute flex ">
-                    <div className="flex items-center pl-8 relative ">
+                <div className="absolute flex flex-row justify-center sm:px-10">
+                    <div className="flex items-center relative ">
                         <img
                             src={Profile}
                             alt=""
@@ -209,11 +209,11 @@ export default function ProductDetails() {
                         <img
                             src={Checked}
                             alt=""
-                            className=" w-10 ml-12 sm:ml-16 mt-16 absolute bg-white rounded-full"
+                            className=" w-10 ml-16 mt-16 absolute bg-white rounded-full"
                         />
                     </div>
-                    <div className=" flex items-center">
-                        <p className=" font-semibold text-xl ml-6 mr-10 inline-block bg-white/60 p-2 px-4 rounded-lg w-fit">
+                    <div className=" flex items-center ml-6 mr-10 w-1/4 sm:w-3/4">
+                        <p className=" font-semibold text-xl   inline-block bg-white/60 p-2 px-4 rounded-lg w-fit">
                             Shop uy tin so 1 VietNam
                         </p>
                     </div>
@@ -221,97 +221,383 @@ export default function ProductDetails() {
             </div>
             {/* Div dánh giá sản phẩm */}
             <div className="flex justify-around float-left px-4 2xl:px-[10%] xl:px-[10%] lg:px-[10%] md:px-[5%] sm:px-4">
-                <div className="flex items-center flex-col float-left px-4 w-[100%]">
+                <div className="flex items-center flex-col float-left px-4 w-full">
                     <p className=" my-2 text-xl font-bold">PRODUCT REVIEWS</p>
                     {/* Div lọc sao đánh giá */}
-                    <div className=" flex items-center justify-center py-2 w-full mb-2">
-                        <button className=" flex items-center justify-center h-10 w-20 border-[#1e293b] border rounded-xl mr-2 bg-white">
-                            All
-                        </button>
-                        <button className="flex items-center justify-center h-10 w-20 border-[#1e293b] border rounded-xl mr-2 bg-white">
-                            5 Star
-                        </button>
-                        <button className="flex items-center justify-center h-10 w-20 border-[#1e293b] border rounded-xl mr-2 bg-white">
-                            4 Star
-                        </button>
-                        <button className="flex items-center justify-center h-10 w-20 border-[#1e293b] border rounded-xl mr-2 bg-white">
-                            3 Star
-                        </button>
-                        <button className="flex items-center justify-center h-10 w-20 border-[#1e293b] border rounded-xl mr-2 bg-white">
-                            2 Star
-                        </button>
-                        <button className="flex items-center justify-center h-10 w-20 border-[#1e293b] border rounded-xl mr-2 bg-white">
-                            1 Star
+
+                    <div
+                        id="ReviewsRoot"
+                        className="flex flex-col py-10 justify-between gap-8 w-full font-sans items-start"
+                    >
+                        <div className="flex flex-col gap-6 w-full items-start">
+                            <div className="flex flex-row justify-between ml-1 w-full items-start">
+                                <div className="flex">
+                                    <div className="text-right font-bold leading-[24px] text-[#607d8b] mr-2">
+                                        4.7
+                                    </div>
+                                    <div className="flex flex-row mt-px w-1/3 items-start">
+                                        <img
+                                            src={Star}
+                                            alt="Star"
+                                            id="Star"
+                                            className="w-5"
+                                        />
+                                        <img
+                                            src={Star}
+                                            alt="Star1"
+                                            id="Star1"
+                                            className="w-5"
+                                        />
+                                        <img
+                                            src={Star}
+                                            alt="Star2"
+                                            id="Star2"
+                                            className="w-5"
+                                        />
+                                        <img
+                                            src={Star}
+                                            alt="Star3"
+                                            id="Star3"
+                                            className="w-5"
+                                        />
+                                        <img
+                                            src={StarO}
+                                            alt="Star4"
+                                            id="Star4"
+                                            className="w-5"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b] mt-px">
+                                    Based on 134 Reviews
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex flex-row justify-between ml-1 w-full font-sans items-start">
+                            <div className="flex flex-col justify-between gap-2 w-8 items-start">
+                                <div className="flex flex-row gap-1 w-8 items-start">
+                                    <div className="text-right font-medium leading-[24px] text-[#607d8b]">
+                                        5
+                                    </div>
+                                    <img
+                                        src={Star}
+                                        alt="Star5"
+                                        id="Star5"
+                                        className="mt-px w-5"
+                                    />
+                                </div>
+                                <div className="flex flex-row gap-1 w-8 items-start">
+                                    <div className="text-right font-medium leading-[24px] text-[#607d8b]">
+                                        4
+                                    </div>
+                                    <img
+                                        src={Star}
+                                        alt="Star6"
+                                        id="Star6"
+                                        className="mt-px w-5"
+                                    />
+                                </div>
+                                <div className="flex flex-row gap-1 w-8 font-sans items-start">
+                                    <div className="text-right font-medium leading-[24px] text-[#607d8b]">
+                                        3
+                                    </div>
+                                    <img
+                                        src={Star}
+                                        alt="Star7"
+                                        id="Star7"
+                                        className="mt-px w-5"
+                                    />
+                                </div>
+                                <div className="flex flex-row gap-1 w-8 font-sans items-start">
+                                    <div className="text-right font-medium leading-[24px] text-[#607d8b]">
+                                        2
+                                    </div>
+                                    <img
+                                        src={StarOutline}
+                                        alt="Star8"
+                                        id="Star8"
+                                        className="mt-px w-5"
+                                    />
+                                </div>
+                                <div className="flex flex-row gap-1 w-8 font-sans items-start">
+                                    <div className="text-right font-medium leading-[24px] text-[#607d8b]">
+                                        1
+                                    </div>
+                                    <img
+                                        src={StarOutline}
+                                        alt="Star9"
+                                        id="Star9"
+                                        className="mt-px w-5"
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex flex-col justify-between mt-2 w-5/6 h-32 items-start">
+                                <div className="bg-[#eceff1] flex flex-row w-full items-start rounded-sm">
+                                    <div className="bg-[#ffc107] w-1/2 h-1 rounded-sm" />
+                                </div>
+                                <div className="bg-[#eceff1] flex flex-row w-full items-start rounded-sm">
+                                    <div className="bg-[#ffc107] w-1/2 h-1 rounded-sm" />
+                                </div>
+                                <div className="bg-[#eceff1] flex flex-row w-full items-start rounded-sm">
+                                    <div className="bg-[#ffc107] w-1/2 h-1 rounded-sm" />
+                                </div>
+                                <div className="bg-[#eceff1] w-full h-1 rounded-sm" />
+                                <div className="bg-[#eceff1] w-full h-1 rounded-sm" />
+                            </div>
+                            <div className="flex flex-col justify-between mt-px gap-3 w-6 font-sans items-start">
+                                <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b]">
+                                    75%
+                                </div>
+                                <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b]">
+                                    10%
+                                </div>
+                                <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b]">
+                                    25%
+                                </div>
+                                <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b] ml-2">
+                                    0%
+                                </div>
+                                <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b] ml-2">
+                                    0%
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex flex-col gap-2 w-full font-sans items-start">
+                            <div className="text-xl font-semibold leading-[30px] text-[#212121]">
+                                We value your opinion
+                            </div>
+                            <div className="leading-[27.2px] text-[#607d8b] w-full">
+                                The time is now for it to be okay to be great.
+                                People in this world shun people for being
+                                great.{" "}
+                            </div>
+                        </div>
+                        <button
+                            id="ButtonFilled"
+                            className="text-xs font-bold leading-[18px] uppercase text-white shadow-[0px_2px_4px_-2px_rgba(33,_33,_33,_0.2),_0px_4px_6px_-1px_rgba(33,_33,_33,_0.2)] bg-[#212121] flex flex-row justify-center pt-3 w-full h-10 cursor-pointer items-start rounded-lg"
+                        >
+                            write a review
                         </button>
                     </div>
                     {/* Div đánh giá */}
-                    <div className=" flex flex-col mt-8 bg-[#e2e8f0]/70 w-full px-4 border-b-2 border-[#1e293b] rounded-t-3xl">
-                        {/* Div của profile và đánh giá sao, ngày giờ đánh giá */}
-                        <div className="flex my-4">
-                            <div>
+                    <div
+                        id="ReviewListRoot"
+                        className="flex flex-col justify-between gap-8 w-full font-sans items-start"
+                    >
+                        <div className="flex flex-col justify-between gap-6 w-full items-start">
+                            <div className="flex flex-row w-1/6 items-start">
                                 <img
-                                    src={Profile}
-                                    alt=""
-                                    className=" rounded-full border-black border w-14"
+                                    src={Star}
+                                    alt="Star"
+                                    id="Star"
+                                    className="w-5"
+                                />
+                                <img
+                                    src={Star}
+                                    alt="Star1"
+                                    id="Star1"
+                                    className="w-5"
+                                />
+                                <img
+                                    src={Star}
+                                    alt="Star2"
+                                    id="Star2"
+                                    className="w-5"
+                                />
+                                <img
+                                    src={Star}
+                                    alt="Star3"
+                                    id="Star3"
+                                    className="w-5"
+                                />
+                                <img
+                                    src={StarO}
+                                    alt="Star4"
+                                    id="Star4"
+                                    className="w-5"
                                 />
                             </div>
-                            <div>
-                                <p className=" ml-4">D*******0</p>
-                                <div className="flex items-center mb-1 ml-4 ">
-                                    <img src={Star} alt="" className="w-5" />
-                                    <img src={Star} alt="" className="w-5" />
-                                    <img src={Star} alt="" className="w-5" />
-                                    <img
-                                        src={StarHalfLeftO}
-                                        alt=""
-                                        className="w-5"
-                                    />
-                                    <img src={StarO} alt="" className="w-5" />
+                            <div className="leading-[27.2px] text-[#607d8b] w-full">
+                                If everything I did failed - which it
+                                doesn&apos;t, it actually succeeds - just the
+                                fact that I&apos;m willing to fail is an
+                                inspiration. People are so scared to lose that
+                                they don&apos;t even try. Like, one thing people
+                                can&apos;t say is that I&apos;m not trying, and
+                                I&apos;m not trying my hardest, and I&apos;m not
+                                trying to do the best way I know how.
+                            </div>
+                            <div className="flex flex-row gap-4 w-3/4 items-start">
+                                <img
+                                    src="https://file.rendit.io/n/3PWsyMyIJ3OvZF0bNi8q.png"
+                                    alt="Avatars"
+                                    id="Avatars"
+                                    className="mt-px w-12"
+                                />
+                                <div className="flex flex-col w-3/5 font-sans items-start">
+                                    <div
+                                        id="SarahLamalo"
+                                        className="font-medium leading-[24px] text-[#212121]"
+                                    >
+                                        Ryan Samuel
+                                    </div>
+                                    <div
+                                        id="INeedMoreInformat"
+                                        className="leading-[27.2px] text-[#607d8b]"
+                                    >
+                                        03 March 2023
+                                    </div>
                                 </div>
-                                <p className=" flex ml-4">
-                                    2024-01-18 &nbsp;13:23
-                                </p>
                             </div>
+                            <div
+                                id="Line"
+                                className="bg-[#eceff1] w-4/5 h-px"
+                            />
                         </div>
-                        {/* Div của phần bình luận đánh giá, ảnh đánh giá */}
-                        <div className="flex flex-col">
-                            <div>
-                                <p>Good, good!!!!!!!!</p>
+                        <div className="flex flex-col justify-between gap-6 w-full items-start">
+                            <div className="flex flex-row w-1/6 items-start">
+                                <img
+                                    src={Star}
+                                    alt="Star5"
+                                    id="Star5"
+                                    className="w-5"
+                                />
+                                <img
+                                    src={Star}
+                                    alt="Star6"
+                                    id="Star6"
+                                    className="w-5"
+                                />
+                                <img
+                                    src={Star}
+                                    alt="Star7"
+                                    id="Star7"
+                                    className="w-5"
+                                />
+                                <img
+                                    src={Star}
+                                    alt="Star8"
+                                    id="Star8"
+                                    className="w-5"
+                                />
+                                <img
+                                    src={StarO}
+                                    alt="Star9"
+                                    id="Star9"
+                                    className="w-5"
+                                />
                             </div>
-                            <div className=" flex my-2">
-                                <img
-                                    src={ImageReviews}
-                                    alt=""
-                                    className="w-[18%] md:w-[12vh] h-full mr-4 rounded-xl"
-                                />
-                                <img
-                                    src={ImageReviews}
-                                    alt=""
-                                    className=" w-[18%] md:w-[12vh] h-full md:h-auto mr-4 rounded-xl"
-                                />
-                                <img
-                                    src={ImageReviews}
-                                    alt=""
-                                    className=" w-[18%] md:w-[12vh] h-full md:h-auto mr-4 rounded-xl"
-                                />
-                                <img
-                                    src={ImageReviews}
-                                    alt=""
-                                    className=" w-[18%] md:w-[12vh] h-full md:h-auto mr-4 rounded-xl"
-                                />
+                            <div className="leading-[27.2px] text-[#607d8b] w-full">
+                                If everything I did failed - which it
+                                doesn&apos;t, it actually succeeds - just the
+                                fact that I&apos;m willing to fail is an
+                                inspiration. People are so scared to lose that
+                                they don&apos;t even try. Like, one thing people
+                                can&apos;t say is that I&apos;m not trying, and
+                                I&apos;m not trying my hardest, and I&apos;m not
+                                trying to do the best way I know how.
                             </div>
+                            <div className="flex flex-row gap-4 w-3/4 items-start">
+                                <img
+                                    src="https://file.rendit.io/n/BIJGxab32P9hQOKRTmo2.png"
+                                    alt="Avatars1"
+                                    id="Avatars1"
+                                    className="mt-px w-12"
+                                />
+                                <div className="flex flex-col w-2/3 font-sans items-start">
+                                    <div
+                                        id="SarahLamalo1"
+                                        className="font-medium leading-[24px] text-[#212121]"
+                                    >
+                                        Emma Roberts
+                                    </div>
+                                    <div
+                                        id="INeedMoreInformat1"
+                                        className="leading-[27.2px] text-[#607d8b]"
+                                    >
+                                        14 February 2023
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                id="Line1"
+                                className="bg-[#eceff1] w-4/5 h-px"
+                            />
                         </div>
-                        {/* Div phản hồi của nhà bán hàng */}
-                        <div className=" flex bg-white/90 my-4 p-3 rounded-xl">
-                            <img src={Reply} alt="" className="w-5 mr-2" />
-                            <p>
-                                Thank you so much for taking the time to share
-                                your positive feedback with us!
-                            </p>
+                        <div className="flex flex-col justify-between gap-6 w-full font-sans items-start">
+                            <div className="flex flex-row w-1/6 items-start">
+                                <img
+                                    src={Star}
+                                    alt="Star10"
+                                    id="Star10"
+                                    className="w-5"
+                                />
+                                <img
+                                    src={Star}
+                                    alt="Star11"
+                                    id="Star11"
+                                    className="w-5"
+                                />
+                                <img
+                                    src={Star}
+                                    alt="Star12"
+                                    id="Star12"
+                                    className="w-5"
+                                />
+                                <img
+                                    src={Star}
+                                    alt="Star13"
+                                    id="Star13"
+                                    className="w-5"
+                                />
+                                <img
+                                    src={StarO}
+                                    alt="Star14"
+                                    id="Star14"
+                                    className="w-5"
+                                />
+                            </div>
+                            <div className="leading-[27.2px] text-[#607d8b] w-full">
+                                If everything I did failed - which it
+                                doesn&apos;t, it actually succeeds - just the
+                                fact that I&apos;m willing to fail is an
+                                inspiration. People are so scared to lose that
+                                they don&apos;t even try. Like, one thing people
+                                can&apos;t say is that I&apos;m not trying, and
+                                I&apos;m not trying my hardest, and I&apos;m not
+                                trying to do the best way I know how.
+                            </div>
+                            <div className="flex flex-row gap-4 w-3/4 items-start">
+                                <img
+                                    src="https://file.rendit.io/n/PhZjbaMDN2MCgEvCbwAD.png"
+                                    alt="Avatars2"
+                                    id="Avatars2"
+                                    className="mt-px w-12"
+                                />
+                                <div className="flex flex-col w-2/3 font-sans items-start">
+                                    <div
+                                        id="SarahLamalo2"
+                                        className="font-medium leading-[24px] text-[#212121]"
+                                    >
+                                        Bruce Mars
+                                    </div>
+                                    <div
+                                        id="INeedMoreInformat2"
+                                        className="leading-[27.2px] text-[#607d8b]"
+                                    >
+                                        10 February 2023
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                id="Line2"
+                                className="bg-[#eceff1] w-4/5 h-px"
+                            />
                         </div>
                     </div>
                 </div>
-                <div className="items-center justify-center flex-col hidden lg:block w-[30%]">
+                <div className="items-center justify-end flex-col hidden lg:block w-[35%] ml-10">
                     <Card className=" w-80 mb-8">
                         <CardHeader
                             shadow={false}
