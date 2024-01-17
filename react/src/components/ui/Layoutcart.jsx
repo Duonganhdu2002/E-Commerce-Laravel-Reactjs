@@ -8,6 +8,7 @@ import Visa from "../../assets/icon/visa-svgrepo-com.svg";
 import AmericanExpress from "../../assets/icon/american-express-logo-svgrepo-com.svg";
 import Mastercard from "../../assets/icon/mastercard-svgrepo-com.svg";
 import PayPal from "../../assets/icon/paypal-svgrepo-com.svg";
+import { Link } from "react-router-dom";
 
 export default function Layoutcart() {
     return (
@@ -105,9 +106,11 @@ export default function Layoutcart() {
                                 <p>$2,090</p>
                             </div>
                             <div className=" py-2">
-                                <Button className="w-full bg-black/80 hover:shadow-md my-2">
-                                    CHECKOUT
-                                </Button>
+                                <Link to="/checkout">
+                                    <Button className="w-full bg-black/80 hover:shadow-md my-2">
+                                        CHECKOUT
+                                    </Button>
+                                </Link>
                                 <Button className="w-full bg-white hover:bg-gray-300 hover:shadow-none shadow-none text-black my-2">
                                     CONTINUE
                                 </Button>
@@ -128,10 +131,10 @@ export default function Layoutcart() {
                                 </p>
                             </div>
                             <div className="flex justify-center items-center pb-6">
-                                <img src={Visa} alt="" className=" w-12 mr-2"/>
-                                <img src={Mastercard} alt="" className=" w-12 mr-2"/>
-                                <img src={AmericanExpress} alt="" className=" w-12 mr-2"/>
-                                <img src={PayPal} alt="" className=" w-12 mr-2"/>
+                                <img src={Visa} alt="" className=" w-12 mr-2" />
+                                <img src={Mastercard} alt="" className=" w-12 mr-2" />
+                                <img src={AmericanExpress} alt="" className=" w-12 mr-2" />
+                                <img src={PayPal} alt="" className=" w-12 mr-2" />
                             </div>
                         </div>
                     </div>

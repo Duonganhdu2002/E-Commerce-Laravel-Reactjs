@@ -5,7 +5,6 @@ import "./index.css";
 import PopupChat from "./components/ui/PopupChat";
 import { UserProvider } from "./context/UserContext";
 import SubFooter from "./components/ui/Subfooter";
-import Footer from "./components/ui/Footer";
 import BackgroundHeader from "./components/ui/BackgroundHeader";
 import { Provider } from "react-redux";
 import { store } from "./redux/Store";
@@ -23,6 +22,8 @@ import Shop from "./pages/Shop";
 import Profile from "./pages/Profile";
 import MenuBar from "./components/ui/MenuBar";
 import Search from "./pages/Search";
+import Checkout from "./components/ui/Checkout";
+import SubFooter2 from "./components/ui/SubFooter2";
 
 const Customer = () => {
     return (
@@ -32,7 +33,7 @@ const Customer = () => {
             <Outlet />
             <PopupChat />
             <SubFooter />
-            <Footer />
+            <SubFooter2/>
         </div>
     );
 }
@@ -88,6 +89,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                         <Route path="product/:productId" element={<ProductDetails />} />
                         <Route path="shop" element={<Shop />} />
                         <Route path="profile" element={<Profile />} />
+                        <Route path="checkout" element={<Checkout/>} />
                         <Route path="search/:searchKey" element={<Search/>} />
                     </Route>
 

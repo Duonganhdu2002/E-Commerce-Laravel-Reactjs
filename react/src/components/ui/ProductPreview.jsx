@@ -14,6 +14,7 @@ import {
 } from "@material-tailwind/react";
 
 import outlined from "@material-tailwind/react/theme/components/timeline/timelineIconColors/outlined";
+import Reviews from "./Reviews";
 
 export default function LayoutBannerShop() {
     return (
@@ -180,81 +181,7 @@ export default function LayoutBannerShop() {
                         </Button>
                     </div>
                     {/* Div đánh giá */}
-                    <div
-                        id="ReviewListRoot"
-                        className="flex flex-col justify-between gap-8 w-full font-sans items-start"
-                    >
-                        <div className="flex flex-col justify-between gap-6 w-full items-start">
-                            <div className="flex flex-row w-1/6 items-start">
-                                <img
-                                    src={Star}
-                                    alt="Star"
-                                    id="Star"
-                                    className="w-5"
-                                />
-                                <img
-                                    src={Star}
-                                    alt="Star1"
-                                    id="Star1"
-                                    className="w-5"
-                                />
-                                <img
-                                    src={Star}
-                                    alt="Star2"
-                                    id="Star2"
-                                    className="w-5"
-                                />
-                                <img
-                                    src={Star}
-                                    alt="Star3"
-                                    id="Star3"
-                                    className="w-5"
-                                />
-                                <img
-                                    src={StarO}
-                                    alt="Star4"
-                                    id="Star4"
-                                    className="w-5"
-                                />
-                            </div>
-                            <div className="leading-[27.2px] text-[#607d8b] w-full">
-                                If everything I did failed - which it
-                                doesn&apos;t, it actually succeeds - just the
-                                fact that I&apos;m willing to fail is an
-                                inspiration. People are so scared to lose that
-                                they don&apos;t even try. Like, one thing people
-                                can&apos;t say is that I&apos;m not trying, and
-                                I&apos;m not trying my hardest, and I&apos;m not
-                                trying to do the best way I know how.
-                            </div>
-                            <div className="flex flex-row gap-4 w-3/4 items-start">
-                                <img
-                                    src="https://file.rendit.io/n/3PWsyMyIJ3OvZF0bNi8q.png"
-                                    alt="Avatars"
-                                    id="Avatars"
-                                    className="mt-px w-12"
-                                />
-                                <div className="flex flex-col w-3/5 font-sans items-start">
-                                    <div
-                                        id="SarahLamalo"
-                                        className="font-medium leading-[24px] text-[#212121]"
-                                    >
-                                        Ryan Samuel
-                                    </div>
-                                    <div
-                                        id="INeedMoreInformat"
-                                        className="leading-[27.2px] text-[#607d8b]"
-                                    >
-                                        03 March 2023
-                                    </div>
-                                </div>
-                            </div>
-                            <div
-                                id="Line"
-                                className="bg-[#eceff1] w-4/5 h-px"
-                            />
-                        </div>
-                    </div>
+                    <Reviews/>
                 </div>
                 <div className="items-center justify-end flex-col hidden lg:block w-[35%] ml-10">
                     <Card className=" w-80 mb-8">
