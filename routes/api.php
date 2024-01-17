@@ -58,7 +58,7 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
     Route::prefix('product')->group(function () {
 
         // index, store, update, destroy
-        Route::resource('/', ProductController::class);
+        // Route::resource('/', ProductController::class);
 
         Route::get('/{id}', [ProductController::class, 'show']);
 
@@ -78,25 +78,25 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
         Route::get('listProductWithBrand/{categoryId}', [ProductController::class, 'listProductWithBrand']);
 
         // xuất ra những sản phẩm của user tạo ra
-        Route::get('products/user/{userId}', [ProductController::class, 'indexByUser']);
+        // Route::get('products/user/{userId}', [ProductController::class, 'indexByUser']);
 
         // chức năng tìm kiếm sản phẩm theo tên của sản phẩm, brand, category
-        Route::get('/search-products', [SearchHistoryController::class, 'search']);
+        // Route::get('/search-products', [SearchHistoryController::class, 'search']);
 
         // Lọc sản phẩm theo giá
-        Route::get('/filter-by-price', [ProductController::class, 'filterByPrice']);
+        // Route::get('/filter-by-price', [ProductController::class, 'filterByPrice']);
 
         // Lọc sản phẩm theo đánh giá
-        Route::get('/filter-by-rating', [ProductController::class, 'filterByRating']);
+        // Route::get('/filter-by-rating', [ProductController::class, 'filterByRating']);
 
         // Lọc sản phẩm theo địa chỉ của shop
-        Route::get('/filter-by-address', [ProductController::class, 'filterByAddress']);
+        // Route::get('/filter-by-address', [ProductController::class, 'filterByAddress']);
 
         //Gợi ý sản phẩm theo lịch sử tìm kiếm gần nhất theo 5 từ khóa gần nhất và mỗi từ khóa ứng vs 5 sản phẩm
-        Route::get('/recommend/{user_id}', [ProductController::class, 'recommendBaseOnSearch']);
+        Route::get('recommend/{user_id}', [ProductController::class, 'recommendBaseOnSearch']);
 
-        // Lấy NGẪU NHIÊN 5 danh mục và show 4 sản phẩm bán chạy nhất của 5 danh mục đó
-        Route::get('/getRandomCategories', [ProductController::class, 'getRandomCategories']);
+        // Lấy NGẪU NHIÊN 4 danh mục và show 4 sản phẩm bán chạy nhất của 4 danh mục đó
+        Route::get('getRandomCategories', [ProductController::class, 'getRandomCategories']);
 
 
 

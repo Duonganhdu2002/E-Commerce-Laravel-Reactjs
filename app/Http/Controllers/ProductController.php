@@ -416,12 +416,12 @@ class ProductController extends Controller
         ]);
     }
 
-    // Lấy NGẪU NHIÊN 5 danh mục và show 4 sản phẩm bán chạy nhất của 5 danh mục đó
+    // Lấy NGẪU NHIÊN 4 danh mục và show 4 sản phẩm bán chạy nhất của 4 danh mục đó
     public function getRandomCategories()
     {
         try {
-            // Lấy ngẫu nhiên 5 danh mục
-            $randomCategories = DB::table('product_category')->inRandomOrder()->limit(5)->pluck('product_category_id');
+            // Lấy ngẫu nhiên 4 danh mục
+            $randomCategories = DB::table('product_category')->inRandomOrder()->limit(4)->pluck('product_category_id');
 
             $result = [];
 
