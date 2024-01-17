@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import Banner6 from '../../assets/banner/banner_6.png';
 import Banner7 from '../../assets/banner/banner_7.png';
 import { fetchTop6CategoryById } from '../../services/productService';
-import Cart from "../../assets/icon/add-to-cart.svg";
 
 export default function SmartPhone() {
     const [listTop6SmartPhone, setListTop6SmartPhone] = useState([]);
@@ -91,9 +90,6 @@ export default function SmartPhone() {
                                                 <del>
                                                     <p className="text-sm text-gray-600 cursor-auto ml-2">${product.price}</p>
                                                 </del>
-                                                <div className="ml-auto">
-                                                    <img src={Cart} alt="" />
-                                                </div>
                                             </div>
                                         </div>
                                     </div>

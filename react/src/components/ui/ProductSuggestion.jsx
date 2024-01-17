@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { productSugession } from "../../services/productService";
-import Cart from "../../assets/icon/add-to-cart.svg";
 import { Typography } from "@material-tailwind/react";
 
 
@@ -25,7 +24,7 @@ const ProductSuggestion = () => {
         }
     };
 
-    // console.log(data);
+    console.log(data);
 
     return (
         <div className=" flex justify-center items-center">
@@ -56,9 +55,6 @@ const ProductSuggestion = () => {
                                                 <del>
                                                     <p className="text-sm text-gray-600 cursor-auto ml-2">${product.price}</p>
                                                 </del>
-                                                <div className="ml-auto">
-                                                    <img src={Cart} alt="" />
-                                                </div>
                                             </div>
                                         </div>
                                     </div>

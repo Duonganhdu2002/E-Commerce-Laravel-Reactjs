@@ -93,9 +93,6 @@ export default function FurniturePrview() {
                                                 <del>
                                                     <p className="text-sm text-gray-600 cursor-auto ml-2">${product.price}</p>
                                                 </del>
-                                                <div className="ml-auto">
-                                                    <img src={Cart} alt="" />
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
