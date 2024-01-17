@@ -31,7 +31,7 @@ export default function Watch() {
         }
     };
 
-    console.log(data);
+    // console.log(data);
     // console.log(categoryId);
 
     return (

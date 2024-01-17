@@ -19,6 +19,7 @@ import {
     ChevronDownIcon,
     Bars3Icon,
     XMarkIcon,
+    MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import {
     Bars4Icon,
@@ -35,6 +36,10 @@ import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 
 import logo from "../../assets/icon/logo.svg";
 import logoSingle from "../../assets/icon/logo-single.svg";
+import { useNavigate } from 'react-router-dom';
+import Search from "../../assets/icon/search.svg"
+
+
 
 const navListMenuItems = [
     {
@@ -111,6 +116,8 @@ const navProductList = [
         icon: GlobeAmericasIcon,
     },
 ];
+
+
 
 function NavListMenu() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -310,6 +317,28 @@ export default function MenuBar() {
     const [scrollingUp, setScrollingUp] = useState(true);
     const [hidden, setHidden] = useState(false);
 
+    const [searchTerm, setSearchTerm] = useState('');
+    const navigate = useNavigate();
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            if (searchTerm.trim() !== '') {
+                navigate(`/search/${searchTerm}`);
+            }
+        }
+    };
+
+    const handleInputChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+    const handleOnclickSearchIcon = () => {
+        if (searchTerm.trim() !== '') {
+            navigate(`/search/${searchTerm}`);
+        }
+    }
+
+
     useEffect(() => {
         let lastScrollPosition = window.scrollY;
 
@@ -344,8 +373,8 @@ export default function MenuBar() {
 
     return (
         <Navbar
-            className={`fixed top-0 left-0 right-0 mx-auto mt-1 z-50 2xl:min-w-[80%] py-3 px-2 rounded-b-2xl border-gray-300 border transition-transform duration-300 transform ${!hidden ? "translate-y-0" : "-translate-y-24"
-                }`}
+            className={`fixed top-0 left - 0 right - 0 mx - auto mt - 1 z - 50 2xl: min - w - [80 %] py - 3 px - 2 rounded - b - 2xl border - gray - 300 border transition - transform duration - 300 transform ${!hidden ? "translate-y-0" : "-translate-y-24"
+                } `}
         >
             <div className="flex items-center justify-between text-blue-gray-900">
                 <Link to="/">
@@ -363,12 +392,26 @@ export default function MenuBar() {
                     </div>
                 </Link>
 
-                <div className="w-72 md:w-96 lg:w-[25%] mx-2">
+
+                <div className="relative items-center flex w-full mx-2 max-w-[24rem]">
                     <Input
-                        className=" cursor-pointer"
-                        label="What do you need?"
-                        icon={<i className="fas fa-search" />}
+                        className="pr-20"
+                        label="What do you looking for?"
+                        containerProps={{
+                            className: "min-w-0",
+                        }}
+                        value={searchTerm}
+                        onChange={handleInputChange}
+                        onKeyDown={handleKeyDown}
                     />
+                    <div
+                        size="sm"
+                        className="!absolute right-1 p-1 px-3 rounded cursor-pointer"
+                        onClick={handleOnclickSearchIcon}
+                    >
+                        <img className=" w-6 h-6" src={Search} alt="" />
+
+                    </div>
                 </div>
 
                 <div className="hidden lg:block">

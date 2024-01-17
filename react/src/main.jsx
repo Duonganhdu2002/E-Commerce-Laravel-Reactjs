@@ -22,6 +22,7 @@ import ProductDetails from "./pages/ProductDetails";
 import Shop from "./pages/Shop";
 import Profile from "./pages/Profile";
 import MenuBar from "./components/ui/MenuBar";
+import Search from "./pages/Search";
 
 const Customer = () => {
     return (
@@ -87,6 +88,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                         <Route path="product/:productId" element={<ProductDetails />} />
                         <Route path="shop" element={<Shop />} />
                         <Route path="profile" element={<Profile />} />
+                        <Route path="search/:searchKey" element={<Search/>} />
                     </Route>
 
                     {/* Bussiness */}
