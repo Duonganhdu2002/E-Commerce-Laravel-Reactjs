@@ -5,7 +5,6 @@ import "./index.css";
 import PopupChat from "./components/ui/PopupChat";
 import { UserProvider } from "./context/UserContext";
 import SubFooter from "./components/ui/Subfooter";
-import BackgroundHeader from "./components/ui/BackgroundHeader";
 import { Provider } from "react-redux";
 import { store } from "./redux/Store";
 import MenuBarBussiness from "./components/ui-bussiness/MenuBar";
@@ -28,31 +27,36 @@ import SearchLayout from "./components/ui/SearchLayout";
 const Customer = () => {
     return (
         <div>
-            <BackgroundHeader />
-            <MenuBar />
+            <div className="flex h-20 md:h-24"></div>
             <Outlet />
             <PopupChat />
             <SubFooter />
-            <SubFooter2/>
+            <SubFooter2 />
         </div>
     );
 }
 
 const Bussiness = () => {
     return (
-        <div>
-            <MenuBarBussiness />
-            <div className='flex flex-col md:flex-row'>
-                <div className='hidden md:block md:w-auto'>
+        <div className="flex flex-col h-screen relative">
+            <div className=" fixed top-0 left-0 right-0 z-10">
+                <MenuBarBussiness />
+                
+            </div>
+            <div className=" flex h-20 bg-blue-gray-50"></div>
+
+            <div className="flex flex-grow md:flex-row">
+                <div className="hidden md:block md:w-auto static left-0 bottom-0">
                     <TaskBar />
                 </div>
-                <div className='hidden md:block w-[100%] md:w-[70%]'>
+                <div className="flex-grow w-full md:w-3/4">
                     <Outlet />
                 </div>
             </div>
         </div>
     );
-}
+};
+
 
 const Admin = () => {
     return (
@@ -89,15 +93,36 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                         <Route path="product/:productId" element={<ProductDetails />} />
                         <Route path="shop" element={<Shop />} />
                         <Route path="profile" element={<Profile />} />
-                        <Route path="checkout" element={<Checkout/>} />
-                        <Route path="search/:searchKey" element={<SearchLayout/>} />
+                        <Route path="checkout" element={<Checkout />} />
+                        <Route path="search/:searchKey" element={<SearchLayout />} />
                     </Route>
 
                     {/* Bussiness */}
 
                     <Route path="/bussiness" element={<Bussiness />}>
-                        <Route index element={<div>Default Page Content</div>} />
+                        <Route index element={<div className=" text-9xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur accusamus unde, neque provident sed debitis ullam quaerat voluptas quas aspernatur facilis optio est soluta fugit velit cupiditate, fugiat earum vitae.
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla eligendi, illum corrupti, soluta necessitatibus aut beatae dolore illo odio saepe inventore error. Odit ipsa deserunt excepturi mollitia, repudiandae distinctio minus!
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia et dicta nisi eos. Delectus odio illum quo officia nihil provident minima, cupiditate fuga soluta nulla numquam magnam dicta doloremque sunt!t</div>} />
                         <Route path="login" element={<div>Default Page login</div>} />
+                        <Route path="my-shipment" element={<div>My shipment</div>} />
+                        <Route path="mass-ship" element={<div>Mass ship</div>} />
+                        <Route path="shipping-setting" element={<div>Shipping setting</div>} />
+                        <Route path="my-oders" element={<div>My oders</div>} />
+                        <Route path="return-refun" element={<div>Return/Refun</div>} />
+                        <Route path="cancelation" element={<div>Cancelation</div>} />
+                        <Route path="my-products" element={<div>My products</div>} />
+                        <Route path="add-new-product" element={<div>Add New Product</div>} />
+                        <Route path="product-violations" element={<div>Product Violations</div>} />
+                        <Route path="product-setting" element={<div>Product Settings</div>} />
+                        <Route path="shop-rating" element={<div>Shop Rating</div>} />
+                        <Route path="shop-information" element={<div>Shop Information</div>} />
+                        <Route path="shop-category" element={<div>Shop Category</div>} />
+                        <Route path="my-report" element={<div>My Report</div>} />
+                        <Route path="dashboard" element={<div>Dashboard Content</div>} />
+                        <Route path="inbox" element={<div>Inbox Content</div>} />
+                        <Route path="profile" element={<div>Profile Content</div>} />
+                        <Route path="settings" element={<div>Settings Content</div>} />
+                        <Route path="logout" element={<div>Logout Content</div>} />
                     </Route>
 
                     {/* Admin */}
