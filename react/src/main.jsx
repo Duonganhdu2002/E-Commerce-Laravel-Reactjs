@@ -21,9 +21,9 @@ import ProductDetails from "./pages/ProductDetails";
 import Shop from "./pages/Shop";
 import Profile from "./pages/Profile";
 import MenuBar from "./components/ui/MenuBar";
-import Search from "./pages/Search";
 import Checkout from "./components/ui/Checkout";
 import SubFooter2 from "./components/ui/SubFooter2";
+import SearchLayout from "./components/ui/SearchLayout";
 
 const Customer = () => {
     return (
@@ -90,7 +90,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                         <Route path="shop" element={<Shop />} />
                         <Route path="profile" element={<Profile />} />
                         <Route path="checkout" element={<Checkout/>} />
-                        <Route path="search/:searchKey" element={<Search/>} />
+                        <Route path="search/:searchKey" element={<SearchLayout/>} />
                     </Route>
 
                     {/* Bussiness */}
