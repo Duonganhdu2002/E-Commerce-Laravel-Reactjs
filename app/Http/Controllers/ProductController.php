@@ -278,17 +278,18 @@ class ProductController extends Controller
                 ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
                 ->leftJoin('order_items', 'product.product_id', '=', 'order_items.product_id')
                 ->leftJoin('order', 'order_items.order_id', '=', 'order.order_id')
+                ->leftJoin('product_color', 'product.product_id', '=', 'product_color.product_id')
+                ->leftJoin('product_size', 'product.product_id', '=', 'product_size.product_id')
+                ->with(['color', 'size'])
                 ->where('product.product_category_id', $categoryId)
                 // ->where('order.order_status_id', 3)
-                ->groupBy('product.product_id',)
+                ->groupBy('product.product_id')
                 ->groupBy(
                     'product.product_id',
                     'product.name',
                     'product.description',
                     'product.price',
                     'product.stock',
-                    'product.color_id',
-                    'product.size_id',
                     'product.created_by_user_id',
                     'product.product_brand_id',
                     'product.product_category_id',
@@ -297,13 +298,15 @@ class ProductController extends Controller
                     'product.updated_at',
                     'product.deleted_at',
                     'product_review.rating',
-                    'product_color.color_name',
-                    'product_size.size_name'
+                    'product_color.product_id', 
+                    'product_size.product_id'  
                 )
                 ->orderByDesc('product_review.rating')
                 ->orderByDesc('total_sales')
                 ->get();
             foreach ($products as &$product) {
+                $product->color_names = $product->color->pluck('color_name')->unique()->implode(', ');
+                $product->size_names = $product->size->pluck('size_name')->unique()->implode(', ');
                 $productImages = ProductImage::where('product_id', $product->product_id)->pluck('image_url');
                 $product->images = $productImages;
             }
