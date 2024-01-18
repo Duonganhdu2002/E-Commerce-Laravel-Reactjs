@@ -9,7 +9,7 @@ class product extends Model
 {
     use HasFactory;
     protected $table = 'product';
-    protected $fillable = ['product_id', 'name', 'description', 'color_id', 'size_id', 'created_by_user_id', 'product_brand_id', 'product_category_id', 'price', 'stock', 'discount_id', 'created_at', 'modified_at', 'deleted_at'];
+    protected $fillable = ['product_id', 'name', 'description', 'created_by_user_id', 'product_brand_id', 'product_category_id', 'price', 'stock', 'discount_id', 'created_at', 'modified_at', 'deleted_at'];
     protected $primaryKey = 'product_id';
 
     public function orders()
@@ -39,6 +39,16 @@ class product extends Model
     public function images()
     {
         return $this->hasMany(product_image::class, 'product_id', 'product_id');
+    }
+
+    public function color()
+    {
+        return $this->belongsTo(product_color::class, 'color_id', 'color_id');
+    }
+
+    public function size()
+    {
+        return $this->belongsTo(product_size::class, 'size_id', 'size_id');
     }
 
 

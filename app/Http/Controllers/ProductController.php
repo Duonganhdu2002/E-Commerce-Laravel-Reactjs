@@ -104,38 +104,37 @@ class ProductController extends Controller
     public function show(string $id)
     {
         try {
-            $product = Product::findOrFail($id);
-            $creator = User::find($product->created_by_user_id);
-            $reviews = product_review::where('product_id', $id)->get();
-            // Lấy danh sách ảnh sản phẩm chỉ với trường 'image_url'
-            $imageUrls = $product->images->pluck('image_url');
+        $product = Product::with(['images'])->findOrFail($id);
+        $creator = User::find($product->created_by_user_id);
+        $reviews = product_review::where('product_id', $id)->get();
+        $imageUrls = $product->images->pluck('image_url');
 
             $arr = [
                 'status' => true,
-                'message' => 'Thông tin sản phẩm',
-                'data' => [
-                    'product_id' => $product->product_id,
-                    'name' => $product->name,
-                    'description' => $product->description,
-                    'color_id' => $product->color_id,
-                    'size_id' => $product->size_id,
-                    'created_by_user_id' => [
-                        'user_id' => $creator->user_id,
-                        'username' => $creator->username,
-                        'avt_image' => $creator->avt_image,
-                        'first_name' => $creator->first_name,
-                        'last_name' => $creator->last_name,
-                    ],
-                    'product_brand_id' => $product->product_brand_id,
-                    'product_category_id' => $product->product_category_id,
-                    'price' => $product->price,
-                    'stock' => $product->stock,
-                    'discount_id' => $product->discount_id,
-                    'created_at' => $product->created_at,
-                    'updated_at' => $product->updated_at,
-                    'deleted_at' => $product->deleted_at,
-                    'image_urls' => $imageUrls,
-                    'reviews' => $reviews,
+            'message' => 'Thông tin sản phẩm',
+            'data' => [
+                'product_id' => $product->product_id,
+                'name' => $product->name,
+                'description' => $product->description,
+                'created_by_user_id' => [
+                    'user_id' => $creator->user_id,
+                    'username' => $creator->username,
+                    'avt_image' => $creator->avt_image,
+                    'first_name' => $creator->first_name,
+                    'last_name' => $creator->last_name,
+                ],
+                'product_brand_id' => $product->product_brand_id,
+                'product_category_id' => $product->product_category_id,
+                'price' => $product->price,
+                'stock' => $product->stock,
+                'discount_id' => $product->discount_id,
+                'created_at' => $product->created_at,
+                'updated_at' => $product->updated_at,
+                'deleted_at' => $product->deleted_at,
+                'image_urls' => $imageUrls,
+                'reviews' => $reviews,
+                'color' => $product->color, 
+                'size' => $product->size,
                 ],
             ];
 
@@ -272,7 +271,9 @@ class ProductController extends Controller
             $products = Product::select(
                 'product.*',
                 'product_review.rating',
-                DB::raw('SUM(order_items.quantity) as total_sales')
+                DB::raw('SUM(order_items.quantity) as total_sales'),
+                DB::raw('GROUP_CONCAT(DISTINCT product_color.color_name) as color_names'),
+                DB::raw('GROUP_CONCAT(DISTINCT product_size.size_name) as size_names')
             )
                 ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
                 ->leftJoin('order_items', 'product.product_id', '=', 'order_items.product_id')
@@ -295,7 +296,9 @@ class ProductController extends Controller
                     'product.created_at',
                     'product.updated_at',
                     'product.deleted_at',
-                    'product_review.rating'
+                    'product_review.rating',
+                    'product_color.color_name',
+                    'product_size.size_name'
                 )
                 ->orderByDesc('product_review.rating')
                 ->orderByDesc('total_sales')
