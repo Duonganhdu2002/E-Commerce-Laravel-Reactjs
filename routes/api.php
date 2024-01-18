@@ -33,7 +33,7 @@ Route::prefix('auth')->group(function () {
     // Lấy danh sách người dùng
     Route::get('auth-list', [UserController::class, 'userList'])->name('userList');
 
-    // Phân trang người dùng
+    // Phân trang người dùng ?page=number
     Route::get('auth', [UserController::class, 'userPagination']);
 });
 
@@ -80,8 +80,8 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
         // xuất ra những sản phẩm của user tạo ra
         // Route::get('products/user/{userId}', [ProductController::class, 'indexByUser']);
 
-        // chức năng tìm kiếm sản phẩm theo tên của sản phẩm, brand, category
-        // Route::get('/search-products', [SearchHistoryController::class, 'search']);
+        // chức năng tìm kiếm sản phẩm theo tên của sản phẩm ?page=number
+        Route::get('/search-products/{keySearch}', [SearchHistoryController::class, 'search']);
 
         // Lọc sản phẩm theo giá
         // Route::get('/filter-by-price', [ProductController::class, 'filterByPrice']);
