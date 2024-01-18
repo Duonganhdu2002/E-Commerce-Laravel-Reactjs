@@ -78,7 +78,7 @@ const TaskBar = () => {
     };
 
     return (
-        <Card className="h-[94vh] w-full max-w-[20rem] p-4 shadow-md shadow-blue-gray-900/30">
+        <Card className=" fixed h-[94vh] w-full max-w-[20rem] p-4 shadow-md shadow-blue-gray-900/30">
             <div className="mb-2 p-4">
                 <Typography variant="h5" color="blue-gray">
                     Sidebar

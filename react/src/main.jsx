@@ -39,18 +39,17 @@ const Customer = () => {
 
 const Bussiness = () => {
     return (
-        <div className="flex flex-col h-screen relative">
-            <div className=" fixed top-0 left-0 right-0 z-10">
+        <div className="flex flex-col h-screen relative ">
+        <div className="fixed bg-gray-100 w-full h-full -z-10"></div>
+            <div className=" top-0 z-10 mt-1">
                 <MenuBarBussiness />
-                
             </div>
-            <div className=" flex h-20 bg-blue-gray-50"></div>
 
-            <div className="flex flex-grow md:flex-row">
+            <div className="flex flex-grow md:flex-row mt-24 px-2">
                 <div className="hidden md:block md:w-auto static left-0 bottom-0">
                     <TaskBar />
                 </div>
-                <div className="flex-grow w-full md:w-3/4">
+                <div className="flex-grow w-full md:w-3/4 md:ml-80 px-8">
                     <Outlet />
                 </div>
             </div>

@@ -8,6 +8,7 @@ import Visa from "../../assets/icon/visa-svgrepo-com.svg";
 import AmericanExpress from "../../assets/icon/american-express-logo-svgrepo-com.svg";
 import Mastercard from "../../assets/icon/mastercard-svgrepo-com.svg";
 import PayPal from "../../assets/icon/paypal-svgrepo-com.svg";
+import { Link } from "react-router-dom";
 
 const Layoutcart = () => {
     return (
@@ -107,8 +108,8 @@ const Layoutcart = () => {
                             <h3 className="text-xl font-semibold leading-5 text-gray-800">Shipping</h3>
                             <div className="flex justify-between items-start w-full">
                                 <div className="flex justify-center items-center space-x-4">
-                                    <div class="w-8 h-8">
-                                        <img class="w-full h-full" alt="logo" src="https://i.ibb.co/L8KSdNQ/image-3.png" />
+                                    <div className="w-8 h-8">
+                                        <img className="w-full h-full" alt="logo" src="https://i.ibb.co/L8KSdNQ/image-3.png" />
                                     </div>
                                     <div className="flex flex-col justify-start items-center">
                                         <p className="text-lg leading-6 font-semibold text-gray-800">
@@ -148,9 +149,10 @@ const Layoutcart = () => {
                             <p>$2,090</p>
                         </div>
                         <div className=" py-2">
+                        <Link to={'/checkout'}>
                             <Button className="w-full bg-black/80 hover:shadow-md my-2">
                                 CHECKOUT
-                            </Button>
+                            </Button></Link>
                             <Button className="w-full bg-white hover:bg-gray-300 hover:shadow-none shadow-none text-black my-2">
                                 CONTINUE
                             </Button>
