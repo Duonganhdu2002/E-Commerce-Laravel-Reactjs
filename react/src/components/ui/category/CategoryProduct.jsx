@@ -22,7 +22,7 @@ export default function CategoryProduct() {
         }
     };
 
-    console.log(data);
+    // console.log(data);
     // console.log(categoryId);
 
     return (
@@ -39,7 +39,7 @@ export default function CategoryProduct() {
                                 <div className="w-full h-[600px] bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
                                     <img
                                         className=" h-[70%] w-[340px] object-cover rounded-t-xl"
-                                        src={`../../../../src/assets/image/${product.images[0]}`}
+                                        src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${product.images[1]}?raw=true`}
                                         alt="Product"
                                     />
                                     <div className="px-4 py-3 h-[20%] w-full">

@@ -23,7 +23,7 @@ export default function FurniturePrview() {
         }
     };
 
-    // console.log(listTop6Furniture)
+    console.log(listTop6Furniture)
 
     return (
         <div className="flex justify-center items-center">
@@ -81,7 +81,7 @@ export default function FurniturePrview() {
                                 <Link key={index} to={`/product/${product.product_id}`}>
                                     <div className="w-full h-[550px] bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
                                         <img
-                                            src={`/src/assets/image/${product.images[1]}`}
+                                            src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${product.images[1]}?raw=true`}
                                             alt="Product"
                                             className=" h-[80%] w-[380px] object-cover rounded-t-xl"
                                         />

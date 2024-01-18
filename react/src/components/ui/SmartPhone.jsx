@@ -79,7 +79,7 @@ export default function SmartPhone() {
                                     <div className="w-full h-[550px] bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
                                         <img
                                             className=" h-[80%] w-[380px] object-cover rounded-t-xl"
-                                            src={`/src/assets/image/${product.images[1]}`}
+                                            src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${product.images[0]}?raw=true`}
                                             alt="Product"
                                         />
                                         <div className="px-4 py-3 h-[20%] w-full">

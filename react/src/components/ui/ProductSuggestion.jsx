@@ -24,7 +24,7 @@ const ProductSuggestion = () => {
         }
     };
 
-    console.log(data);
+    // console.log(data);
 
     return (
         <div className=" flex justify-center items-center">
@@ -44,7 +44,7 @@ const ProductSuggestion = () => {
                                     <div className="w-full h-[550px] bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
                                         <img
                                             className=" h-[80%] w-[340px] object-cover rounded-t-xl"
-                                            src={`/src/assets/image/${product.images[1]}`}
+                                            src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${product.images[1]}?raw=true`}
                                             alt="Product"
                                         />
                                         <div className="px-4 py-3 h-[20%] w-full">
