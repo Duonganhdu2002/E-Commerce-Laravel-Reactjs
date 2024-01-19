@@ -19,10 +19,12 @@ import CategoryPage from "./pages/CategoryPage";
 import ProductDetails from "./pages/ProductDetails";
 import Shop from "./pages/Shop";
 import Profile from "./pages/Profile";
+import OrderStatus from "./pages/OrderStatus";
 import MenuBar from "./components/ui/MenuBar";
 import Checkout from "./components/ui/Checkout";
 import SubFooter2 from "./components/ui/SubFooter2";
 import SearchLayout from "./components/ui/SearchLayout";
+import Error404 from "./components/ui/error404";
 
 const Customer = () => {
     return (
@@ -80,6 +82,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <BrowserRouter>
                 <Routes>
 
+                    {/* Error 404 */}
+                    <Route path="*" element={<Error404 />} />
+
                     {/* Public */}
 
                     <Route path="/" element={<Customer />}>
@@ -95,6 +100,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                         <Route path="profile" element={<Profile />} />
                         <Route path="checkout" element={<Checkout />} />
                         <Route path="search/:searchKey" element={<SearchLayout />} />
+                        <Route path="orderstatus" element={<OrderStatus />} />
                     </Route>
 
                     {/* Bussiness */}
