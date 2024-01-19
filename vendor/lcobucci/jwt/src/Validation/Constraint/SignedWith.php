@@ -11,8 +11,13 @@ use Lcobucci\JWT\Validation\SignedWith as SignedWithInterface;
 
 final class SignedWith implements SignedWithInterface
 {
-    public function __construct(private readonly Signer $signer, private readonly Signer\Key $key)
+    private Signer $signer;
+    private Signer\Key $key;
+
+    public function __construct(Signer $signer, Signer\Key $key)
     {
+        $this->signer = $signer;
+        $this->key    = $key;
     }
 
     public function assert(Token $token): void

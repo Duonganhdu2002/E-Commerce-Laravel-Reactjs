@@ -9,9 +9,11 @@ use Lcobucci\JWT\Validation\ConstraintViolation;
 
 final class RelatedTo implements Constraint
 {
-    /** @param non-empty-string $subject */
-    public function __construct(private readonly string $subject)
+    private string $subject;
+
+    public function __construct(string $subject)
     {
+        $this->subject = $subject;
     }
 
     public function assert(Token $token): void
@@ -19,7 +21,7 @@ final class RelatedTo implements Constraint
         if (! $token->isRelatedTo($this->subject)) {
             throw ConstraintViolation::error(
                 'The token is not related to the expected subject',
-                $this,
+                $this
             );
         }
     }

@@ -24,7 +24,7 @@ const ProductSuggestion = () => {
         }
     };
 
-    // console.log(data);
+    console.log(data);
 
     return (
         <div className=" flex justify-center items-center">

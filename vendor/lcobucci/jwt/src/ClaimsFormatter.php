@@ -6,9 +6,9 @@ namespace Lcobucci\JWT;
 interface ClaimsFormatter
 {
     /**
-     * @param array<non-empty-string, mixed> $claims
+     * @param array<string, mixed> $claims
      *
-     * @return array<non-empty-string, mixed>
+     * @return array<string, mixed>
      */
     public function formatClaims(array $claims): array;
 }

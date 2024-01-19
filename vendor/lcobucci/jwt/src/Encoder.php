@@ -10,18 +10,16 @@ interface Encoder
     /**
      * Encodes to JSON, validating the errors
      *
-     * @return non-empty-string
+     * @param mixed $data
      *
      * @throws CannotEncodeContent When something goes wrong while encoding.
      */
-    public function jsonEncode(mixed $data): string;
+    public function jsonEncode($data): string;
 
     /**
      * Encodes to base64url
      *
      * @link http://tools.ietf.org/html/rfc4648#section-5
-     *
-     * @return ($data is non-empty-string ? non-empty-string : string)
      */
     public function base64UrlEncode(string $data): string;
 }

@@ -7,6 +7,8 @@ use Closure;
 use Lcobucci\JWT\Encoding\ChainedFormatter;
 use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Signer\Key;
+use Lcobucci\JWT\Signer\Key\InMemory;
+use Lcobucci\JWT\Signer\None;
 use Lcobucci\JWT\Validation\Constraint;
 
 /**
@@ -18,6 +20,9 @@ use Lcobucci\JWT\Validation\Constraint;
 final class Configuration
 {
     private Parser $parser;
+    private Signer $signer;
+    private Key $signingKey;
+    private Key $verificationKey;
     private Validator $validator;
 
     /** @var Closure(ClaimsFormatter $claimFormatter): Builder */
@@ -27,17 +32,20 @@ final class Configuration
     private array $validationConstraints = [];
 
     private function __construct(
-        private readonly Signer $signer,
-        private readonly Key $signingKey,
-        private readonly Key $verificationKey,
-        Encoder $encoder,
-        Decoder $decoder,
+        Signer $signer,
+        Key $signingKey,
+        Key $verificationKey,
+        ?Encoder $encoder = null,
+        ?Decoder $decoder = null
     ) {
-        $this->parser    = new Token\Parser($decoder);
-        $this->validator = new Validation\Validator();
+        $this->signer          = $signer;
+        $this->signingKey      = $signingKey;
+        $this->verificationKey = $verificationKey;
+        $this->parser          = new Token\Parser($decoder ?? new JoseEncoder());
+        $this->validator       = new Validation\Validator();
 
         $this->builderFactory = static function (ClaimsFormatter $claimFormatter) use ($encoder): Builder {
-            return new Token\Builder($encoder, $claimFormatter);
+            return new Token\Builder($encoder ?? new JoseEncoder(), $claimFormatter);
         };
     }
 
@@ -45,37 +53,53 @@ final class Configuration
         Signer $signer,
         Key $signingKey,
         Key $verificationKey,
-        Encoder $encoder = new JoseEncoder(),
-        Decoder $decoder = new JoseEncoder(),
+        ?Encoder $encoder = null,
+        ?Decoder $decoder = null
     ): self {
         return new self(
             $signer,
             $signingKey,
             $verificationKey,
             $encoder,
-            $decoder,
+            $decoder
         );
     }
 
     public static function forSymmetricSigner(
         Signer $signer,
         Key $key,
-        Encoder $encoder = new JoseEncoder(),
-        Decoder $decoder = new JoseEncoder(),
+        ?Encoder $encoder = null,
+        ?Decoder $decoder = null
     ): self {
         return new self(
             $signer,
             $key,
             $key,
             $encoder,
-            $decoder,
+            $decoder
+        );
+    }
+
+    /** @deprecated Deprecated since v4.3 */
+    public static function forUnsecuredSigner(
+        ?Encoder $encoder = null,
+        ?Decoder $decoder = null
+    ): self {
+        $key = InMemory::empty();
+
+        return new self(
+            new None(),
+            $key,
+            $key,
+            $encoder,
+            $decoder
         );
     }
 
     /** @param callable(ClaimsFormatter): Builder $builderFactory */
     public function setBuilderFactory(callable $builderFactory): void
     {
-        $this->builderFactory = $builderFactory(...);
+        $this->builderFactory = Closure::fromCallable($builderFactory);
     }
 
     public function builder(?ClaimsFormatter $claimFormatter = null): Builder

@@ -15,7 +15,6 @@ abstract class Hmac implements Signer
     {
         $actualKeyLength   = 8 * strlen($key->contents());
         $expectedKeyLength = $this->minimumBitsLengthForKey();
-
         if ($actualKeyLength < $expectedKeyLength) {
             throw InvalidKeyProvided::tooShort($expectedKeyLength, $actualKeyLength);
         }
@@ -28,17 +27,8 @@ abstract class Hmac implements Signer
         return hash_equals($expected, $this->sign($payload, $key));
     }
 
-    /**
-     * @internal
-     *
-     * @return non-empty-string
-     */
     abstract public function algorithm(): string;
 
-    /**
-     * @internal
-     *
-     * @return positive-int
-     */
+    /** @return positive-int */
     abstract public function minimumBitsLengthForKey(): int;
 }

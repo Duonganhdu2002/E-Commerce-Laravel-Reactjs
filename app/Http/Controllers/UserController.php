@@ -18,27 +18,27 @@ class UserController extends Controller
     public function createUser(Request $request)
     {
         try {
-
             $input = $request->all();
+
             $validateUser = Validator::make(
                 $input,
                 [
                     'username' => 'required',
                     'email' => 'required|email|unique:users,email',
-                    'password' => 'required'
+                    'password' => 'required',
+                    'type_account_id' => 'numeric', // Kiểm tra kiểu số nếu cần thiết
                 ]
             );
 
             if ($validateUser->fails()) {
                 return response()->json([
                     'status' => 401,
-                    'message' => 'validation error',
+                    'message' => 'Validation error',
                     'errors' => $validateUser->errors()
                 ], 401);
             }
 
             $user = User::create([
-
                 'username' => $request->username,
                 'type_account_id' => $request->input('type_account_id', 1),
                 'email' => $request->email,
@@ -53,68 +53,6 @@ class UserController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 500,
-                'message' => $th->getMessage()
-            ], 500);
-        }
-    }
-
-    public function loginUser(Request $request)
-    {
-        try {
-            $validateUser = Validator::make(
-                $request->all(),
-                [
-                    'email' => 'required|email',
-                    'password' => 'required'
-                ]
-            );
-
-            if ($validateUser->fails()) {
-                return response()->json([
-                    'status' => 401,
-                    'message' => 'validation error',
-                    'errors' => $validateUser->errors()
-                ], 401);
-            }
-
-            if (!Auth::attempt($request->only(['email', 'password']))) {
-                return response()->json([
-                    'status' => 401,
-                    'message' => 'Email & Password do not match with our records.',
-                ], 401);
-            }
-
-            $user = User::where('email', $request->email)->first();
-
-            return response()->json([
-                'status' => 200,
-                'message' => 'User Logged In Successfully',
-                'token' => $user->createToken("API TOKEN")->plainTextToken
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => 500,
-                'message' => $th->getMessage()
-            ], 500);
-        }
-    }
-
-
-    public function logoutUser(Request $request)
-    {
-        try {
-            // Đăng xuất người dùng
-            User::logout();
-
-            // Trả về một phản hồi JSON chỉ ra rằng quá trình đăng xuất thành công
-            return response()->json([
-                'status' => true,
-                'message' => 'Người dùng đã đăng xuất thành công',
-            ], 200);
-        } catch (\Throwable $th) {
-            // Xử lý mọi ngoại lệ có thể xảy ra trong quá trình đăng xuất
-            return response()->json([
-                'status' => false,
                 'message' => $th->getMessage()
             ], 500);
         }

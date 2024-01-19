@@ -378,7 +378,7 @@ class ProductController extends Controller
         $recentSearches = search_history::where('user_id', $user_id)
             ->orderByDesc('created_at')
             ->pluck('keyword')
-            ->take(5)
+            ->take(2)
             ->toArray();
 
         // Kiểm tra nếu không có từ khóa tìm kiếm gần đây
@@ -391,7 +391,7 @@ class ProductController extends Controller
 
         // Lấy sản phẩm dựa trên từ khóa tìm kiếm gần đây
         foreach ($recentSearches as $search) {
-            $products = Product::where('name', 'like', "%$search%")->take(5)->get();
+            $products = Product::where('name', 'like', "%$search%")->take(4)->get();
             $relatedProducts = $relatedProducts->merge($products);
         }
 

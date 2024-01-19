@@ -23,7 +23,6 @@ final class SodiumBase64Polyfill
     public const SODIUM_BASE64_VARIANT_URLSAFE             = 5;
     public const SODIUM_BASE64_VARIANT_URLSAFE_NO_PADDING  = 7;
 
-    /** @return ($decoded is non-empty-string ? non-empty-string : string) */
     public static function bin2base64(string $decoded, int $variant): string
     {
         if (! function_exists('sodium_bin2base64')) {
@@ -33,7 +32,6 @@ final class SodiumBase64Polyfill
         return sodium_bin2base64($decoded, $variant);
     }
 
-    /** @return ($decoded is non-empty-string ? non-empty-string : string) */
     public static function bin2base64Fallback(string $decoded, int $variant): string
     {
         $encoded = base64_encode($decoded);
@@ -55,11 +53,7 @@ final class SodiumBase64Polyfill
         return $encoded;
     }
 
-    /**
-     * @return ($encoded is non-empty-string ? non-empty-string : string)
-     *
-     * @throws CannotDecodeContent
-     */
+    /** @throws CannotDecodeContent */
     public static function base642bin(string $encoded, int $variant): string
     {
         if (! function_exists('sodium_base642bin')) {
@@ -68,16 +62,12 @@ final class SodiumBase64Polyfill
 
         try {
             return sodium_base642bin($encoded, $variant, '');
-        } catch (SodiumException) {
+        } catch (SodiumException $sodiumException) {
             throw CannotDecodeContent::invalidBase64String();
         }
     }
 
-    /**
-     * @return ($encoded is non-empty-string ? non-empty-string : string)
-     *
-     * @throws CannotDecodeContent
-     */
+    /** @throws CannotDecodeContent */
     public static function base642binFallback(string $encoded, int $variant): string
     {
         if (
