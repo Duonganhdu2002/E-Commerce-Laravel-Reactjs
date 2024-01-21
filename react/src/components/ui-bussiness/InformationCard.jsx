@@ -9,7 +9,7 @@ const InformationCard = () => {
             <div className="grid gap-8 2xl:grid-cols-3 xl:grid-cols-2 p-8 pb-20">
                 {/* Revenue */}
                 <div className="sm:flex justify-between relative p-6 rounded-2xl bg-white shadow">
-                    <div className="space-y-2">
+                    <div className="flex flex-col justify-center space-y-2">
                         <div className="flex justify-center sm:justify-start items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-gray-500 dark:text-gray-200">
                             <span>Revenue</span>
                         </div>
@@ -39,7 +39,7 @@ const InformationCard = () => {
 
                 {/* New customers */}
                 <div className="sm:flex justify-between relative p-6 rounded-2xl bg-white shadow">
-                    <div className="space-y-2">
+                    <div className="flex flex-col justify-center space-y-2">
                         <div className="flex justify-center sm:justify-start items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-gray-500 dark:text-gray-200">
                             <span>New customers</span>
                         </div>
@@ -63,13 +63,13 @@ const InformationCard = () => {
                     </div>
                     <div className="flex justify-center 2xl:my-0 my-6">
                         <div className="w-20 h-20 2xl:mt-1.5 rounded-full bg-blue-gray-100/70 absolute"></div>
-                        <img src={NewCustomers} alt="" className="mt-3 2xl:mt-0 flex justify-cente w-12 relative" />
+                        <img src={NewCustomers} alt="" className="mt-4 2xl:mt-0 flex justify-cente w-12 relative" />
                     </div>
                 </div>
 
                 {/* New orders */}
                 <div className="sm:flex justify-between relative p-6 rounded-2xl bg-white shadow">
-                    <div className="space-y-2">
+                    <div className="flex flex-col justify-center space-y-2">
                         <div className="flex justify-center sm:justify-start items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-gray-500 dark:text-gray-200">
                             <span>New orders</span>
                         </div>
