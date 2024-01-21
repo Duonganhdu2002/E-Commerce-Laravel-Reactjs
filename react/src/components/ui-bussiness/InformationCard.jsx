@@ -6,7 +6,7 @@ import NewOrders from "../../assets/icon/apps-add.svg";
 const InformationCard = () => {
     return (
         <div>
-            <div className="grid gap-8 2xl:grid-cols-3 xl:grid-cols-2 p-8">
+            <div className="grid gap-8 2xl:grid-cols-3 xl:grid-cols-2 sm:px-8 py-8">
                 {/* Revenue */}
                 <div className="sm:flex justify-between relative p-6 rounded-2xl bg-white shadow">
                     <div className="flex flex-col justify-center space-y-2">
