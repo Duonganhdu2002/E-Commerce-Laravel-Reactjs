@@ -10,6 +10,7 @@ import { store } from "./redux/Store";
 import MenuBarBussiness from "./components/ui-bussiness/MenuBar";
 import LoginBussiness from "./components/ui-bussiness/Login";
 import RegisterBussiness from "./components/ui-bussiness/Register";
+import Dashboard from "./pages/bussiness/Dashboard";
 import TaskBar from "./components/ui-bussiness/TaskBar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -108,9 +109,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                     {/* Bussiness */}
 
                     <Route path="/bussiness" element={<Bussiness />}>
-                        <Route index element={<div className=" text-9xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur accusamus unde, neque provident sed debitis ullam quaerat voluptas quas aspernatur facilis optio est soluta fugit velit cupiditate, fugiat earum vitae.
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla eligendi, illum corrupti, soluta necessitatibus aut beatae dolore illo odio saepe inventore error. Odit ipsa deserunt excepturi mollitia, repudiandae distinctio minus!
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia et dicta nisi eos. Delectus odio illum quo officia nihil provident minima, cupiditate fuga soluta nulla numquam magnam dicta doloremque sunt!t</div>} />
+                        <Route index element={<Dashboard />} />
                         <Route path="login" element={<LoginBussiness />} />
                         <Route path="register" element={<RegisterBussiness />} />
                         <Route path="my-shipment" element={<div>My shipment</div>} />
