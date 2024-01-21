@@ -128,7 +128,7 @@ export default function Graph1() {
                     </div>
                 </CardHeader>
                 <CardBody className="px-2 pb-0">
-                    <Chart {...chartConfig} />
+                    <Chart {...chartConfig} /> 
                 </CardBody>
             </Card>
         </div>
