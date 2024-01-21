@@ -8,6 +8,8 @@ import SubFooter from "./components/ui/Subfooter";
 import { Provider } from "react-redux";
 import { store } from "./redux/Store";
 import MenuBarBussiness from "./components/ui-bussiness/MenuBar";
+import LoginBussiness from "./components/ui-bussiness/Login";
+import RegisterBussiness from "./components/ui-bussiness/Register";
 import TaskBar from "./components/ui-bussiness/TaskBar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -109,7 +111,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                         <Route index element={<div className=" text-9xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur accusamus unde, neque provident sed debitis ullam quaerat voluptas quas aspernatur facilis optio est soluta fugit velit cupiditate, fugiat earum vitae.
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla eligendi, illum corrupti, soluta necessitatibus aut beatae dolore illo odio saepe inventore error. Odit ipsa deserunt excepturi mollitia, repudiandae distinctio minus!
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia et dicta nisi eos. Delectus odio illum quo officia nihil provident minima, cupiditate fuga soluta nulla numquam magnam dicta doloremque sunt!t</div>} />
-                        <Route path="login" element={<div>Default Page login</div>} />
+                        <Route path="login" element={<LoginBussiness />} />
+                        <Route path="register" element={<RegisterBussiness />} />
                         <Route path="my-shipment" element={<div>My shipment</div>} />
                         <Route path="mass-ship" element={<div>Mass ship</div>} />
                         <Route path="shipping-setting" element={<div>Shipping setting</div>} />
