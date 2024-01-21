@@ -1,6 +1,6 @@
-import React from 'react';
 import { Button } from "@material-tailwind/react";
 import { Link } from 'react-router-dom';
+import BackgroundError from "../../assets/error404/error404.gif"
 
 export default function error404() {
   return (
@@ -23,9 +23,7 @@ export default function error404() {
                     </div>
                 </div>
             </div>
-            <div>
-                <img src="https://i.ibb.co/ck1SGFJ/Group.png" />
-            </div>
+            <div className=' w-full h-full'><img src={BackgroundError} alt="" className='w-full object-cover'/></div>
         </div>
   )
 }
