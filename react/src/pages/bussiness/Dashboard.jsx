@@ -7,7 +7,7 @@ export default function Dashboard() {
     return (
         <div>
             <InformationCard />
-            <div className=" xl:flex justify-between w-full px-8">
+            <div className=" xl:flex justify-between w-full">
                 <div className=" xl:w-[66%] w-full xl:mr-8 mb-8">
                     <Graph1 />
                 </div>
