@@ -11,7 +11,6 @@ namespace PHPUnit\TextUI\Command;
 
 use function copy;
 use function file_put_contents;
-use function sprintf;
 use PHPUnit\TextUI\XmlConfiguration\Migrator;
 use Throwable;
 
@@ -29,33 +28,24 @@ final class MigrateConfigurationCommand implements Command
 
     public function execute(): Result
     {
+        copy($this->filename, $this->filename . '.bak');
+
+        $buffer        = 'Created backup:         ' . $this->filename . '.bak' . PHP_EOL;
+        $shellExitCode = Result::SUCCESS;
+
         try {
-            $migrated = (new Migrator)->migrate($this->filename);
-
-            copy($this->filename, $this->filename . '.bak');
-
-            file_put_contents($this->filename, $migrated);
-
-            return Result::from(
-                sprintf(
-                    'Created backup:         %s.bak%sMigrated configuration: %s%s',
-                    $this->filename,
-                    PHP_EOL,
-                    $this->filename,
-                    PHP_EOL,
-                ),
+            file_put_contents(
+                $this->filename,
+                (new Migrator)->migrate($this->filename),
             );
+
+            $buffer .= 'Migrated configuration: ' . $this->filename . PHP_EOL;
         } catch (Throwable $t) {
-            return Result::from(
-                sprintf(
-                    'Migration of %s failed:%s%s%s',
-                    $this->filename,
-                    PHP_EOL,
-                    $t->getMessage(),
-                    PHP_EOL,
-                ),
-                Result::FAILURE,
-            );
+            $buffer .= 'Migration failed: ' . $t->getMessage() . PHP_EOL;
+
+            $shellExitCode = Result::FAILURE;
         }
+
+        return Result::from($buffer, $shellExitCode);
     }
 }

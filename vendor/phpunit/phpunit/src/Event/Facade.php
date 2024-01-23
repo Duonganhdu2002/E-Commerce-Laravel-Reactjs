@@ -81,11 +81,7 @@ final class Facade
         $this->deferredDispatcher()->registerTracer($tracer);
     }
 
-    /**
-     * @codeCoverageIgnore
-     *
-     * @noinspection PhpUnused
-     */
+    /** @noinspection PhpUnused */
     public function initForIsolation(HRTime $offset, bool $exportObjects): CollectingDispatcher
     {
         $dispatcher = new CollectingDispatcher;
@@ -262,9 +258,7 @@ final class Facade
     private function garbageCollectorStatusProvider(): Telemetry\GarbageCollectorStatusProvider
     {
         if (!isset(gc_status()['running'])) {
-            // @codeCoverageIgnoreStart
             return new Php81GarbageCollectorStatusProvider;
-            // @codeCoverageIgnoreEnd
         }
 
         return new Php83GarbageCollectorStatusProvider;

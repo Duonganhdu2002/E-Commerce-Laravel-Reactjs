@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\UserController;
@@ -12,20 +13,40 @@ use App\Http\Controllers\ShoppingCartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SearchHistoryController;
 
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "api" middleware group. Make something great!
+|
+*/
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'auth'
+
+], function ($router) {
+
+    Route::post('login', [AuthController::class, 'login']);
+    Route::get('profile', [AuthController::class, 'profile']);
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('refresh', [AuthController::class, 'refresh']);
+
 });
 
-Route::prefix('auth')->group(function () {
+
+
+Route::prefix('user')->group(function () {
     // Đăng ký người dùng
     Route::post('register', [UserController::class, 'createUser'])->name('register');
-
-    // Đăng nhập người dùng
-    Route::post('login', [UserController::class, 'loginUser']);
-
-    // Đăng xuất người dùng
-    Route::post('logout', [UserController::class, 'logoutUser'])->name('logout');
 
     // Lấy tổng số người dùng
     Route::get('auth-total', [UserController::class, 'getTotalUsers']);
@@ -33,24 +54,10 @@ Route::prefix('auth')->group(function () {
     // Lấy danh sách người dùng
     Route::get('auth-list', [UserController::class, 'userList'])->name('userList');
 
-    // Phân trang người dùng ?page=number
+    // Phân trang người dùng
     Route::get('auth', [UserController::class, 'userPagination']);
 });
 
-
-Route::prefix('admin')->middleware(['auth:sanctum', 'check.role:1'])->group(function () {
-    // Vào trang admin
-    // Chỉnh sửa Payment_type
-    // Ban seller và customer
-    // 
-});
-
-
-Route::prefix('seller')->middleware(['auth:sanctum', 'check.role:2'])->group(function () {
-});
-
-Route::prefix('customer')->middleware(['auth:sanctum', 'check.role:3'])->group(function () {
-});
 
 
 Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang public 
@@ -80,8 +87,8 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
         // xuất ra những sản phẩm của user tạo ra
         // Route::get('products/user/{userId}', [ProductController::class, 'indexByUser']);
 
-        // chức năng tìm kiếm sản phẩm theo tên của sản phẩm ?page=number
-        Route::get('/search-products/{keySearch}', [SearchHistoryController::class, 'search']);
+        // chức năng tìm kiếm sản phẩm theo tên của sản phẩm, brand, category
+        Route::get('/search-products', [SearchHistoryController::class, 'search']);
 
         // Lọc sản phẩm theo giá
         // Route::get('/filter-by-price', [ProductController::class, 'filterByPrice']);
@@ -137,4 +144,14 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
 
 Route::prefix('pageAdmin')->group(function () { // truy vấn dữ liệu ra trang admin
 
+});
+
+Route::prefix('admin')->middleware(['auth:sanctum', 'check.role:1'])->group(function () {
+});
+
+
+Route::prefix('seller')->middleware(['auth:sanctum', 'check.role:2'])->group(function () {
+});
+
+Route::prefix('customer')->middleware(['auth:sanctum', 'check.role:3'])->group(function () {
 });

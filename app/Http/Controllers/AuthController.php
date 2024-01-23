@@ -40,7 +40,6 @@ class AuthController extends Controller
         } catch (JWTException $exception) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-
     }
 
     public function logout()
@@ -53,26 +52,27 @@ class AuthController extends Controller
     public function refresh()
     {
         $refreshToken = request()->refresh_token;
+
         try {
             $decoded = JWTAuth::getJWTProvider()->decode($refreshToken);
-            // xử lý cấp lại token mới
-            // -> lấy thông tin user
+            // Handle token refreshing
+            // -> Get user information
             $user = User::find($decoded['user_id']);
             if (!$user) {
                 return response()->json(['error' => 'User not found'], 404);
             }
 
-            auth()->invalidate(); // vô hiệu hóa token hiện tại
+            JWTAuth::invalidate(); // Invalidate the current token
 
-            $token = auth()->login($user); // tọa token mới
+            $token = JWTAuth::fromUser($user); // Generate a new token
             $refreshToken = $this->createRefreshToken();
 
             return $this->respondWithToken($token, $refreshToken);
-        } catch (JWTException $exception) {
+        } catch (\Tymon\JWTAuth\Exceptions\JWTException $exception) {
             return response()->json(['error' => 'Refresh Token Invalid'], 500);
         }
-
     }
+
 
     private function respondWithToken($token, $refreshToken)
     {
@@ -80,9 +80,10 @@ class AuthController extends Controller
             'access_token' => $token,
             'refresh_token' => $refreshToken,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => JWTAuth::factory()->getTTL() * 60 // Use JWTAuth::factory() instead of auth()
         ]);
     }
+
 
     private function createRefreshToken()
     {

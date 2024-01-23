@@ -14,6 +14,7 @@ use function class_exists;
 use function class_implements;
 use function in_array;
 use function sprintf;
+use PHPUnit\Event;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\TextUI\Configuration\Configuration;
 use ReflectionClass;
@@ -86,7 +87,7 @@ final class ExtensionBootstrapper
             return;
         }
 
-        EventFacade::emitter()->testRunnerBootstrappedExtension(
+        Event\Facade::emitter()->testRunnerBootstrappedExtension(
             $className,
             $parameters,
         );

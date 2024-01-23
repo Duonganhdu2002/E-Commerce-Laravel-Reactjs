@@ -104,37 +104,38 @@ class ProductController extends Controller
     public function show(string $id)
     {
         try {
-        $product = Product::with(['images'])->findOrFail($id);
-        $creator = User::find($product->created_by_user_id);
-        $reviews = product_review::where('product_id', $id)->get();
-        $imageUrls = $product->images->pluck('image_url');
+            $product = Product::findOrFail($id);
+            $creator = User::find($product->created_by_user_id);
+            $reviews = product_review::where('product_id', $id)->get();
+            // Lấy danh sách ảnh sản phẩm chỉ với trường 'image_url'
+            $imageUrls = $product->images->pluck('image_url');
 
             $arr = [
                 'status' => true,
-            'message' => 'Thông tin sản phẩm',
-            'data' => [
-                'product_id' => $product->product_id,
-                'name' => $product->name,
-                'description' => $product->description,
-                'created_by_user_id' => [
-                    'user_id' => $creator->user_id,
-                    'username' => $creator->username,
-                    'avt_image' => $creator->avt_image,
-                    'first_name' => $creator->first_name,
-                    'last_name' => $creator->last_name,
-                ],
-                'product_brand_id' => $product->product_brand_id,
-                'product_category_id' => $product->product_category_id,
-                'price' => $product->price,
-                'stock' => $product->stock,
-                'discount_id' => $product->discount_id,
-                'created_at' => $product->created_at,
-                'updated_at' => $product->updated_at,
-                'deleted_at' => $product->deleted_at,
-                'image_urls' => $imageUrls,
-                'reviews' => $reviews,
-                'color' => $product->color, 
-                'size' => $product->size,
+                'message' => 'Thông tin sản phẩm',
+                'data' => [
+                    'product_id' => $product->product_id,
+                    'name' => $product->name,
+                    'description' => $product->description,
+                    'color_id' => $product->color_id,
+                    'size_id' => $product->size_id,
+                    'created_by_user_id' => [
+                        'user_id' => $creator->user_id,
+                        'username' => $creator->username,
+                        'avt_image' => $creator->avt_image,
+                        'first_name' => $creator->first_name,
+                        'last_name' => $creator->last_name,
+                    ],
+                    'product_brand_id' => $product->product_brand_id,
+                    'product_category_id' => $product->product_category_id,
+                    'price' => $product->price,
+                    'stock' => $product->stock,
+                    'discount_id' => $product->discount_id,
+                    'created_at' => $product->created_at,
+                    'updated_at' => $product->updated_at,
+                    'deleted_at' => $product->deleted_at,
+                    'image_urls' => $imageUrls,
+                    'reviews' => $reviews,
                 ],
             ];
 
@@ -271,23 +272,22 @@ class ProductController extends Controller
             $products = Product::select(
                 'product.*',
                 'product_review.rating',
-                DB::raw('SUM(order_items.quantity) as total_sales'),
+                DB::raw('SUM(order_items.quantity) as total_sales')
             )
                 ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
                 ->leftJoin('order_items', 'product.product_id', '=', 'order_items.product_id')
                 ->leftJoin('order', 'order_items.order_id', '=', 'order.order_id')
-                ->leftJoin('product_color', 'product.product_id', '=', 'product_color.product_id')
-                ->leftJoin('product_size', 'product.product_id', '=', 'product_size.product_id')
-                ->with(['color', 'size'])
                 ->where('product.product_category_id', $categoryId)
                 // ->where('order.order_status_id', 3)
-                ->groupBy('product.product_id')
+                ->groupBy('product.product_id',)
                 ->groupBy(
                     'product.product_id',
                     'product.name',
                     'product.description',
                     'product.price',
                     'product.stock',
+                    'product.color_id',
+                    'product.size_id',
                     'product.created_by_user_id',
                     'product.product_brand_id',
                     'product.product_category_id',
@@ -295,8 +295,7 @@ class ProductController extends Controller
                     'product.created_at',
                     'product.updated_at',
                     'product.deleted_at',
-                    'product_review.rating',
-                     
+                    'product_review.rating'
                 )
                 ->orderByDesc('product_review.rating')
                 ->orderByDesc('total_sales')
@@ -378,7 +377,7 @@ class ProductController extends Controller
         $recentSearches = search_history::where('user_id', $user_id)
             ->orderByDesc('created_at')
             ->pluck('keyword')
-            ->take(2)
+            ->take(5)
             ->toArray();
 
         // Kiểm tra nếu không có từ khóa tìm kiếm gần đây
@@ -391,7 +390,7 @@ class ProductController extends Controller
 
         // Lấy sản phẩm dựa trên từ khóa tìm kiếm gần đây
         foreach ($recentSearches as $search) {
-            $products = Product::where('name', 'like', "%$search%")->take(4)->get();
+            $products = Product::where('name', 'like', "%$search%")->take(5)->get();
             $relatedProducts = $relatedProducts->merge($products);
         }
 

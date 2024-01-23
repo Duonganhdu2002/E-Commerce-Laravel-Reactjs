@@ -86,11 +86,9 @@ final class DirectDispatcher implements SubscribableDispatcher
         foreach ($this->tracers as $tracer) {
             try {
                 $tracer->trace($event);
-                // @codeCoverageIgnoreStart
             } catch (Throwable $t) {
                 $this->handleThrowable($t);
             }
-            // @codeCoverageIgnoreEnd
         }
 
         if (!array_key_exists($eventClassName, $this->subscribers)) {
@@ -124,9 +122,7 @@ final class DirectDispatcher implements SubscribableDispatcher
             return;
         }
 
-        // @codeCoverageIgnoreStart
         throw $t;
-        // @codeCoverageIgnoreEnd
     }
 
     private function isThrowableFromThirdPartySubscriber(Throwable $t): bool
