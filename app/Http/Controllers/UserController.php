@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\UserResource as UserResource;
 use App\Models\User;
+use App\Models\user_address as UserAddress;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,37 @@ use Illuminate\Support\Facades\Hash; // Mã hóa
 
 class UserController extends Controller
 {
+
+    public function login(Request $request)
+    {
+        // Xác thực thông tin đăng nhập
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            // Nếu đăng nhập thành công, lấy thông tin người dùng
+            $user = Auth::user();
+
+            // Lấy thông tin địa chỉ từ bảng user_address
+            $address = UserAddress::where('user_id', $user->user_id)->first();
+
+            // Trả về mảng dữ liệu chỉ chứa thông tin cần thiết
+            $userData = [
+                'user_id' => $user->user_id,
+                'type_account_id' => $user->type_account_id,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'telephone' => $user->telephone,
+                'created_at' => $user->created_at,
+                'updated_at' => $user->updated_at,
+                'user_address' => $address, // Thêm thông tin địa chỉ
+            ];
+
+            return response()->json(['data' => $userData], 200);
+        } else {
+            return response()->json(['error' => 'Invalid credentials'], 401);
+        }
+    }
+
 
     public function createUser(Request $request)
     {
