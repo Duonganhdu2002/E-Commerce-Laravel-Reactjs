@@ -19,6 +19,7 @@ trait InteractsWithDockerComposeServices
         'redis',
         'memcached',
         'meilisearch',
+        'typesense',
         'minio',
         'mailpit',
         'selenium',
@@ -86,7 +87,7 @@ trait InteractsWithDockerComposeServices
         // Merge volumes...
         collect($services)
             ->filter(function ($service) {
-                return in_array($service, ['mysql', 'pgsql', 'mariadb', 'redis', 'meilisearch', 'minio']);
+                return in_array($service, ['mysql', 'pgsql', 'mariadb', 'redis', 'meilisearch', 'typesense', 'minio']);
             })->filter(function ($service) use ($compose) {
                 return ! array_key_exists($service, $compose['volumes'] ?? []);
             })->each(function ($service) use (&$compose) {
@@ -116,14 +117,31 @@ trait InteractsWithDockerComposeServices
     {
         $environment = file_get_contents($this->laravel->basePath('.env'));
 
-        if (in_array('pgsql', $services)) {
-            $environment = str_replace('DB_CONNECTION=mysql', "DB_CONNECTION=pgsql", $environment);
+        if (in_array('mysql', $services) ||
+            in_array('mariadb', $services) ||
+            in_array('pgsql', $services)) {
+            $defaults = [
+                '# DB_HOST=127.0.0.1',
+                '# DB_PORT=3306',
+                '# DB_DATABASE=laravel',
+                '# DB_USERNAME=root',
+                '# DB_PASSWORD=',
+            ];
+
+            foreach ($defaults as $default) {
+                $environment = str_replace($default, substr($default, 2), $environment);
+            }
+        }
+
+        if (in_array('mysql', $services)) {
+            $environment = preg_replace('/DB_CONNECTION=.*/', 'DB_CONNECTION=mysql', $environment);
+            $environment = str_replace('DB_HOST=127.0.0.1', "DB_HOST=mysql", $environment);
+        }elseif (in_array('pgsql', $services)) {
+            $environment = preg_replace('/DB_CONNECTION=.*/', 'DB_CONNECTION=pgsql', $environment);
             $environment = str_replace('DB_HOST=127.0.0.1', "DB_HOST=pgsql", $environment);
             $environment = str_replace('DB_PORT=3306', "DB_PORT=5432", $environment);
         } elseif (in_array('mariadb', $services)) {
             $environment = str_replace('DB_HOST=127.0.0.1', "DB_HOST=mariadb", $environment);
-        } else {
-            $environment = str_replace('DB_HOST=127.0.0.1', "DB_HOST=mysql", $environment);
         }
 
         $environment = str_replace('DB_USERNAME=root', "DB_USERNAME=sail", $environment);
@@ -141,6 +159,14 @@ trait InteractsWithDockerComposeServices
             $environment .= "\nSCOUT_DRIVER=meilisearch";
             $environment .= "\nMEILISEARCH_HOST=http://meilisearch:7700\n";
             $environment .= "\nMEILISEARCH_NO_ANALYTICS=false\n";
+        }
+
+        if (in_array('typesense', $services)) {
+            $environment .= "\nSCOUT_DRIVER=typesense";
+            $environment .= "\nTYPESENSE_HOST=typesense";
+            $environment .= "\nTYPESENSE_PORT=8108";
+            $environment .= "\nTYPESENSE_PROTOCOL=http";
+            $environment .= "\nTYPESENSE_API_KEY=xyz\n";
         }
 
         if (in_array('soketi', $services)) {
