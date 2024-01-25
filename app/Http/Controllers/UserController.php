@@ -18,31 +18,38 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-        // Xác thực thông tin đăng nhập
+        // Validate request data
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        // Attempt to log in
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            // Nếu đăng nhập thành công, lấy thông tin người dùng
+            // Authentication successful
+
+            // Get authenticated user (excluding password)
             $user = Auth::user();
 
-            // Lấy thông tin địa chỉ từ bảng user_address
-            $address = UserAddress::where('user_id', $user->user_id)->first();
+            // Join user and user_address tables to get user's address
+            $userDataWithAddress = User::join('user_address', 'users.user_id', '=', 'user_address.user_id')
+                ->select('users.*', 'user_address.number', 'user_address.street', 'user_address.commune', 'user_address.district', 'user_address.province', 'user_address.country', 'user_address.postal_code')
+                ->where('users.user_id', '=', $user->user_id)
+                ->first();
 
-            // Trả về mảng dữ liệu chỉ chứa thông tin cần thiết
-            $userData = [
-                'user_id' => $user->user_id,
-                'type_account_id' => $user->type_account_id,
-                'first_name' => $user->first_name,
-                'last_name' => $user->last_name,
-                'telephone' => $user->telephone,
-                'created_at' => $user->created_at,
-                'updated_at' => $user->updated_at,
-                'user_address' => $address, // Thêm thông tin địa chỉ
-            ];
-
-            return response()->json(['data' => $userData], 200);
+            // Return the user data with address
+            return response()->json([
+                'success' => true,
+                'data' => $userDataWithAddress,
+            ]);
         } else {
-            return response()->json(['error' => 'Invalid credentials'], 401);
+            // Authentication failed
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid credentials',
+            ], 401);
         }
     }
 
