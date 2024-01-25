@@ -33,11 +33,11 @@ const TodayOrderSold = () => {
     }, []); // Chỉ chạy một lần khi component được render
 
     return (
-        <div className="flex flex-col items-center justify-evenly w-full bg-gradient-to-r from-blue-200 via-cyan-200 to-teal-100 p-2 py-6 rounded-xl shadow-2xl shadow-blue-100">
-            <p className="text-xl lg:text-4xl font-bold mb-4">
+        <div className="flex flex-col items-center bg-white justify-evenly w-full p-2 py-6 rounded-xl shadow-md shadow-black-200/50">
+            <p className="text-xl lg:text-2xl font-bold mb-4">
                 Today&apos;s order has been sold
             </p>
-            <p className=" text-5xl md:text-7xl lg:text-7xl 2xl:text-9xl font-bold">
+            <p className=" text-3xl md:text-5xl font-bold">
                 $ {value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             </p>
         </div>
