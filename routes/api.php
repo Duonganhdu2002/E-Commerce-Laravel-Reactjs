@@ -16,26 +16,18 @@ use App\Http\Controllers\SearchHistoryController;
 
 
 Route::prefix('user')->group(function () {
-    // Đăng ký người dùng
     Route::post('register', [UserController::class, 'createUser'])->name('register');
     Route::post('login', [UserController::class, 'login']);
-
-    // Lấy tổng số người dùng
+    Route::get('info/{user_id}', [UserController::class, 'info']);
     Route::get('auth-total', [UserController::class, 'getTotalUsers']);
-
-    // Lấy danh sách người dùng
     Route::get('auth-list', [UserController::class, 'userList'])->name('userList');
-
-    // Phân trang người dùng
     Route::get('auth', [UserController::class, 'userPagination']);
 });
 
 
 
-Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang public 
-
+Route::prefix('public')->group(function () {
     Route::prefix('product')->group(function () {
-
         // index, store, update, destroy
         // Route::resource('/', ProductController::class);
 

@@ -8,8 +8,8 @@ const fetchUserPagination = (pageNumber) => {
     return axios.get(`/auth/auth?page=${pageNumber}`);
 }
 
-const userLogin = (email, password) => {
-    return axios.post("/auth/login", { email, password });
+const userLogin = (password) => {
+    return axios.post("/user/login", password);
 }
 
 export { fetchAllUser, fetchUserPagination, userLogin };

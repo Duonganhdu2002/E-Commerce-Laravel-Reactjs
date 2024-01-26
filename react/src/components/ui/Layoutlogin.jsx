@@ -1,42 +1,34 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@material-tailwind/react";
 import logo from "../../assets/icon/logo.svg";
 import LogoGoogle1 from "../../assets/icon/Google__G__logo.svg";
-
-import { userLogin } from "../../services/authService";
 import { Input } from "@material-tailwind/react";
+import { useSelector, useDispatch } from 'react-redux'
+import { loginUser } from "../../redux/slices/userSlice";
 
 export default function LayoutLogin() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    useEffect(() => {
-        let token = localStorage.getItem("token");
-        if (token) {
-            // navigate("/");
+    const loading = useSelector((state) => state.user.loading);
+    const user = useSelector((state) => state.user.user);
+
+    const handleLogin = async (e) => {
+
+        e.preventDefault();
+        let userCredential = {
+            email, password
         }
-    });
-
-    const handleLogin = async () => {
-        if (!email || !password) {
-            setError("Please enter both email and password.");
-            return;
-        }
-
-        try {
-            let res = await userLogin(email, password);
-            if (res && res.token) {
-                localStorage.setItem("token", res.token);
-                navigate("/");
+        dispatch(loginUser(userCredential)).then((result) => {
+            if (result.payload) {
+                setEmail('');
+                setPassword('');
+                navigate("/")
             }
-            console.log(res);
-        } catch (error) {
-            setError("Invalid credentials. Please try again.");
-            console.error(error);
-        }
+        });
     };
 
     return (
@@ -112,7 +104,7 @@ export default function LayoutLogin() {
                                     onClick={handleLogin}
                                     className="flex w-full justify-center bg-[#1e293b] text-white "
                                 >
-                                    Sign in
+                                    {loading ? "Loading..." : "Log in"}
                                 </Button>
                             </div>
                         </form>

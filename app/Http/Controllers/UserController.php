@@ -16,6 +16,42 @@ use Illuminate\Support\Facades\Hash; // Mã hóa
 class UserController extends Controller
 {
 
+
+    public function info(Request $request, int $user_id)
+    {
+        try {
+            // Find the user by user_id
+            $user = User::find($user_id);
+
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User not found',
+                    'data' => null
+                ], 404);
+            }
+
+            // Get user address
+            $userAddress = UserAddress::where('user_id', $user_id)->first();
+
+            // Merge user and user_address data
+            $userDataWithAddress = array_merge($user->toArray(), $userAddress ? $userAddress->toArray() : []);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'User information retrieved successfully',
+                'data' => $userDataWithAddress,
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage(),
+                'data' => null
+            ], 500);
+        }
+    }
+
+
     public function login(Request $request)
     {
         // Validate request data
