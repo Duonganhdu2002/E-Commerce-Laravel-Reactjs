@@ -98,10 +98,11 @@ class UserController extends Controller
             $validateUser = Validator::make(
                 $input,
                 [
+                    'password' => 'required',
                     'username' => 'required',
                     'email' => 'required|email|unique:users,email',
-                    'password' => 'required',
-                    'type_account_id' => 'numeric', // Kiểm tra kiểu số nếu cần thiết
+                    'telephone' => 'required',
+                    'full_name' => 'required',
                 ]
             );
 
@@ -113,22 +114,25 @@ class UserController extends Controller
                 ], 401);
             }
 
-            $user = User::create([
-                'username' => $request->username,
+            User::create([
+                'username' => $request->input('username'),
+                'email' => $request->input('email'),
+                'password' => Hash::make($request->input('password')),
+                'full_name' => $request->input('full_name'),
+                'telephone' => $request->input('telephone'),
                 'type_account_id' => $request->input('type_account_id', 1),
-                'email' => $request->email,
-                'password' => Hash::make($request->password)
+
             ]);
 
             return response()->json([
                 'status' => 200,
                 'message' => 'User Created Successfully',
-                'token' => $user->createToken("API TOKEN")->plainTextToken
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 500,
-                'message' => $th->getMessage()
+                'message' => 'Error creating user',
+                'error' => $th->getMessage()
             ], 500);
         }
     }

@@ -25,13 +25,15 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'password',
         'type_account_id',
+        'full_name',
+        'telephone'
     ];
 
     protected $primaryKey = 'user_id';
 
     /**
      * The attributes that should be hidden for serialization.
-     *
+     *  
      * @var array<int, string>
      */
     protected $hidden = [

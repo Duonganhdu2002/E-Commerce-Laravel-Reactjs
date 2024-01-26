@@ -106,13 +106,7 @@ export default function LayoutLogin() {
                             </div>
 
                             <div>
-                                <Button
-                                    type="button"
-                                    onClick={handleLogin}
-                                    className="flex w-full justify-center bg-[#1e293b] text-white "
-                                >
-                                    {loading ? "Loading..." : "Log in"}
-                                </Button>
+                                <Button className="flex w-full justify-center bg-[#1e293b] text-white " onClick={handleLogin} loading={loading}>Loading</Button>
                             </div>
                         </form>
 

@@ -12,4 +12,8 @@ const userLogin = (password) => {
     return axios.post("/user/login", password);
 }
 
-export { fetchAllUser, fetchUserPagination, userLogin };
+const userRegister = (userData) => {
+    return axios.post("/user/register", userData);
+};
+
+export { fetchAllUser, fetchUserPagination, userLogin, userRegister };
