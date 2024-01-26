@@ -11,9 +11,9 @@ const Container = () => {
     const imagePaths = [sale3, sale4, sale5, sale6, sale7, sale8];
 
     return (
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center mx-auto">
             <Carousel
-                className="rounded-xl 2xl:w-[80%] xl:w-[80%] lg:w-[80%] md:w-[90%] w-[95%]"
+                className="rounded-xl lg:w-[80%] md:w-[90%] w-[95%] md:h-auto h-[450px]"
                 navigation={({ setActiveIndex, activeIndex, length }) => (
                     <div className="absolute bottom-4 left-2/4 z-50 flex -translate-x-2/4 gap-2">
                         {new Array(length).fill("").map((_, i) => (
@@ -33,7 +33,7 @@ const Container = () => {
                 loop={true}
             >
                 {imagePaths.map((path, index) => (
-                    <img key={index} src={path} alt="" className="rounded-3xl p-2 object-cover object-center" />
+                    <img key={index} src={path} alt="" className="rounded-3xl h-full p-2 object-cover object-center" />
                 ))}
             </Carousel>
         </div>

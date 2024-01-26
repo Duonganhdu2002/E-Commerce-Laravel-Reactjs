@@ -27,69 +27,29 @@ export default function FurniturePrview() {
 
     return (
         <div className="flex justify-center items-center">
-            <div className="h-auto w-[80%] mt-8 mb-8">
-                <div className="my-auto justify-between items-center grid grid-cols-1 md:grid-cols-2 justify-items-center gap-y-8 gap-x-6 ">
-                    <div className="h-[200px] w-full relative text-center flex">
-                        <div className=" absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-base">
-                            <p>NEW ARRIVALS</p>
-                            <p>
-                                <span className=" font-bold text-2xl">Bedroom</span>{" "}
-                                <span>Sets</span>
-                            </p>
-                            <p>Temport sem finibus</p>
-                            <p className=" font-bold">$299.00</p>
-                            <Link to="#">
-                                <button className=" mt-4 bg-slate-800 bg-opacity-70 p-2 px-4 border rounded-full">See more</button>
-                            </Link>
-                        </div>
-                        <img
-                            src={Banner4}
-                            alt=""
-                            className="w-full h-full object-cover rounded-xl"
-                        />
-                    </div>
-
-                    <div className="h-[200px] w-full relative text-center mt-4 ">
-                        <div className=" absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-base">
-                            <p>BEST OFFERS</p>
-                            <p>
-                                <span className=" font-bold text-2xl">Soft</span>{" "}
-                                <span>Chairs</span>
-                            </p>
-                            <p>Temport sem finibus</p>
-                            <p className=" font-bold">$179.00</p>
-                            <Link to="#">
-                                <button className=" mt-4 bg-slate-800 bg-opacity-70 p-2 px-4 border rounded-full">See more</button>
-                            </Link>
-                        </div>
-                        <img
-                            src={Banner5}
-                            alt=""
-                            className="w-full h-full object-cover rounded-xl"
-                        />
-                    </div>
-                </div>
+            <div className="h-auto w-[80%] mb-8">
 
                 <div className="w-[100%] mt-12">
+
                     <section
                         id="Projects"
-                        className=" mx-auto grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-4 md:grid-cols-2 justify-items-center justify-center gap-y-8 gap-x-6 mt-6 mb-5"
+                        className=" mx-auto grid grid-cols-2 lg:grid-cols-4  md:grid-cols-3 2xl:grid-cols-5 justify-items-center justify-center gap-y-8 gap-x-6 mt-6 mb-5"
                     >
                         {listTop6Furniture &&
                             listTop6Furniture.length > 0 &&
                             listTop6Furniture.map((product, index) => (
                                 <Link key={index} to={`/product/${product.product_id}`}>
-                                    <div className="w-full h-[550px] bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+                                    <div className="w-full h-[300px] md:h-[330px] lg:h-[400px] xl:h-[460px]  bg-white shadow-md shadow-gray-300 rounded-xl duration-500 hover:scale-105 hover:shadow-2xl">
                                         <img
+                                            className=" h-[200px] w-[200px] md:h-[220px] md:w-[220px] lg:h-[280px] lg:w-[280px] xl:h-[320px] xl:w-[320px] object-cover rounded-t-xl"
                                             src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${product.images[1]}?raw=true`}
                                             alt="Product"
-                                            className=" h-[80%] w-[380px] object-cover rounded-t-xl"
                                         />
-                                        <div className="px-4 py-3 w-full">
-                                            <span className="text-gray-400 mr-3 uppercase text-xs">Brand</span>
-                                            <p className="text-lg font-bold text-black truncate block capitalize">{product.name}</p>
+                                        <div className="px-4 py-3 h-[20%] w-full">
+                                            <span className="text-gray-400 mr-3 uppercase text-[12px] lg:text-[14px]">Brand</span>
+                                            <p className="text-md lg:text-lg xl:text-xl font-bold text-black truncate block capitalize">{product.name}</p>
                                             <div className="flex items-center">
-                                                <p className="text-lg font-semibold text-black cursor-auto my-3">${(product.price - (product.price) * 0.1).toFixed(2)}</p>
+                                                <p className="text-md lg:text-lg xl:text-xl font-semibold text-black cursor-auto my-1">${(product.price - (product.price) * 0.3).toFixed(2)}</p>
                                                 <del>
                                                     <p className="text-sm text-gray-600 cursor-auto ml-2">${product.price}</p>
                                                 </del>

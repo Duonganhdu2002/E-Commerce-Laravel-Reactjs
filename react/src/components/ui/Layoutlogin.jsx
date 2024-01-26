@@ -52,7 +52,7 @@ export default function LayoutLogin() {
                             <div>
                                 <div className="w-full">
                                     <Input
-                                        label="Username or Email address or Phone number"
+                                        label="Email address"
                                         onChange={(e) => setEmail(e.target.value)}
                                         id="email"
                                         name="email"
@@ -106,7 +106,7 @@ export default function LayoutLogin() {
                             </div>
 
                             <div>
-                                <Button className="flex w-full justify-center bg-[#1e293b] text-white " onClick={handleLogin} loading={loading}>Loading</Button>
+                                <Button className="flex w-full justify-center bg-[#1e293b] text-white " onClick={handleLogin} loading={loading}>{loading ? ("Loading") : ("Log in")}</Button>
                             </div>
                         </form>
 

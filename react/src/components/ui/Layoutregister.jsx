@@ -31,7 +31,7 @@ const LayoutRegister = () => {
     const handleRegistration = async () => {
         try {
             const response = await userRegister(userData);
-            console.log(response);
+            // console.log(response);
             navigate('/login')
 
         } catch (error) {
