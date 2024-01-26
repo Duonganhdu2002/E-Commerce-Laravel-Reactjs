@@ -11,6 +11,7 @@ use App\Models\user;
 use App\Models\search_history;
 use App\Models\product_review;
 use App\Models\product_image as ProductImage;
+use App\Models\product_category as ProductCategory;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -33,13 +34,26 @@ class ProductController extends Controller
     public function indexByCategory($categoryId)
     {
         try {
-            // Assuming you have a relationship between Product and ProductCategory
-            $products = product_category::findOrFail($categoryId)->products;
+            // Assuming you have relationships between Product and ProductCategory, and Product and ProductImage
+            $products = ProductCategory::findOrFail($categoryId)
+                ->products()
+                ->with('images') // assuming the relationship name is 'images' in the Product model
+                ->get();
+
+            $result = [];
+
+            foreach ($products as $product) {
+                $images = $product->images->pluck('image_url')->toArray();
+
+                $result[] = [
+                    'product' => array_merge((new ProductResource($product))->toArray(request()), ['images' => $images]),
+                ];
+            }
 
             $arr = [
                 'status' => true,
                 'message' => 'Danh sách sản phẩm theo danh mục',
-                'data' => ProductResource::collection($products)
+                'data' => $result,
             ];
 
             return response()->json($arr, 200);
@@ -278,16 +292,12 @@ class ProductController extends Controller
                 ->leftJoin('order_items', 'product.product_id', '=', 'order_items.product_id')
                 ->leftJoin('order', 'order_items.order_id', '=', 'order.order_id')
                 ->where('product.product_category_id', $categoryId)
-                // ->where('order.order_status_id', 3)
-                ->groupBy('product.product_id',)
                 ->groupBy(
                     'product.product_id',
                     'product.name',
                     'product.description',
                     'product.price',
                     'product.stock',
-                    'product.color_id',
-                    'product.size_id',
                     'product.created_by_user_id',
                     'product.product_brand_id',
                     'product.product_category_id',
@@ -295,15 +305,17 @@ class ProductController extends Controller
                     'product.created_at',
                     'product.updated_at',
                     'product.deleted_at',
-                    'product_review.rating'
+                    'product_review.rating',
                 )
                 ->orderByDesc('product_review.rating')
                 ->orderByDesc('total_sales')
                 ->get();
+
             foreach ($products as &$product) {
                 $productImages = ProductImage::where('product_id', $product->product_id)->pluck('image_url');
                 $product->images = $productImages;
             }
+
             return response()->json([
                 'status' => 200,
                 'message' => 'Danh sách sản phẩm theo danh mục sắp xếp theo độ đánh giá và lượt bán',
@@ -317,6 +329,7 @@ class ProductController extends Controller
             ], 500);
         }
     }
+
 
     public function listProductWithBrand(Request $request, $brandId)
     {
