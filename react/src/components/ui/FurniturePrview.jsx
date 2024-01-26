@@ -23,7 +23,7 @@ export default function FurniturePrview() {
         }
     };
 
-    console.log(listTop6Furniture)
+    // console.log(listTop6Furniture)
 
     return (
         <div className="flex justify-center items-center">

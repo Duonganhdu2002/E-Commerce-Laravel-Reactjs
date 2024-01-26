@@ -54,16 +54,27 @@ export default function LayoutLogin() {
                                 <div className="w-full">
                                     <Input
                                         label="Username or Email address or Phone number"
-                                        onChange={(e) =>
-                                            setEmail(e.target.value)
-                                        }
-                                        id=" email"
-                                        name=" email"
-                                        type=" email"
-                                        autoComplete=" email"
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        id="email"
+                                        name="email"
+                                        type="email"
+                                        autoComplete="email"
                                         required
                                     />
                                 </div>
+                            </div>
+
+                            {/* Hidden username field for accessibility */}
+                            <div style={{ display: 'none' }}>
+                                <Input
+                                    label="Username (hidden)"
+                                    onChange={() => { }}
+                                    id="username"
+                                    name="username"
+                                    type="text"
+                                    autoComplete="username"
+                                    tabIndex="-1"
+                                />
                             </div>
 
                             <div>
@@ -72,7 +83,6 @@ export default function LayoutLogin() {
                                         htmlFor="password"
                                         className="block text-sm font-medium leading-6 text-gray-900"
                                     >
-
                                     </label>
                                     <div className="text-sm">
                                         <Link
@@ -85,10 +95,8 @@ export default function LayoutLogin() {
                                 </div>
                                 <div className="w-full">
                                     <Input
-                                        label="Username or Email address or Phone number"
-                                        onChange={(e) =>
-                                            setPassword(e.target.value)
-                                        }
+                                        label="Password"
+                                        onChange={(e) => setPassword(e.target.value)}
                                         id="password"
                                         name="password"
                                         type="password"
@@ -108,6 +116,7 @@ export default function LayoutLogin() {
                                 </Button>
                             </div>
                         </form>
+
 
                         <p className="mt-3 text-center text-gray-500 relative">
                             <span className="mb-10 relative z-10 bg-white px-2 text-base">

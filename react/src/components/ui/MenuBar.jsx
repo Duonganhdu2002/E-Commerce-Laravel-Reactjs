@@ -45,54 +45,63 @@ const navListMenuItems = [
         description: "Find the perfect solution for your needs.",
         icon: SquaresPlusIcon,
         link: "",
+        func: "",
     },
     {
         title: "About Us",
         description: "Meet and learn about our dedication",
         icon: UserGroupIcon,
         link: "",
+        func: "",
     },
     {
         title: "Blog",
         description: "Find the perfect solution for your needs.",
         icon: Bars4Icon,
         link: "",
+        func: "",
     },
     {
         title: "Services",
         description: "Learn how we can help you achieve your goals.",
         icon: SunIcon,
         link: "",
+        func: "",
     },
     {
         title: "Support",
         description: "Reach out to us for assistance or inquiries",
         icon: GlobeAmericasIcon,
         link: "",
+        func: "",
     },
     {
         title: "Contact",
         description: "Find the perfect solution for your needs.",
         icon: PhoneIcon,
         link: "",
+        func: "",
     },
     {
         title: "News",
         description: "Read insightful articles, tips, and expert opinions.",
         icon: NewspaperIcon,
         link: "",
+        func: "",
     },
     {
         title: "Special Offers",
         description: "Explore limited-time deals and bundles",
         icon: TagIcon,
         link: "",
+        func: "",
     },
     {
         title: "Log out",
         description: "Log out",
         icon: RectangleGroupIcon,
-        link: "",
+        link: "/login",
+        func: "handleClickLogOut()",
     },
 ];
 
@@ -294,6 +303,7 @@ function NavList() {
         <List className="mt-4 mb-6 p-0 lg:mt-0 lg:mb-0 lg:flex-row lg:p-1">
             <Link to="/">
                 <Typography
+                    as="div"
                     variant="small"
                     color="blue-gray"
                     className="font-medium"
