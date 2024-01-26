@@ -45,9 +45,7 @@ class ProductController extends Controller
             foreach ($products as $product) {
                 $images = $product->images->pluck('image_url')->toArray();
 
-                $result[] = [
-                    'product' => array_merge((new ProductResource($product))->toArray(request()), ['images' => $images]),
-                ];
+                $result[] = array_merge((new ProductResource($product))->toArray(request()), ['images' => $images]);
             }
 
             $arr = [
