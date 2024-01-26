@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from 'react-redux'
 import { Link } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { clearUser } from '../../redux/slices/userSlice';
+import Cookies from 'js-cookie';
+
 import {
     Navbar,
     Collapse,
@@ -333,6 +337,7 @@ function NavList() {
 export default function MenuBar() {
 
     const user = useSelector((state) => state.user.user);
+    const dispatch = useDispatch();
 
     const [openNav, setOpenNav] = useState(false);
     const [scrollingUp, setScrollingUp] = useState(true);
@@ -342,9 +347,10 @@ export default function MenuBar() {
     const navigate = useNavigate();
 
     const handleLogOut = () => {
-        sessionStorage.removeItem('user_id');
-        navigate("/login")
-    }
+        dispatch(clearUser());
+        Cookies.remove('user');
+        navigate("/login");
+    };
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
@@ -440,7 +446,14 @@ export default function MenuBar() {
                 <div className="hidden gap-2 lg:flex">
                     {user ? (
                         // Render content for logged-in user
-                        <p>Hello <span className=" font-semibold">{user.username}</span></p>
+                        <div className=" items-center flex">
+                            <Typography>Hello </Typography>
+                            <Typography className=" mx-3 font-semibold">{user.username}</Typography>
+                            <Button variant="gradient" size="sm" fullWidth onClick={handleLogOut}>
+                                Log out
+                            </Button>
+
+                        </div>
 
                     ) : (
                         // Render content for non-logged-in user
@@ -489,21 +502,31 @@ export default function MenuBar() {
             <Collapse open={openNav}>
                 <NavList />
                 <div>
+                    {user ? (
+                        // Render content for logged-in user
+                        <div className=" items-center flex flex-col md:flex-row">
+                            <div className=" flex">
+                                <Typography className=" mb-3 text-gray-900">Hello </Typography>
+                                <Typography className=" text-gray-900 mx-3 font-semibold">{user.username}</Typography>
+                            </div>
+                            <Button variant="gradient" size="sm" fullWidth>
+                                Log out
+                            </Button>
+                        </div>
 
-                    <div>
-                        <Button
-                            variant="outlined"
-                            size="sm"
-                            color="blue-gray"
-                            fullWidth
-                        >
-                            Log In
-                        </Button>
-                        <Button variant="gradient" size="sm" fullWidth>
-                            Sign In
-                        </Button>
-                    </div>
-
+                    ) : (
+                        // Render content for non-logged-in user
+                        <div>
+                            <Link to="/login">
+                                <Button variant="text" size="sm" color="blue-gray">
+                                    Log In
+                                </Button>
+                            </Link>
+                            <Link to="/register">
+                                <Button size="sm">Sign In</Button>
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </Collapse>
         </Navbar >

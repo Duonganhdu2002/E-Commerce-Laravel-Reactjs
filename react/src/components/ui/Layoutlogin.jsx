@@ -14,7 +14,6 @@ export default function LayoutLogin() {
     const dispatch = useDispatch();
 
     const loading = useSelector((state) => state.user.loading);
-    const user = useSelector((state) => state.user.user);
 
     const handleLogin = async (e) => {
 
