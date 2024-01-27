@@ -200,7 +200,7 @@ const LayoutProductDetails = () => {
                     <div className="relative">
                         <img className="h-56 shadow rounded-t w-full object-cover object-center" src="https://tuk-cdn.s3.amazonaws.com/assets/components/grid_cards/gc_29.png" />
                         <div className="inset-0 m-auto w-24 h-24 absolute bottom-0 -mb-12 xl:ml-10 rounded border-2 shadow border-white">
-                            <img className="w-full h-full overflow-hidden object-cover rounded" src="https://image.freepik.com/free-photo/indoor-picture-cheerful-handsome-young-man-having-folded-hands-looking-directly-smiling-sincerely-wearing-casual-clothes_176532-10257.jpg" />
+                            <img className="w-full h-full overflow-hidden object-cover rounded" src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/shop/${data.created_by_user_id.shop_avt}`} />
                         </div>
                     </div>
                     <div className="px-5 xl:px-10 pb-10">
@@ -232,7 +232,6 @@ const LayoutProductDetails = () => {
                             <div className="xl:pr-16 w-full xl:w-2/3">
                                 <div className="text-center xl:text-left mb-3 xl:mb-0 flex flex-col xl:flex-row items-center justify-between xl:justify-start">
                                     <h2 className="mb-3 xl:mb-0 xl:mr-4 text-2xl text-gray-800 dark:text-gray-100 font-medium tracking-normal">Marshall Mathers</h2>
-                                    <div className="text-sm bg-indigo-700 dark:bg-indigo-600 text-white px-5 py-1 font-normal rounded-full">Pro</div>
                                 </div>
                                 <p className="text-center xl:text-left mt-2 text-sm tracking-normal text-gray-600 dark:text-gray-400 leading-5">HI, I am a direct response copywriter from the US. When you work with me, we have the same goal. Maximizing your ROI</p>
                             </div>
@@ -432,7 +431,7 @@ const LayoutProductDetails = () => {
                         {/* Div đánh giá */}
                         <Reviews />
                     </div>
-                    
+
                 </div>
             </div>
 

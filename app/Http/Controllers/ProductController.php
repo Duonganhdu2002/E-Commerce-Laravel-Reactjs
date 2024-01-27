@@ -130,6 +130,14 @@ class ProductController extends Controller
             $sizes = ProductSize::where('product_id', $id)->pluck('size_name');
             $colors = ProductColor::where('product_id', $id)->pluck('color_name');
 
+            // Đếm số lượng sản phẩm mà người tạo sản phẩm đang bán
+            $numberOfProducts = Product::where('created_by_user_id', $creator->user_id)->count();
+
+            // Tính trung bình cộng của tất cả đánh giá sản phẩm của người tạo
+            $averageRatingByCreator = ProductReview::whereHas('product', function ($query) use ($creator) {
+                $query->where('created_by_user_id', $creator->user_id);
+            })->avg('rating');
+
             $arr = [
                 'status' => true,
                 'message' => 'Thông tin sản phẩm',
@@ -146,6 +154,7 @@ class ProductController extends Controller
                         'shop_username' => $creator->shop_username,
                         'shop_avt' => $creator->shop_avt,
                         'shop_background' => $creator->shop_background,
+                        'shop_introduce' => $creator->shop_introduce,
                     ],
                     'product_brand_id' => $product->product_brand_id,
                     'product_category_id' => $product->product_category_id,
@@ -160,6 +169,8 @@ class ProductController extends Controller
                     'colors' => $colors,
                     'reviews' => $reviews,
                     'average_rating' => $averageRating,
+                    'average_rating_by_creator' => $averageRatingByCreator,
+                    'number_of_products_by_creator' => $numberOfProducts,
                 ],
             ];
 
@@ -174,6 +185,7 @@ class ProductController extends Controller
             return response()->json($arr, 404);
         }
     }
+
 
 
     public function update(Request $request, string $product)
