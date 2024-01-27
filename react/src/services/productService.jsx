@@ -20,4 +20,4 @@ const fetchRandomFourCategoryAndGetFourProduct = () => {
     return axios.get("/public/product/getRandomCategories")
 }
 
-export { fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession,fetchRandomFourCategoryAndGetFourProduct };
+export { fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession, fetchRandomFourCategoryAndGetFourProduct };
