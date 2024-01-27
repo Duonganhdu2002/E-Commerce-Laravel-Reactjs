@@ -47,6 +47,7 @@ const ProductSuggestion = () => {
                                             src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${product.images[1]}?raw=true`}
                                             alt="Product"
                                         />
+                                        
                                         <div className="px-4 py-3 h-[20%] w-full">
                                             <span className="text-gray-400 mr-3 uppercase text-[12px] lg:text-[14px]">Brand</span>
                                             <p className="text-md lg:text-lg xl:text-xl font-bold text-black truncate block capitalize">{product.name}</p>

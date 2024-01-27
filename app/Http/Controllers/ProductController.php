@@ -6,16 +6,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\ProductResource as ProductResource;
 use App\Models\Product;
-use App\Models\product_category;
+use App\Models\product_color as ProductColor;
+use App\Models\product_size as ProductSize;
 use App\Models\user;
 use App\Models\search_history;
-use App\Models\product_review;
+use App\Models\product_review as ProductReview;
 use App\Models\product_image as ProductImage;
 use App\Models\product_category as ProductCategory;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
-use PhpParser\Node\Stmt\TryCatch;
 
 class ProductController extends Controller
 {
@@ -118,9 +118,17 @@ class ProductController extends Controller
         try {
             $product = Product::findOrFail($id);
             $creator = User::find($product->created_by_user_id);
-            $reviews = product_review::where('product_id', $id)->get();
+            $reviews = ProductReview::where('product_id', $id)->get();
+
+            // Tính trung bình cộng của tất cả đánh giá
+            $averageRating = $reviews->avg('rating');
+
             // Lấy danh sách ảnh sản phẩm chỉ với trường 'image_url'
             $imageUrls = $product->images->pluck('image_url');
+
+            // Retrieve sizes and colors for the product
+            $sizes = ProductSize::where('product_id', $id)->pluck('size_name');
+            $colors = ProductColor::where('product_id', $id)->pluck('color_name');
 
             $arr = [
                 'status' => true,
@@ -129,8 +137,6 @@ class ProductController extends Controller
                     'product_id' => $product->product_id,
                     'name' => $product->name,
                     'description' => $product->description,
-                    'color_id' => $product->color_id,
-                    'size_id' => $product->size_id,
                     'created_by_user_id' => [
                         'user_id' => $creator->user_id,
                         'username' => $creator->username,
@@ -147,7 +153,10 @@ class ProductController extends Controller
                     'updated_at' => $product->updated_at,
                     'deleted_at' => $product->deleted_at,
                     'image_urls' => $imageUrls,
+                    'sizes' => $sizes,
+                    'colors' => $colors,
                     'reviews' => $reviews,
+                    'average_rating' => $averageRating,
                 ],
             ];
 
