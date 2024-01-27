@@ -26,7 +26,11 @@ class User extends Authenticatable implements JWTSubject
         'password',
         'type_account_id',
         'full_name',
-        'telephone'
+        'telephone',
+        'shop_name',
+        'shop_username',
+        'shop_avt',
+        'shop_background',
     ];
 
     protected $primaryKey = 'user_id';
