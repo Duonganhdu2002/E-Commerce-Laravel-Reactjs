@@ -11,6 +11,8 @@ import MenuBarBussiness from "./components/ui-bussiness/MenuBar";
 import LoginBussiness from "./components/ui-bussiness/Login";
 import RegisterBussiness from "./components/ui-bussiness/Register";
 import ProfileBussiness from "./components/ui-bussiness/Profile";
+import InboxBussiness from "./components/ui-bussiness/Inbox";
+import MyProductsBussiness from "./pages/bussiness/MyProducts";
 import Dashboard from "./pages/bussiness/Dashboard";
 import TaskBar from "./components/ui-bussiness/TaskBar";
 import Home from "./pages/Home";
@@ -119,7 +121,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                         <Route path="my-oders" element={<div>My oders</div>} />
                         <Route path="return-refun" element={<div>Return/Refun</div>} />
                         <Route path="cancelation" element={<div>Cancelation</div>} />
-                        <Route path="my-products" element={<div>My products</div>} />
+                        <Route path="my-products" element={<MyProductsBussiness />} />
                         <Route path="add-new-product" element={<div>Add New Product</div>} />
                         <Route path="product-violations" element={<div>Product Violations</div>} />
                         <Route path="product-setting" element={<div>Product Settings</div>} />
@@ -128,7 +130,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                         <Route path="shop-category" element={<div>Shop Category</div>} />
                         <Route path="my-report" element={<div>My Report</div>} />
                         <Route path="dashboard" element={<div>Dashboard Content</div>} />
-                        <Route path="inbox" element={<div>Inbox Content</div>} />
+                        <Route path="inbox" element={<InboxBussiness />} />
                         <Route path="profile" element={<ProfileBussiness />} />
                         <Route path="settings" element={<div>Settings Content</div>} />
                         <Route path="logout" element={<div>Logout Content</div>} />
