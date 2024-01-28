@@ -119,25 +119,22 @@ class ProductController extends Controller
             $product = Product::findOrFail($id);
             $creator = User::find($product->created_by_user_id);
             $reviews = ProductReview::where('product_id', $id)->get();
-
             // Tính trung bình cộng của tất cả đánh giá
             $averageRating = $reviews->avg('rating');
-
             // Lấy danh sách ảnh sản phẩm chỉ với trường 'image_url'
             $imageUrls = $product->images->pluck('image_url');
-
-            // Retrieve sizes and colors for the product
             $sizes = ProductSize::where('product_id', $id)->pluck('size_name');
             $colors = ProductColor::where('product_id', $id)->pluck('color_name');
-
             // Đếm số lượng sản phẩm mà người tạo sản phẩm đang bán
             $numberOfProducts = Product::where('created_by_user_id', $creator->user_id)->count();
-
             // Tính trung bình cộng của tất cả đánh giá sản phẩm của người tạo
             $averageRatingByCreator = ProductReview::whereHas('product', function ($query) use ($creator) {
                 $query->where('created_by_user_id', $creator->user_id);
             })->avg('rating');
-
+            // Tổng số lượt đánh giá cho sản phẩm
+            $totalReviews = $reviews->count();
+            // Mảng chứa số lượng đánh giá cho từng loại đánh giá
+            $reviewCounts = $reviews->groupBy('rating')->map->count();
             $arr = [
                 'status' => true,
                 'message' => 'Thông tin sản phẩm',
@@ -171,6 +168,8 @@ class ProductController extends Controller
                     'average_rating' => $averageRating,
                     'average_rating_by_creator' => $averageRatingByCreator,
                     'number_of_products_by_creator' => $numberOfProducts,
+                    'total_reviews' => $totalReviews,
+                    'review_counts' => $reviewCounts->toArray(),
                 ],
             ];
 

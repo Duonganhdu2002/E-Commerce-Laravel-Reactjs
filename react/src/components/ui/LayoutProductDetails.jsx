@@ -28,6 +28,12 @@ const LayoutProductDetails = () => {
     const starBlack = Number(data.average_rating).toFixed(0);
     const starWhite = 5 - starBlack;
 
+    const starBlack1 = Number(data.average_rating_by_creator).toFixed(0);
+    const starWhite1 = 5 - starBlack1;
+
+    const starYellow = Number(data.average_rating_by_creator).toFixed(0);
+    const starYellowNone = 5 - starYellow;
+
     const sizes = data.sizes || [];
     const colors = data.colors || [];
 
@@ -87,6 +93,7 @@ const LayoutProductDetails = () => {
             setCount((prev) => prev - 1);
         }
     };
+
 
     return (
         <div className="2xl:container 2xl:mx-auto lg:py-16 lg:px-20 md:py-12 md:px-6 py-9 px-4 ">
@@ -198,63 +205,68 @@ const LayoutProductDetails = () => {
             <div className="flex items-center justify-center w-full py-8">
                 <div className="bg-white dark:bg-gray-800 shadow rounded">
                     <div className="relative">
-                        <img className="h-56 shadow rounded-t w-full object-cover object-center" src="https://tuk-cdn.s3.amazonaws.com/assets/components/grid_cards/gc_29.png" />
+                        {data.created_by_user_id?.shop_background && (
+                            <img
+                                className="h-56 shadow rounded-t w-full object-cover object-center"
+                                src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/shop/${data.created_by_user_id.shop_background}?raw=true`}
+                                alt="Shop Avatar"
+                            />
+
+                        )}
                         <div className="inset-0 m-auto w-24 h-24 absolute bottom-0 -mb-12 xl:ml-10 rounded border-2 shadow border-white">
-                            <img className="w-full h-full overflow-hidden object-cover rounded" src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/shop/${data.created_by_user_id.shop_avt}`} />
+                            {data.created_by_user_id?.shop_avt && (
+                                <img
+                                    className="w-full h-full overflow-hidden object-cover rounded"
+                                    src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/shop/${data.created_by_user_id.shop_avt}?raw=true`}
+                                    alt="Shop Avatar"
+                                />
+
+                            )}
                         </div>
                     </div>
                     <div className="px-5 xl:px-10 pb-10">
                         <div className="flex justify-center xl:justify-end w-full pt-16 xl:pt-5">
                             <div className="flex items-center">
-                                <svg className="w-4 mr-1 text-yellow-400 icon icon-tabler icon-tabler-star" xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-                                    <path stroke="none" fill="none" d="M0 0h24v24H0z" />
-                                    <path fill="currentColor" d="M12 17.75l-6.172 3.245 1.179-6.873-4.993-4.867 6.9-1.002L12 2l3.086 6.253 6.9 1.002-4.993 4.867 1.179 6.873z" />
-                                </svg>
-                                <svg className="w-4 mr-1 text-yellow-400 icon icon-tabler icon-tabler-star" xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-                                    <path stroke="none" fill="none" d="M0 0h24v24H0z" />
-                                    <path fill="currentColor" d="M12 17.75l-6.172 3.245 1.179-6.873-4.993-4.867 6.9-1.002L12 2l3.086 6.253 6.9 1.002-4.993 4.867 1.179 6.873z" />
-                                </svg>
-                                <svg className="w-4 mr-1 text-yellow-400 icon icon-tabler icon-tabler-star" xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-                                    <path stroke="none" fill="none" d="M0 0h24v24H0z" />
-                                    <path fill="currentColor" d="M12 17.75l-6.172 3.245 1.179-6.873-4.993-4.867 6.9-1.002L12 2l3.086 6.253 6.9 1.002-4.993 4.867 1.179 6.873z" />
-                                </svg>
-                                <svg className="w-4 mr-1 text-yellow-400 icon icon-tabler icon-tabler-star" xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-                                    <path stroke="none" fill="none" d="M0 0h24v24H0z" />
-                                    <path fill="currentColor" d="M12 17.75l-6.172 3.245 1.179-6.873-4.993-4.867 6.9-1.002L12 2l3.086 6.253 6.9 1.002-4.993 4.867 1.179 6.873z" />
-                                </svg>
-                                <svg className="w-4 text-gray-200 icon icon-tabler icon-tabler-star" xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-                                    <path stroke="none" fill="none" d="M0 0h24v24H0z" />
-                                    <path fill="currentColor" d="M12 17.75l-6.172 3.245 1.179-6.873-4.993-4.867 6.9-1.002L12 2l3.086 6.253 6.9 1.002-4.993 4.867 1.179 6.873z" />
-                                </svg>
+
+                                <div className="flex flex-row space-x-3">
+                                    {Array.from({ length: starBlack1 }, (_, index) => (
+                                        <img key={index} src={starBlackImg} alt="" />
+                                    ))}
+                                    {Array.from({ length: starWhite1 }, (_, index) => (
+                                        <img key={index} src={starWhiteImg} alt="" />
+                                    ))}
+                                </div>
+
                             </div>
                         </div>
                         <div className="pt-3 xl:pt-5 flex flex-col xl:flex-row items-start xl:items-center justify-between">
                             <div className="xl:pr-16 w-full xl:w-2/3">
                                 <div className="text-center xl:text-left mb-3 xl:mb-0 flex flex-col xl:flex-row items-center justify-between xl:justify-start">
-                                    <h2 className="mb-3 xl:mb-0 xl:mr-4 text-2xl text-gray-800 dark:text-gray-100 font-medium tracking-normal">Marshall Mathers</h2>
+                                    <h2 className="mb-3 xl:mb-0 xl:mr-4 text-2xl text-gray-800 dark:text-gray-100 font-medium tracking-normal">
+                                        {data.created_by_user_id?.shop_name && (
+                                            data.created_by_user_id.shop_name
+                                        )}
+                                    </h2>
                                 </div>
-                                <p className="text-center xl:text-left mt-2 text-sm tracking-normal text-gray-600 dark:text-gray-400 leading-5">HI, I am a direct response copywriter from the US. When you work with me, we have the same goal. Maximizing your ROI</p>
+                                <p className="text-center xl:text-left mt-2 text-sm tracking-normal text-gray-600 dark:text-gray-400 leading-5">
+                                    {data.created_by_user_id?.shop_introduce && (
+                                        data.created_by_user_id.shop_introduce
+                                    )}
+                                </p>
                             </div>
                             <div className="xl:px-10 xl:border-l xl:border-r w-full py-5 flex items-start justify-center xl:w-1/3">
-                                <div className="mr-6 xl:mr-10">
-                                    <h2 className="text-gray-600 dark:text-gray-400 font-bold text-xl xl:text-2xl leading-6 mb-2 text-center">82</h2>
-                                    <p className="text-gray-800 dark:text-gray-100 text-sm xl:text-xl leading-5">Reviews</p>
-                                </div>
-                                <div className="mr-6 xl:mr-10">
-                                    <h2 className="text-gray-600 dark:text-gray-400 font-bold text-xl xl:text-2xl leading-6 mb-2 text-center">28</h2>
-                                    <p className="text-gray-800 dark:text-gray-100 text-sm xl:text-xl leading-5">Projects</p>
-                                </div>
                                 <div>
-                                    <h2 className="text-gray-600 dark:text-gray-400 font-bold text-xl xl:text-2xl leading-6 mb-2 text-center">42</h2>
-                                    <p className="text-gray-800 dark:text-gray-100 text-sm xl:text-xl leading-5">Approved</p>
+                                    <h2 className="text-gray-600 dark:text-gray-400 font-bold text-xl xl:text-2xl leading-6 mb-2 text-center">
+                                        {data.number_of_products_by_creator}
+                                    </h2>
+                                    <p className="text-gray-800 dark:text-gray-100 text-sm xl:text-xl leading-5">Products</p>
                                 </div>
                             </div>
                             <div className="w-full xl:w-2/3 flex-col md:flex-row justify-center xl:justify-end flex md:pl-6">
                                 <div className="flex items-center justify-center xl:justify-start mt-1 md:mt-0 mb-5 md:mb-0">
-                                    <div className="rounded-full bg-gray-200 text-gray-600 dark:text-gray-400 text-sm px-6 py-2 flex justify-center items-center">Remote</div>
-                                    <div className="ml-5 rounded-full bg-green-200 text-green-500 text-sm px-6 py-2 flex justify-center items-center">Available</div>
+                                    <Button size="sm" className=" mr-3">VISIT</Button>
+                                    <Button size="sm">MESSAGE</Button>
                                 </div>
-                                <button className="focus:outline-none ml-0 md:ml-5 bg-indigo-700 dark:bg-indigo-600 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-3 md:px-6 py-2 text-sm">Message</button>
                             </div>
                         </div>
                     </div>
@@ -280,7 +292,9 @@ const LayoutProductDetails = () => {
                                 <div className="flex flex-row justify-between ml-1 w-full items-start">
                                     <div className="flex">
                                         <div className="text-right font-bold leading-[24px] text-[#607d8b] mr-2">
-                                            4.7
+                                            {
+                                                Number(data.average_rating_by_creator).toFixed(2)
+                                            }
                                         </div>
                                         <div className="flex flex-row mt-px w-1/3 items-start">
                                             <img
@@ -317,7 +331,7 @@ const LayoutProductDetails = () => {
                                     </div>
 
                                     <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b] mt-px">
-                                        Based on 134 Reviews
+                                        Based on {data.total_reviews} Reviews
                                     </div>
                                 </div>
                             </div>
@@ -327,23 +341,37 @@ const LayoutProductDetails = () => {
                                         <div className="text-right font-medium leading-[24px] text-[#607d8b]">
                                             5
                                         </div>
-                                        <img
-                                            src={Star}
-                                            alt="Star5"
-                                            id="Star5"
-                                            className="mt-px w-5"
-                                        />
+                                        {data.review_counts?.["5"] && data.review_counts["5"] ? (
+                                            <img
+                                                src={Star}
+                                                alt="Star5"
+                                                className="mt-px w-5"
+                                            />
+                                        ) : (
+                                            <img
+                                                src={StarOutline}
+                                                alt="Star9"
+                                                className="mt-px w-5"
+                                            />
+                                        )}
                                     </div>
                                     <div className="flex flex-row gap-1 w-8 items-start">
                                         <div className="text-right font-medium leading-[24px] text-[#607d8b]">
                                             4
                                         </div>
-                                        <img
-                                            src={Star}
-                                            alt="Star6"
-                                            id="Star6"
-                                            className="mt-px w-5"
-                                        />
+                                        {data.review_counts?.["4"] && data.review_counts["4"] ? (
+                                            <img
+                                                src={Star}
+                                                alt="Star6"
+                                                className="mt-px w-5"
+                                            />
+                                        ) : (
+                                            <img
+                                                src={StarOutline}
+                                                alt="Star8"
+                                                className="mt-px w-5"
+                                            />
+                                        )}
                                     </div>
                                     <div className="flex flex-row gap-1 w-8 font-sans items-start">
                                         <div className="text-right font-medium leading-[24px] text-[#607d8b]">
@@ -352,7 +380,6 @@ const LayoutProductDetails = () => {
                                         <img
                                             src={Star}
                                             alt="Star7"
-                                            id="Star7"
                                             className="mt-px w-5"
                                         />
                                     </div>
@@ -363,7 +390,6 @@ const LayoutProductDetails = () => {
                                         <img
                                             src={StarOutline}
                                             alt="Star8"
-                                            id="Star8"
                                             className="mt-px w-5"
                                         />
                                     </div>
@@ -374,43 +400,43 @@ const LayoutProductDetails = () => {
                                         <img
                                             src={StarOutline}
                                             alt="Star9"
-                                            id="Star9"
                                             className="mt-px w-5"
                                         />
                                     </div>
                                 </div>
                                 <div className="flex flex-col justify-between mt-2 w-5/6 h-36 items-start">
                                     <div className="flex w-full flex-col gap-4 mb-4">
-                                        <Progress value={75} color="amber" />
+                                        <Progress value={data.review_counts?.["5"] ? Math.round((data.review_counts["5"] / data.total_reviews) * 100) : 0} color="amber" />
                                     </div>
                                     <div className="flex w-full flex-col gap-4 mb-4">
-                                        <Progress value={10} color="amber" />
+                                        <Progress value={data.review_counts?.["4"] ? Math.round((data.review_counts["4"] / data.total_reviews) * 100) : 0} color="amber" />
                                     </div>
                                     <div className="flex w-full flex-col gap-4 mb-4">
-                                        <Progress value={25} color="amber" />
+                                        <Progress value={data.review_counts?.["3"] ? Math.round((data.review_counts["3"] / data.total_reviews) * 100) : 0} color="amber" />
                                     </div>
                                     <div className="flex w-full flex-col gap-4 mb-4">
-                                        <Progress value={0} color="amber" />
+                                        <Progress value={data.review_counts?.["2"] ? Math.round((data.review_counts["2"] / data.total_reviews) * 100) : 0} color="amber" />
                                     </div>
                                     <div className="flex w-full flex-col gap-4 mb-2">
-                                        <Progress value={0} color="amber" />
+                                        <Progress value={data.review_counts?.["1"] ? Math.round((data.review_counts["1"] / data.total_reviews) * 100) : 0} color="amber" />
                                     </div>
                                 </div>
+
                                 <div className="flex flex-col justify-between mt-px gap-3 w-6 font-sans items-start">
                                     <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b]">
-                                        75%
+                                        {data.review_counts?.["5"] ? Math.round((data.review_counts["5"] / data.total_reviews) * 100) : 0}%
                                     </div>
                                     <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b]">
-                                        10%
+                                        {data.review_counts?.["4"] ? Math.round((data.review_counts["4"] / data.total_reviews) * 100) : 0}%
                                     </div>
                                     <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b]">
-                                        25%
+                                        {data.review_counts?.["3"] ? Math.round((data.review_counts["3"] / data.total_reviews) * 100) : 0}%
                                     </div>
                                     <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b] ml-2">
-                                        0%
+                                        {data.review_counts?.["2"] ? Math.round((data.review_counts["2"] / data.total_reviews) * 100) : 0}%
                                     </div>
                                     <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b] ml-2">
-                                        0%
+                                        {data.review_counts?.["1"] ? Math.round((data.review_counts["1"] / data.total_reviews) * 100) : 0}%
                                     </div>
                                 </div>
                             </div>
