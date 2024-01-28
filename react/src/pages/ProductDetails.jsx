@@ -8,8 +8,8 @@ export default function ProductDetails() {
     return (
         <div>
             <LayoutProductDetails />
-            <ShopAccount/>
-            <ProductPreview />
+            {/* <ShopAccount/> */}
+            {/* <ProductPreview /> */}
         </div>
     );
 }

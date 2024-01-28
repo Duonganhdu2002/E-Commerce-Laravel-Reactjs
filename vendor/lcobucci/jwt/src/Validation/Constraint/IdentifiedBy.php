@@ -9,17 +9,18 @@ use Lcobucci\JWT\Validation\ConstraintViolation;
 
 final class IdentifiedBy implements Constraint
 {
-    /** @param non-empty-string $id */
-    public function __construct(private readonly string $id)
+    private string $id;
+
+    public function __construct(string $id)
     {
+        $this->id = $id;
     }
 
     public function assert(Token $token): void
     {
         if (! $token->isIdentifiedBy($this->id)) {
-            throw ConstraintViolation::error(
-                'The token is not identified with the expected ID',
-                $this,
+            throw new ConstraintViolation(
+                'The token is not identified with the expected ID'
             );
         }
     }

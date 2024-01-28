@@ -6,15 +6,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\ProductResource as ProductResource;
 use App\Models\Product;
-use App\Models\product_category;
+use App\Models\product_color as ProductColor;
+use App\Models\product_size as ProductSize;
 use App\Models\user;
 use App\Models\search_history;
-use App\Models\product_review;
+use App\Models\product_review as ProductReview;
 use App\Models\product_image as ProductImage;
+use App\Models\product_category as ProductCategory;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
-use PhpParser\Node\Stmt\TryCatch;
 
 class ProductController extends Controller
 {
@@ -33,13 +34,24 @@ class ProductController extends Controller
     public function indexByCategory($categoryId)
     {
         try {
-            // Assuming you have a relationship between Product and ProductCategory
-            $products = product_category::findOrFail($categoryId)->products;
+            // Assuming you have relationships between Product and ProductCategory, and Product and ProductImage
+            $products = ProductCategory::findOrFail($categoryId)
+                ->products()
+                ->with('images') // assuming the relationship name is 'images' in the Product model
+                ->get();
+
+            $result = [];
+
+            foreach ($products as $product) {
+                $images = $product->images->pluck('image_url')->toArray();
+
+                $result[] = array_merge((new ProductResource($product))->toArray(request()), ['images' => $images]);
+            }
 
             $arr = [
                 'status' => true,
                 'message' => 'Danh sách sản phẩm theo danh mục',
-                'data' => ProductResource::collection($products)
+                'data' => $result,
             ];
 
             return response()->json($arr, 200);
@@ -104,37 +116,60 @@ class ProductController extends Controller
     public function show(string $id)
     {
         try {
-        $product = Product::with(['images'])->findOrFail($id);
-        $creator = User::find($product->created_by_user_id);
-        $reviews = product_review::where('product_id', $id)->get();
-        $imageUrls = $product->images->pluck('image_url');
-
+            $product = Product::findOrFail($id);
+            $creator = User::find($product->created_by_user_id);
+            $reviews = ProductReview::where('product_id', $id)->get();
+            // Tính trung bình cộng của tất cả đánh giá
+            $averageRating = $reviews->avg('rating');
+            // Lấy danh sách ảnh sản phẩm chỉ với trường 'image_url'
+            $imageUrls = $product->images->pluck('image_url');
+            $sizes = ProductSize::where('product_id', $id)->pluck('size_name');
+            $colors = ProductColor::where('product_id', $id)->pluck('color_name');
+            // Đếm số lượng sản phẩm mà người tạo sản phẩm đang bán
+            $numberOfProducts = Product::where('created_by_user_id', $creator->user_id)->count();
+            // Tính trung bình cộng của tất cả đánh giá sản phẩm của người tạo
+            $averageRatingByCreator = ProductReview::whereHas('product', function ($query) use ($creator) {
+                $query->where('created_by_user_id', $creator->user_id);
+            })->avg('rating');
+            // Tổng số lượt đánh giá cho sản phẩm
+            $totalReviews = $reviews->count();
+            // Mảng chứa số lượng đánh giá cho từng loại đánh giá
+            $reviewCounts = $reviews->groupBy('rating')->map->count();
             $arr = [
                 'status' => true,
-            'message' => 'Thông tin sản phẩm',
-            'data' => [
-                'product_id' => $product->product_id,
-                'name' => $product->name,
-                'description' => $product->description,
-                'created_by_user_id' => [
-                    'user_id' => $creator->user_id,
-                    'username' => $creator->username,
-                    'avt_image' => $creator->avt_image,
-                    'first_name' => $creator->first_name,
-                    'last_name' => $creator->last_name,
-                ],
-                'product_brand_id' => $product->product_brand_id,
-                'product_category_id' => $product->product_category_id,
-                'price' => $product->price,
-                'stock' => $product->stock,
-                'discount_id' => $product->discount_id,
-                'created_at' => $product->created_at,
-                'updated_at' => $product->updated_at,
-                'deleted_at' => $product->deleted_at,
-                'image_urls' => $imageUrls,
-                'reviews' => $reviews,
-                'color' => $product->color, 
-                'size' => $product->size,
+                'message' => 'Thông tin sản phẩm',
+                'data' => [
+                    'product_id' => $product->product_id,
+                    'name' => $product->name,
+                    'description' => $product->description,
+                    'created_by_user_id' => [
+                        'user_id' => $creator->user_id,
+                        'username' => $creator->username,
+                        'avt_image' => $creator->avt_image,
+                        'full_name' => $creator->full_name,
+                        'shop_name' => $creator->shop_name,
+                        'shop_username' => $creator->shop_username,
+                        'shop_avt' => $creator->shop_avt,
+                        'shop_background' => $creator->shop_background,
+                        'shop_introduce' => $creator->shop_introduce,
+                    ],
+                    'product_brand_id' => $product->product_brand_id,
+                    'product_category_id' => $product->product_category_id,
+                    'price' => $product->price,
+                    'stock' => $product->stock,
+                    'discount_id' => $product->discount_id,
+                    'created_at' => $product->created_at,
+                    'updated_at' => $product->updated_at,
+                    'deleted_at' => $product->deleted_at,
+                    'image_urls' => $imageUrls,
+                    'sizes' => $sizes,
+                    'colors' => $colors,
+                    'reviews' => $reviews,
+                    'average_rating' => $averageRating,
+                    'average_rating_by_creator' => $averageRatingByCreator,
+                    'number_of_products_by_creator' => $numberOfProducts,
+                    'total_reviews' => $totalReviews,
+                    'review_counts' => $reviewCounts->toArray(),
                 ],
             ];
 
@@ -149,6 +184,7 @@ class ProductController extends Controller
             return response()->json($arr, 404);
         }
     }
+
 
 
     public function update(Request $request, string $product)
@@ -271,17 +307,12 @@ class ProductController extends Controller
             $products = Product::select(
                 'product.*',
                 'product_review.rating',
-                DB::raw('SUM(order_items.quantity) as total_sales'),
+                DB::raw('SUM(order_items.quantity) as total_sales')
             )
                 ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
                 ->leftJoin('order_items', 'product.product_id', '=', 'order_items.product_id')
                 ->leftJoin('order', 'order_items.order_id', '=', 'order.order_id')
-                ->leftJoin('product_color', 'product.product_id', '=', 'product_color.product_id')
-                ->leftJoin('product_size', 'product.product_id', '=', 'product_size.product_id')
-                ->with(['color', 'size'])
                 ->where('product.product_category_id', $categoryId)
-                // ->where('order.order_status_id', 3)
-                ->groupBy('product.product_id')
                 ->groupBy(
                     'product.product_id',
                     'product.name',
@@ -296,15 +327,16 @@ class ProductController extends Controller
                     'product.updated_at',
                     'product.deleted_at',
                     'product_review.rating',
-                     
                 )
                 ->orderByDesc('product_review.rating')
                 ->orderByDesc('total_sales')
                 ->get();
+
             foreach ($products as &$product) {
                 $productImages = ProductImage::where('product_id', $product->product_id)->pluck('image_url');
                 $product->images = $productImages;
             }
+
             return response()->json([
                 'status' => 200,
                 'message' => 'Danh sách sản phẩm theo danh mục sắp xếp theo độ đánh giá và lượt bán',
@@ -318,6 +350,7 @@ class ProductController extends Controller
             ], 500);
         }
     }
+
 
     public function listProductWithBrand(Request $request, $brandId)
     {

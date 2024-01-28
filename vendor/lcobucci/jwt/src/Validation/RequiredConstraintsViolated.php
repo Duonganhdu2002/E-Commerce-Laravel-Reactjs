@@ -11,17 +11,15 @@ use function implode;
 
 final class RequiredConstraintsViolated extends RuntimeException implements Exception
 {
-    /** @param ConstraintViolation[] $violations */
-    public function __construct(
-        string $message = '',
-        public readonly array $violations = [],
-    ) {
-        parent::__construct($message);
-    }
+    /** @var ConstraintViolation[] */
+    private array $violations = [];
 
     public static function fromViolations(ConstraintViolation ...$violations): self
     {
-        return new self(message: self::buildMessage($violations), violations: $violations);
+        $exception             = new self(self::buildMessage($violations));
+        $exception->violations = $violations;
+
+        return $exception;
     }
 
     /** @param ConstraintViolation[] $violations */
@@ -31,7 +29,7 @@ final class RequiredConstraintsViolated extends RuntimeException implements Exce
             static function (ConstraintViolation $violation): string {
                 return '- ' . $violation->getMessage();
             },
-            $violations,
+            $violations
         );
 
         $message  = "The token violates some mandatory constraints, details:\n";

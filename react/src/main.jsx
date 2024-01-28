@@ -8,6 +8,10 @@ import SubFooter from "./components/ui/Subfooter";
 import { Provider } from "react-redux";
 import { store } from "./redux/Store";
 import MenuBarBussiness from "./components/ui-bussiness/MenuBar";
+import LoginBussiness from "./components/ui-bussiness/Login";
+import RegisterBussiness from "./components/ui-bussiness/Register";
+import ProfileBussiness from "./components/ui-bussiness/Profile";
+import Dashboard from "./pages/bussiness/Dashboard";
 import TaskBar from "./components/ui-bussiness/TaskBar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -19,10 +23,12 @@ import CategoryPage from "./pages/CategoryPage";
 import ProductDetails from "./pages/ProductDetails";
 import Shop from "./pages/Shop";
 import Profile from "./pages/Profile";
+import OrderStatus from "./pages/OrderStatus";
 import MenuBar from "./components/ui/MenuBar";
 import Checkout from "./components/ui/Checkout";
 import SubFooter2 from "./components/ui/SubFooter2";
 import SearchLayout from "./components/ui/SearchLayout";
+import Error404 from "./components/ui/error404";
 
 const Customer = () => {
     return (
@@ -80,6 +86,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <BrowserRouter>
                 <Routes>
 
+                    {/* Error 404 */}
+                    <Route path="*" element={<Error404 />} />
+
                     {/* Public */}
 
                     <Route path="/" element={<Customer />}>
@@ -95,15 +104,15 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                         <Route path="profile" element={<Profile />} />
                         <Route path="checkout" element={<Checkout />} />
                         <Route path="search/:searchKey" element={<SearchLayout />} />
+                        <Route path="orderstatus" element={<OrderStatus />} />
                     </Route>
 
                     {/* Bussiness */}
 
                     <Route path="/bussiness" element={<Bussiness />}>
-                        <Route index element={<div className=" text-9xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur accusamus unde, neque provident sed debitis ullam quaerat voluptas quas aspernatur facilis optio est soluta fugit velit cupiditate, fugiat earum vitae.
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla eligendi, illum corrupti, soluta necessitatibus aut beatae dolore illo odio saepe inventore error. Odit ipsa deserunt excepturi mollitia, repudiandae distinctio minus!
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia et dicta nisi eos. Delectus odio illum quo officia nihil provident minima, cupiditate fuga soluta nulla numquam magnam dicta doloremque sunt!t</div>} />
-                        <Route path="login" element={<div>Default Page login</div>} />
+                        <Route index element={<Dashboard />} />
+                        <Route path="login" element={<LoginBussiness />} />
+                        <Route path="register" element={<RegisterBussiness />} />
                         <Route path="my-shipment" element={<div>My shipment</div>} />
                         <Route path="mass-ship" element={<div>Mass ship</div>} />
                         <Route path="shipping-setting" element={<div>Shipping setting</div>} />
@@ -120,7 +129,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                         <Route path="my-report" element={<div>My Report</div>} />
                         <Route path="dashboard" element={<div>Dashboard Content</div>} />
                         <Route path="inbox" element={<div>Inbox Content</div>} />
-                        <Route path="profile" element={<div>Profile Content</div>} />
+                        <Route path="profile" element={<ProfileBussiness />} />
                         <Route path="settings" element={<div>Settings Content</div>} />
                         <Route path="logout" element={<div>Logout Content</div>} />
                     </Route>

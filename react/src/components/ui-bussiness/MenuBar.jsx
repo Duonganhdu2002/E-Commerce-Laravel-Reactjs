@@ -262,7 +262,7 @@ export default function MenuBarBussiness() {
     return (
         <Navbar className="fixed mx-auto max-w-screen-7xl p-2 lg:pl-6 mb-2">
             <div className="relative mx-auto flex items-center justify-between text-blue-gray-900">
-            <Link to="/bussiness">
+                <Link to="/bussiness">
                     <div className="pl-4 mr-10">
                         <img
                             className="w-8 h-8 md:hidden"
@@ -288,10 +288,11 @@ export default function MenuBarBussiness() {
                 >
                     <Bars2Icon className="h-6 w-6" />
                 </IconButton>
-
-                <Button size="sm" variant="text">
-                    <span>Log In</span>
-                </Button>
+                <Link to="login">
+                    <Button size="sm" variant="text">
+                        <span>Log In</span>
+                    </Button>
+                </Link>
                 <ProfileMenu />
             </div>
             <Collapse open={isNavOpen} className="overflow-scroll">

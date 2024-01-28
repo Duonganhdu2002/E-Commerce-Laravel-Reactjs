@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\UserResource as UserResource;
 use App\Models\User;
+use App\Models\user_address as UserAddress;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -15,107 +16,123 @@ use Illuminate\Support\Facades\Hash; // Mã hóa
 class UserController extends Controller
 {
 
+
+    public function info(Request $request, int $user_id)
+    {
+        try {
+            // Find the user by user_id
+            $user = User::find($user_id);
+
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User not found',
+                    'data' => null
+                ], 404);
+            }
+
+            // Get user address
+            $userAddress = UserAddress::where('user_id', $user_id)->first();
+
+            // Merge user and user_address data
+            $userDataWithAddress = array_merge($user->toArray(), $userAddress ? $userAddress->toArray() : []);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'User information retrieved successfully',
+                'data' => $userDataWithAddress,
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage(),
+                'data' => null
+            ], 500);
+        }
+    }
+
+
+    public function login(Request $request)
+    {
+        // Validate request data
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        // Attempt to log in
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            // Authentication successful
+
+            // Get authenticated user (excluding password)
+            $user = Auth::user();
+
+            // Join user and user_address tables to get user's address
+            $userDataWithAddress = User::join('user_address', 'users.user_id', '=', 'user_address.user_id')
+                ->select('users.*', 'user_address.number', 'user_address.street', 'user_address.commune', 'user_address.district', 'user_address.province', 'user_address.country', 'user_address.postal_code')
+                ->where('users.user_id', '=', $user->user_id)
+                ->first();
+
+            // Return the user data with address
+            return response()->json([
+                'success' => true,
+                'data' => $userDataWithAddress,
+            ]);
+        } else {
+            // Authentication failed
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid credentials',
+            ], 401);
+        }
+    }
+
+
     public function createUser(Request $request)
     {
         try {
-
             $input = $request->all();
+
             $validateUser = Validator::make(
                 $input,
                 [
+                    'password' => 'required',
                     'username' => 'required',
                     'email' => 'required|email|unique:users,email',
-                    'password' => 'required'
+                    'telephone' => 'required',
+                    'full_name' => 'required',
                 ]
             );
 
             if ($validateUser->fails()) {
                 return response()->json([
                     'status' => 401,
-                    'message' => 'validation error',
+                    'message' => 'Validation error',
                     'errors' => $validateUser->errors()
                 ], 401);
             }
 
-            $user = User::create([
-
-                'username' => $request->username,
+            User::create([
+                'username' => $request->input('username'),
+                'email' => $request->input('email'),
+                'password' => Hash::make($request->input('password')),
+                'full_name' => $request->input('full_name'),
+                'telephone' => $request->input('telephone'),
                 'type_account_id' => $request->input('type_account_id', 1),
-                'email' => $request->email,
-                'password' => Hash::make($request->password)
+
             ]);
 
             return response()->json([
                 'status' => 200,
                 'message' => 'User Created Successfully',
-                'token' => $user->createToken("API TOKEN")->plainTextToken
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 500,
-                'message' => $th->getMessage()
-            ], 500);
-        }
-    }
-
-    public function loginUser(Request $request)
-    {
-        try {
-            $validateUser = Validator::make(
-                $request->all(),
-                [
-                    'email' => 'required|email',
-                    'password' => 'required'
-                ]
-            );
-
-            if ($validateUser->fails()) {
-                return response()->json([
-                    'status' => 401,
-                    'message' => 'validation error',
-                    'errors' => $validateUser->errors()
-                ], 401);
-            }
-
-            if (!Auth::attempt($request->only(['email', 'password']))) {
-                return response()->json([
-                    'status' => 401,
-                    'message' => 'Email & Password do not match with our records.',
-                ], 401);
-            }
-
-            $user = User::where('email', $request->email)->first();
-
-            return response()->json([
-                'status' => 200,
-                'message' => 'User Logged In Successfully',
-                'token' => $user->createToken("API TOKEN")->plainTextToken
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => 500,
-                'message' => $th->getMessage()
-            ], 500);
-        }
-    }
-
-
-    public function logoutUser(Request $request)
-    {
-        try {
-            // Đăng xuất người dùng
-            User::logout();
-
-            // Trả về một phản hồi JSON chỉ ra rằng quá trình đăng xuất thành công
-            return response()->json([
-                'status' => true,
-                'message' => 'Người dùng đã đăng xuất thành công',
-            ], 200);
-        } catch (\Throwable $th) {
-            // Xử lý mọi ngoại lệ có thể xảy ra trong quá trình đăng xuất
-            return response()->json([
-                'status' => false,
-                'message' => $th->getMessage()
+                'message' => 'Error creating user',
+                'error' => $th->getMessage()
             ], 500);
         }
     }

@@ -13,50 +13,21 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SearchHistoryController;
 
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
-Route::prefix('auth')->group(function () {
-    // Đăng ký người dùng
+
+Route::prefix('user')->group(function () {
     Route::post('register', [UserController::class, 'createUser'])->name('register');
-
-    // Đăng nhập người dùng
-    Route::post('login', [UserController::class, 'loginUser']);
-
-    // Đăng xuất người dùng
-    Route::post('logout', [UserController::class, 'logoutUser'])->name('logout');
-
-    // Lấy tổng số người dùng
+    Route::post('login', [UserController::class, 'login']);
+    Route::get('info/{user_id}', [UserController::class, 'info']);
     Route::get('auth-total', [UserController::class, 'getTotalUsers']);
-
-    // Lấy danh sách người dùng
     Route::get('auth-list', [UserController::class, 'userList'])->name('userList');
-
-    // Phân trang người dùng ?page=number
     Route::get('auth', [UserController::class, 'userPagination']);
 });
 
 
-Route::prefix('admin')->middleware(['auth:sanctum', 'check.role:1'])->group(function () {
-    // Vào trang admin
-    // Chỉnh sửa Payment_type
-    // Ban seller và customer
-    // 
-});
 
-
-Route::prefix('seller')->middleware(['auth:sanctum', 'check.role:2'])->group(function () {
-});
-
-Route::prefix('customer')->middleware(['auth:sanctum', 'check.role:3'])->group(function () {
-});
-
-
-Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang public 
-
+Route::prefix('public')->group(function () {
     Route::prefix('product')->group(function () {
-
         // index, store, update, destroy
         // Route::resource('/', ProductController::class);
 
@@ -80,8 +51,8 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
         // xuất ra những sản phẩm của user tạo ra
         // Route::get('products/user/{userId}', [ProductController::class, 'indexByUser']);
 
-        // chức năng tìm kiếm sản phẩm theo tên của sản phẩm ?page=number
-        Route::get('/search-products/{keySearch}', [SearchHistoryController::class, 'search']);
+        // chức năng tìm kiếm sản phẩm theo tên của sản phẩm, brand, category
+        Route::get('/search-products', [SearchHistoryController::class, 'search']);
 
         // Lọc sản phẩm theo giá
         // Route::get('/filter-by-price', [ProductController::class, 'filterByPrice']);
@@ -137,4 +108,14 @@ Route::prefix('public')->group(function () { // truy xuất dữ liệu ra trang
 
 Route::prefix('pageAdmin')->group(function () { // truy vấn dữ liệu ra trang admin
 
+});
+
+Route::prefix('admin')->middleware(['auth:sanctum', 'check.role:1'])->group(function () {
+});
+
+
+Route::prefix('seller')->middleware(['auth:sanctum', 'check.role:2'])->group(function () {
+});
+
+Route::prefix('customer')->middleware(['auth:sanctum', 'check.role:3'])->group(function () {
 });

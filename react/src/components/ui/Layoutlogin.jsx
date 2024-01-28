@@ -1,42 +1,33 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@material-tailwind/react";
 import logo from "../../assets/icon/logo.svg";
 import LogoGoogle1 from "../../assets/icon/Google__G__logo.svg";
-
-import { userLogin } from "../../services/authService";
 import { Input } from "@material-tailwind/react";
+import { useSelector, useDispatch } from 'react-redux'
+import { loginUser } from "../../redux/slices/userSlice";
 
 export default function LayoutLogin() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    useEffect(() => {
-        let token = localStorage.getItem("token");
-        if (token) {
-            // navigate("/");
+    const loading = useSelector((state) => state.user.loading);
+
+    const handleLogin = async (e) => {
+
+        e.preventDefault();
+        let userCredential = {
+            email, password
         }
-    });
-
-    const handleLogin = async () => {
-        if (!email || !password) {
-            setError("Please enter both email and password.");
-            return;
-        }
-
-        try {
-            let res = await userLogin(email, password);
-            if (res && res.token) {
-                localStorage.setItem("token", res.token);
-                navigate("/");
+        dispatch(loginUser(userCredential)).then((result) => {
+            if (result.payload) {
+                setEmail('');
+                setPassword('');
+                navigate("/")
             }
-            console.log(res);
-        } catch (error) {
-            setError("Invalid credentials. Please try again.");
-            console.error(error);
-        }
+        });
     };
 
     return (
@@ -61,17 +52,28 @@ export default function LayoutLogin() {
                             <div>
                                 <div className="w-full">
                                     <Input
-                                        label="Username or Email address or Phone number"
-                                        onChange={(e) =>
-                                            setEmail(e.target.value)
-                                        }
-                                        id=" email"
-                                        name=" email"
-                                        type=" email"
-                                        autoComplete=" email"
+                                        label="Email address"
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        id="email"
+                                        name="email"
+                                        type="email"
+                                        autoComplete="email"
                                         required
                                     />
                                 </div>
+                            </div>
+
+                            {/* Hidden username field for accessibility */}
+                            <div style={{ display: 'none' }}>
+                                <Input
+                                    label="Username (hidden)"
+                                    onChange={() => { }}
+                                    id="username"
+                                    name="username"
+                                    type="text"
+                                    autoComplete="username"
+                                    tabIndex="-1"
+                                />
                             </div>
 
                             <div>
@@ -80,7 +82,6 @@ export default function LayoutLogin() {
                                         htmlFor="password"
                                         className="block text-sm font-medium leading-6 text-gray-900"
                                     >
-
                                     </label>
                                     <div className="text-sm">
                                         <Link
@@ -93,10 +94,8 @@ export default function LayoutLogin() {
                                 </div>
                                 <div className="w-full">
                                     <Input
-                                        label="Username or Email address or Phone number"
-                                        onChange={(e) =>
-                                            setPassword(e.target.value)
-                                        }
+                                        label="Password"
+                                        onChange={(e) => setPassword(e.target.value)}
                                         id="password"
                                         name="password"
                                         type="password"
@@ -107,15 +106,10 @@ export default function LayoutLogin() {
                             </div>
 
                             <div>
-                                <Button
-                                    type="button"
-                                    onClick={handleLogin}
-                                    className="flex w-full justify-center bg-[#1e293b] text-white "
-                                >
-                                    Sign in
-                                </Button>
+                                <Button className="flex w-full justify-center bg-[#1e293b] text-white " onClick={handleLogin} loading={loading}>{loading ? ("Loading") : ("Log in")}</Button>
                             </div>
                         </form>
+
 
                         <p className="mt-3 text-center text-gray-500 relative">
                             <span className="mb-10 relative z-10 bg-white px-2 text-base">

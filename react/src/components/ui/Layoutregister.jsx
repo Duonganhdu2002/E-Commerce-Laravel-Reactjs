@@ -1,17 +1,44 @@
-// import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import axios from 'axios';
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
 import LogoGoogle1 from "../../assets/icon/Google__G__logo.svg";
 import Logo from "../../assets/icon/logo.svg";
 import {
     Input,
-    Select,
-    Option,
     Checkbox,
     Typography,
 } from "@material-tailwind/react";
+import { userRegister } from '../../services/authService';
 
-export default function LayoutRegister() {
+const LayoutRegister = () => {
+
+    const navigate = useNavigate();
+
+    const [userData, setUserData] = useState({
+        username: '',
+        email: '',
+        password: '',
+        full_name: '',
+        telephone: '',
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setUserData({ ...userData, [name]: value });
+    };
+
+    const handleRegistration = async () => {
+        try {
+            const response = await userRegister(userData);
+            // console.log(response);
+            navigate('/login')
+
+        } catch (error) {
+            console.error(error.response);
+        }
+    };
+
     return (
         <div className=" flex items-center justify-around bg-slate-200/50">
             <div className="flex items-center px-10 h-[880px]">
@@ -34,54 +61,45 @@ export default function LayoutRegister() {
                                     <div className="w-full">
                                         <Input
                                             label="Username"
-                                            id=" email"
-                                            name=" email"
-                                            type=" email"
-                                            autoComplete=" email"
-                                            required
+                                            name="username"
+                                            autoComplete='username'
+                                            onChange={handleInputChange}
                                         />
                                     </div>
                                 </div>
 
                                 <div className="w-[47%]">
-                                    <div className="w-full">
-                                        <Input label="Phone number" required />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="flex justify-between pb-2">
-                                <div className="w-[47%]">
-                                    <div className="w-full">
-                                        <Input label="Full Name" required />
-                                    </div>
-                                </div>
-
-                                <div className="w-[47%]">
-                                    <div className="w-full">
-                                        <Input label="Email" required />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="flex justify-between pb-2">
-                                <div className="w-[47%] ">
                                     <div className="w-full">
                                         <Input
-                                            label="Birthday"
-                                            type="date"
-                                            required
+                                            label="Phone number"
+                                            name='telephone'
+                                            onChange={handleInputChange}
+                                            autoComplete='telephone'
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex justify-between pb-2">
+                                <div className="w-[47%]">
+                                    <div className="w-full">
+                                        <Input
+                                            label="Full Name"
+                                            onChange={handleInputChange}
+                                            name="full_name"
+                                            autoComplete='full_name'
                                         />
                                     </div>
                                 </div>
 
-                                <div className="w-[47%] ">
+                                <div className="w-[47%]">
                                     <div className="w-full">
-                                        <Select label="Select Gender" required>
-                                            <Option>Male</Option>
-                                            <Option>Female</Option>
-                                            <Option>Other</Option>
-                                        </Select>
+                                        <Input
+                                            label="Email"
+                                            name="email"
+                                            autoComplete='email'
+                                            onChange={handleInputChange}
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -90,11 +108,10 @@ export default function LayoutRegister() {
                                 <div className="w-full">
                                     <Input
                                         label="Password"
-                                        id="password"
                                         name="password"
                                         type="password"
                                         autoComplete="current-password"
-                                        required
+                                        onChange={handleInputChange}
                                     />
                                 </div>
                             </div>
@@ -123,6 +140,7 @@ export default function LayoutRegister() {
 
                             <div>
                                 <Button
+                                    onClick={handleRegistration}
                                     type="button"
                                     className="flex w-full justify-center bg-[#1e293b] text-white "
                                 >
@@ -170,5 +188,9 @@ export default function LayoutRegister() {
                 </div>
             </div>
         </div>
+
+
     );
-}
+};
+
+export default LayoutRegister;

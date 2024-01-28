@@ -10,18 +10,16 @@ interface Decoder
     /**
      * Decodes from JSON, validating the errors
      *
-     * @param non-empty-string $json
+     * @return mixed
      *
      * @throws CannotDecodeContent When something goes wrong while decoding.
      */
-    public function jsonDecode(string $json): mixed;
+    public function jsonDecode(string $json);
 
     /**
      * Decodes from Base64URL
      *
      * @link http://tools.ietf.org/html/rfc4648#section-5
-     *
-     * @return ($data is non-empty-string ? non-empty-string : string)
      *
      * @throws CannotDecodeContent When something goes wrong while decoding.
      */

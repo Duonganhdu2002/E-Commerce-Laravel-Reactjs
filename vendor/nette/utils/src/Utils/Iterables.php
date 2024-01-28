@@ -84,7 +84,7 @@ final class Iterables
 
 
 	/**
-	 * Tests whether at least one element in the array passes the test implemented by the
+	 * Tests whether at least one element in the iterator passes the test implemented by the
 	 * provided callback with signature `function (mixed $value, mixed $key, iterable $iterable): bool`.
 	 * @template K
 	 * @template V
@@ -103,7 +103,7 @@ final class Iterables
 
 
 	/**
-	 * Tests whether all elements in the array pass the test implemented by the provided function,
+	 * Tests whether all elements in the iterator pass the test implemented by the provided function,
 	 * which has the signature `function (mixed $value, mixed $key, iterable $iterable): bool`.
 	 * @template K
 	 * @template V
@@ -122,7 +122,7 @@ final class Iterables
 
 
 	/**
-	 * Returns a new array containing all key-value pairs matching the given $predicate.
+	 * Iterator that filters elements according to a given $predicate. Maintains original keys.
 	 * The callback has the signature `function (mixed $value, mixed $key, iterable $iterable): bool`.
 	 * @template K
 	 * @template V
@@ -141,7 +141,7 @@ final class Iterables
 
 
 	/**
-	 * Calls $transform on all elements in the array and returns the array of return values.
+	 * Iterator that transforms values by calling $transformer. Maintains original keys.
 	 * The callback has the signature `function (mixed $value, mixed $key, iterable $iterable): bool`.
 	 * @template K
 	 * @template V

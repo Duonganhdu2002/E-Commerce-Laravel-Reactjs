@@ -9,6 +9,8 @@ import FiledLayout from "../components/ui/FiledLayout";
 import Modal from "../components/commom/modal/modal";
 import CategoryBar from "../components/ui/CategoryBar";
 import ProductSuggestion from "../components/ui/ProductSuggestion";
+import Banner3 from "../components/ui/Banner3";
+import Banner4 from "../components/ui/Banner4";
 
 
 export default function Home() {
@@ -21,12 +23,13 @@ export default function Home() {
             {/* <UserPagination/> */}
             <Container />
             <ProductSuggestion/>
-            <CategoryBar/>
+            <Banner3/>
+            {/* <CategoryBar/> */}
             <Banner1 />
             <FurniturePrview />
+            <Banner4/>
             <SmartPhone />
-            <Watch />
-            <Banner1 />            
+            {/* <Watch /> */}
         </div>
     );
 }

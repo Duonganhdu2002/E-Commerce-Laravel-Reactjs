@@ -1,8 +1,88 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { productInformation } from "../../services/productService";
+import { Select, Option, Button } from "@material-tailwind/react";
+import starBlackImg from "../../assets/icon/star-black.svg"
+import starWhiteImg from "../../assets/icon/star-white.svg"
+import Reviews from "./Reviews";
+import StarOutline from "../../assets/icon/star-outline.svg";
+import StarO from "../../assets/icon/star-o-svgrepo-com.svg";
+import Star from "../../assets/icon/star-svgrepo-com.svg";
+import {
+    Card,
+    CardHeader,
+    CardBody,
+    CardFooter,
+    Typography,
+    Progress,
+} from "@material-tailwind/react";
+
 
 const LayoutProductDetails = () => {
-    const [rotate, setRotate] = useState(false);
+
     const [count, setCount] = useState(0);
+
+    const { productId } = useParams();
+    const [data, setData] = useState([]);
+
+    const starBlack = Number(data.average_rating).toFixed(0);
+    const starWhite = 5 - starBlack;
+
+    const starBlack1 = Number(data.average_rating_by_creator).toFixed(0);
+    const starWhite1 = 5 - starBlack1;
+
+    const starYellow = Number(data.average_rating_by_creator).toFixed(0);
+    const starYellowNone = 5 - starYellow;
+
+    const sizes = data.sizes || [];
+    const colors = data.colors || [];
+
+    const imageUrls = data.image_urls || [];
+    const limitedImageUrls = imageUrls.slice(0, 3);
+    const [currentImage, setCurrentImage] = useState(imageUrls[0]);
+
+    const handleThumbnailClick = (imageUrl) => {
+        setCurrentImage(imageUrl);
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await productInformation(productId);
+                if (res && res.data) {
+                    setData(res.data);
+
+                    if (res.data.image_urls && res.data.image_urls.length > 0) {
+                        setCurrentImage(res.data.image_urls[0]);
+                    }
+                }
+            } catch (error) {
+                console.error("Error fetching fields:", error);
+            }
+        };
+
+        fetchData();
+    }, [productId]);
+
+    useEffect(() => {
+        getProduct(productId);
+    }, [productId]);
+
+    const getProduct = async () => {
+        try {
+            let res = await productInformation(productId);
+            if (res && res.data) {
+                setData(res.data);
+
+            }
+        } catch (error) {
+            console.error("Error fetching fields:", error);
+        }
+    };
+
+    // console.log(data);
+    // console.log(starBlack);
+    // console.log(starWhite);
 
     const addCount = () => {
         setCount((prev) => prev + 1);
@@ -14,53 +94,29 @@ const LayoutProductDetails = () => {
         }
     };
 
+
     return (
         <div className="2xl:container 2xl:mx-auto lg:py-16 lg:px-20 md:py-12 md:px-6 py-9 px-4 ">
-            <div className="flex justify-center items-center lg:flex-row flex-col gap-8">
-                {/* <!-- Description Div --> */}
 
+            {/* Product detail */}
+
+            <div className="flex justify-center items-center lg:flex-row flex-col gap-8">
                 <div className="  w-full sm:w-96 md:w-8/12 lg:w-6/12 items-center">
-                    <p className=" focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 font-normal text-base leading-4 text-gray-600">Home / Furniture / Wooden Stool</p>
-                    <h2 className="font-semibold lg:text-4xl text-3xl lg:leading-9 leading-7 text-gray-800 mt-4">Wooden Stool</h2>
+                    <h2 className="font-semibold lg:text-4xl text-3xl lg:leading-9 leading-7 text-gray-800 mt-4">{data.name}</h2>
 
                     <div className=" flex flex-row justify-between  mt-5">
-                        <div className=" flex flex-row space-x-3">
-                            <svg className=" cursor-pointer" width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M15.5598 20C15.3998 20.0006 15.2421 19.9629 15.0998 19.89L9.99976 17.22L4.89976 19.89C4.73416 19.977 4.54744 20.0159 4.36084 20.0022C4.17424 19.9884 3.99524 19.9226 3.84419 19.8122C3.69314 19.7017 3.5761 19.5511 3.50638 19.3775C3.43665 19.2039 3.41704 19.0142 3.44976 18.83L4.44976 13.2L0.329763 9.19996C0.20122 9.07168 0.110034 8.91083 0.0659903 8.73465C0.0219465 8.55848 0.0267076 8.37363 0.0797626 8.19996C0.137723 8.02223 0.244339 7.86431 0.387513 7.74412C0.530687 7.62392 0.704685 7.54627 0.889763 7.51996L6.58976 6.68996L9.09976 1.55996C9.18165 1.39089 9.3095 1.2483 9.46867 1.14853C9.62785 1.04876 9.81191 0.99585 9.99976 0.99585C10.1876 0.99585 10.3717 1.04876 10.5309 1.14853C10.69 1.2483 10.8179 1.39089 10.8998 1.55996L13.4398 6.67996L19.1398 7.50996C19.3248 7.53627 19.4988 7.61392 19.642 7.73412C19.7852 7.85431 19.8918 8.01223 19.9498 8.18996C20.0028 8.36363 20.0076 8.54848 19.9635 8.72465C19.9195 8.90083 19.8283 9.06168 19.6998 9.18996L15.5798 13.19L16.5798 18.82C16.6155 19.0074 16.5968 19.2012 16.5259 19.3784C16.455 19.5556 16.3349 19.7088 16.1798 19.82C15.9987 19.9469 15.7806 20.0102 15.5598 20Z"
-                                    fill="#1F2937"
-                                />
-                            </svg>
-                            <svg className=" cursor-pointer" width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M15.5598 20C15.3998 20.0006 15.2421 19.9629 15.0998 19.89L9.99976 17.22L4.89976 19.89C4.73416 19.977 4.54744 20.0159 4.36084 20.0022C4.17424 19.9884 3.99524 19.9226 3.84419 19.8122C3.69314 19.7017 3.5761 19.5511 3.50638 19.3775C3.43665 19.2039 3.41704 19.0142 3.44976 18.83L4.44976 13.2L0.329763 9.19996C0.20122 9.07168 0.110034 8.91083 0.0659903 8.73465C0.0219465 8.55848 0.0267076 8.37363 0.0797626 8.19996C0.137723 8.02223 0.244339 7.86431 0.387513 7.74412C0.530687 7.62392 0.704685 7.54627 0.889763 7.51996L6.58976 6.68996L9.09976 1.55996C9.18165 1.39089 9.3095 1.2483 9.46867 1.14853C9.62785 1.04876 9.81191 0.99585 9.99976 0.99585C10.1876 0.99585 10.3717 1.04876 10.5309 1.14853C10.69 1.2483 10.8179 1.39089 10.8998 1.55996L13.4398 6.67996L19.1398 7.50996C19.3248 7.53627 19.4988 7.61392 19.642 7.73412C19.7852 7.85431 19.8918 8.01223 19.9498 8.18996C20.0028 8.36363 20.0076 8.54848 19.9635 8.72465C19.9195 8.90083 19.8283 9.06168 19.6998 9.18996L15.5798 13.19L16.5798 18.82C16.6155 19.0074 16.5968 19.2012 16.5259 19.3784C16.455 19.5556 16.3349 19.7088 16.1798 19.82C15.9987 19.9469 15.7806 20.0102 15.5598 20Z"
-                                    fill="#1F2937"
-                                />
-                            </svg>
-                            <svg className=" cursor-pointer" width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M15.5598 20C15.3998 20.0006 15.2421 19.9629 15.0998 19.89L9.99976 17.22L4.89976 19.89C4.73416 19.977 4.54744 20.0159 4.36084 20.0022C4.17424 19.9884 3.99524 19.9226 3.84419 19.8122C3.69314 19.7017 3.5761 19.5511 3.50638 19.3775C3.43665 19.2039 3.41704 19.0142 3.44976 18.83L4.44976 13.2L0.329763 9.19996C0.20122 9.07168 0.110034 8.91083 0.0659903 8.73465C0.0219465 8.55848 0.0267076 8.37363 0.0797626 8.19996C0.137723 8.02223 0.244339 7.86431 0.387513 7.74412C0.530687 7.62392 0.704685 7.54627 0.889763 7.51996L6.58976 6.68996L9.09976 1.55996C9.18165 1.39089 9.3095 1.2483 9.46867 1.14853C9.62785 1.04876 9.81191 0.99585 9.99976 0.99585C10.1876 0.99585 10.3717 1.04876 10.5309 1.14853C10.69 1.2483 10.8179 1.39089 10.8998 1.55996L13.4398 6.67996L19.1398 7.50996C19.3248 7.53627 19.4988 7.61392 19.642 7.73412C19.7852 7.85431 19.8918 8.01223 19.9498 8.18996C20.0028 8.36363 20.0076 8.54848 19.9635 8.72465C19.9195 8.90083 19.8283 9.06168 19.6998 9.18996L15.5798 13.19L16.5798 18.82C16.6155 19.0074 16.5968 19.2012 16.5259 19.3784C16.455 19.5556 16.3349 19.7088 16.1798 19.82C15.9987 19.9469 15.7806 20.0102 15.5598 20Z"
-                                    fill="#1F2937"
-                                />
-                            </svg>
-                            <svg className=" cursor-pointer" width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M15.5598 20C15.3998 20.0006 15.2421 19.9629 15.0998 19.89L9.99976 17.22L4.89976 19.89C4.73416 19.977 4.54744 20.0159 4.36084 20.0022C4.17424 19.9884 3.99524 19.9226 3.84419 19.8122C3.69314 19.7017 3.5761 19.5511 3.50638 19.3775C3.43665 19.2039 3.41704 19.0142 3.44976 18.83L4.44976 13.2L0.329763 9.19996C0.20122 9.07168 0.110034 8.91083 0.0659903 8.73465C0.0219465 8.55848 0.0267076 8.37363 0.0797626 8.19996C0.137723 8.02223 0.244339 7.86431 0.387513 7.74412C0.530687 7.62392 0.704685 7.54627 0.889763 7.51996L6.58976 6.68996L9.09976 1.55996C9.18165 1.39089 9.3095 1.2483 9.46867 1.14853C9.62785 1.04876 9.81191 0.99585 9.99976 0.99585C10.1876 0.99585 10.3717 1.04876 10.5309 1.14853C10.69 1.2483 10.8179 1.39089 10.8998 1.55996L13.4398 6.67996L19.1398 7.50996C19.3248 7.53627 19.4988 7.61392 19.642 7.73412C19.7852 7.85431 19.8918 8.01223 19.9498 8.18996C20.0028 8.36363 20.0076 8.54848 19.9635 8.72465C19.9195 8.90083 19.8283 9.06168 19.6998 9.18996L15.5798 13.19L16.5798 18.82C16.6155 19.0074 16.5968 19.2012 16.5259 19.3784C16.455 19.5556 16.3349 19.7088 16.1798 19.82C15.9987 19.9469 15.7806 20.0102 15.5598 20Z"
-                                    fill="#1F2937"
-                                />
-                            </svg>
-                            <svg className=" cursor-pointer" width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M15.5598 20C15.3998 20.0006 15.2421 19.9629 15.0998 19.89L9.99976 17.22L4.89976 19.89C4.73416 19.977 4.54744 20.0159 4.36084 20.0022C4.17424 19.9884 3.99524 19.9226 3.84419 19.8122C3.69314 19.7017 3.5761 19.5511 3.50638 19.3775C3.43665 19.2039 3.41704 19.0142 3.44976 18.83L4.44976 13.2L0.329763 9.19996C0.20122 9.07168 0.110034 8.91083 0.0659903 8.73465C0.0219465 8.55848 0.0267076 8.37363 0.0797626 8.19996C0.137723 8.02223 0.244339 7.86431 0.387513 7.74412C0.530687 7.62392 0.704685 7.54627 0.889763 7.51996L6.58976 6.68996L9.09976 1.55996C9.18165 1.39089 9.3095 1.2483 9.46867 1.14853C9.62785 1.04876 9.81191 0.99585 9.99976 0.99585C10.1876 0.99585 10.3717 1.04876 10.5309 1.14853C10.69 1.2483 10.8179 1.39089 10.8998 1.55996L13.4398 6.67996L19.1398 7.50996C19.3248 7.53627 19.4988 7.61392 19.642 7.73412C19.7852 7.85431 19.8918 8.01223 19.9498 8.18996C20.0028 8.36363 20.0076 8.54848 19.9635 8.72465C19.9195 8.90083 19.8283 9.06168 19.6998 9.18996L15.5798 13.19L16.5798 18.82C16.6155 19.0074 16.5968 19.2012 16.5259 19.3784C16.455 19.5556 16.3349 19.7088 16.1798 19.82C15.9987 19.9469 15.7806 20.0102 15.5598 20ZM9.99976 15.1C10.1601 15.0959 10.3186 15.1338 10.4598 15.21L14.2298 17.21L13.5098 13C13.4818 12.8392 13.4936 12.6741 13.5442 12.5189C13.5947 12.3638 13.6825 12.2234 13.7998 12.11L16.7998 9.17996L12.5998 8.55996C12.4457 8.52895 12.3012 8.46209 12.1778 8.3648C12.0545 8.2675 11.9558 8.14251 11.8898 7.99996L9.99976 4.24996L8.10976 7.99996C8.03741 8.14366 7.93145 8.26779 7.80089 8.3618C7.67032 8.45581 7.51899 8.51692 7.35976 8.53996L3.15976 9.15996L6.15976 12.09C6.27704 12.2034 6.36478 12.3438 6.41533 12.4989C6.46588 12.6541 6.4777 12.8192 6.44976 12.98L5.72976 17.14L9.49976 15.14C9.65951 15.0806 9.83261 15.0667 9.99976 15.1Z"
-                                    fill="#1F2937"
-                                />
-                            </svg>
+                        <div className="flex flex-row space-x-3">
+                            {Array.from({ length: starBlack }, (_, index) => (
+                                <img key={index} src={starBlackImg} alt="" />
+                            ))}
+                            {Array.from({ length: starWhite }, (_, index) => (
+                                <img key={index} src={starWhiteImg} alt="" />
+                            ))}
                         </div>
-                        <p className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 font-normal text-base leading-4 text-gray-700 hover:underline hover:text-gray-800 duration-100 cursor-pointer">22 reviews</p>
                     </div>
 
-                    <p className=" font-normal text-base leading-6 text-gray-600 mt-7">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using. Lorem Ipsum is that it has a more-or-less normal distribution of letters.</p>
-                    <p className=" font-semibold lg:text-2xl text-xl lg:leading-6 leading-5 mt-6 ">$ 790.89</p>
+                    <p className=" font-normal text-base leading-6 text-gray-600 mt-7">{data.description}</p>
+                    <p className=" font-semibold lg:text-2xl text-xl lg:leading-6 leading-5 mt-6 ">${data.price}</p>
 
                     <div className="lg:mt-11 mt-10">
                         <div className="flex flex-row justify-between">
@@ -77,88 +133,340 @@ const LayoutProductDetails = () => {
                         </div>
                         <hr className=" bg-gray-200 w-full my-2" />
                         <div className=" flex flex-row justify-between items-center mt-4">
-                            <p className="font-medium text-base leading-4 text-gray-600">Dimensions</p>
-                            <svg onClick={() => setRotate(!rotate)} id="rotateSVG" className={"focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer transform " + (rotate ? "rotate-180" : "rotate-0")} width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9 1L5 5L1 1" stroke="#4B5563" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
+                            <div className="flex w-full gap-6 justify-between text-blue-gray-900">
+                                <Select variant="standard" label="Size">
+                                    {sizes.map((size, index) => (
+                                        <Option key={index}>{size}</Option>
+                                    ))}
+                                </Select>
+                                <Select variant="standard" label="Color">
+                                    {colors.map((color, index) => (
+                                        <Option key={index}>{color}</Option>
+                                    ))}
+                                </Select>
+                            </div>
                         </div>
-                        <hr className=" bg-gray-200 w-full mt-4" />
                     </div>
 
-                    <button className="focus:outline-none focus:ring-2 hover:bg-black focus:ring-offset-2 focus:ring-gray-800 font-medium text-base leading-4 text-white bg-gray-800 w-full py-5 lg:mt-12 mt-6">Add to shopping bag</button>
-                </div>
-
-                {/* <!-- Preview Images Div For larger Screen--> */}
-
-                <div className=" w-full sm:w-96 md:w-8/12  lg:w-6/12 flex lg:flex-row flex-col lg:gap-8 sm:gap-6 gap-4">
-                    <div className=" w-full lg:w-8/12 bg-gray-100 flex justify-center items-center">
-                        <img src="https://i.ibb.co/bRg2CJj/sam-moqadam-kvmds-Tr-GOBM-unsplash-removebg-preview-1.png" alt="Wooden Chair Previw" />
-                    </div>
-                    <div className=" w-full lg:w-4/12 grid lg:grid-cols-1 sm:grid-cols-4 grid-cols-2 gap-6">
-                        <div className="bg-gray-100 flex justify-center items-center py-4">
-                            <img src="https://i.ibb.co/0jX1zmR/sam-moqadam-kvmds-Tr-GOBM-unsplash-removebg-preview-1-1.png" alt="Wooden chair - preview 1" />
-                        </div>
-                        <div className="bg-gray-100 flex justify-center items-center py-4">
-                            <img src="https://i.ibb.co/7zv1N5Q/sam-moqadam-kvmds-Tr-GOBM-unsplash-removebg-preview-2.png" alt="Wooden chair - preview 2" />
-                        </div>
-                        <div className="bg-gray-100 flex justify-center items-center py-4">
-                            <img src="https://i.ibb.co/0jX1zmR/sam-moqadam-kvmds-Tr-GOBM-unsplash-removebg-preview-1-1.png" alt="Wooden chair- preview 3" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="flex  justify-center items-center w-full">
-                <div className="w-full sm:w-96 md:w-8/12 lg:w-full grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 lg:gap-28 sm:gap-x-6 sm:gap-y-12 gap-y-12 sm:mt-14 mt-10">
-                    <div>
-                        <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M16.667 43.75H33.3337" stroke="#4B5563" strokeWidth="3.25" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M25 31.25V43.75" stroke="#4B5563" strokeWidth="3.25" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M35.4167 6.25L37.5 20.8333C37.5 27.1083 31.9042 31.25 25 31.25C18.0958 31.25 12.5 27.1083 12.5 20.8333L14.5833 6.25H35.4167Z" stroke="#4B5563" strokeWidth="3.25" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M12.5 20.8333C14.3032 19.4813 16.4962 18.7505 18.75 18.7505C21.0038 18.7505 23.1968 19.4813 25 20.8333C26.8032 22.1853 28.9962 22.9161 31.25 22.9161C33.5038 22.9161 35.6968 22.1853 37.5 20.8333" stroke="#4B5563" strokeWidth="3.25" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                        <p className="font-semibold text-xl leading-5 text-gray-800 lg:mt-10 mt-9">Great for drinks</p>
-                        <p className="text-normal text-base leading-6 text-gray-600 mt-4">Here are all the great cocktail recipes you should know how to make, from the margarita to the whiskey sour. Cheers! </p>
-                    </div>
-                    <div>
-                        <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <Button className="flex items-center justify-center gap-3 mt-4 mx-auto w-full h-12">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={2}
+                            stroke="currentColor"
+                            className="h-5 w-5"
+                        >
                             <path
-                                d="M20.833 6.66659C17.574 7.42209 14.5766 9.03575 12.1515 11.3402C9.72641 13.6447 7.96204 16.556 7.04139 19.7722C6.12073 22.9884 6.07733 26.3923 6.91568 29.6309C7.75403 32.8696 9.44359 35.8249 11.8091 38.1905C14.1747 40.556 17.13 42.2456 20.3686 43.0839C23.6073 43.9223 27.0112 43.8789 30.2274 42.9582C33.4436 42.0375 36.3549 40.2732 38.6594 37.8481C40.9638 35.423 42.5775 32.4255 43.333 29.1666C43.333 28.6141 43.1135 28.0842 42.7228 27.6935C42.3321 27.3028 41.8022 27.0833 41.2497 27.0833H33.333C32.9542 28.5395 32.1975 29.8699 31.1394 30.9397C30.0813 32.0095 28.7594 32.7809 27.3074 33.1757C25.8554 33.5705 24.3249 33.5747 22.8708 33.1879C21.4166 32.8011 20.0905 32.0371 19.0265 30.9731C17.9625 29.9091 17.1984 28.583 16.8117 27.1288C16.4249 25.6747 16.4291 24.1442 16.8239 22.6922C17.2187 21.2402 17.99 19.9183 19.0599 18.8602C20.1297 17.8021 21.4601 17.0453 22.9163 16.6666V8.33326C22.8904 8.08643 22.8158 7.84721 22.6968 7.62944C22.5777 7.41168 22.4166 7.21971 22.2229 7.06468C22.0291 6.90964 21.8064 6.79463 21.5678 6.72629C21.3293 6.65795 21.0795 6.63766 20.833 6.66659Z"
-                                stroke="#4B5563"
-                                strokeWidth="3.25"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
+                                d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"
                             />
-                            <path d="M31.25 7.29163C33.8953 8.22305 36.2979 9.736 38.2809 11.719C40.264 13.7021 41.7769 16.1047 42.7083 18.75H33.3333C32.6946 18.0019 31.998 17.3054 31.25 16.6666V7.29163Z" stroke="#4B5563" strokeWidth="3.25" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
-                        <p className="font-semibold text-xl leading-5 text-gray-800 lg:mt-10 mt-9">Durable hardware</p>
-                        <p className="text-normal text-base leading-6 text-gray-600 mt-4">Product durability is a key aspect of achieving a circular economy. ... Moreover, enhancing the durability of individual hardware components </p>
+                        Add to cart
+                    </Button>
+                </div>
+
+                <div className="w-full sm:w-96 md:w-8/12 lg:w-6/12 flex lg:flex-row flex-col lg:gap-8 sm:gap-6 gap-4">
+                    <div className="w-full lg:w-8/12 flex justify-center items-center">
+                        {imageUrls.length > 0 && currentImage ? (
+                            <img
+                                className="h-[360px] w-[360px] object-cover"
+                                src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${currentImage}?raw=true`}
+                                alt={data.name}
+                            />
+                        ) : (
+                            <div></div>
+                        )}
                     </div>
-                    <div>
-                        <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M14.583 14.5834H35.4164V27.0834C35.4164 28.741 34.7579 30.3307 33.5858 31.5028C32.4137 32.6749 30.824 33.3334 29.1663 33.3334H20.833C19.1754 33.3334 17.5857 32.6749 16.4136 31.5028C15.2415 30.3307 14.583 28.741 14.583 27.0834V14.5834Z" stroke="#4B5563" strokeWidth="3.25" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M18.75 6.25V14.5833" stroke="#4B5563" strokeWidth="3.25" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M31.25 6.25V14.5833" stroke="#4B5563" strokeWidth="3.25" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M25 33.3334V37.5C25 38.6051 25.439 39.6649 26.2204 40.4463C27.0018 41.2277 28.0616 41.6667 29.1667 41.6667H35.4167" stroke="#4B5563" strokeWidth="3.25" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                        <p className="font-semibold text-xl leading-5 text-gray-800 lg:mt-10 mt-9">Eco-friendly</p>
-                        <p className="text-normal text-base leading-6 text-gray-600 mt-4"> They re-use, recycle and reduce waste disposal in their lives. They conserve energy and natural resources</p>
-                    </div>
-                    <div>
-                        <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M16.667 16.6666H33.3337V33.3333H16.667V16.6666Z" stroke="#4B5563" strokeWidth="3.25" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M37.4997 8.33337H12.4997C10.1985 8.33337 8.33301 10.1989 8.33301 12.5V37.5C8.33301 39.8012 10.1985 41.6667 12.4997 41.6667H37.4997C39.8009 41.6667 41.6663 39.8012 41.6663 37.5V12.5C41.6663 10.1989 39.8009 8.33337 37.4997 8.33337Z" stroke="#4B5563" strokeWidth="3.25" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M33.333 33.3334L40.208 40.2084" stroke="#4B5563" strokeWidth="3.25" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M33.333 16.6666L40.208 9.79163" stroke="#4B5563" strokeWidth="3.25" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M16.667 16.6666L9.79199 9.79163" stroke="#4B5563" strokeWidth="3.25" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M16.667 33.3334L9.79199 40.2084" stroke="#4B5563" strokeWidth="3.25" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                        <p className="font-semibold text-xl leading-5 text-gray-800 lg:mt-10 mt-9">Minimal Design</p>
-                        <p className="text-normal text-base leading-6 text-gray-600 mt-4">Minimalist interior design is very similar to modern interior design and involves using the bare essentials </p>
+
+                    <div className="w-full lg:w-4/12 grid lg:grid-cols-1 sm:grid-cols-3 grid-cols-2 gap-6">
+                        {limitedImageUrls.map((imageUrl, index) => (
+                            <div
+                                key={index}
+                                className="flex justify-center items-center py-4 cursor-pointer"
+                                onClick={() => handleThumbnailClick(imageUrl)}
+                            >
+                                <img
+                                    className="h-[180px] w-[180px] object-cover"
+                                    src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${imageUrl}?raw=true`}
+                                    alt={`${data.name} - preview ${index + 1}`}
+                                />
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
+
+            {/* End product detail */}
+
+            {/* Shop account */}
+
+            <div className="flex items-center justify-center w-full py-8">
+                <div className="bg-white dark:bg-gray-800 shadow rounded">
+                    <div className="relative">
+                        {data.created_by_user_id?.shop_background && (
+                            <img
+                                className="h-56 shadow rounded-t w-full object-cover object-center"
+                                src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/shop/${data.created_by_user_id.shop_background}?raw=true`}
+                                alt="Shop Avatar"
+                            />
+
+                        )}
+                        <div className="inset-0 m-auto w-24 h-24 absolute bottom-0 -mb-12 xl:ml-10 rounded border-2 shadow border-white">
+                            {data.created_by_user_id?.shop_avt && (
+                                <img
+                                    className="w-full h-full overflow-hidden object-cover rounded"
+                                    src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/shop/${data.created_by_user_id.shop_avt}?raw=true`}
+                                    alt="Shop Avatar"
+                                />
+
+                            )}
+                        </div>
+                    </div>
+                    <div className="px-5 xl:px-10 pb-10">
+                        <div className="flex justify-center xl:justify-end w-full pt-16 xl:pt-5">
+                            <div className="flex items-center">
+
+                                <div className="flex flex-row space-x-3">
+                                    {Array.from({ length: starBlack1 }, (_, index) => (
+                                        <img key={index} src={starBlackImg} alt="" />
+                                    ))}
+                                    {Array.from({ length: starWhite1 }, (_, index) => (
+                                        <img key={index} src={starWhiteImg} alt="" />
+                                    ))}
+                                </div>
+
+                            </div>
+                        </div>
+                        <div className="pt-3 xl:pt-5 flex flex-col xl:flex-row items-start xl:items-center justify-between">
+                            <div className="xl:pr-16 w-full xl:w-2/3">
+                                <div className="text-center xl:text-left mb-3 xl:mb-0 flex flex-col xl:flex-row items-center justify-between xl:justify-start">
+                                    <h2 className="mb-3 xl:mb-0 xl:mr-4 text-2xl text-gray-800 dark:text-gray-100 font-medium tracking-normal">
+                                        {data.created_by_user_id?.shop_name && (
+                                            data.created_by_user_id.shop_name
+                                        )}
+                                    </h2>
+                                </div>
+                                <p className="text-center xl:text-left mt-2 text-sm tracking-normal text-gray-600 dark:text-gray-400 leading-5">
+                                    {data.created_by_user_id?.shop_introduce && (
+                                        data.created_by_user_id.shop_introduce
+                                    )}
+                                </p>
+                            </div>
+                            <div className="xl:px-10 xl:border-l xl:border-r w-full py-5 flex items-start justify-center xl:w-1/3">
+                                <div>
+                                    <h2 className="text-gray-600 dark:text-gray-400 font-bold text-xl xl:text-2xl leading-6 mb-2 text-center">
+                                        {data.number_of_products_by_creator}
+                                    </h2>
+                                    <p className="text-gray-800 dark:text-gray-100 text-sm xl:text-xl leading-5">Products</p>
+                                </div>
+                            </div>
+                            <div className="w-full xl:w-2/3 flex-col md:flex-row justify-center xl:justify-end flex md:pl-6">
+                                <div className="flex items-center justify-center xl:justify-start mt-1 md:mt-0 mb-5 md:mb-0">
+                                    <Button size="sm" className=" mr-3">VISIT</Button>
+                                    <Button size="sm">MESSAGE</Button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* End shop account */}
+
+
+            {/* Product review */}
+
+            <div className="flex flex-col justify-center">
+                {/* Div dánh giá sản phẩm */}
+                <div className="flex justify-around float-left px-4 2xl:px-[10%] xl:px-[10%] lg:px-[10%] md:px-[5%] sm:px-4">
+                    <div className="flex items-center flex-col float-left px-4 w-full">
+                        <p className=" my-2 text-xl font-bold">PRODUCT REVIEWS</p>
+                        {/* Div lọc sao đánh giá */}
+                        <div
+                            id="ReviewsRoot"
+                            className="flex flex-col py-10 justify-between gap-8 w-full font-sans items-start"
+                        >
+                            <div className="flex flex-col gap-6 w-full items-start">
+                                <div className="flex flex-row justify-between ml-1 w-full items-start">
+                                    <div className="flex">
+                                        <div className="text-right font-bold leading-[24px] text-[#607d8b] mr-2">
+                                            {
+                                                Number(data.average_rating_by_creator).toFixed(2)
+                                            }
+                                        </div>
+                                        <div className="flex flex-row mt-px w-1/3 items-start">
+                                            <img
+                                                src={Star}
+                                                alt="Star"
+                                                id="Star"
+                                                className="w-5"
+                                            />
+                                            <img
+                                                src={Star}
+                                                alt="Star1"
+                                                id="Star1"
+                                                className="w-5"
+                                            />
+                                            <img
+                                                src={Star}
+                                                alt="Star2"
+                                                id="Star2"
+                                                className="w-5"
+                                            />
+                                            <img
+                                                src={Star}
+                                                alt="Star3"
+                                                id="Star3"
+                                                className="w-5"
+                                            />
+                                            <img
+                                                src={StarO}
+                                                alt="Star4"
+                                                id="Star4"
+                                                className="w-5"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b] mt-px">
+                                        Based on {data.total_reviews} Reviews
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex flex-row justify-between ml-1 w-full font-sans items-start">
+                                <div className="flex flex-col justify-between gap-2 w-8 items-start">
+                                    <div className="flex flex-row gap-1 w-8 items-start">
+                                        <div className="text-right font-medium leading-[24px] text-[#607d8b]">
+                                            5
+                                        </div>
+                                        {data.review_counts?.["5"] && data.review_counts["5"] ? (
+                                            <img
+                                                src={Star}
+                                                alt="Star5"
+                                                className="mt-px w-5"
+                                            />
+                                        ) : (
+                                            <img
+                                                src={StarOutline}
+                                                alt="Star9"
+                                                className="mt-px w-5"
+                                            />
+                                        )}
+                                    </div>
+                                    <div className="flex flex-row gap-1 w-8 items-start">
+                                        <div className="text-right font-medium leading-[24px] text-[#607d8b]">
+                                            4
+                                        </div>
+                                        {data.review_counts?.["4"] && data.review_counts["4"] ? (
+                                            <img
+                                                src={Star}
+                                                alt="Star6"
+                                                className="mt-px w-5"
+                                            />
+                                        ) : (
+                                            <img
+                                                src={StarOutline}
+                                                alt="Star8"
+                                                className="mt-px w-5"
+                                            />
+                                        )}
+                                    </div>
+                                    <div className="flex flex-row gap-1 w-8 font-sans items-start">
+                                        <div className="text-right font-medium leading-[24px] text-[#607d8b]">
+                                            3
+                                        </div>
+                                        <img
+                                            src={Star}
+                                            alt="Star7"
+                                            className="mt-px w-5"
+                                        />
+                                    </div>
+                                    <div className="flex flex-row gap-1 w-8 font-sans items-start">
+                                        <div className="text-right font-medium leading-[24px] text-[#607d8b]">
+                                            2
+                                        </div>
+                                        <img
+                                            src={StarOutline}
+                                            alt="Star8"
+                                            className="mt-px w-5"
+                                        />
+                                    </div>
+                                    <div className="flex flex-row gap-1 w-8 font-sans items-start">
+                                        <div className="text-right font-medium leading-[24px] text-[#607d8b]">
+                                            1
+                                        </div>
+                                        <img
+                                            src={StarOutline}
+                                            alt="Star9"
+                                            className="mt-px w-5"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="flex flex-col justify-between mt-2 w-5/6 h-36 items-start">
+                                    <div className="flex w-full flex-col gap-4 mb-4">
+                                        <Progress value={data.review_counts?.["5"] ? Math.round((data.review_counts["5"] / data.total_reviews) * 100) : 0} color="amber" />
+                                    </div>
+                                    <div className="flex w-full flex-col gap-4 mb-4">
+                                        <Progress value={data.review_counts?.["4"] ? Math.round((data.review_counts["4"] / data.total_reviews) * 100) : 0} color="amber" />
+                                    </div>
+                                    <div className="flex w-full flex-col gap-4 mb-4">
+                                        <Progress value={data.review_counts?.["3"] ? Math.round((data.review_counts["3"] / data.total_reviews) * 100) : 0} color="amber" />
+                                    </div>
+                                    <div className="flex w-full flex-col gap-4 mb-4">
+                                        <Progress value={data.review_counts?.["2"] ? Math.round((data.review_counts["2"] / data.total_reviews) * 100) : 0} color="amber" />
+                                    </div>
+                                    <div className="flex w-full flex-col gap-4 mb-2">
+                                        <Progress value={data.review_counts?.["1"] ? Math.round((data.review_counts["1"] / data.total_reviews) * 100) : 0} color="amber" />
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col justify-between mt-px gap-3 w-6 font-sans items-start">
+                                    <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b]">
+                                        {data.review_counts?.["5"] ? Math.round((data.review_counts["5"] / data.total_reviews) * 100) : 0}%
+                                    </div>
+                                    <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b]">
+                                        {data.review_counts?.["4"] ? Math.round((data.review_counts["4"] / data.total_reviews) * 100) : 0}%
+                                    </div>
+                                    <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b]">
+                                        {data.review_counts?.["3"] ? Math.round((data.review_counts["3"] / data.total_reviews) * 100) : 0}%
+                                    </div>
+                                    <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b] ml-2">
+                                        {data.review_counts?.["2"] ? Math.round((data.review_counts["2"] / data.total_reviews) * 100) : 0}%
+                                    </div>
+                                    <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b] ml-2">
+                                        {data.review_counts?.["1"] ? Math.round((data.review_counts["1"] / data.total_reviews) * 100) : 0}%
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex flex-col gap-2 w-full font-sans items-start">
+                                <div className="text-xl font-semibold leading-[30px] text-[#212121]">
+                                    We value your opinion
+                                </div>
+                                <div className="leading-[27.2px] text-[#607d8b] w-full">
+                                    The time is now for it to be okay to be great.
+                                    People in this world shun people for being
+                                    great.{" "}
+                                </div>
+                            </div>
+                            <Button id="ButtonFilled" className="w-full">
+                                write a review
+                            </Button>
+                        </div>
+                        {/* Div đánh giá */}
+                        <Reviews />
+                    </div>
+
+                </div>
+            </div>
+
+            {/* End product review */}
+
         </div>
     );
 };
 
+
 export default LayoutProductDetails;
+

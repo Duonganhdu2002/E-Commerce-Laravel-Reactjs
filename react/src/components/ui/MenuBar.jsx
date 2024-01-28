@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from 'react-redux'
 import { Link } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { clearUser } from '../../redux/slices/userSlice';
+import Cookies from 'js-cookie';
+
 import {
     Navbar,
     Collapse,
@@ -19,7 +24,6 @@ import {
     ChevronDownIcon,
     Bars3Icon,
     XMarkIcon,
-    MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import {
     Bars4Icon,
@@ -39,53 +43,69 @@ import logoSingle from "../../assets/icon/logo-single.svg";
 import { useNavigate } from 'react-router-dom';
 import Search from "../../assets/icon/search.svg"
 
-
-
 const navListMenuItems = [
     {
         title: "Products",
         description: "Find the perfect solution for your needs.",
         icon: SquaresPlusIcon,
+        link: "",
+        func: "",
     },
     {
         title: "About Us",
         description: "Meet and learn about our dedication",
         icon: UserGroupIcon,
+        link: "",
+        func: "",
     },
     {
         title: "Blog",
         description: "Find the perfect solution for your needs.",
         icon: Bars4Icon,
+        link: "",
+        func: "",
     },
     {
         title: "Services",
         description: "Learn how we can help you achieve your goals.",
         icon: SunIcon,
+        link: "",
+        func: "",
     },
     {
         title: "Support",
         description: "Reach out to us for assistance or inquiries",
         icon: GlobeAmericasIcon,
+        link: "",
+        func: "",
     },
     {
         title: "Contact",
         description: "Find the perfect solution for your needs.",
         icon: PhoneIcon,
+        link: "",
+        func: "",
     },
     {
         title: "News",
         description: "Read insightful articles, tips, and expert opinions.",
         icon: NewspaperIcon,
-    },
-    {
-        title: "Products",
-        description: "Find the perfect solution for your needs.",
-        icon: RectangleGroupIcon,
+        link: "",
+        func: "",
     },
     {
         title: "Special Offers",
         description: "Explore limited-time deals and bundles",
         icon: TagIcon,
+        link: "",
+        func: "",
+    },
+    {
+        title: "Log out",
+        description: "Log out",
+        icon: RectangleGroupIcon,
+        link: "/login",
+        func: "handleClickLogOut()",
     },
 ];
 
@@ -117,37 +137,38 @@ const navProductList = [
     },
 ];
 
-
-
 function NavListMenu() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const renderItems = navListMenuItems.map(
-        ({ icon, title, description }, key) => (
+        ({ icon, title, description, link }, key) => (
             <div key={key}>
-                <MenuItem className="flex items-center gap-3 rounded-lg">
-                    <div className="flex items-center justify-center rounded-lg !bg-blue-gray-50 p-2">
-                        {React.createElement(icon, {
-                            strokeWidth: 2,
-                            className: "h-6 text-gray-900 w-6",
-                        })}
-                    </div>
-                    <div>
-                        <Typography
-                            variant="h6"
-                            color="blue-gray"
-                            className="flex items-center text-sm font-bold"
-                        >
-                            {title}
-                        </Typography>
-                        <Typography
-                            variant="paragraph"
-                            className="text-xs !font-medium text-blue-gray-500"
-                        >
-                            {description}
-                        </Typography>
-                    </div>
-                </MenuItem>
+                <Link to={link}>
+
+                    <MenuItem className="flex items-center gap-3 rounded-lg">
+                        <div className="flex items-center justify-center rounded-lg !bg-blue-gray-50 p-2">
+                            {React.createElement(icon, {
+                                strokeWidth: 2,
+                                className: "h-6 text-gray-900 w-6",
+                            })}
+                        </div>
+                        <div>
+                            <Typography
+                                variant="h6"
+                                color="blue-gray"
+                                className="flex items-center text-sm font-bold"
+                            >
+                                {title}
+                            </Typography>
+                            <Typography
+                                variant="paragraph"
+                                className="text-xs !font-medium text-blue-gray-500"
+                            >
+                                {description}
+                            </Typography>
+                        </div>
+                    </MenuItem>
+                </Link>
             </div>
         )
     );
@@ -284,17 +305,18 @@ function NavProductList() {
 function NavList() {
     return (
         <List className="mt-4 mb-6 p-0 lg:mt-0 lg:mb-0 lg:flex-row lg:p-1">
-            <Typography
-                as="a"
-                href="/"
-                variant="small"
-                color="blue-gray"
-                className="font-medium"
-            >
-                <ListItem className="flex items-center gap-2 py-2 pr-4">
-                    Home
-                </ListItem>
-            </Typography>
+            <Link to="/">
+                <Typography
+                    as="div"
+                    variant="small"
+                    color="blue-gray"
+                    className="font-medium"
+                >
+                    <ListItem className="flex items-center gap-2 py-2 pr-4">
+                        Home
+                    </ListItem>
+                </Typography>
+            </Link>
 
             <NavListMenu />
 
@@ -313,12 +335,22 @@ function NavList() {
 }
 
 export default function MenuBar() {
+
+    const user = useSelector((state) => state.user.user);
+    const dispatch = useDispatch();
+
     const [openNav, setOpenNav] = useState(false);
     const [scrollingUp, setScrollingUp] = useState(true);
     const [hidden, setHidden] = useState(false);
 
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
+
+    const handleLogOut = () => {
+        dispatch(clearUser());
+        Cookies.remove('user');
+        navigate("/login");
+    };
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
@@ -331,13 +363,6 @@ export default function MenuBar() {
     const handleInputChange = (e) => {
         setSearchTerm(e.target.value);
     };
-
-    const handleOnclickSearchIcon = () => {
-        if (searchTerm.trim() !== '') {
-            navigate(`/search/${searchTerm}`);
-        }
-    }
-
 
     useEffect(() => {
         let lastScrollPosition = window.scrollY;
@@ -419,14 +444,30 @@ export default function MenuBar() {
                 </div>
 
                 <div className="hidden gap-2 lg:flex">
-                    <Link to="/login">
-                        <Button variant="text" size="sm" color="blue-gray">
-                            Log In
-                        </Button>
-                    </Link>
-                    <Link to="/register">
-                        <Button size="sm">Sign In</Button>
-                    </Link>
+                    {user ? (
+                        // Render content for logged-in user
+                        <div className=" items-center flex">
+                            <Typography>Hello </Typography>
+                            <Typography className=" mx-3 font-semibold">{user.username}</Typography>
+                            <Button variant="gradient" size="sm" fullWidth onClick={handleLogOut}>
+                                Log out
+                            </Button>
+
+                        </div>
+
+                    ) : (
+                        // Render content for non-logged-in user
+                        <div>
+                            <Link to="/login">
+                                <Button variant="text" size="sm" color="blue-gray">
+                                    Log In
+                                </Button>
+                            </Link>
+                            <Link to="/register">
+                                <Button size="sm">Sign In</Button>
+                            </Link>
+                        </div>
+                    )}
                 </div>
 
                 <div className=" hidden lg:block">
@@ -448,7 +489,7 @@ export default function MenuBar() {
                     variant="text"
                     color="blue-gray"
                     className="lg:hidden"
-                    onClick={() => setOpenNav(!openNav)}
+                    onClick={() => setOpenNav((prevState) => !prevState)}
                 >
                     {openNav ? (
                         <XMarkIcon className="h-6 w-6" strokeWidth={2} />
@@ -456,23 +497,38 @@ export default function MenuBar() {
                         <Bars3Icon className="h-6 w-6" strokeWidth={2} />
                     )}
                 </IconButton>
-            </div>
+
+            </div >
             <Collapse open={openNav}>
                 <NavList />
-                <div className="flex w-full flex-nowrap items-center gap-2 lg:hidden">
-                    <Button
-                        variant="outlined"
-                        size="sm"
-                        color="blue-gray"
-                        fullWidth
-                    >
-                        Log In
-                    </Button>
-                    <Button variant="gradient" size="sm" fullWidth>
-                        Sign In
-                    </Button>
+                <div>
+                    {user ? (
+                        // Render content for logged-in user
+                        <div className=" items-center flex flex-col md:flex-row">
+                            <div className=" flex">
+                                <Typography className=" mb-3 text-gray-900">Hello </Typography>
+                                <Typography className=" text-gray-900 mx-3 font-semibold">{user.username}</Typography>
+                            </div>
+                            <Button variant="gradient" size="sm" fullWidth>
+                                Log out
+                            </Button>
+                        </div>
+
+                    ) : (
+                        // Render content for non-logged-in user
+                        <div>
+                            <Link to="/login">
+                                <Button variant="text" size="sm" color="blue-gray">
+                                    Log In
+                                </Button>
+                            </Link>
+                            <Link to="/register">
+                                <Button size="sm">Sign In</Button>
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </Collapse>
-        </Navbar>
+        </Navbar >
     );
 }

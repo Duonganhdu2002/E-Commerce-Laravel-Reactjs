@@ -5,7 +5,7 @@ const fetchTop6CategoryById = (id) => {
 }
 
 const fetchProductWithCategory = (id) => {
-    return axios.get(`/public/product/listProductWithCategory/${id}`);
+    return axios.get(`/public/product/indexByCate/${id}`);
 }
 
 const productInformation = (id) => {
@@ -20,4 +20,4 @@ const fetchRandomFourCategoryAndGetFourProduct = () => {
     return axios.get("/public/product/getRandomCategories")
 }
 
-export { fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession,fetchRandomFourCategoryAndGetFourProduct };
+export { fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession, fetchRandomFourCategoryAndGetFourProduct };

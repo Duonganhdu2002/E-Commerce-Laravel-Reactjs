@@ -3,7 +3,11 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Avatar from "../../assets/public/profile/thaicong.jpg";
 import Send from "../../assets/icon/send-2-svgrepo-com.svg";
-import BackgroundShop from "../../assets/sale/sale5.png";
+import Chats from "../../assets/icon/comment.svg";
+import BackgroundShop from "../../assets/sale/sale8.png";
+import Return from "../../assets/icon/back-svgrepo-com.svg";
+import React from "react";
+import { Drawer, Button, IconButton } from "@material-tailwind/react";
 
 const PopupChat = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -24,20 +28,39 @@ const PopupChat = () => {
         setMessage("");
     };
 
+    // Change this
+    const [open, setOpen] = React.useState(false);
+
+    // To this
+    const [drawerOpen, setDrawerOpen] = useState(false);
+
+    // Update functions
+    const openDrawer = () => setDrawerOpen(true);
+    const closeDrawer = () => setDrawerOpen(false);
+
     return (
         <div>
             <AnimatePresence>
                 {isOpen && (
-                    <motion.div
-                        className="fixed bottom-0 right-0 p-6 z-50"
-                        initial={{ scale: 0, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        exit={{ scale: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                    >
+                    <div className="flex flex-col h-full fixed bottom-0 right-0 left-0 top-0 p-4 z-50 mobile-chat-container">
                         {/* Your chat content goes here */}
-                        <div className=" fixed bottom-0 right-0 mr-4 mb-4 bg-white p-4 shadow-2xl rounded-lg w-[700px] hidden md:block">
-                            <div className=" flex ">
+                        <div className="w-full h-full flex flex-col bg-white p-4 shadow-2xl rounded-lg ">
+                            <div className=" flex justify-between ">
+                                <div className="flex">
+                                    <div className=" flex">
+                                        <img
+                                            src={Avatar}
+                                            alt=""
+                                            className="w-14 h-14 mr-4 rounded-xl border-2 border-gray-500"
+                                        />
+                                    </div>
+                                    <div className=" flex flex-col">
+                                        <p className=" font-bold text-lg inline-block bg-gray-300 px-2 rounded-lg mb-2 w-fit">
+                                            Thai Cong Shop
+                                        </p>
+                                    </div>
+                                </div>
+
                                 <div>
                                     <button
                                         onClick={togglePopup}
@@ -46,33 +69,53 @@ const PopupChat = () => {
                                         X
                                     </button>
                                 </div>
-                                <div className="flex ml-[225px]">
-                                    <div className=" flex">
-                                        <img
-                                            src={Avatar}
-                                            alt=""
-                                            className="w-14 h-14 mr-4 rounded-xl border-2 border-gray-500"
-                                        />
-                                    </div>
-                                    <div className="  fixed -z-40 w-[385px] h-[56px] rounded-l-xl">
-                                        <img
-                                            src={BackgroundShop}
-                                            alt=""
-                                            className=" w-[385px] h-[56px] rounded-l-xl"
-                                            style={{ filter: "blur(5px)" }}
-                                        />
-                                    </div>
-                                    <div className=" flex flex-col">
-                                        <p className=" font-bold text-lg inline-block bg-white/60 px-2 rounded-lg mb-2 w-fit">
-                                            Thai Cong Shop
-                                        </p>
-                                    </div>
-                                </div>
                             </div>
 
-                            <div className="flex p-2">
-                                <div className="w-[40%] h-[366px] overflow-y-auto mr-2 border-gray-500 border-y-2">
-                                    <div className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-blue-gray-100/40">
+                            <div className=" cursor-pointer mt-2 px-2">
+                                <Button
+                                    className="bg-gray-300 text-black w-full h-8 flex items-center"
+                                    onClick={openDrawer}
+                                >
+                                    <img
+                                        src={Return}
+                                        alt=""
+                                        className=" w-5 h-5 mr-2"
+                                    />
+                                    <a>Show Chat</a>
+                                </Button>
+                            </div>
+
+                            <div className=" w-full h-full p-2">
+                                <Drawer
+                                    open={drawerOpen}
+                                    onClose={closeDrawer}
+                                    direction="right"
+                                    className=""
+                                >
+                                    <IconButton
+                                        variant="text"
+                                        color="blue-gray"
+                                        onClick={closeDrawer}
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth={2}
+                                            stroke="currentColor"
+                                            className="h-5 w-5"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M6 18L18 6M6 6l12 12"
+                                            />
+                                        </svg>
+                                    </IconButton>
+                                    <div
+                                        className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-blue-gray-100/40"
+                                        onClick={closeDrawer}
+                                    >
                                         <div className=" flex">
                                             <img
                                                 src={Avatar}
@@ -89,7 +132,10 @@ const PopupChat = () => {
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-blue-gray-100/40">
+                                    <div
+                                        className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-blue-gray-100/40"
+                                        onClick={closeDrawer}
+                                    >
                                         <div className=" flex">
                                             <img
                                                 src={Avatar}
@@ -106,7 +152,10 @@ const PopupChat = () => {
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-blue-gray-100/40">
+                                    <div
+                                        className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-blue-gray-100/40"
+                                        onClick={closeDrawer}
+                                    >
                                         <div className=" flex">
                                             <img
                                                 src={Avatar}
@@ -123,7 +172,10 @@ const PopupChat = () => {
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-blue-gray-100/40">
+                                    <div
+                                        className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-blue-gray-100/40"
+                                        onClick={closeDrawer}
+                                    >
                                         <div className=" flex">
                                             <img
                                                 src={Avatar}
@@ -140,7 +192,10 @@ const PopupChat = () => {
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-blue-gray-100/40">
+                                    <div
+                                        className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-blue-gray-100/40"
+                                        onClick={closeDrawer}
+                                    >
                                         <div className=" flex">
                                             <img
                                                 src={Avatar}
@@ -157,7 +212,10 @@ const PopupChat = () => {
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-blue-gray-100/40">
+                                    <div
+                                        className="flex px-4 py-2 border-t-2 cursor-pointer hover:bg-blue-gray-100/40"
+                                        onClick={closeDrawer}
+                                    >
                                         <div className=" flex ">
                                             <img
                                                 src={Avatar}
@@ -174,10 +232,10 @@ const PopupChat = () => {
                                             </p>
                                         </div>
                                     </div>
-                                </div>
+                                </Drawer>
 
-                                <div className="bg-gray-300/50 rounded-xl w-[60%] border-gray-500 border-l-2 px-4 py-2">
-                                    <div className="flex flex-col py-2 h-[300px] overflow-y-auto">
+                                <div className="flex flex-col max-h-[80vh] w-full h-full bg-gray-300/50 rounded-xl border-gray-500 border-l-2 p-2 overflow-auto">
+                                    <div className="flex flex-col py-2 h-full overflow-auto">
                                         <p className="flex justify-center my-2">
                                             10:38 AM
                                         </p>
@@ -216,11 +274,11 @@ const PopupChat = () => {
                                             value={message}
                                             onChange={handleInputChange}
                                             placeholder="Type your message..."
-                                            className="border rounded-md p-2 mr-2 w-[88%]"
+                                            className="border rounded-md p-2 mr-2 w-full"
                                         />
                                         <button
                                             onClick={handleSendMessage}
-                                            className="bg-gray-800 text-white p-2 rounded-md w-[12%]"
+                                            className="flex justify-between bg-gray-800 text-white p-2 rounded-md w-[50px]"
                                         >
                                             <img
                                                 src={Send}
@@ -232,24 +290,18 @@ const PopupChat = () => {
                                 </div>
                             </div>
                         </div>
-                    </motion.div>
+                    </div>
                 )}
             </AnimatePresence>
             {!isOpen && (
-                <motion.div
-                    className="fixed bottom-0 right-0 p-6"
-                    initial={{ scale: 1, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0, opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                >
+                <div className="fixed bottom-0 right-0 p-4 mobile-chat-trigger">
                     <button
                         onClick={togglePopup}
-                        className="fixed bottom-0 right-0 mr-4 p-3 bg-gray-900 text-white rounded-t-2xl transform hover:scale-110 transition-transform w-32 hidden md:block"
+                        className="fixed bottom-0 right-0 mb-6 p-3 bg-gray-900 text-white rounded-full transform hover:scale-110 transition-transform"
                     >
-                        Open Chat
+                        <img src={Chats} alt="" className="w-8 h-8" />
                     </button>
-                </motion.div>
+                </div>
             )}
         </div>
     );
