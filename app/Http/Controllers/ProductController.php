@@ -114,76 +114,89 @@ class ProductController extends Controller
 
     // Hàm xử lý hiển thị thông tin sản phẩm và danh sách ảnh
     public function show(string $id)
-    {
-        try {
-            $product = Product::findOrFail($id);
-            $creator = User::find($product->created_by_user_id);
-            $reviews = ProductReview::where('product_id', $id)->get();
-            // Tính trung bình cộng của tất cả đánh giá
-            $averageRating = $reviews->avg('rating');
-            // Lấy danh sách ảnh sản phẩm chỉ với trường 'image_url'
-            $imageUrls = $product->images->pluck('image_url');
-            $sizes = ProductSize::where('product_id', $id)->pluck('size_name');
-            $colors = ProductColor::where('product_id', $id)->pluck('color_name');
-            // Đếm số lượng sản phẩm mà người tạo sản phẩm đang bán
-            $numberOfProducts = Product::where('created_by_user_id', $creator->user_id)->count();
-            // Tính trung bình cộng của tất cả đánh giá sản phẩm của người tạo
-            $averageRatingByCreator = ProductReview::whereHas('product', function ($query) use ($creator) {
-                $query->where('created_by_user_id', $creator->user_id);
-            })->avg('rating');
-            // Tổng số lượt đánh giá cho sản phẩm
-            $totalReviews = $reviews->count();
-            // Mảng chứa số lượng đánh giá cho từng loại đánh giá
-            $reviewCounts = $reviews->groupBy('rating')->map->count();
-            $arr = [
-                'status' => true,
-                'message' => 'Thông tin sản phẩm',
-                'data' => [
-                    'product_id' => $product->product_id,
-                    'name' => $product->name,
-                    'description' => $product->description,
-                    'created_by_user_id' => [
-                        'user_id' => $creator->user_id,
-                        'username' => $creator->username,
-                        'avt_image' => $creator->avt_image,
-                        'full_name' => $creator->full_name,
-                        'shop_name' => $creator->shop_name,
-                        'shop_username' => $creator->shop_username,
-                        'shop_avt' => $creator->shop_avt,
-                        'shop_background' => $creator->shop_background,
-                        'shop_introduce' => $creator->shop_introduce,
-                    ],
-                    'product_brand_id' => $product->product_brand_id,
-                    'product_category_id' => $product->product_category_id,
-                    'price' => $product->price,
-                    'stock' => $product->stock,
-                    'discount_id' => $product->discount_id,
-                    'created_at' => $product->created_at,
-                    'updated_at' => $product->updated_at,
-                    'deleted_at' => $product->deleted_at,
-                    'image_urls' => $imageUrls,
-                    'sizes' => $sizes,
-                    'colors' => $colors,
-                    'reviews' => $reviews,
-                    'average_rating' => $averageRating,
-                    'average_rating_by_creator' => $averageRatingByCreator,
-                    'number_of_products_by_creator' => $numberOfProducts,
-                    'total_reviews' => $totalReviews,
-                    'review_counts' => $reviewCounts->toArray(),
+{
+    try {
+        $product = Product::findOrFail($id);
+        $creator = User::find($product->created_by_user_id);
+        $reviews = ProductReview::with('user')
+            ->where('product_id', $id)
+            ->get();
+
+        $averageRating = $reviews->avg('rating');
+        $imageUrls = $product->images->pluck('image_url');
+        $sizes = ProductSize::where('product_id', $id)->pluck('size_name');
+        $colors = ProductColor::where('product_id', $id)->pluck('color_name');
+        $numberOfProducts = Product::where('created_by_user_id', $creator->user_id)->count();
+        $averageRatingByCreator = ProductReview::whereHas('product', function ($query) use ($creator) {
+            $query->where('created_by_user_id', $creator->user_id);
+        })->avg('rating');
+        $totalReviews = $reviews->count();
+        $reviewCounts = $reviews->groupBy('rating')->map->count();
+
+        // Format each review separately
+        $formattedReviews = $reviews->map(function ($review) {
+            return [
+                'product_review_id' => $review->product_review_id,
+                'user_id' => $review->user_id,
+                'username' => $review->user->username,
+                'full_name' => $review->user->full_name,
+                'rating' => $review->rating,
+                'comment' => $review->comment,
+                'created_at' => $review->created_at,
+                'updated_at' => $review->updated_at,
+            ];
+        });
+
+        $arr = [
+            'status' => true,
+            'message' => 'Thông tin sản phẩm',
+            'data' => [
+                'product_id' => $product->product_id,
+                'name' => $product->name,
+                'description' => $product->description,
+                'created_by_user_id' => [
+                    'user_id' => $creator->user_id,
+                    'username' => $creator->username,
+                    'avt_image' => $creator->avt_image,
+                    'full_name' => $creator->full_name,
+                    'shop_name' => $creator->shop_name,
+                    'shop_username' => $creator->shop_username,
+                    'shop_avt' => $creator->shop_avt,
+                    'shop_background' => $creator->shop_background,
+                    'shop_introduce' => $creator->shop_introduce,
                 ],
-            ];
+                'product_brand_id' => $product->product_brand_id,
+                'product_category_id' => $product->product_category_id,
+                'price' => $product->price,
+                'stock' => $product->stock,
+                'discount_id' => $product->discount_id,
+                'created_at' => $product->created_at,
+                'updated_at' => $product->updated_at,
+                'deleted_at' => $product->deleted_at,
+                'image_urls' => $imageUrls,
+                'sizes' => $sizes,
+                'colors' => $colors,
+                'reviews' => $formattedReviews,
+                'average_rating' => $averageRating,
+                'average_rating_by_creator' => $averageRatingByCreator,
+                'number_of_products_by_creator' => $numberOfProducts,
+                'total_reviews' => $totalReviews,
+                'review_counts' => $reviewCounts->toArray(),
+            ],
+        ];
 
-            return response()->json($arr, 200);
-        } catch (ModelNotFoundException $e) {
-            $arr = [
-                'status' => false,
-                'message' => 'Không có sản phẩm này',
-                'data' => null,
-            ];
+        return response()->json($arr, 200);
+    } catch (ModelNotFoundException $e) {
+        $arr = [
+            'status' => false,
+            'message' => 'Không có sản phẩm này',
+            'data' => null,
+        ];
 
-            return response()->json($arr, 404);
-        }
+        return response()->json($arr, 404);
     }
+}
+
 
 
 
