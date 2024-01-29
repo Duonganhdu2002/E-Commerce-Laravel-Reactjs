@@ -354,11 +354,17 @@ export default function MenuBar() {
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
+            let url = '/search/';
             if (searchTerm.trim() !== '') {
-                navigate(`/search/${searchTerm}`);
+                url += `name=${searchTerm}`;
+                if (user) {
+                    url += `&user_id=${user.user_id}`;
+                }
+                navigate(url);
             }
         }
     };
+
 
     const handleInputChange = (e) => {
         setSearchTerm(e.target.value);

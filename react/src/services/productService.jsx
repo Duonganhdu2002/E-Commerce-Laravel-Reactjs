@@ -20,4 +20,15 @@ const fetchRandomFourCategoryAndGetFourProduct = () => {
     return axios.get("/public/product/getRandomCategories")
 }
 
-export { fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession, fetchRandomFourCategoryAndGetFourProduct };
+const searchProduct = (product_name, user_id, page_number) => {
+    return axios.get("/public/product/search-products", {
+        params: {
+            name: product_name,
+            user_id: user_id,
+            page: page_number
+        }
+    });
+}
+
+
+export { fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession, fetchRandomFourCategoryAndGetFourProduct, searchProduct };

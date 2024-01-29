@@ -12,7 +12,7 @@ use App\Http\Controllers\ShoppingCartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SearchHistoryController;
 
-
+    
 
 
 Route::prefix('user')->group(function () {
