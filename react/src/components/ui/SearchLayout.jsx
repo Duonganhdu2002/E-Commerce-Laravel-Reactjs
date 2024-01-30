@@ -10,11 +10,9 @@ import { useSelector } from 'react-redux'
 
 export default function SearchLayout() {
 
-    const user = useSelector((state) => state.user.user);
-    const user_id = user.user_id;
-
     const { searchKey } = useParams();
     const [data, setData] = useState([]);
+    const [user_id, setUser_id] = useState(useSelector((state) => state.user.user).user_id);
     const [page, setPage] = useState(1);
     const [dataFull, setDataFull] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -23,13 +21,17 @@ export default function SearchLayout() {
     // console.log(data);
     // console.log(dataFull);
     // console.log(searchKey);
-    // console.log(user_id);
+    console.log(user_id);
     // console.log(page);
 
 
     useEffect(() => {
+        
         const fetchData = async () => {
             try {
+                if (typeof user_id === 'undefined' || user_id === null) {
+                    setUser_id('')
+                }
                 setLoading(true);
                 const res = await searchProduct(searchKey, user_id, page);
                 if (res && res.data && res.data.data) {
@@ -77,7 +79,7 @@ export default function SearchLayout() {
     };
 
     useEffect(() => {
-        const calculateVisiblePages = () => {
+        const calculateVisiblePages = async () => {
             const totalVisiblePages = 5;
             const totalPageCount = dataFull.last_page;
 
@@ -106,7 +108,7 @@ export default function SearchLayout() {
         calculateVisiblePages();
     }, [active, dataFull.last_page]);
 
-    console.log(page)
+    // console.log(page)
 
     return (
         <div className=" flex justify-center items-center">
