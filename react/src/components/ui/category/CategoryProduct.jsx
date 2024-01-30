@@ -22,7 +22,7 @@ export default function CategoryProduct() {
         }
     };
 
-    // console.log(data);
+    console.log(data);
     // console.log(categoryId);
 
     return (
@@ -46,7 +46,7 @@ export default function CategoryProduct() {
                                     <div className="px-4 py-3 h-[20%] w-full">
                                         <span className="text-gray-400 mr-3 uppercase text-[12px] lg:text-[14px]">Brand</span>
                                         <p className="text-md lg:text-lg xl:text-xl font-bold text-black truncate block capitalize">{product.name}</p>
-                                        <div className="space-x-1 flex justify-center mt-2 md:mt-4 lg:mt-6 xl:mt-8">
+                                        {/* <div className="space-x-1 flex justify-center mt-2 md:mt-4 lg:mt-6 xl:mt-8">
                                             <svg
                                                 className="w-4 h-4 mx-px fill-current text-orange-600"
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -82,7 +82,7 @@ export default function CategoryProduct() {
                                             >
                                                 <path d="M6.43 12l-2.36 1.64a1 1 0 0 1-1.53-1.11l.83-2.75a1 1 0 0 0-.35-1.09L.73 6.96a1 1 0 0 1 .59-1.8l2.87-.06a1 1 0 0 0 .92-.67l.95-2.71a1 1 0 0 1 1.88 0l.95 2.71c.13.4.5.66.92.67l2.87.06a1 1 0 0 1 .59 1.8l-2.3 1.73a1 1 0 0 0-.34 1.09l.83 2.75a1 1 0 0 1-1.53 1.1L7.57 12a1 1 0 0 0-1.14 0z"></path>
                                             </svg>
-                                        </div>
+                                        </div> */}
                                         <div className="flex items-center">
                                             <p className="text-lg font-semibold text-black cursor-auto my-3">${(product.price - (product.price) * 0.3).toFixed(2)}</p>
                                             <del>
