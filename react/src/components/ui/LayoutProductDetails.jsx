@@ -173,7 +173,7 @@ const LayoutProductDetails = () => {
                     <div className="w-full lg:w-8/12 flex justify-center items-center">
                         {imageUrls.length > 0 && currentImage ? (
                             <img
-                                className="h-[360px] w-[360px] object-cover"
+                                className="h-[420px] w-[360px] object-cover"
                                 src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${currentImage}?raw=true`}
                                 alt={data.name}
                             />
@@ -190,7 +190,7 @@ const LayoutProductDetails = () => {
                                 onClick={() => handleThumbnailClick(imageUrl)}
                             >
                                 <img
-                                    className="h-[180px] w-[180px] object-cover"
+                                    className="h-[180px] w-[180px]"
                                     src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${imageUrl}?raw=true`}
                                     alt={`${data.name} - preview ${index + 1}`}
                                 />
