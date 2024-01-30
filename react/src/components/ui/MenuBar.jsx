@@ -337,7 +337,7 @@ function NavList() {
 export default function MenuBar() {
 
     const user = useSelector((state) => state.user.user);
-    console.log(user)
+    // console.log(user)
     const dispatch = useDispatch();
 
     const [openNav, setOpenNav] = useState(false);
@@ -357,10 +357,7 @@ export default function MenuBar() {
         if (e.key === 'Enter') {
             let url = '/search/';
             if (searchTerm.trim() !== '') {
-                url += `name=${searchTerm}`;
-                if (user) {
-                    url += `&user_id=${user.user_id}`;
-                }
+                url += `${searchTerm}`;
                 navigate(url);
             }
         }

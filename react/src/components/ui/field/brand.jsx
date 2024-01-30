@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { fetchBrandsByFieldId } from "../../../services/brandService";
 
 export default function Brand() {
+    
     const { fieldId } = useParams(); //Nhận tham số từ URL
     const [listBrandById, setListBrandById] = useState([]);
 

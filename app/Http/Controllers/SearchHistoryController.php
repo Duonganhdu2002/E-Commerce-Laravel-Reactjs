@@ -23,17 +23,12 @@ class SearchHistoryController extends Controller
         // Thực hiện JOIN với bảng product_review để lấy thông tin đánh giá
         $query->leftJoin('product_review', 'product_review.product_id', '=', 'product.product_id');
 
-        // Thực hiện JOIN với bảng product_image để lấy thông tin ảnh sản phẩm
-        $query->leftJoin('product_image', 'product_image.product_id', '=', 'product.product_id');
-
         // Sử dụng AVG để tính giá trung bình đánh giá
         $query->select(
             'product.*',
-            DB::raw('AVG(product_review.rating) as average_rating'),
-            'product_image.image_url as image'
+            DB::raw('AVG(product_review.rating) as average_rating')
         );
 
-        // Nhóm kết quả theo các trường cần thiết
         $query->groupBy(
             'product.product_id',
             'product.name',
@@ -46,12 +41,15 @@ class SearchHistoryController extends Controller
             'product.created_at',
             'product.updated_at',
             'product.deleted_at',
-            'product.description',
-            'product_image.image_url' // Group by image URL to get multiple rows for multiple images
+            'product.description'
         );
 
         // Sử dụng paginate để phân trang với 10 sản phẩm mỗi trang
         $products = $query->paginate(10);
+
+        foreach ($products as $product) {
+            $product->images->pluck('image_url');
+        }
 
         if ($products->isEmpty()) {
             return response()->json([
@@ -69,6 +67,7 @@ class SearchHistoryController extends Controller
             'data' => $products,
         ], 200);
     }
+
 
 
 
