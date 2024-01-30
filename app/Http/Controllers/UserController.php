@@ -69,16 +69,11 @@ class UserController extends Controller
             // Get authenticated user (excluding password)
             $user = Auth::user();
 
-            // Join user and user_address tables to get user's address
-            $userDataWithAddress = User::join('user_address', 'users.user_id', '=', 'user_address.user_id')
-                ->select('users.*', 'user_address.number', 'user_address.street', 'user_address.commune', 'user_address.district', 'user_address.province', 'user_address.country', 'user_address.postal_code')
-                ->where('users.user_id', '=', $user->user_id)
-                ->first();
-
+        
             // Return the user data with address
             return response()->json([
                 'success' => true,
-                'data' => $userDataWithAddress,
+                'data' => $user,
             ]);
         } else {
             // Authentication failed
