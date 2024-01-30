@@ -21,12 +21,12 @@ export default function SearchLayout() {
     // console.log(data);
     // console.log(dataFull);
     // console.log(searchKey);
-    console.log(user_id);
+    // console.log(user_id);
     // console.log(page);
 
 
     useEffect(() => {
-        
+
         const fetchData = async () => {
             try {
                 if (typeof user_id === 'undefined' || user_id === null) {

@@ -82,7 +82,7 @@ const LayoutProductDetails = () => {
         }
     };
 
-    // console.log(data);
+    console.log(data);
     // console.log(starBlack);
     // console.log(starWhite);
 
@@ -295,7 +295,7 @@ const LayoutProductDetails = () => {
                                     <div className="flex">
                                         <div className="text-right font-bold leading-[24px] text-[#607d8b] mr-2">
                                             {
-                                                Number(data.average_rating_by_creator).toFixed(2)
+                                                Number(data.average_rating).toFixed(2)
                                             }
                                         </div>
                                         <div className="flex flex-row mt-px w-1/3 items-start">
@@ -379,31 +379,55 @@ const LayoutProductDetails = () => {
                                         <div className="text-right font-medium leading-[24px] text-[#607d8b]">
                                             3
                                         </div>
-                                        <img
-                                            src={Star}
-                                            alt="Star7"
-                                            className="mt-px w-5"
-                                        />
+                                        {data.review_counts?.["3"] && data.review_counts["3"] ? (
+                                            <img
+                                                src={Star}
+                                                alt="Star6"
+                                                className="mt-px w-5"
+                                            />
+                                        ) : (
+                                            <img
+                                                src={StarOutline}
+                                                alt="Star8"
+                                                className="mt-px w-5"
+                                            />
+                                        )}
                                     </div>
                                     <div className="flex flex-row gap-1 w-8 font-sans items-start">
                                         <div className="text-right font-medium leading-[24px] text-[#607d8b]">
                                             2
                                         </div>
-                                        <img
-                                            src={StarOutline}
-                                            alt="Star8"
-                                            className="mt-px w-5"
-                                        />
+                                        {data.review_counts?.["2"] && data.review_counts["2"] ? (
+                                            <img
+                                                src={Star}
+                                                alt="Star6"
+                                                className="mt-px w-5"
+                                            />
+                                        ) : (
+                                            <img
+                                                src={StarOutline}
+                                                alt="Star8"
+                                                className="mt-px w-5"
+                                            />
+                                        )}
                                     </div>
                                     <div className="flex flex-row gap-1 w-8 font-sans items-start">
                                         <div className="text-right font-medium leading-[24px] text-[#607d8b]">
                                             1
                                         </div>
-                                        <img
-                                            src={StarOutline}
-                                            alt="Star9"
-                                            className="mt-px w-5"
-                                        />
+                                        {data.review_counts?.["1"] && data.review_counts["1"] ? (
+                                            <img
+                                                src={Star}
+                                                alt="Star6"
+                                                className="mt-px w-5"
+                                            />
+                                        ) : (
+                                            <img
+                                                src={StarOutline}
+                                                alt="Star8"
+                                                className="mt-px w-5"
+                                            />
+                                        )}
                                     </div>
                                 </div>
                                 <div className="flex flex-col justify-between mt-2 w-5/6 h-36 items-start">
@@ -434,10 +458,10 @@ const LayoutProductDetails = () => {
                                     <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b]">
                                         {data.review_counts?.["3"] ? Math.round((data.review_counts["3"] / data.total_reviews) * 100) : 0}%
                                     </div>
-                                    <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b] ml-2">
+                                    <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b]">
                                         {data.review_counts?.["2"] ? Math.round((data.review_counts["2"] / data.total_reviews) * 100) : 0}%
                                     </div>
-                                    <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b] ml-2">
+                                    <div className="text-right text-sm font-medium leading-[21px] text-[#607d8b]">
                                         {data.review_counts?.["1"] ? Math.round((data.review_counts["1"] / data.total_reviews) * 100) : 0}%
                                     </div>
                                 </div>
