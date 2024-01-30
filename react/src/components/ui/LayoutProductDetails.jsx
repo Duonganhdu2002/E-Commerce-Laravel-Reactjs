@@ -33,8 +33,6 @@ const LayoutProductDetails = () => {
     const starBlack1 = Number(data.average_rating_by_creator).toFixed(0);
     const starWhite1 = 5 - starBlack1;
 
-    const starYellow = Number(data.average_rating_by_creator).toFixed(0);
-    const starYellowNone = 5 - starYellow;
 
     const sizes = data.sizes || [];
     const colors = data.colors || [];
@@ -82,7 +80,7 @@ const LayoutProductDetails = () => {
         }
     };
 
-    console.log(data);
+    // console.log(data);
     // console.log(starBlack);
     // console.log(starWhite);
 
@@ -299,36 +297,12 @@ const LayoutProductDetails = () => {
                                             }
                                         </div>
                                         <div className="flex flex-row mt-px w-1/3 items-start">
-                                            <img
-                                                src={Star}
-                                                alt="Star"
-                                                id="Star"
-                                                className="w-5"
-                                            />
-                                            <img
-                                                src={Star}
-                                                alt="Star1"
-                                                id="Star1"
-                                                className="w-5"
-                                            />
-                                            <img
-                                                src={Star}
-                                                alt="Star2"
-                                                id="Star2"
-                                                className="w-5"
-                                            />
-                                            <img
-                                                src={Star}
-                                                alt="Star3"
-                                                id="Star3"
-                                                className="w-5"
-                                            />
-                                            <img
-                                                src={StarO}
-                                                alt="Star4"
-                                                id="Star4"
-                                                className="w-5"
-                                            />
+                                            {Array.from({ length: data.average_rating }, (_, index) => (
+                                                <img className=" w-5" key={index} src={Star} alt="" />
+                                            ))}
+                                            {Array.from({ length: 5 - data.average_rating }, (_, index) => (
+                                                <img className=" w-5" key={index} src={StarO} alt="" />
+                                            ))}
                                         </div>
                                     </div>
 
@@ -488,8 +462,8 @@ const LayoutProductDetails = () => {
                                     <p className="text-3xl lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">Reviews</p>
                                 </div>
                                 <div className="w-full flex justify-start items-start flex-col bg-gray-50 p-8">
-                                    {
-                                        data.reviews && data.reviews.length > 0 && data.reviews.map((review, index) => (
+                                    {data.reviews && data.reviews.length > 0 ? (
+                                        data.reviews.map((review, index) => (
                                             <div key={index} className="w-full flex justify-start items-start flex-col bg-gray-50 md:px-8 py-8">
                                                 <div className="">
                                                     <div className="mt-6 flex justify-start items-center flex-row space-x-2.5">
@@ -503,24 +477,23 @@ const LayoutProductDetails = () => {
                                                     </div>
                                                     <div className="cursor-pointer mt-6">
                                                         <div className="flex flex-row space-x-3">
-                                                            {
-                                                                Array.from({ length: review.rating }, (_, index) => (
-                                                                    <img className=" w-4" key={index} src={starBlackImg} alt="start" />
-                                                                ))
-                                                            }
-                                                            {
-                                                                Array.from({ length: 5 - review.rating }, (_, index) => (
-                                                                    <img className=" w-4" key={index} src={starWhiteImg} alt="start" />
-                                                                ))
-                                                            }
+                                                            {Array.from({ length: review.rating }, (_, index) => (
+                                                                <img className="w-4" key={index} src={starBlackImg} alt="start" />
+                                                            ))}
+                                                            {Array.from({ length: 5 - review.rating }, (_, index) => (
+                                                                <img className="w-4" key={index} src={starWhiteImg} alt="start" />
+                                                            ))}
                                                         </div>
                                                     </div>
-
-                                                    <p className="mt-6 text-base leading-normal text-gray-600 w-full md:w-9/12 xl:w-5/6">{review.comment}</p>
+                                                    <p className="mt-6 text-base leading-normal text-gray-600 w-full">{review.comment}</p>
                                                 </div>
                                             </div>
                                         ))
-                                    }
+                                    ) : (
+                                        <Typography color="gray">
+                                            Product has not any reviews
+                                        </Typography>
+                                    )}
                                 </div>
                             </div>
                         </div>
