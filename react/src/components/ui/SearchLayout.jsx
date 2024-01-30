@@ -4,7 +4,11 @@ import { searchProduct } from "../../services/productService";
 import { Typography } from "@material-tailwind/react";
 import { Button, IconButton } from "@material-tailwind/react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux';
+import Cart from "../../assets/icon/add-to-cart.svg";
+import Star0 from "../../assets/icon/star-svgrepo-com.svg";
+import Star1 from "../../assets/icon/star-outline.svg";
+
 
 
 
@@ -18,7 +22,7 @@ export default function SearchLayout() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // console.log(data);
+    console.log(data);
     // console.log(dataFull);
     // console.log(searchKey);
     // console.log(user_id);
@@ -49,8 +53,6 @@ export default function SearchLayout() {
         fetchData();
     }, [searchKey, user_id, page]);
 
-
-
     const [active, setActive] = useState(1);
     const [visiblePages, setVisiblePages] = useState([]);
 
@@ -62,6 +64,7 @@ export default function SearchLayout() {
             setActive(index);
         },
     });
+
 
 
     const next = () => {
@@ -110,6 +113,8 @@ export default function SearchLayout() {
 
     // console.log(page)
 
+    console.log(data.average_rating)
+
     return (
         <div className=" flex justify-center items-center">
             <div className=" w-[95%] md:w-[90%] lg:w-[80%]">
@@ -125,7 +130,7 @@ export default function SearchLayout() {
                             data.length > 0 ?
                             (data.map((product, index) => (
                                 <Link key={index} to={`/product/${product.product_id}`}>
-                                    <div className="w-full h-[300px] md:h-[330px] lg:h-[400px] xl:h-[460px]  bg-white shadow-md shadow-gray-300 rounded-xl duration-500 hover:scale-105 hover:shadow-2xl">
+                                    <div className="w-full h-[350px] md:h-[380px] lg:h-[450px] xl:h-[510px]  bg-white shadow-md shadow-gray-300 rounded-xl duration-500 hover:scale-105 hover:shadow-2xl">
                                         <img
                                             className=" h-[200px] w-[200px] md:h-[220px] md:w-[220px] lg:h-[280px] lg:w-[280px] xl:h-[320px] xl:w-[320px] object-cover rounded-t-xl"
                                             src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${product.images?.[0]?.image_url}?raw=true`}
@@ -134,11 +139,22 @@ export default function SearchLayout() {
                                         <div className="px-4 py-3 h-[20%] w-full">
                                             <span className="text-gray-400 mr-3 uppercase text-[12px] lg:text-[14px]">Brand</span>
                                             <p className="text-md lg:text-lg xl:text-xl font-bold text-black truncate block capitalize">{product.name}</p>
+                                            <div className="space-x-1 flex justify-center mt-2 md:mt-4 lg:mt-6 xl:mt-8">
+                                                {Array.from({ length: Math.round(product.average_rating) }, (_, index) => (
+                                                    <img className="w-5" key={index} src={Star0} alt="" />
+                                                ))}
+                                                {Array.from({ length: 5 - Math.round(product.average_rating) }, (_, index) => (
+                                                    <img className="w-5" key={index} src={Star1} alt="" />
+                                                ))}
+                                            </div>
                                             <div className="flex items-center">
                                                 <p className="text-md lg:text-lg xl:text-xl font-semibold text-black cursor-auto my-1">${(product.price - (product.price) * 0.3).toFixed(2)}</p>
                                                 <del>
                                                     <p className="text-sm text-gray-600 cursor-auto ml-2">${product.price}</p>
                                                 </del>
+                                                <div className="ml-auto">
+                                                    <img src={Cart} alt="" />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
