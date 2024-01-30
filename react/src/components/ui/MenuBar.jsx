@@ -359,8 +359,10 @@ export default function MenuBar() {
             if (searchTerm.trim() !== '') {
                 url += `${searchTerm}`;
                 navigate(url);
+                window.location.reload();
             }
         }
+        
     };
 
 
