@@ -80,7 +80,7 @@ export default function SearchLayout() {
 
     useEffect(() => {
         const calculateVisiblePages = async () => {
-            const totalVisiblePages = 5;
+            const totalVisiblePages = 3;
             const totalPageCount = dataFull.last_page;
 
             let startPage, endPage;
@@ -122,8 +122,8 @@ export default function SearchLayout() {
                         className=" mx-auto grid grid-cols-2 lg:grid-cols-4  md:grid-cols-3 2xl:grid-cols-5 justify-items-center justify-center gap-y-8 gap-x-6 mt-6 mb-5"
                     >
                         {data &&
-                            data.length > 0 &&
-                            data.map((product, index) => (
+                            data.length > 0 ?
+                            (data.map((product, index) => (
                                 <Link key={index} to={`/product/${product.product_id}`}>
                                     <div className="w-full h-[300px] md:h-[330px] lg:h-[400px] xl:h-[460px]  bg-white shadow-md shadow-gray-300 rounded-xl duration-500 hover:scale-105 hover:shadow-2xl">
                                         <img
@@ -144,39 +144,45 @@ export default function SearchLayout() {
                                     </div>
                                 </Link>
 
-                            ))}
+                            ))) : (
+                                <Typography color="gray">
+                                    Sorry, We don't have what are you looking for!
+                                </Typography>
+                            )}
                     </section>
-                    <div className="flex items-center gap-4 my-6 mt-12">
-                        <Button
-                            variant="text"
-                            className="flex items-center gap-2"
-                            onClick={prev}
-                            disabled={active === dataFull.from}
-                        >
-                            <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
-                        </Button>
+                    <div className=" flex justify-center">
+                        <div className="flex items-center my-6 mt-12">
+                            <Button
+                                variant="text"
+                                className="flex items-center gap-2"
+                                onClick={prev}
+                                disabled={active === dataFull.from}
+                            >
+                                <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
+                            </Button>
 
-                        <div className="flex items-center gap-2">
-                            {visiblePages.map((pageNumber) => (
-                                <IconButton
-                                    key={pageNumber}
-                                    {...getItemProps(pageNumber)}
-                                >
-                                    {pageNumber}
-                                </IconButton>
-                            ))}
+                            <div className="flex items-center gap-2">
+                                {visiblePages.map((pageNumber) => (
+                                    <IconButton
+                                        key={pageNumber}
+                                        {...getItemProps(pageNumber)}
+                                    >
+                                        {pageNumber}
+                                    </IconButton>
+                                ))}
+                            </div>
+
+
+                            <Button
+                                variant="text"
+                                className="flex items-center gap-2"
+                                onClick={next}
+                                disabled={active === dataFull.last_page}
+                            >
+                                Next
+                                <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
+                            </Button>
                         </div>
-
-
-                        <Button
-                            variant="text"
-                            className="flex items-center gap-2"
-                            onClick={next}
-                            disabled={active === dataFull.last_page}
-                        >
-                            Next
-                            <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
-                        </Button>
                     </div>
                 </div>
             </div>
