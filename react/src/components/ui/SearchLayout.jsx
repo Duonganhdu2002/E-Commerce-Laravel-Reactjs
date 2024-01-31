@@ -9,9 +9,6 @@ import Cart from "../../assets/icon/add-to-cart.svg";
 import Star0 from "../../assets/icon/star-svgrepo-com.svg";
 import Star1 from "../../assets/icon/star-outline.svg";
 
-
-
-
 export default function SearchLayout() {
 
     const { searchKey } = useParams();
@@ -22,12 +19,11 @@ export default function SearchLayout() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    console.log(data);
+    // console.log(data);
     // console.log(dataFull);
     // console.log(searchKey);
     // console.log(user_id);
     // console.log(page);
-
 
     useEffect(() => {
 
@@ -64,8 +60,6 @@ export default function SearchLayout() {
             setActive(index);
         },
     });
-
-
 
     const next = () => {
         if (active === dataFull.last_page) return;

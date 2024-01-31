@@ -1,28 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { productInformation } from "../../services/productService";
-import { Select, Option, Button } from "@material-tailwind/react";
+import { useSelector } from 'react-redux'
+import { addToCart } from "../../services/cartService";
 import starBlackImg from "../../assets/icon/star-black.svg"
 import starWhiteImg from "../../assets/icon/star-white.svg"
 import StarOutline from "../../assets/icon/star-outline.svg";
 import StarO from "../../assets/icon/star-o-svgrepo-com.svg";
 import Star from "../../assets/icon/star-svgrepo-com.svg";
 import {
-    Card,
-    CardHeader,
-    CardBody,
-    CardFooter,
+    Popover,
+    PopoverHandler,
+    PopoverContent,
+    Button,
+    Input,
     Typography,
     Progress,
+    Select,
+    Option,
 } from "@material-tailwind/react";
 
 
 const LayoutProductDetails = () => {
 
-    const [count, setCount] = useState(0);
-
-    const [menu, setMenu] = useState(true);
-    const [menu1, setMenu1] = useState(false);
+    const user = useSelector((state) => state.user.user);
+    const [count, setCount] = useState(1);
 
     const { productId } = useParams();
     const [data, setData] = useState([]);
@@ -32,7 +34,6 @@ const LayoutProductDetails = () => {
 
     const starBlack1 = Number(data.average_rating_by_creator).toFixed(0);
     const starWhite1 = 5 - starBlack1;
-
 
     const sizes = data.sizes || [];
     const colors = data.colors || [];
@@ -64,6 +65,27 @@ const LayoutProductDetails = () => {
         fetchData();
     }, [productId]);
 
+    const [card, setCard] = useState({
+        user_id: 50,
+        product_id: 10,
+        quantity: 2,
+        color: 'Blue',
+        size: 'Blue',
+        img: 'Blue.png',
+    });
+
+    const handleAddToCart = async () => {
+        try {
+            if (user) {
+                let res = await addToCart(card);
+                console.log(res.message)
+            }
+        } catch (error) {
+            console.error("Error adding to cart:", error);
+        }
+    };
+
+
     useEffect(() => {
         getProduct(productId);
     }, [productId]);
@@ -93,6 +115,7 @@ const LayoutProductDetails = () => {
             setCount((prev) => prev - 1);
         }
     };
+
 
 
     return (
@@ -147,24 +170,49 @@ const LayoutProductDetails = () => {
                             </div>
                         </div>
                     </div>
+                    <div className="mt-4 mx-auto w-full h-12 justify-center flex">
+                        <Popover placement="bottom">
+                            <PopoverHandler onClick={handleAddToCart}>
+                                <Button size="md" className="flex gap-3  items-center justify-center w-full">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth={2}
+                                        stroke="currentColor"
+                                        className="h-5 w-5"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"
+                                        />
+                                    </svg>
+                                    Add to cart
+                                </Button>
+                            </PopoverHandler>
+                            {!user && (
+                                <PopoverContent className="w-96">
+                                    <Typography variant="h6" color="blue-gray" className="mb-6">
+                                        You need to login first. Do you have an account?
+                                    </Typography>
+                                    <div className="flex gap-2 px-6 justify-between">
+                                        <Link to="/login">
+                                            <Button variant="outlined" className="flex-shrink-0">
+                                                Login
+                                            </Button>
+                                        </Link>
+                                        <Link to="/register">
+                                            <Button variant="outlined" className="flex-shrink-0">
+                                                Sign Up
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                </PopoverContent>
+                            )}
+                        </Popover>
+                    </div>
 
-                    <Button className="flex items-center justify-center gap-3 mt-4 mx-auto w-full h-12">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={2}
-                            stroke="currentColor"
-                            className="h-5 w-5"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"
-                            />
-                        </svg>
-                        Add to cart
-                    </Button>
                 </div>
 
                 <div className="w-full sm:w-96 md:w-8/12 lg:w-6/12 flex lg:flex-row flex-col lg:gap-8 sm:gap-6 gap-4">
