@@ -3,6 +3,7 @@ import InformationCard from "../../components/ui-bussiness/InformationCard";
 import Graph1 from "../../components/ui-bussiness/Graph1";
 import Graph2 from "../../components/ui-bussiness/Graph2";
 import TodayOrderSold from "../../components/ui-bussiness/TodayOrderSold";
+import MemberList from "../../components/ui-bussiness/MemberList";
 
 export default function Dashboard() {
     return (
@@ -17,6 +18,7 @@ export default function Dashboard() {
                     <Graph2 />
                 </div>
             </div>
+            <MemberList />
         </div>
     );
 }
