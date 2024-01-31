@@ -15,7 +15,7 @@ import InboxBussiness from "./components/ui-bussiness/Inbox";
 import MyProductsBussiness from "./pages/bussiness/MyProducts";
 import DashboardBussiness from "./pages/bussiness/Dashboard";
 import TaskBar from "./components/ui-bussiness/TaskBar";
-import MenuBarAdmin from "./components/ui-bussiness/MenuBar";
+import MenuBarAdmin from "./components/ui-admin/MenuBar";
 import LoginAdmin from "./components/ui-admin/Login";
 import RegisterAdmin from "./components/ui-admin/Register";
 import ProfileAdmin from "./components/ui-admin/Profile";
