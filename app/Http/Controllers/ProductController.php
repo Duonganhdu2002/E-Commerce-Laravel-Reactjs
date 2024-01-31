@@ -133,7 +133,6 @@ class ProductController extends Controller
             $totalReviews = $reviews->count();
             $reviewCounts = $reviews->groupBy('rating')->map->count();
 
-            // Format each review separately
             $formattedReviews = $reviews->map(function ($review) {
                 return [
                     'product_review_id' => $review->product_review_id,

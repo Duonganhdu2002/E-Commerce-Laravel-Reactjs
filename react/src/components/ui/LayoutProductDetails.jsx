@@ -13,7 +13,6 @@ import {
     PopoverHandler,
     PopoverContent,
     Button,
-    Input,
     Typography,
     Progress,
     Select,
@@ -65,14 +64,14 @@ const LayoutProductDetails = () => {
         fetchData();
     }, [productId]);
 
-    const [card, setCard] = useState({
-        user_id: 50,
-        product_id: 10,
+    const card = {
+        user_id: user.user_id,
+        product_id: data.product_id,
         quantity: 2,
         color: 'Blue',
         size: 'Blue',
         img: 'Blue.png',
-    });
+    };
 
     const handleAddToCart = async () => {
         try {
@@ -102,7 +101,7 @@ const LayoutProductDetails = () => {
         }
     };
 
-    // console.log(data);
+    console.log(data);
     // console.log(starBlack);
     // console.log(starWhite);
 
