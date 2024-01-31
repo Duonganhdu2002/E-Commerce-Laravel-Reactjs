@@ -211,15 +211,7 @@ const navListItems = [
     {
         label: "Account",
         icon: UserCircleIcon,
-    },
-    {
-        label: "Blocks",
-        icon: CubeTransparentIcon,
-    },
-    {
-        label: "Docs",
-        icon: CodeBracketSquareIcon,
-    },
+    }
 ];
 
 function NavList() {
