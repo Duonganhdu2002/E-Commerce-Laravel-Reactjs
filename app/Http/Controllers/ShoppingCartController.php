@@ -33,7 +33,7 @@ class ShoppingCartController extends Controller
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'user_id' => 'required',
+            'user_id' => 'required|exists:users,user_id',
             'product_id' => 'required|exists:product,product_id',
             'quantity' => 'required|integer|min:1',
         ]);
@@ -50,6 +50,10 @@ class ShoppingCartController extends Controller
         $user_id = $input['user_id'];
         $product_id = $input['product_id'];
         $quantity = $input['quantity'];
+        $color = $input['color'];
+        $size = $input['size'];
+        $img = $input['img'];
+        
 
         // Check if the product already exists in the shopping cart
         $existingCartItem = shopping_cart::where('user_id', $user_id)
@@ -85,6 +89,9 @@ class ShoppingCartController extends Controller
                 'user_id' => $user_id,
                 'product_id' => $product_id,
                 'quantity' => $quantity,
+                'color' => $color,
+                'size' => $size,
+                'img' => $img,
             ]);
 
             $arr = [
