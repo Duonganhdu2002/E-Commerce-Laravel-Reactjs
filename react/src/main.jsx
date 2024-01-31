@@ -13,8 +13,16 @@ import RegisterBussiness from "./components/ui-bussiness/Register";
 import ProfileBussiness from "./components/ui-bussiness/Profile";
 import InboxBussiness from "./components/ui-bussiness/Inbox";
 import MyProductsBussiness from "./pages/bussiness/MyProducts";
-import Dashboard from "./pages/bussiness/Dashboard";
+import DashboardBussiness from "./pages/bussiness/Dashboard";
 import TaskBar from "./components/ui-bussiness/TaskBar";
+import MenuBarAdmin from "./components/ui-bussiness/MenuBar";
+import LoginAdmin from "./components/ui-admin/Login";
+import RegisterAdmin from "./components/ui-admin/Register";
+import ProfileAdmin from "./components/ui-admin/Profile";
+import InboxAdmin from "./components/ui-admin/Inbox";
+import MyProductsAdmin from "./pages/admin/MyProducts";
+import DashboardAdmin from "./pages/admin/Dashboard";
+import TaskBarAdmin from "./components/ui-admin/TaskBar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -68,13 +76,17 @@ const Bussiness = () => {
 
 const Admin = () => {
     return (
-        <div>
-            <MenuBarBussiness />
-            <div className='flex flex-col md:flex-row'>
-                <div className='hidden md:block md:w-auto'>
-                    <TaskBar />
+        <div className="flex flex-col h-screen relative ">
+        <div className="fixed bg-gray-100 w-full h-full -z-10"></div>
+            <div className=" top-0 z-10 mt-1">
+                <MenuBarAdmin />
+            </div>
+
+            <div className="flex flex-grow md:flex-row mt-24 px-2">
+                <div className="hidden md:block md:w-auto static left-0 bottom-0">
+                    <TaskBarAdmin />
                 </div>
-                <div className='hidden md:block w-[100%] md:w-[70%]'>
+                <div className="flex-grow w-full md:w-3/4 md:ml-80 px-8">
                     <Outlet />
                 </div>
             </div>
@@ -112,7 +124,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                     {/* Bussiness */}
 
                     <Route path="/bussiness" element={<Bussiness />}>
-                        <Route index element={<Dashboard />} />
+                        <Route index element={<DashboardBussiness />} />
                         <Route path="login" element={<LoginBussiness />} />
                         <Route path="register" element={<RegisterBussiness />} />
                         <Route path="my-shipment" element={<div>My shipment</div>} />
@@ -139,8 +151,28 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                     {/* Admin */}
 
                     <Route path="/admin" element={<Admin />}>
-                        <Route index element={<div>Default Admin</div>} />
-                        <Route path="login" element={<div>Default Admin login</div>} />
+                        <Route index element={<DashboardAdmin />} />
+                        <Route path="login" element={<LoginAdmin />} />
+                        <Route path="register" element={<RegisterAdmin />} />
+                        <Route path="my-shipment" element={<div>My shipment</div>} />
+                        <Route path="mass-ship" element={<div>Mass ship</div>} />
+                        <Route path="shipping-setting" element={<div>Shipping setting</div>} />
+                        <Route path="my-oders" element={<div>My oders</div>} />
+                        <Route path="return-refun" element={<div>Return/Refun</div>} />
+                        <Route path="cancelation" element={<div>Cancelation</div>} />
+                        <Route path="my-products" element={<MyProductsAdmin />} />
+                        <Route path="add-new-product" element={<div>Add New Product</div>} />
+                        <Route path="product-violations" element={<div>Product Violations</div>} />
+                        <Route path="product-setting" element={<div>Product Settings</div>} />
+                        <Route path="shop-rating" element={<div>Shop Rating</div>} />
+                        <Route path="shop-information" element={<div>Shop Information</div>} />
+                        <Route path="shop-category" element={<div>Shop Category</div>} />
+                        <Route path="my-report" element={<div>My Report</div>} />
+                        <Route path="dashboard" element={<div>Dashboard Content</div>} />
+                        <Route path="inbox" element={<InboxAdmin />} />
+                        <Route path="profile" element={<ProfileAdmin />} />
+                        <Route path="settings" element={<div>Settings Content</div>} />
+                        <Route path="logout" element={<div>Logout Content</div>} />
                     </Route>
 
                 </Routes>
