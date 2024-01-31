@@ -14,6 +14,7 @@ import ProfileBussiness from "./components/ui-bussiness/Profile";
 import InboxBussiness from "./components/ui-bussiness/Inbox";
 import MyProductsBussiness from "./pages/bussiness/MyProducts";
 import DashboardBussiness from "./pages/bussiness/Dashboard";
+import AddProductsBussiness from "./components/ui-bussiness/AddProducts";
 import TaskBar from "./components/ui-bussiness/TaskBar";
 import MenuBarAdmin from "./components/ui-admin/MenuBar";
 import LoginAdmin from "./components/ui-admin/Login";
@@ -134,7 +135,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                         <Route path="return-refun" element={<div>Return/Refun</div>} />
                         <Route path="cancelation" element={<div>Cancelation</div>} />
                         <Route path="my-products" element={<MyProductsBussiness />} />
-                        <Route path="add-new-product" element={<div>Add New Product</div>} />
+                        <Route path="add-new-product" element={<AddProductsBussiness />} />
                         <Route path="product-violations" element={<div>Product Violations</div>} />
                         <Route path="product-setting" element={<div>Product Settings</div>} />
                         <Route path="shop-rating" element={<div>Shop Rating</div>} />
