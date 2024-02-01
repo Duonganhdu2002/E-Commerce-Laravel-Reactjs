@@ -22,7 +22,7 @@ import {
     DialogHeader,
     DialogBody,
     DialogFooter,
-    Input,
+    Rating,
     Textarea,
 } from "@material-tailwind/react";
 
@@ -571,35 +571,30 @@ const LayoutProductDetails = () => {
                             <Dialog open={open} size="xs" handler={handleOpen}>
                                 <div className="flex items-center justify-between">
                                     <DialogHeader className="flex flex-col items-start">
-                                        {" "}
                                         <Typography className="mb-1" variant="h4">
-                                            New message to @{" "}
+                                            Product review
                                         </Typography>
                                     </DialogHeader>
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        fill="currentColor"
-                                        className="mr-3 h-5 w-5"
-                                        onClick={handleOpen}
-                                    >
-                                        <path
-                                            fillRule="evenodd"
-                                            d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
-                                            clipRule="evenodd"
-                                        />
-                                    </svg>
                                 </div>
                                 <DialogBody>
                                     <Typography className="mb-10 -mt-7 " color="gray" variant="lead">
-                                        Write the message and then click button.
+                                        Star rating, Write a review and Click on button.
                                     </Typography>
+                                    <div className="flex justify-between items-center mb-4">
+                                        Product Quality
+                                        <Rating value={4} />
+                                    </div>
+
                                     <div className="grid gap-6">
-                                        <Typography className="-mb-1" color="blue-gray" variant="h6">
-                                            Username
-                                        </Typography>
-                                        <Input label="Username" />
-                                        <Textarea label="Message" />
+                                        <Textarea label="Write a review" />
+                                    </div>
+                                    <div className="flex flex-col sm:flex-row w-full mt-4">
+                                        <Button variant="gradient" color="gray" className="sm:mr-2 mb-2 sm:mb-0">
+                                            add picture
+                                        </Button>
+                                        <Button variant="gradient" color="gray">
+                                            add video
+                                        </Button>
                                     </div>
                                 </DialogBody>
                                 <DialogFooter className="space-x-2">
