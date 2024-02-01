@@ -41,12 +41,13 @@ import Checkout from "./components/ui/Checkout";
 import SubFooter2 from "./components/ui/SubFooter2";
 import SearchLayout from "./components/ui/SearchLayout";
 import Error404 from "./components/ui/error404";
+import { useSelector } from 'react-redux'
 
 const Customer = () => {
     return (
         <div>
             <div className="flex h-20 md:h-24"></div>
-            <MenuBar/>
+            <MenuBar />
             <Outlet />
             <PopupChat />
             <SubFooter />
@@ -58,7 +59,7 @@ const Customer = () => {
 const Bussiness = () => {
     return (
         <div className="flex flex-col h-screen relative ">
-        <div className="fixed bg-gray-100 w-full h-full -z-10"></div>
+            <div className="fixed bg-gray-100 w-full h-full -z-10"></div>
             <div className=" top-0 z-10 mt-1">
                 <MenuBarBussiness />
             </div>
@@ -79,7 +80,7 @@ const Bussiness = () => {
 const Admin = () => {
     return (
         <div className="flex flex-col h-screen relative ">
-        <div className="fixed bg-gray-100 w-full h-full -z-10"></div>
+            <div className="fixed bg-gray-100 w-full h-full -z-10"></div>
             <div className=" top-0 z-10 mt-1">
                 <MenuBarAdmin />
             </div>
@@ -96,89 +97,102 @@ const Admin = () => {
     );
 }
 
+const App = () => {
+    const user = useSelector((state) => state.user.user);
+    return (
+        <div>
+            <BrowserRouter>
+                <Provider store={store}>
+                    <UserProvider>
+                        <Routes>
+
+                            {/* Error 404 */}
+                            <Route path="*" element={<Error404 />} />
+
+                            {/* Public */}
+
+                            <Route path="/" element={<Customer />}>
+                                <Route index element={<Home />} />
+                                <Route path="login" element={<Login />} />
+                                <Route path="register" element={<Register />} />
+                                <Route path={user ? "/cart" : "/login"} element={<Cart />} />
+                                <Route path="fields/:fieldId" element={<Field />} />
+                                <Route path="brand/:brandId" element={<BrandPage />} />
+                                <Route path="category/:categoryId" element={<CategoryPage />} />
+                                <Route path="product/:productId" element={<ProductDetails />} />
+                                <Route path="shop" element={<Shop />} />
+                                <Route path="profile" element={<Profile />} />
+                                <Route path="checkout" element={<Checkout />} />
+                                <Route path="search/:searchKey" element={<SearchLayout />} />
+                                <Route path="orderstatus" element={<OrderStatus />} />
+                            </Route>
+
+                            {/* Bussiness */}
+
+                            <Route path="/bussiness" element={<Bussiness />}>
+                                <Route index element={<DashboardBussiness />} />
+                                <Route path="login" element={<LoginBussiness />} />
+                                <Route path="register" element={<RegisterBussiness />} />
+                                <Route path="my-shipment" element={<div>My shipment</div>} />
+                                <Route path="mass-ship" element={<div>Mass ship</div>} />
+                                <Route path="shipping-setting" element={<div>Shipping setting</div>} />
+                                <Route path="my-oders" element={<MyOrdersBussiness />} />
+                                <Route path="return-refun" element={<div>Return/Refun</div>} />
+                                <Route path="cancelation" element={<div>Cancelation</div>} />
+                                <Route path="my-products" element={<MyProductsBussiness />} />
+                                <Route path="add-new-product" element={<AddProductsBussiness />} />
+                                <Route path="product-violations" element={<div>Product Violations</div>} />
+                                <Route path="product-setting" element={<div>Product Settings</div>} />
+                                <Route path="shop-rating" element={<div>Shop Rating</div>} />
+                                <Route path="shop-information" element={<div>Shop Information</div>} />
+                                <Route path="shop-category" element={<div>Shop Category</div>} />
+                                <Route path="my-report" element={<div>My Report</div>} />
+                                <Route path="dashboard" element={<div>Dashboard Content</div>} />
+                                <Route path="inbox" element={<InboxBussiness />} />
+                                <Route path="profile" element={<ProfileBussiness />} />
+                                <Route path="settings" element={<div>Settings Content</div>} />
+                                <Route path="logout" element={<div>Logout Content</div>} />
+                            </Route>
+
+                            {/* Admin */}
+
+                            <Route path="/admin" element={<Admin />}>
+                                <Route index element={<DashboardAdmin />} />
+                                <Route path="login" element={<LoginAdmin />} />
+                                <Route path="register" element={<RegisterAdmin />} />
+                                <Route path="my-shipment" element={<div>My shipment</div>} />
+                                <Route path="mass-ship" element={<div>Mass ship</div>} />
+                                <Route path="shipping-setting" element={<div>Shipping setting</div>} />
+                                <Route path="my-oders" element={<div>My oders</div>} />
+                                <Route path="return-refun" element={<div>Return/Refun</div>} />
+                                <Route path="cancelation" element={<div>Cancelation</div>} />
+                                <Route path="my-products" element={<MyProductsAdmin />} />
+                                <Route path="add-new-product" element={<div>Add New Product</div>} />
+                                <Route path="product-violations" element={<div>Product Violations</div>} />
+                                <Route path="product-setting" element={<div>Product Settings</div>} />
+                                <Route path="shop-rating" element={<div>Shop Rating</div>} />
+                                <Route path="shop-information" element={<div>Shop Information</div>} />
+                                <Route path="shop-category" element={<div>Shop Category</div>} />
+                                <Route path="my-report" element={<div>My Report</div>} />
+                                <Route path="dashboard" element={<div>Dashboard Content</div>} />
+                                <Route path="inbox" element={<InboxAdmin />} />
+                                <Route path="profile" element={<ProfileAdmin />} />
+                                <Route path="settings" element={<div>Settings Content</div>} />
+                                <Route path="logout" element={<div>Logout Content</div>} />
+                            </Route>
+
+                        </Routes>
+                    </UserProvider>
+                </Provider>
+            </BrowserRouter>
+        </div>
+    );
+};
+
 ReactDOM.createRoot(document.getElementById("root")).render(
     <Provider store={store}>
         <UserProvider>
-            <BrowserRouter>
-                <Routes>
-
-                    {/* Error 404 */}
-                    <Route path="*" element={<Error404 />} />
-
-                    {/* Public */}
-
-                    <Route path="/" element={<Customer />}>
-                        <Route index element={<Home />} />
-                        <Route path="login" element={<Login />} />
-                        <Route path="register" element={<Register />} />
-                        <Route path="cart" element={<Cart />} />
-                        <Route path="fields/:fieldId" element={<Field />} />
-                        <Route path="brand/:brandId" element={<BrandPage />} />
-                        <Route path="category/:categoryId" element={<CategoryPage />} />
-                        <Route path="product/:productId" element={<ProductDetails />} />
-                        <Route path="shop" element={<Shop />} />
-                        <Route path="profile" element={<Profile />} />
-                        <Route path="checkout" element={<Checkout />} />
-                        <Route path="search/:searchKey" element={<SearchLayout />} />
-                        <Route path="orderstatus" element={<OrderStatus />} />
-                    </Route>
-
-                    {/* Bussiness */}
-
-                    <Route path="/bussiness" element={<Bussiness />}>
-                        <Route index element={<DashboardBussiness />} />
-                        <Route path="login" element={<LoginBussiness />} />
-                        <Route path="register" element={<RegisterBussiness />} />
-                        <Route path="my-shipment" element={<div>My shipment</div>} />
-                        <Route path="mass-ship" element={<div>Mass ship</div>} />
-                        <Route path="shipping-setting" element={<div>Shipping setting</div>} />
-                        <Route path="my-oders" element={<MyOrdersBussiness />} />
-                        <Route path="return-refun" element={<div>Return/Refun</div>} />
-                        <Route path="cancelation" element={<div>Cancelation</div>} />
-                        <Route path="my-products" element={<MyProductsBussiness />} />
-                        <Route path="add-new-product" element={<AddProductsBussiness />} />
-                        <Route path="product-violations" element={<div>Product Violations</div>} />
-                        <Route path="product-setting" element={<div>Product Settings</div>} />
-                        <Route path="shop-rating" element={<div>Shop Rating</div>} />
-                        <Route path="shop-information" element={<div>Shop Information</div>} />
-                        <Route path="shop-category" element={<div>Shop Category</div>} />
-                        <Route path="my-report" element={<div>My Report</div>} />
-                        <Route path="dashboard" element={<div>Dashboard Content</div>} />
-                        <Route path="inbox" element={<InboxBussiness />} />
-                        <Route path="profile" element={<ProfileBussiness />} />
-                        <Route path="settings" element={<div>Settings Content</div>} />
-                        <Route path="logout" element={<div>Logout Content</div>} />
-                    </Route>
-
-                    {/* Admin */}
-
-                    <Route path="/admin" element={<Admin />}>
-                        <Route index element={<DashboardAdmin />} />
-                        <Route path="login" element={<LoginAdmin />} />
-                        <Route path="register" element={<RegisterAdmin />} />
-                        <Route path="my-shipment" element={<div>My shipment</div>} />
-                        <Route path="mass-ship" element={<div>Mass ship</div>} />
-                        <Route path="shipping-setting" element={<div>Shipping setting</div>} />
-                        <Route path="my-oders" element={<div>My oders</div>} />
-                        <Route path="return-refun" element={<div>Return/Refun</div>} />
-                        <Route path="cancelation" element={<div>Cancelation</div>} />
-                        <Route path="my-products" element={<MyProductsAdmin />} />
-                        <Route path="add-new-product" element={<div>Add New Product</div>} />
-                        <Route path="product-violations" element={<div>Product Violations</div>} />
-                        <Route path="product-setting" element={<div>Product Settings</div>} />
-                        <Route path="shop-rating" element={<div>Shop Rating</div>} />
-                        <Route path="shop-information" element={<div>Shop Information</div>} />
-                        <Route path="shop-category" element={<div>Shop Category</div>} />
-                        <Route path="my-report" element={<div>My Report</div>} />
-                        <Route path="dashboard" element={<div>Dashboard Content</div>} />
-                        <Route path="inbox" element={<InboxAdmin />} />
-                        <Route path="profile" element={<ProfileAdmin />} />
-                        <Route path="settings" element={<div>Settings Content</div>} />
-                        <Route path="logout" element={<div>Logout Content</div>} />
-                    </Route>
-
-                </Routes>
-            </BrowserRouter>
+            <App/>
         </UserProvider>
     </Provider>
 );
