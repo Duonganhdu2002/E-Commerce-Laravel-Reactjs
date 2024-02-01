@@ -149,10 +149,10 @@ const Layoutcart = () => {
                             <p>$2,090</p>
                         </div>
                         <div className=" py-2">
-                        <Link to={'/checkout'}>
-                            <Button className="w-full bg-black/80 hover:shadow-md my-2">
-                                CHECKOUT
-                            </Button></Link>
+                            <Link to={'/checkout'}>
+                                <Button className="w-full bg-black/80 hover:shadow-md my-2">
+                                    CHECKOUT
+                                </Button></Link>
                             <Button className="w-full bg-white hover:bg-gray-300 hover:shadow-none shadow-none text-black my-2">
                                 CONTINUE
                             </Button>
