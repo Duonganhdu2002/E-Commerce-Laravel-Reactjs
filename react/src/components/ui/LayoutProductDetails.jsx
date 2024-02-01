@@ -106,9 +106,15 @@ const LayoutProductDetails = () => {
 
 
     useEffect(() => {
-        getProduct(productId);
-    }, [productId]);
+        getProduct();
 
+        const intervalId = setInterval(() => {
+            getProduct();
+        }, 1000);
+
+        return () => clearInterval(intervalId);
+    }, [productId]); 
+    
     const getProduct = async () => {
         try {
             let res = await productInformation(productId);
