@@ -14,6 +14,8 @@ import ProfileBussiness from "./components/ui-bussiness/Profile";
 import InboxBussiness from "./components/ui-bussiness/Inbox";
 import MyProductsBussiness from "./pages/bussiness/MyProducts";
 import DashboardBussiness from "./pages/bussiness/Dashboard";
+import AddProductsBussiness from "./components/ui-bussiness/AddProducts";
+import { MyOrdersBussiness } from "./components/ui-bussiness/MyOrders";
 import TaskBar from "./components/ui-bussiness/TaskBar";
 import MenuBarAdmin from "./components/ui-admin/MenuBar";
 import LoginAdmin from "./components/ui-admin/Login";
@@ -130,11 +132,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                         <Route path="my-shipment" element={<div>My shipment</div>} />
                         <Route path="mass-ship" element={<div>Mass ship</div>} />
                         <Route path="shipping-setting" element={<div>Shipping setting</div>} />
-                        <Route path="my-oders" element={<div>My oders</div>} />
+                        <Route path="my-oders" element={<MyOrdersBussiness />} />
                         <Route path="return-refun" element={<div>Return/Refun</div>} />
                         <Route path="cancelation" element={<div>Cancelation</div>} />
                         <Route path="my-products" element={<MyProductsBussiness />} />
-                        <Route path="add-new-product" element={<div>Add New Product</div>} />
+                        <Route path="add-new-product" element={<AddProductsBussiness />} />
                         <Route path="product-violations" element={<div>Product Violations</div>} />
                         <Route path="product-setting" element={<div>Product Settings</div>} />
                         <Route path="shop-rating" element={<div>Shop Rating</div>} />
