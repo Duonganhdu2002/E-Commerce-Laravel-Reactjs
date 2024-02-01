@@ -17,6 +17,7 @@ import {
     Progress,
     Select,
     Option,
+    Alert
 } from "@material-tailwind/react";
 
 
@@ -239,16 +240,38 @@ const LayoutProductDetails = () => {
                                         </Link>
                                     </div>
                                 </PopoverContent>
+
                             )}
                             {
-                                (selectedColor === (null || undefined) || selectedSize === (null || undefined)) && (
+                                (user && (selectedColor === (null || undefined) || selectedSize === (null || undefined))) && (
                                     <PopoverContent className="w-96">
-                                        <Typography variant="h6" color="blue-gray" className="mb-6">
-                                            You need to select size and color
-                                        </Typography>
+                                        <Alert variant="outlined">
+                                            <span>Size and Color must be choosen</span>
+                                        </Alert>
                                     </PopoverContent>
                                 )
                             }
+
+                            {
+                                (user && (count <= 0)) && (
+                                    <PopoverContent className="w-96">
+                                        <Alert variant="outlined">
+                                            <span>The quantity must be more than 0</span>
+                                        </Alert>
+                                    </PopoverContent>
+                                )
+                            }
+
+{
+                                (user && (count > 10)) && (
+                                    <PopoverContent className="w-96">
+                                        <Alert variant="outlined">
+                                            <span>We support you can buy maximum 10 product in 1 bill</span>
+                                        </Alert>
+                                    </PopoverContent>
+                                )
+                            }
+
                         </Popover>
                     </div>
 
