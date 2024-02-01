@@ -584,7 +584,6 @@ const LayoutProductDetails = () => {
                                         Product Quality
                                         <Rating value={4} />
                                     </div>
-
                                     <div className="grid gap-6">
                                         <Textarea label="Write a review" />
                                     </div>
