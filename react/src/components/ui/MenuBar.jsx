@@ -221,6 +221,9 @@ function NavListMenu() {
 }
 
 function NavProductList() {
+    
+    const user = useSelector((state) => state.user.user);
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const renderItems = navProductList.map(({ title, price, icon }, key) => (
@@ -272,7 +275,7 @@ function NavProductList() {
                             selected={isMenuOpen || isMobileMenuOpen}
                             onClick={() => setIsMobileMenuOpen((cur) => !cur)}
                         >
-                            <Link to="/cart">
+                            <Link to={user ? "/cart" : "/login"}>
                                 <div className="">
                                     <Badge
                                         className=" w-3"
@@ -480,7 +483,7 @@ export default function MenuBar() {
                     <NavProductList />
                 </div>
 
-                <Link to="/cart">
+                <Link to={user ? "/cart" : "/login"}>
                     <div className=" lg:hidden">
                         <Badge className=" w-3" content="0" withBorder>
                             <ShoppingCartIcon
