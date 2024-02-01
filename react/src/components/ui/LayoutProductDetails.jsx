@@ -56,6 +56,7 @@ const LayoutProductDetails = () => {
     };
 
     useEffect(() => {
+
         const fetchData = async () => {
             try {
                 let res = await productInformation(productId);
@@ -106,26 +107,29 @@ const LayoutProductDetails = () => {
 
 
     useEffect(() => {
+
+        const getProduct = async () => {
+            try {
+                let res = await productInformation(productId);
+                if (res && res.data) {
+                    setData(res.data);
+
+                }
+            } catch (error) {
+                console.error("Error fetching fields:", error);
+            }
+        };
+
         getProduct();
 
         const intervalId = setInterval(() => {
             getProduct();
-        }, 1000);
+        }, 3000);
 
         return () => clearInterval(intervalId);
-    }, [productId]); 
-    
-    const getProduct = async () => {
-        try {
-            let res = await productInformation(productId);
-            if (res && res.data) {
-                setData(res.data);
 
-            }
-        } catch (error) {
-            console.error("Error fetching fields:", error);
-        }
-    };
+    }, [productId]);
+
 
     // console.log(data);
     // console.log(starBlack);
