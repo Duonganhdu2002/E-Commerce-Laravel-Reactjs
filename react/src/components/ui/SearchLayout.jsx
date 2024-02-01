@@ -106,8 +106,7 @@ export default function SearchLayout() {
     }, [active, dataFull.last_page]);
 
     // console.log(page)
-
-    console.log(data.average_rating)
+    // console.log(data.average_rating)
 
     return (
         <div className=" flex justify-center items-center">

@@ -64,18 +64,30 @@ const LayoutProductDetails = () => {
         fetchData();
     }, [productId]);
 
+    const [selectedSize, setSelectedSize] = useState();
+    const [selectedColor, setSelectedColor] = useState();
+
+    const handleChangeSize = (e) => {
+        setSelectedSize(e);
+    }
+    const handleChangeColor = (e) => {
+        setSelectedColor(e);
+    }
+
     const card = {
-        user_id: user.user_id,
+        user_id: user ? user.user_id : 0,
         product_id: data.product_id,
-        quantity: 2,
-        color: 'Blue',
-        size: 'Blue',
-        img: 'Blue.png',
+        quantity: count,
+        color: selectedColor,
+        size: selectedSize,
+        img: currentImage,
     };
+
+    const [thongbao, setThongbao] = useState('');
 
     const handleAddToCart = async () => {
         try {
-            if (user) {
+            if (user && selectedColor !== (null || undefined) && selectedSize !== (null || undefined)) {
                 let res = await addToCart(card);
                 console.log(res.message)
             }
@@ -101,7 +113,7 @@ const LayoutProductDetails = () => {
         }
     };
 
-    console.log(data);
+    // console.log(data);
     // console.log(starBlack);
     // console.log(starWhite);
 
@@ -142,7 +154,7 @@ const LayoutProductDetails = () => {
 
                     <div className="lg:mt-11 mt-10">
                         <div className="flex flex-row justify-between">
-                            <p className=" font-medium text-base leading-4 text-gray-600">Select quantity</p>
+                            <p id="haha" className=" font-medium text-base leading-4 text-gray-600">Select quantity</p>
                             <div className="flex">
                                 <span onClick={minusCount} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 border-r-0 w-7 h-7 flex items-center justify-center pb-1">
                                     -
@@ -156,17 +168,36 @@ const LayoutProductDetails = () => {
                         <hr className=" bg-gray-200 w-full my-2" />
                         <div className=" flex flex-row justify-between items-center mt-4">
                             <div className="flex w-full gap-6 justify-between text-blue-gray-900">
-                                <Select variant="standard" label="Size">
-                                    {sizes.map((size, index) => (
-                                        <Option key={index}>{size}</Option>
-                                    ))}
-                                </Select>
-                                <Select variant="standard" label="Color">
+
+                                <div>
+                                    <Select
+                                        variant="standard"
+                                        label="Size"
+                                        onChange={handleChangeSize}
+                                    >
+                                        {sizes.map((size, index) => (
+                                            <Option key={index} value={size}>
+                                                {size}
+                                            </Option>
+                                        ))}
+                                    </Select>
+
+                                </div>
+
+                                <Select
+                                    variant="standard"
+                                    label="Color"
+                                    onChange={handleChangeColor}
+                                >
                                     {colors.map((color, index) => (
-                                        <Option key={index}>{color}</Option>
+                                        <Option key={index} value={color}>
+                                            {color}
+                                        </Option>
                                     ))}
                                 </Select>
+
                             </div>
+
                         </div>
                     </div>
                     <div className="mt-4 mx-auto w-full h-12 justify-center flex">
@@ -209,6 +240,15 @@ const LayoutProductDetails = () => {
                                     </div>
                                 </PopoverContent>
                             )}
+                            {
+                                (selectedColor === (null || undefined) || selectedSize === (null || undefined)) && (
+                                    <PopoverContent className="w-96">
+                                        <Typography variant="h6" color="blue-gray" className="mb-6">
+                                            You need to select size and color
+                                        </Typography>
+                                    </PopoverContent>
+                                )
+                            }
                         </Popover>
                     </div>
 
