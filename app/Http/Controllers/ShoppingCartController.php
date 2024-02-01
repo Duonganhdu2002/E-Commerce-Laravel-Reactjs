@@ -19,7 +19,7 @@ class ShoppingCartController extends Controller
         try {
             $shoppingCartItems = ShoppingCart::where('user_id', $user_id)
                 ->join('product', 'shopping_cart.product_id', '=', 'product.product_id')
-                ->select('shopping_cart.*', 'product.price as product_price')
+                ->select('shopping_cart.*', 'product.price as price','product.name as name')
                 ->get();
 
             if ($shoppingCartItems->isEmpty()) {
