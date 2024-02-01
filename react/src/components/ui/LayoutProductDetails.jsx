@@ -93,11 +93,9 @@ const LayoutProductDetails = () => {
         img: currentImage,
     };
 
-    const [thongbao, setThongbao] = useState('');
-
     const handleAddToCart = async () => {
         try {
-            if (user && selectedColor !== (null || undefined) && selectedSize !== (null || undefined)) {
+            if (user && selectedColor !== (null || undefined) && selectedSize !== (null || undefined) && count > 0 && count <= 10) {
                 let res = await addToCart(card);
                 console.log(res.message)
             }
