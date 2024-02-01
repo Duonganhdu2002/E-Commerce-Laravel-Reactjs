@@ -17,25 +17,31 @@ const Layoutcart = () => {
     const user_id = useSelector((state) => state.user.user.user_id || '');
 
     useEffect(() => {
-        getFetchBrandsByFieldId(user_id);
-    }, [user_id]);
 
-    const getFetchBrandsByFieldId = async () => {
-        try {
-            setLoading(true);
-            let res = await getCart(user_id);
-            if (res && res.data) {
-                setData(res.data);
+        const getFetchBrandsByFieldId = async () => {
+            try {
+                setLoading(true);
+                let res = await getCart(user_id);
+                if (res && res.data) {
+                    setData(res.data);
+                }
+            } catch (error) {
+                console.error("Error fetching fields:", error);
+                setError("Error fetching data");
+            } finally {
+                setLoading(false);
             }
-        } catch (error) {
-            console.error("Error fetching fields:", error);
-            setError("Error fetching data");
-        } finally {
-            setLoading(false);
-        }
-    };
+        };
 
-    console.log(data)
+        getFetchBrandsByFieldId();
+
+        const intervalId = setInterval(() => {
+            getFetchBrandsByFieldId();
+        }, 3000);
+
+        return () => clearInterval(intervalId);
+
+    }, [user_id]);
 
     return (
         <div className="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
@@ -58,7 +64,7 @@ const Layoutcart = () => {
                                             <div className="w-full flex flex-col justify-start items-start space-y-8">
                                                 <h3 className="text-xl xl:text-2xl font-semibold leading-6 text-gray-800">Premium Quaility Dress</h3>
                                                 <div className="flex justify-start items-start flex-col space-y-2">
-                                                    
+
                                                     <p className="text-sm leading-none text-gray-800">
                                                         <span className="text-gray-300">Size: </span> Small
                                                     </p>
@@ -69,7 +75,7 @@ const Layoutcart = () => {
                                             </div>
                                             <div className="flex justify-between space-x-8 items-start w-full">
                                                 <p className="text-base xl:text-lg leading-6">
-                                                    $36.00 
+                                                    $36.00
                                                 </p>
                                                 <p className="text-base xl:text-lg leading-6 text-gray-800">01</p>
                                                 <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">$36.00</p>
