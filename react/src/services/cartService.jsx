@@ -4,4 +4,9 @@ const addToCart = (card) => {
     return axios.post("/public/cart/add-to-cart", card);
 }
 
-export { addToCart };
+const getCart = (user_id) => {
+    return axios.get(`/public/cart/show/${user_id}`);
+}
+
+
+export { addToCart, getCart };
