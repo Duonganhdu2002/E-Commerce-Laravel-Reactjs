@@ -1,6 +1,4 @@
-import { Select, Option } from "@material-tailwind/react";
 import { Button } from "@material-tailwind/react";
-import img from "../../assets/image/Bedroom10.jpg";
 import Lock from "../../assets/icon/lock-svgrepo-com.svg";
 import Visa from "../../assets/icon/visa-svgrepo-com.svg";
 import AmericanExpress from "../../assets/icon/american-express-logo-svgrepo-com.svg";
