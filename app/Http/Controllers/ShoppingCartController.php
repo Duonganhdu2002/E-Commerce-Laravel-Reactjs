@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\ShoppingCartResource;
 use App\Models\product;
-use App\Models\shopping_cart;
+use App\Models\shopping_cart as ShoppingCart;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -14,18 +14,32 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ShoppingCartController extends Controller
 {
-    public function index()
+    public function index($user_id)
     {
+        try {
+            $shoppingCartItems = ShoppingCart::where('user_id', $user_id)
+                ->join('product', 'shopping_cart.product_id', '=', 'product.product_id')
+                ->select('shopping_cart.*', 'product.price as product_price')
+                ->get();
 
-        $sc = shopping_cart::all();
+            if ($shoppingCartItems->isEmpty()) {
+                $response = [
+                    'status' => true,
+                    'message' => 'No products in the shopping cart.',
+                    'data' => []
+                ];
+            } else {
+                $response = [
+                    'status' => true,
+                    'message' => 'Danh sách',
+                    'data' => ShoppingCartResource::collection($shoppingCartItems)
+                ];
+            }
 
-        $arr = [
-            'status' => true,
-            'message' => 'Danh sách',
-            'data' => ShoppingCartResource::collection($sc)
-        ];
-
-        return response()->json($arr, 200);
+            return response()->json($response, 200);
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
+        }
     }
 
     public function store(Request $request)
@@ -53,10 +67,10 @@ class ShoppingCartController extends Controller
         $color = $input['color'];
         $size = $input['size'];
         $img = $input['img'];
-        
+
 
         // Check if the product already exists in the shopping cart
-        $existingCartItem = shopping_cart::where('user_id', $user_id)
+        $existingCartItem = ShoppingCart::where('user_id', $user_id)
             ->where('product_id', $product_id)
             ->first();
 
@@ -72,7 +86,7 @@ class ShoppingCartController extends Controller
             return response()->json($arr, 200);
         }
 
-        $count = shopping_cart::where('user_id', $user_id)->count();
+        $count = ShoppingCart::where('user_id', $user_id)->count();
 
         if ($count >= 50) {
             $arr = [
@@ -85,7 +99,7 @@ class ShoppingCartController extends Controller
         }
 
         try {
-            shopping_cart::create([
+            ShoppingCart::create([
                 'user_id' => $user_id,
                 'product_id' => $product_id,
                 'quantity' => $quantity,
@@ -131,7 +145,7 @@ class ShoppingCartController extends Controller
             return response()->json($arr, 200);
         }
 
-        $sc = shopping_cart::find($id);
+        $sc = ShoppingCart::find($id);
 
         if (!$sc) {
             $arr = [
@@ -155,7 +169,7 @@ class ShoppingCartController extends Controller
     public function destroy(string $id)
     {
         try {
-            $sc = shopping_cart::findOrFail($id);
+            $sc = ShoppingCart::findOrFail($id);
             $sc->delete();
 
             $arr = [
