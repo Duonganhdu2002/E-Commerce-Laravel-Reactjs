@@ -44,7 +44,7 @@ const Layoutcart = () => {
 
         const intervalId = setInterval(() => {
             getFetchBrandsByFieldId();
-        }, 1000);
+        }, 5000);
 
         return () => clearInterval(intervalId);
     }, [user_id]);
