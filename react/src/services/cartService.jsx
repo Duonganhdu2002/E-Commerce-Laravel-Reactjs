@@ -12,4 +12,9 @@ const updateCart = (shoppingCartId, quantity) => {
     return axios.put(`/public/cart/update/${shoppingCartId}`, quantity);
 }
 
-export { addToCart, getCart, updateCart };
+const deleteCart = (shoppingCartId) => {
+    return axios.delete(`/public/cart/delete/${shoppingCartId}`);
+}
+
+
+export { addToCart, getCart, updateCart, deleteCart };

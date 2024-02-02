@@ -5,7 +5,7 @@ import AmericanExpress from "../../assets/icon/american-express-logo-svgrepo-com
 import Mastercard from "../../assets/icon/mastercard-svgrepo-com.svg";
 import PayPal from "../../assets/icon/paypal-svgrepo-com.svg";
 import { Link } from "react-router-dom";
-import { getCart, updateCart } from "../../services/cartService";
+import { getCart, updateCart, deleteCart } from "../../services/cartService";
 import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
 import Cancel from "../../assets/icon/cancle.svg"
@@ -17,8 +17,8 @@ const Layoutcart = () => {
     const user_id = useSelector((state) => state.user.user.user_id || '');
     const [count, setCount] = useState({});
 
+    // Call API cart
 
-    // Gọi API cart
     useEffect(() => {
         const getFetchBrandsByFieldId = async () => {
             try {
@@ -44,11 +44,12 @@ const Layoutcart = () => {
 
         const intervalId = setInterval(() => {
             getFetchBrandsByFieldId();
-        }, 10000);
+        }, 1000);
 
         return () => clearInterval(intervalId);
     }, [user_id]);
 
+    // API update quantity
 
     useEffect(() => {
         const updateCartData = async () => {
@@ -60,7 +61,7 @@ const Layoutcart = () => {
 
                 await Promise.all(updatePromises);
 
-                console.log('Carts updated successfully');
+                // console.log('Carts updated successfully');
             } catch (error) {
                 console.error('Error updating carts:', error);
                 setError('Error updating carts');
@@ -69,6 +70,19 @@ const Layoutcart = () => {
 
         updateCartData();
     }, [count]);
+
+    // API delete cart 
+    // Function delete product 
+
+    const handleDeleteCart = async (shoppingCartId) => {
+        try {
+            let res = await deleteCart(shoppingCartId);
+            console.log(res);
+        } catch (error) {
+            console.error('Error deleting cart:', error);
+            setError('Error deleting cart');
+        }
+    };
 
 
     // Tăng số lượng sp
@@ -140,7 +154,7 @@ const Layoutcart = () => {
                                                 <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">  ${parseFloat((carts.price * carts.quantity).toFixed(2))}</p>
                                             </div>
                                             <div className=" flex justify-end absolute right-0 bottom-0">
-                                                <img className=" w-6 h-6" src={Cancel} alt="" />
+                                                <img onClick={() => handleDeleteCart(carts.shopping_cart_id)} className="w-6 h-6 cursor-pointer" src={Cancel} alt="" />
                                             </div>
                                         </div>
                                     </div>
