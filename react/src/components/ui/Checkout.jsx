@@ -9,7 +9,10 @@ export default function Checkout() {
     const [dropdown3, setDropdown3] = useState(false);
     const [changeText1, setChangeText1] = useState("City");
     const selectedItems = useSelector(state => state.cart.items);
-
+    const subtotal = selectedItems.reduce((total, item) => {
+        const itemTotal = parseFloat(item.Price) * item.newQuantity;
+        return total + itemTotal;
+    }, 0);
     useEffect(() => {
         console.log('Selected Items:', selectedItems);
 
@@ -237,7 +240,7 @@ export default function Checkout() {
                             </h1>
                         </div>
                         <div className="flex mt-7 flex-col items-end w-full space-y-6">
-                            <div className="flex justify-between w-full items-center">
+                            <div className="flex justify-between w-full mb-4 items-center">
                                 <p className="text-lg leading-4 text-gray-600">
                                     Total items
                                 </p>
@@ -245,11 +248,23 @@ export default function Checkout() {
                                     {selectedItems.length}
                                 </p>
                             </div>
+                            {
+                                selectedItems && selectedItems.length > 0 && selectedItems.map((carts, index) => (
+                                    <div className="flex justify-between w-full mb-24 items-center" key={index}>
+                                        <p className="text-lg leading-4 text-gray-600">
+                                            {carts.itemId}
+                                        </p>
+                                        <p className="text-lg font-semibold leading-4 text-gray-600">
+                                            {carts.newQuantity} x {carts.Price} 
+                                        </p>
+                                    </div>
+                                ))
+                            }
 
                         </div>
                         <div className=" space-y-4">
 
-                            <div className="flex justify-between w-full items-center mt-32">
+                            <div className="flex justify-between w-full items-center mt-24">
                                 <p className="text-lg leading-4 text-gray-600">
                                     Shipping charges
                                 </p>
@@ -262,7 +277,7 @@ export default function Checkout() {
                                     Sub total
                                 </p>
                                 <p className="text-lg font-semibold leading-4 text-gray-600">
-                                    $3520
+                                    ${subtotal.toFixed(2)}
                                 </p>
                             </div>
                             <div className="flex justify-between w-full items-center">
