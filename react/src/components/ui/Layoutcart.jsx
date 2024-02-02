@@ -16,6 +16,8 @@ const Layoutcart = () => {
     const [error, setError] = useState('');
     const user_id = useSelector((state) => state.user.user.user_id || '');
     const [count, setCount] = useState({});
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [cartChecked, setCartChecked] = useState({});
 
     // Call API cart
 
@@ -44,7 +46,7 @@ const Layoutcart = () => {
 
         const intervalId = setInterval(() => {
             getFetchBrandsByFieldId();
-        }, 5000);
+        }, 6000);
 
         return () => clearInterval(intervalId);
     }, [user_id]);
@@ -103,6 +105,19 @@ const Layoutcart = () => {
         }
     };
 
+    useEffect(() => {
+        const selectedItemsTotal = data.reduce((total, cart) => {
+            if (count[cart.shopping_cart_id]) {
+                if (cartChecked[cart.shopping_cart_id]) {
+                    return total + cart.price * count[cart.shopping_cart_id];
+                }
+            }
+            return total;
+        }, 0);
+
+        setTotalPrice(selectedItemsTotal);
+    }, [data, count, cartChecked]);
+
     return (
         <div className=" w-[95%] md:w-[90%] lg:w-[80%] mx-auto my-6">
             <div className="flex justify-start item-start space-y-2 flex-col ">
@@ -116,7 +131,15 @@ const Layoutcart = () => {
                             data && data.length > 0 && data.map((carts, index) => (
                                 <div key={index} className="mt-4 md:mt-6 flex  flex-col md:flex-row justify-start items-start md:items-center md:space-x-6 xl:space-x-8 w-full ">
                                     <div className=" w-[5%]">
-                                        <Checkbox defaultChecked={false ? true : false} />
+                                        <Checkbox
+                                            defaultChecked={cartChecked[carts.shopping_cart_id]}
+                                            onChange={(e) => {
+                                                setCartChecked((prevCartChecked) => ({
+                                                    ...prevCartChecked,
+                                                    [carts.shopping_cart_id]: e.target.checked,
+                                                }));
+                                            }}
+                                        />
                                     </div>
                                     <Link to={`/product/${carts.product_id}`}>
                                         <div className="w-full">
@@ -183,7 +206,11 @@ const Layoutcart = () => {
                         </div>
                         <div className="flex justify-between items-center py-4 text-2xl font-bold">
                             <p>Total</p>
-                            <p>$2,090</p>
+                            {totalPrice >= 0 && (
+                                <p className="text-lg font-semibold mt-4">
+                                    ${totalPrice.toFixed(2)}
+                                </p>
+                            )}
                         </div>
                         <div className=" py-2">
                             <Link to={'/checkout'}>
