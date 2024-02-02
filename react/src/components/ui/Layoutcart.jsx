@@ -197,7 +197,11 @@ const Layoutcart = () => {
                         <div className="">
                             <div className="flex justify-between items-center py-4 border-b text-gray-600">
                                 <p>Subtotal</p>
-                                <p>$723</p>
+                                {totalPrice >= 0 && (
+                                    <p>
+                                        ${totalPrice.toFixed(2)}
+                                    </p>
+                                )}
                             </div>
                             <div className="flex justify-between items-center py-4 border-b text-gray-600">
                                 <p>Discount</p>
