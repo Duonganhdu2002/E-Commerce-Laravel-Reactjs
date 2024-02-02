@@ -131,8 +131,6 @@ class ShoppingCartController extends Controller
 
         $validator = Validator::make($input, [
             'name' => 'required',
-
-
             'quantity' => 'numeric|min:1',
         ]);
 

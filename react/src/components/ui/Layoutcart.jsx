@@ -49,6 +49,10 @@ const Layoutcart = () => {
         return () => clearInterval(intervalId);
     }, [user_id]);
 
+    // Gọi API Update quantity
+
+    
+
     // Tăng số lượng sp
     const addCount = (shoppingCartId) => {
         setCount(prevCount => ({
