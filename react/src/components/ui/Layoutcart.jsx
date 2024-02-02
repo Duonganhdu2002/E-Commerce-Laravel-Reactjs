@@ -5,7 +5,7 @@ import AmericanExpress from "../../assets/icon/american-express-logo-svgrepo-com
 import Mastercard from "../../assets/icon/mastercard-svgrepo-com.svg";
 import PayPal from "../../assets/icon/paypal-svgrepo-com.svg";
 import { Link } from "react-router-dom";
-import { getCart } from "../../services/cartService";
+import { getCart, updateCart } from "../../services/cartService";
 import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
 import Cancel from "../../assets/icon/cancle.svg"
@@ -44,14 +44,32 @@ const Layoutcart = () => {
 
         const intervalId = setInterval(() => {
             getFetchBrandsByFieldId();
-        }, 3000);
+        }, 10000);
 
         return () => clearInterval(intervalId);
     }, [user_id]);
 
-    // Gọi API Update quantity
 
-    
+    useEffect(() => {
+        const updateCartData = async () => {
+            try {
+                const updatePromises = Object.keys(count).map(shoppingCartId => {
+                    const quantity = count[shoppingCartId];
+                    return updateCart(shoppingCartId, { quantity });
+                });
+
+                await Promise.all(updatePromises);
+
+                console.log('Carts updated successfully');
+            } catch (error) {
+                console.error('Error updating carts:', error);
+                setError('Error updating carts');
+            }
+        };
+
+        updateCartData();
+    }, [count]);
+
 
     // Tăng số lượng sp
     const addCount = (shoppingCartId) => {
@@ -70,7 +88,6 @@ const Layoutcart = () => {
             }));
         }
     };
-
 
     return (
         <div className=" w-[95%] md:w-[90%] lg:w-[80%] mx-auto my-6">

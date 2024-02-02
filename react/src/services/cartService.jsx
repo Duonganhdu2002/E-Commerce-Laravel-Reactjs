@@ -8,8 +8,8 @@ const getCart = (user_id) => {
     return axios.get(`/public/cart/show/${user_id}`);
 }
 
-const updateCart = (product_id) => {
-    return axios.get(`/public/cart/update/${product_id}`);
+const updateCart = (shoppingCartId, quantity) => {
+    return axios.put(`/public/cart/update/${shoppingCartId}`, quantity);
 }
 
 export { addToCart, getCart, updateCart };
