@@ -7,8 +7,8 @@ import PayPal from "../../assets/icon/paypal-svgrepo-com.svg";
 import { Link } from "react-router-dom";
 import { getCart } from "../../services/cartService";
 import { useEffect, useState } from "react";
-import { useSelector } from 'react-redux'
-
+import { useSelector } from 'react-redux';
+import Cancel from "../../assets/icon/cancle.svg"
 const Layoutcart = () => {
 
     const [data, setData] = useState([]);
@@ -16,6 +16,8 @@ const Layoutcart = () => {
     const [error, setError] = useState('');
     const user_id = useSelector((state) => state.user.user.user_id || '');
 
+
+    // Gọi API cart
     useEffect(() => {
 
         const getFetchBrandsByFieldId = async () => {
@@ -37,14 +39,28 @@ const Layoutcart = () => {
 
         const intervalId = setInterval(() => {
             getFetchBrandsByFieldId();
-        }, 3000);
-
+        }, 3000); // Cập nhật dữ liệu mỗi 3s
+        
         return () => clearInterval(intervalId);
 
     }, [user_id]);
 
+
+
+    // Tăng số lượng sp
+    const addCount = () => {
+        setCount((prev) => prev + 1);
+    };
+
+    // Giảm số lượng sp
+    const minusCount = () => {
+        if (count > 0) {
+            setCount((prev) => prev - 1);
+        }
+    };
+
     return (
-        <div className="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
+        <div className=" w-[95%] md:w-[90%] lg:w-[80%] mx-auto my-6">
             <div className="flex justify-start item-start space-y-2 flex-col ">
                 <h1 className="text-3xl lg:text-4xl font-semibold leading-7 lg:leading-9  text-gray-800">Your cart</h1>
             </div>
@@ -59,17 +75,17 @@ const Layoutcart = () => {
                                         <Checkbox defaultChecked={false ? true : false} />
                                     </div>
                                     <Link to={`/product/${carts.product_id}`}>
-                                        <div className="pb-4 md:pb-8 w-full md:w-40">
-                                            <img className="w-full hidden md:block" src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${carts.img}?raw=true`} alt="dress" />
-                                            <img className="w-full md:hidden" src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${carts.img}?raw=true`} alt="dress" />
+                                        <div className="w-full">
+                                            <img className="w-24 h-24 object-cover hidden md:block" src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${carts.img}?raw=true`} alt="dress" />
+                                            <img className="w-24 h-24 object-cover md:hidden" src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${carts.img}?raw=true`} alt="dress" />
                                         </div>
                                     </Link>
-                                    <div className="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full  pb-8 space-y-4 md:space-y-0">
+                                    <div className="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full h-full  pb-6 space-y-4 md:space-y-0">
                                         <div className="w-full flex flex-col justify-start items-start space-y-8">
-                                            <h3 className="text-xl xl:text-2xl font-semibold leading-6 text-gray-800">{carts.name}</h3>
+                                            <h4 className="text-xl xl:text-2xl font-semibold leading-6 text-gray-800">{carts.name}</h4>
                                             <div className="flex justify-start items-start flex-col space-y-2">
 
-                                                <p className="text-sm leading-none text-gray-800">
+                                                <p className="text-sm leading-none text-gray-800 mb-2">
                                                     <span className="text-gray-300">Size: </span> {carts.size}
                                                 </p>
                                                 <p className="text-sm leading-none text-gray-800">
@@ -77,12 +93,25 @@ const Layoutcart = () => {
                                                 </p>
                                             </div>
                                         </div>
-                                        <div className="flex justify-between space-x-8 items-start w-full">
-                                            <p className="text-base xl:text-lg leading-6">
-                                                ${carts.price}
-                                            </p>
-                                            <p className="text-base xl:text-lg leading-6 text-gray-800">{carts.quantity}</p>
-                                            <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">  ${parseFloat((carts.price * carts.quantity).toFixed(2))}</p>
+                                        <div className=" flex flex-col relative h-full">
+                                            <div className="flex justify-between space-x-8 items-end w-full">
+                                                <p className="text-base xl:text-lg leading-6">
+                                                    ${carts.price}
+                                                </p>
+                                                <div className="flex justify-center">
+                                                    <span onClick={minusCount} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 border-r-0 w-7 h-7 flex items-center justify-center pb-1">
+                                                        -
+                                                    </span>
+                                                    <input id="counter" aria-label="input" className="border border-gray-300 h-full text-center w-14 pb-1" type="text" value={carts.quantity} onChange={(e) => e.target.value} />
+                                                    <span onClick={addCount} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 border-l-0 w-7 h-7 flex items-center justify-center pb-1 ">
+                                                        +
+                                                    </span>
+                                                </div>
+                                                <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">  ${parseFloat((carts.price * carts.quantity).toFixed(2))}</p>
+                                            </div>
+                                            <div className=" flex justify-end absolute right-0 bottom-0">
+                                                <img className=" w-6 h-6" src={Cancel} alt="" />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -116,10 +145,8 @@ const Layoutcart = () => {
                             <Link to={'/checkout'}>
                                 <Button className="w-full bg-black/80 hover:shadow-md my-2">
                                     CHECKOUT
-                                </Button></Link>
-                            <Button className="w-full bg-white hover:bg-gray-300 hover:shadow-none shadow-none text-black my-2">
-                                CONTINUE
-                            </Button>
+                                </Button>
+                            </Link>
                         </div>
                         <div>
                             <p className="flex items-center justify-center text-gray-500">
