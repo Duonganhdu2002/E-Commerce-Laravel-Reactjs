@@ -15,16 +15,21 @@ const Layoutcart = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const user_id = useSelector((state) => state.user.user.user_id || '');
+    const [count, setCount] = useState({});
 
 
     // Gọi API cart
     useEffect(() => {
-
         const getFetchBrandsByFieldId = async () => {
             try {
                 setLoading(true);
                 let res = await getCart(user_id);
                 if (res && res.data) {
+                    const newCount = {};
+                    res.data.forEach(cart => {
+                        newCount[cart.shopping_cart_id] = cart.quantity;
+                    });
+                    setCount(newCount);
                     setData(res.data);
                 }
             } catch (error) {
@@ -39,25 +44,29 @@ const Layoutcart = () => {
 
         const intervalId = setInterval(() => {
             getFetchBrandsByFieldId();
-        }, 3000); // Cập nhật dữ liệu mỗi 3s
-        
-        return () => clearInterval(intervalId);
+        }, 3000);
 
+        return () => clearInterval(intervalId);
     }, [user_id]);
 
-
-
     // Tăng số lượng sp
-    const addCount = () => {
-        setCount((prev) => prev + 1);
+    const addCount = (shoppingCartId) => {
+        setCount(prevCount => ({
+            ...prevCount,
+            [shoppingCartId]: (prevCount[shoppingCartId] || 0) + 1,
+        }));
     };
 
     // Giảm số lượng sp
-    const minusCount = () => {
-        if (count > 0) {
-            setCount((prev) => prev - 1);
+    const minusCount = (shoppingCartId) => {
+        if (count[shoppingCartId] > 0) {
+            setCount(prevCount => ({
+                ...prevCount,
+                [shoppingCartId]: prevCount[shoppingCartId] - 1,
+            }));
         }
     };
+
 
     return (
         <div className=" w-[95%] md:w-[90%] lg:w-[80%] mx-auto my-6">
@@ -99,11 +108,11 @@ const Layoutcart = () => {
                                                     ${carts.price}
                                                 </p>
                                                 <div className="flex justify-center">
-                                                    <span onClick={minusCount} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 border-r-0 w-7 h-7 flex items-center justify-center pb-1">
+                                                    <span onClick={() => minusCount(carts.shopping_cart_id)} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 border-r-0 w-7 h-7 flex items-center justify-center pb-1">
                                                         -
                                                     </span>
-                                                    <input id="counter" aria-label="input" className="border border-gray-300 h-full text-center w-14 pb-1" type="text" value={carts.quantity} onChange={(e) => e.target.value} />
-                                                    <span onClick={addCount} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 border-l-0 w-7 h-7 flex items-center justify-center pb-1 ">
+                                                    <input id="counter" aria-label="input" className="border border-gray-300 h-full text-center w-14 pb-1" type="text" value={count[carts.shopping_cart_id] || 0} onChange={(e) => e.target.value} />
+                                                    <span onClick={() => addCount(carts.shopping_cart_id)} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 border-l-0 w-7 h-7 flex items-center justify-center pb-1 ">
                                                         +
                                                     </span>
                                                 </div>
