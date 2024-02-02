@@ -4,13 +4,17 @@ import Visa from "../../assets/icon/visa-svgrepo-com.svg";
 import AmericanExpress from "../../assets/icon/american-express-logo-svgrepo-com.svg";
 import Mastercard from "../../assets/icon/mastercard-svgrepo-com.svg";
 import PayPal from "../../assets/icon/paypal-svgrepo-com.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getCart, updateCart, deleteCart } from "../../services/cartService";
 import { useEffect, useState } from "react";
-import { useSelector } from 'react-redux';
-import Cancel from "../../assets/icon/cancle.svg"
+import { useSelector, useDispatch } from 'react-redux';
+import Cancel from "../../assets/icon/cancle.svg";
+import { clearCart, addItem } from "../../redux/slices/cartSlice";
+
 const Layoutcart = () => {
 
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -56,14 +60,11 @@ const Layoutcart = () => {
     useEffect(() => {
         const updateCartData = async () => {
             try {
-                const updatePromises = Object.keys(count).map(shoppingCartId => {
+                const updatePromises = Object.keys(count).map(async (shoppingCartId) => {
                     const quantity = count[shoppingCartId];
-                    return updateCart(shoppingCartId, { quantity });
+                    await updateCart(shoppingCartId, { quantity });
                 });
-
                 await Promise.all(updatePromises);
-
-                // console.log('Carts updated successfully');
             } catch (error) {
                 console.error('Error updating carts:', error);
                 setError('Error updating carts');
@@ -72,6 +73,7 @@ const Layoutcart = () => {
 
         updateCartData();
     }, [count]);
+
 
     // API delete cart 
     // Function delete product 
@@ -84,6 +86,18 @@ const Layoutcart = () => {
             console.error('Error deleting cart:', error);
             setError('Error deleting cart');
         }
+    };
+
+    // Lưu dữ liệu vào redux
+    const handleCheckout = () => {
+        dispatch(clearCart());
+        // Filter out only the selected items
+        const selectedItems = data.filter(cart => cartChecked[cart.shopping_cart_id]);
+        // Gửi các action để add 
+        selectedItems.forEach(cart => {
+            dispatch(addItem({ itemId: cart.name, newQuantity: cart.quantity, Price: cart.price }));
+        });
+        navigate("/checkout");
     };
 
 
@@ -105,11 +119,13 @@ const Layoutcart = () => {
         }
     };
 
+    // Checkbox select
     useEffect(() => {
         const selectedItemsTotal = data.reduce((total, cart) => {
             if (count[cart.shopping_cart_id]) {
                 if (cartChecked[cart.shopping_cart_id]) {
-                    return total + cart.price * count[cart.shopping_cart_id];
+                    const itemTotal = cart.price * count[cart.shopping_cart_id];
+                    return total + itemTotal;
                 }
             }
             return total;
@@ -217,11 +233,9 @@ const Layoutcart = () => {
                             )}
                         </div>
                         <div className=" py-2">
-                            <Link to={'/checkout'}>
-                                <Button className="w-full bg-black/80 hover:shadow-md my-2">
-                                    CHECKOUT
-                                </Button>
-                            </Link>
+                            <Button onClick={handleCheckout} className="w-full bg-black/80 hover:shadow-md my-2">
+                                CHECKOUT
+                            </Button>
                         </div>
                         <div>
                             <p className="flex items-center justify-center text-gray-500">

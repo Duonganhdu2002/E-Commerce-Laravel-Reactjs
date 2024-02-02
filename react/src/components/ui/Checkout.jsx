@@ -1,10 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 export default function Checkout() {
+
     const [dropdown1, setDropdown1] = useState(false);
     const [dropdown2, setDropdown2] = useState(false);
     const [dropdown3, setDropdown3] = useState(false);
     const [changeText1, setChangeText1] = useState("City");
+    const selectedItems = useSelector(state => state.cart.items);
+
+    useEffect(() => {
+        console.log('Selected Items:', selectedItems);
+
+    }, [selectedItems]);
 
     const HandleText1 = (e) => {
         setChangeText1(e);
@@ -69,9 +78,8 @@ export default function Checkout() {
                                     >
                                         <svg
                                             id="close"
-                                            className={` transform ${
-                                                dropdown1 ? "rotate-180" : ""
-                                            }  `}
+                                            className={` transform ${dropdown1 ? "rotate-180" : ""
+                                                }  `}
                                             width={16}
                                             viewBox="0 0 16 16"
                                             fill="none"
@@ -86,9 +94,8 @@ export default function Checkout() {
                                         </svg>
                                     </button>
                                     <div
-                                        className={`shadow absolute z-10 bg-white top-10  w-full mt-3 ${
-                                            dropdown1 ? "" : "hidden"
-                                        }`}
+                                        className={`shadow absolute z-10 bg-white top-10  w-full mt-3 ${dropdown1 ? "" : "hidden"
+                                            }`}
                                     >
                                         <div className="flex flex-col  w-full">
                                             <p className="focus:outline-none cursor-pointer px-3 hover:text-white hover:bg-gray-800 focus:bg-gray-800 focus:text-white text-left  text-base text-gray-600 py-2 w-full">
@@ -119,9 +126,8 @@ export default function Checkout() {
                                     >
                                         <svg
                                             id="close2"
-                                            className={` transform ${
-                                                dropdown2 ? "rotate-180" : ""
-                                            }  `}
+                                            className={` transform ${dropdown2 ? "rotate-180" : ""
+                                                }  `}
                                             width={16}
                                             viewBox="0 0 16 16"
                                             fill="none"
@@ -136,9 +142,8 @@ export default function Checkout() {
                                         </svg>
                                     </button>
                                     <div
-                                        className={`shadow absolute z-10 bg-white top-10  w-full mt-3 ${
-                                            dropdown2 ? "" : "hidden"
-                                        }`}
+                                        className={`shadow absolute z-10 bg-white top-10  w-full mt-3 ${dropdown2 ? "" : "hidden"
+                                            }`}
                                     >
                                         <div className="flex flex-col  w-full">
                                             <p className="focus:outline-none cursor-pointer px-3 hover:text-white hover:bg-gray-800 focus:bg-gray-800 focus:text-white text-left  text-base text-gray-600 py-2 w-full">
@@ -168,9 +173,8 @@ export default function Checkout() {
                                     >
                                         <svg
                                             id="close3"
-                                            className={` transform ${
-                                                dropdown3 ? "rotate-180" : ""
-                                            }  `}
+                                            className={` transform ${dropdown3 ? "rotate-180" : ""
+                                                }  `}
                                             width={16}
                                             viewBox="0 0 16 16"
                                             fill="none"
@@ -186,9 +190,8 @@ export default function Checkout() {
                                     </button>
                                     <div
                                         id="menu3"
-                                        className={`shadow absolute z-10 bg-white top-10  w-full mt-3 ${
-                                            dropdown3 ? "" : "hidden"
-                                        }`}
+                                        className={`shadow absolute z-10 bg-white top-10  w-full mt-3 ${dropdown3 ? "" : "hidden"
+                                            }`}
                                     >
                                         <div className="flex flex-col  w-full">
                                             <p
@@ -227,7 +230,7 @@ export default function Checkout() {
                             Proceed to payment
                         </button>
                     </div>
-                    <div className="flex flex-col justify-start items-start bg-gray-50 w-full p-6 md:p-14">
+                    <div className="flex flex-col justify-start bg-gray-50 w-full p-6 md:p-14">
                         <div>
                             <h1 className="text-2xl font-semibold leading-6 text-gray-800">
                                 Order Summary
@@ -239,18 +242,14 @@ export default function Checkout() {
                                     Total items
                                 </p>
                                 <p className="text-lg font-semibold leading-4 text-gray-600">
-                                    20
+                                    {selectedItems.length}
                                 </p>
                             </div>
-                            <div className="flex justify-between w-full items-center">
-                                <p className="text-lg leading-4 text-gray-600">
-                                    Total Charges
-                                </p>
-                                <p className="text-lg font-semibold leading-4 text-gray-600">
-                                    $2790
-                                </p>
-                            </div>
-                            <div className="flex justify-between w-full items-center">
+
+                        </div>
+                        <div className=" space-y-4">
+
+                            <div className="flex justify-between w-full items-center mt-32">
                                 <p className="text-lg leading-4 text-gray-600">
                                     Shipping charges
                                 </p>
@@ -266,14 +265,14 @@ export default function Checkout() {
                                     $3520
                                 </p>
                             </div>
-                        </div>
-                        <div className="flex justify-between w-full items-center mt-32">
-                            <p className="text-xl font-semibold leading-4 text-gray-800">
-                                Estimated Total
-                            </p>
-                            <p className="text-lg font-semibold leading-4 text-gray-800">
-                                $2900
-                            </p>
+                            <div className="flex justify-between w-full items-center">
+                                <p className="text-xl font-semibold leading-4 text-gray-800">
+                                    Estimated Total
+                                </p>
+                                <p className="text-lg font-semibold leading-4 text-gray-800">
+                                    $2900
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
