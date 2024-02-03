@@ -1,11 +1,11 @@
 import { MyProductsBussiness } from "../../components/ui-bussiness/MyProducts";
-import Pagination from "../../components/ui-bussiness/Pagination";
+import SearchProduct from "../../components/ui-bussiness/SearchProduct";
 
 export default function MyProducts() {
     return (
         <div>
+            {/* <SearchProduct /> */}
             <MyProductsBussiness />
-            <Pagination />
         </div>
     );
 }
