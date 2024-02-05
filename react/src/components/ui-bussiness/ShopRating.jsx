@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import {
     Card,
     CardHeader,
@@ -30,9 +33,11 @@ const TABLE_ROWS = [
       name: "Richard Gran",
       rv: "Manager",
     },
-  ];
+];
+
 
 export function ShopRating() {
+    const [selectedDate, setSelectedDate] = useState(null);
     return (
     <Card classname="h-fit w-full">
         <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -52,28 +57,33 @@ export function ShopRating() {
                 <div className="sm:col-span-3">
                     <label htmlFor="product-name" className="block text-sm font-medium leading-6 text-gray-900">Product Name</label>
                     <div className="mt-2">
-                        <input type="text" name="product-name" id="product-name" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6" />
+                        <input type="text" name="product-name" id="product-name" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6 pl-2" />
                     </div>
                 </div>
 
                 <div className="sm:col-span-3">
                     <label htmlFor="classification" className="block text-sm font-medium leading-6 text-gray-900">Classification</label>
                     <div className="mt-2">
-                        <input type="text" name="classification" id="classification" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6" />
+                        <input type="text" name="classification" id="classification" className="block pl-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6 " />
                     </div>
                 </div>
 
                 <div className="sm:col-span-3">
                     <label htmlFor="buyer" className="block text-sm font-medium leading-6 text-gray-900">Buyer</label>
                     <div className="mt-2">
-                        <input id="buyer" name="buyer" type="text" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6" />
+                        <input id="buyer" name="buyer" type="text" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6 pl-2" />
                     </div>
                 </div>
 
                 <div className="sm:col-span-3">
-                    <label htmlFor="Time" className="block text-sm font-medium leading-6 text-gray-900">Time</label>
+                    <label htmlFor="time" className="block text-sm font-medium leading-6 text-gray-900">Time</label>
                     <div className="mt-2">
-                        <input id="time" name="time" type="text" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6" />
+                        <DatePicker
+                            selected={selectedDate}
+                            onChange={(date) => setSelectedDate(date)}
+                            dateFormat="MM/dd/yyyy"
+                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6 pl-2"
+                        />
                     </div>
                 </div>
 
