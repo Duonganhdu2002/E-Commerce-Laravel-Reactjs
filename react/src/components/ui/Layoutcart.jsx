@@ -24,6 +24,7 @@ const Layoutcart = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -118,9 +119,7 @@ const Layoutcart = () => {
     // Lưu dữ liệu vào redux
     const handleCheckout = () => {
         dispatch(clearCart());
-        // Filter out only the selected items
         const selectedItems = data.filter(cart => cartChecked[cart.shopping_cart_id]);
-        // Gửi các action để add 
         selectedItems.forEach(cart => {
             dispatch(addItem({ itemId: cart.name, newQuantity: cart.quantity, Price: cart.price }));
         });
