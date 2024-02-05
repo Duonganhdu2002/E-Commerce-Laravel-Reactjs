@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ShippingMethodController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
@@ -12,7 +13,7 @@ use App\Http\Controllers\ShoppingCartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SearchHistoryController;
 
-    
+
 
 
 Route::prefix('user')->group(function () {
@@ -102,9 +103,11 @@ Route::prefix('public')->group(function () {
         Route::post('/{id}', [OrderController::class, 'total']);
         Route::get('/details/{order_id}', [OrderController::class, 'getOrderDetails']);
     });
-
 });
 
+Route::prefix('shopping-method')->group(function () {
+    Route::get('show', [ShippingMethodController::class, 'index']);
+});
 
 Route::prefix('pageAdmin')->group(function () { // truy vấn dữ liệu ra trang admin
 

@@ -1,4 +1,12 @@
-import { Button, Checkbox } from "@material-tailwind/react";
+import {
+    Button,
+    Checkbox,
+    Card,
+    List,
+    ListItem,
+    ListItemPrefix,
+    Typography,
+} from "@material-tailwind/react";
 import Lock from "../../assets/icon/lock-svgrepo-com.svg";
 import Visa from "../../assets/icon/visa-svgrepo-com.svg";
 import AmericanExpress from "../../assets/icon/american-express-logo-svgrepo-com.svg";
@@ -10,6 +18,7 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import Cancel from "../../assets/icon/cancle.svg";
 import { clearCart, addItem } from "../../redux/slices/cartSlice";
+import { getShippingMethod } from "../../services/shippingMethodService";
 
 const Layoutcart = () => {
 
@@ -22,6 +31,8 @@ const Layoutcart = () => {
     const [count, setCount] = useState({});
     const [totalPrice, setTotalPrice] = useState(0);
     const [cartChecked, setCartChecked] = useState({});
+    const [dataShipping, setDataShipping] = useState([]);
+    const [selectedShippingIndex, setSelectedShippingIndex] = useState(0);
 
     // Call API cart
 
@@ -50,10 +61,26 @@ const Layoutcart = () => {
 
         const intervalId = setInterval(() => {
             getFetchBrandsByFieldId();
-        }, 6000);
+        }, 7000);
 
         return () => clearInterval(intervalId);
     }, [user_id]);
+
+    // API shipping method 
+
+    useEffect(() => {
+        const getShippingMethodAPI = async () => {
+            try {
+                let res = await getShippingMethod();
+                setDataShipping(res.data);
+            } catch (error) {
+                console.error("Error fetching fields:", error);
+                setError("Error fetching data");
+            }
+        };
+
+        getShippingMethodAPI();
+    }, []);
 
     // API update quantity
 
@@ -202,6 +229,62 @@ const Layoutcart = () => {
                         }
                     </div>
 
+                    <div className="flex flex-col justify-center px-4 py-6 md:p-6 xl:p-8 w-full bg-gray-50 space-y-6   ">
+                        <h3 className="text-xl font-semibold leading-5 text-gray-800">Shipping</h3>
+                        <div className="flex justify-between items-start w-full">
+                            <div className="flex justify-center items-center space-x-4">
+                                <div className="w-8 h-8">
+                                    <img className="w-full h-full" alt="logo" src="https://i.ibb.co/L8KSdNQ/image-3.png" />
+                                </div>
+                                <div className="flex flex-col justify-start items-center">
+                                    <p className="text-lg leading-6 font-semibold text-gray-800">
+                                        DPD Delivery
+                                        <br />
+                                        <span className="font-normal">Delivery with 24 Hours</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <p className="text-lg font-semibold leading-6 text-gray-800">
+                                ${dataShipping[selectedShippingIndex]?.shipping_method_price || 0}
+                            </p>
+                        </div>
+                        <Card>
+                            <List>
+
+                                {
+                                    dataShipping && dataShipping.length > 0 && dataShipping.map((dataShippings, index) => (
+                                        <ListItem key={index} className="p-0">
+                                            <label className="flex w-full cursor-pointer items-center px-3 py-2">
+                                                <ListItemPrefix className="mr-3">
+                                                    <Checkbox
+                                                        checked={index === selectedShippingIndex}
+                                                        onChange={() => setSelectedShippingIndex(index)}
+                                                        id={`vertical-list-react-${index}`}
+                                                        ripple={false}
+                                                        className="hover:before:opacity-0"
+                                                        containerProps={{
+                                                            className: "p-0",
+                                                        }}
+                                                    />
+                                                </ListItemPrefix>
+
+                                                <div className="flex justify-between w-full">
+                                                    <Typography color="blue-gray" className="font-medium">
+                                                        {dataShippings.shipping_method_name}
+                                                    </Typography>
+                                                    <Typography color="blue-gray" className="font-semibold">
+                                                        $ {dataShippings.shipping_method_price}
+                                                    </Typography>
+                                                </div>
+                                            </label>
+                                        </ListItem>
+                                    ))
+                                }
+
+
+                            </List>
+                        </Card>
+                    </div>
                 </div>
                 <div className=" flex flex-col justify-center w-full xl:w-[40%] h-auto xl:ml-20 ">
                     <div className="rounded-2xl p-8 border">
@@ -220,18 +303,22 @@ const Layoutcart = () => {
                                 )}
                             </div>
                             <div className="flex justify-between items-center py-4 border-b text-gray-600">
-                                <p>Discount</p>
-                                <p>$29</p>
+                                <p>Shipping dischard</p>
+                                <p>
+                                    ${dataShipping[selectedShippingIndex]?.shipping_method_price || 0}
+                                </p>
                             </div>
+
                         </div>
                         <div className="flex justify-between items-center py-4 text-2xl font-bold">
                             <p>Total</p>
-                            {totalPrice >= 0 && (
+                            {totalPrice !== undefined && dataShipping[selectedShippingIndex]?.shipping_method_price !== undefined && (
                                 <p className="text-lg font-semibold mt-4">
-                                    ${totalPrice.toFixed(2)}
+                                    ${(Number(totalPrice) + Number(dataShipping[selectedShippingIndex]?.shipping_method_price) || 0).toFixed(2)}
                                 </p>
                             )}
                         </div>
+
                         <div className=" py-2">
                             <Button onClick={handleCheckout} className="w-full bg-black/80 hover:shadow-md my-2">
                                 CHECKOUT
