@@ -42,6 +42,7 @@ import SubFooter2 from "./components/ui/SubFooter2";
 import SearchLayout from "./components/ui/SearchLayout";
 import Error404 from "./components/ui/error404";
 import { useSelector } from 'react-redux'
+import { ShopRating } from "./components/ui-bussiness/ShopRating";
 
 const Customer = () => {
     return (
@@ -143,7 +144,7 @@ const App = () => {
                                 <Route path="add-new-product" element={<AddProductsBussiness />} />
                                 <Route path="product-violations" element={<div>Product Violations</div>} />
                                 <Route path="product-setting" element={<div>Product Settings</div>} />
-                                <Route path="shop-rating" element={<div>Shop Rating</div>} />
+                                <Route path="shop-rating" element={<ShopRating />} />
                                 <Route path="shop-information" element={<div>Shop Information</div>} />
                                 <Route path="shop-category" element={<div>Shop Category</div>} />
                                 <Route path="my-report" element={<div>My Report</div>} />
