@@ -272,7 +272,7 @@ export default function Checkout() {
                                     Shipping charges
                                 </p>
                                 <p className="text-lg font-semibold leading-4 text-gray-600">
-                                    $90
+                                    ${selectedShippingPrice}
                                 </p>
                             </div>
                             <div className="flex justify-between w-full items-center">
@@ -288,7 +288,7 @@ export default function Checkout() {
                                     Estimated Total
                                 </p>
                                 <p className="text-lg font-semibold leading-4 text-gray-800">
-                                    $2900
+                                    ${(subtotal + parseFloat(selectedShippingPrice)).toFixed(2)}
                                 </p>
                             </div>
                         </div>
