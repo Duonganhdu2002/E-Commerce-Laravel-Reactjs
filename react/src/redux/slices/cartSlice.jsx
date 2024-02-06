@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 // Load cart data from localStorage if available
 const initialState = {
     items: JSON.parse(localStorage.getItem('cart')) || [],
+    selectedShippingPrice: localStorage.getItem('shippingPrice') || 0,
 };
 
 export const cartSlice = createSlice({
@@ -30,9 +31,13 @@ export const cartSlice = createSlice({
             state.items = [];
             localStorage.removeItem('cart');
         },
+        selectShippingPrice: (state, action) => {
+            state.selectedShippingPrice = action.payload;
+            localStorage.setItem('shippingPrice', action.payload);
+        },
     },
 });
 
-export const { addItem, removeItem, updateItemQuantity, clearCart } = cartSlice.actions;
+export const { addItem, removeItem, updateItemQuantity, clearCart, selectShippingPrice } = cartSlice.actions;
 
 export default cartSlice.reducer;

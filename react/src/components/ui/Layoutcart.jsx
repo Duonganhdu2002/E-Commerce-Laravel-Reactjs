@@ -17,7 +17,7 @@ import { getCart, updateCart, deleteCart } from "../../services/cartService";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import Cancel from "../../assets/icon/cancle.svg";
-import { clearCart, addItem } from "../../redux/slices/cartSlice";
+import { clearCart, addItem,selectShippingPrice } from "../../redux/slices/cartSlice";
 import { getShippingMethod } from "../../services/shippingMethodService";
 
 const Layoutcart = () => {
@@ -119,12 +119,19 @@ const Layoutcart = () => {
     // Lưu dữ liệu vào redux
     const handleCheckout = () => {
         dispatch(clearCart());
+
         const selectedItems = data.filter(cart => cartChecked[cart.shopping_cart_id]);
         selectedItems.forEach(cart => {
             dispatch(addItem({ itemId: cart.name, newQuantity: cart.quantity, Price: cart.price }));
         });
+
+        // Save the selected shipping method price to Redux
+        const selectedShippingPrice = dataShipping[selectedShippingIndex]?.shipping_method_price || 0;
+        dispatch(selectShippingPrice(selectedShippingPrice));
+
         navigate("/checkout");
     };
+
 
 
     // Tăng số lượng sp

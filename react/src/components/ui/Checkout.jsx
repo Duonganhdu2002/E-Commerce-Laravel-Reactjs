@@ -9,6 +9,9 @@ export default function Checkout() {
     const [dropdown3, setDropdown3] = useState(false);
     const [changeText1, setChangeText1] = useState("City");
     const selectedItems = useSelector(state => state.cart.items);
+    const selectedShippingPrice = useSelector(state => state.cart.selectedShippingPrice);
+    console.log(selectedShippingPrice)
+
     const subtotal = selectedItems.reduce((total, item) => {
         const itemTotal = parseFloat(item.Price) * item.newQuantity;
         return total + itemTotal;
