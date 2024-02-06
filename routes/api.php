@@ -13,12 +13,6 @@ use App\Http\Controllers\ShoppingCartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SearchHistoryController;
 use App\Http\Controllers\ProvincesController;
-use App\Http\Controllers\DistrictsController;
-
-
-
-
-
 
 Route::prefix('user')->group(function () {
     Route::post('register', [UserController::class, 'createUser'])->name('register');
@@ -28,8 +22,6 @@ Route::prefix('user')->group(function () {
     Route::get('auth-list', [UserController::class, 'userList'])->name('userList');
     Route::get('auth', [UserController::class, 'userPagination']);
 });
-
-
 
 Route::prefix('public')->group(function () {
     Route::prefix('product')->group(function () {
@@ -109,13 +101,9 @@ Route::prefix('public')->group(function () {
     });
 
     Route::prefix('location')->group(function () {
-        //ds tỉnh
-        Route::get('/{provinceId}', [ProvincesController::class, 'index']);
-        //ds quận/huyện thuộc tỉnh
-        Route::get('/{provinceId}/districts', [ProvincesController::class, 'getDistricts']);
-        //ds xã/phường thuộc quận/huyện
-        Route::get('{districtId}/wards', [DistrictsController::class, 'getWards']);
-
+        Route::get('/', [ProvincesController::class, 'index']);
+        Route::get('province={provinceId}', [ProvincesController::class, 'getDistricts']);
+        Route::get('district={districtId}', [ProvincesController::class, 'getWards']);
     });
 });
 
