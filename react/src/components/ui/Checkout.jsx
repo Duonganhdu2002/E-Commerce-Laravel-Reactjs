@@ -10,16 +10,16 @@ export default function Checkout() {
     const [changeText1, setChangeText1] = useState("City");
     const selectedItems = useSelector(state => state.cart.items);
     const selectedShippingPrice = useSelector(state => state.cart.selectedShippingPrice);
-    console.log(selectedShippingPrice)
 
     const subtotal = selectedItems.reduce((total, item) => {
         const itemTotal = parseFloat(item.Price) * item.newQuantity;
         return total + itemTotal;
     }, 0);
-    useEffect(() => {
-        console.log('Selected Items:', selectedItems);
+    
+    // useEffect(() => {
+    //     console.log('Selected Items:', selectedItems);
 
-    }, [selectedItems]);
+    // }, [selectedItems]);
 
     const HandleText1 = (e) => {
         setChangeText1(e);
