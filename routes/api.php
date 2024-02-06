@@ -12,6 +12,10 @@ use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ShoppingCartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SearchHistoryController;
+use App\Http\Controllers\ProvincesController;
+use App\Http\Controllers\DistrictsController;
+
+
 
 
 
@@ -102,6 +106,16 @@ Route::prefix('public')->group(function () {
         Route::post('/', [OrderController::class, 'checkout']);
         Route::post('/{id}', [OrderController::class, 'total']);
         Route::get('/details/{order_id}', [OrderController::class, 'getOrderDetails']);
+    });
+
+    Route::prefix('location')->group(function () {
+        //ds tỉnh
+        Route::get('/{provinceId}', [ProvincesController::class, 'index']);
+        //ds quận/huyện thuộc tỉnh
+        Route::get('/{provinceId}/districts', [ProvincesController::class, 'getDistricts']);
+        //ds xã/phường thuộc quận/huyện
+        Route::get('{districtId}/wards', [DistrictsController::class, 'getWards']);
+
     });
 });
 
