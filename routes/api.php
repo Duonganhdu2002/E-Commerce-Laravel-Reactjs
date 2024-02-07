@@ -103,8 +103,9 @@ Route::prefix('public')->group(function () {
     });
 
     Route::prefix('order')->group(function () {
-        Route::post('/', [OrderController::class, 'checkout']);
-        Route::post('/{id}', [OrderController::class, 'total']);
+        //tuy chon cac san pham tu gio hang them vao don hang
+        Route::post('make', [OrderController::class, 'checkout']);
+        // chi tiet don hang
         Route::get('/details/{order_id}', [OrderController::class, 'getOrderDetails']);
     });
 

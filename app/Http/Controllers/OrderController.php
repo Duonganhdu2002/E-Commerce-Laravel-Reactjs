@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\OrderResource ;
 use App\Models\order ;
 use App\Models\product ;
+use App\Models\user_address ;
+
+
 
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -124,7 +127,10 @@ class OrderController extends Controller
             'product' => 'required|array',
             'product.*.product_id' => 'required|exists:product,product_id',
             'product.*.quantity' => 'required|integer|min:1',
-            'shipping_method_id' => 'required|exists:shipping_method,shipping_method_id'
+            'shipping_method_id' => 'required|exists:shipping_method,shipping_method_id',
+            'order_address' => 'required',
+            'order_phone' => 'required',
+            'order_name' => 'required',
            
         ]);
 
@@ -140,6 +146,9 @@ class OrderController extends Controller
         $user_id = $input['user_id'];
         $product = $input['product'];
         $shipping_method_id = $input['shipping_method_id'];
+        $order_address = $input['order_address']; 
+        $order_phone = $input['order_phone'];      
+        $order_name = $input['order_name'];   
       
         $totalQuantity = count($product);
 
@@ -154,10 +163,13 @@ class OrderController extends Controller
     }
 
         try {
-            $order = order::create([
+            $order = order::create([ 
                 'user_id' => $user_id,
                 'order_status_id' => 1, 
                 'shipping_method_id' => $shipping_method_id,
+                'order_address' => $order_address, 
+                'order_phone' => $order_phone,    
+                'order_name' => $order_name, 
             ]);
 
             // Thêm các sản phẩm vào đơn hàng
