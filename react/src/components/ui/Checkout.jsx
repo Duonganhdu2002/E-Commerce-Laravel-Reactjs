@@ -1,52 +1,204 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Input, Select, Option } from "@material-tailwind/react";
+import { Input, Select, Option, Button } from "@material-tailwind/react";
+import { districtList, provincesList, wardList } from "../../services/locationService";
 
 export default function Checkout() {
 
-    const [dropdown1, setDropdown1] = useState(false);
-    const [dropdown2, setDropdown2] = useState(false);
-    const [dropdown3, setDropdown3] = useState(false);
-    const [changeText1, setChangeText1] = useState("City");
+    // Mảng chứa dữ liệu được gọi từ API
+    const [provincesListData, setProvincesListData] = useState([]);
+    const [districtListData, setDistrictListData] = useState([]);
+    const [wardListData, setWardListData] = useState([]);
+
+    // Redux thông tin giỏ hàng và giá ship
     const selectedItems = useSelector(state => state.cart.items);
     const selectedShippingPrice = useSelector(state => state.cart.selectedShippingPrice);
 
+    // Các biến chứa id của Tỉnh, huyện, xã
+    const [selectedProvinceId, setSelectedProvinceId] = useState(null);
+    const [selectedDistrictId, setSelectedDistrictId] = useState(null);
+    const [selectedWardId, setSelectedWardId] = useState(null);
+
+    // Các biến chứa tên của Tỉnh, huyện, xã
+    const [selectedProvince, setSelectedProvince] = useState(null);
+    const [selectedDistrict, setSelectedDistrict] = useState(null);
+    const [selectedWard, setSelectedWard] = useState(null);
+
+    // Dữ liệu nhập từ form thông tin 
+    const [name, setName] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [email, setEmail] = useState("");
+    const [streetAndNumber, setStreetAndNumber] = useState("");
+    const [note, setNote] = useState("");
+
+    // Tính tổng tất cả các mặt hàng 
     const subtotal = selectedItems.reduce((total, item) => {
         const itemTotal = parseFloat(item.Price) * item.newQuantity;
         return total + itemTotal;
     }, 0);
+
+    // Province API
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await provincesList();
+                setProvincesListData(res);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    // District API
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await districtList(parseInt(selectedProvinceId));
+                setDistrictListData(res);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData();
+    }, [selectedProvinceId]);
+
+    // Ward API
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await wardList(parseInt(selectedDistrictId));
+                setWardListData(res);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData();
+    }, [selectedDistrictId]);
+
+    
+    const handlechangeProvince = (e) => {
+        const selectedProvinceId = parseInt(e);
+        setSelectedProvinceId(selectedProvinceId);
+        const selectedProvinceInfo = provincesListData.find((province) => province.province_id === selectedProvinceId);
+        if (selectedProvinceInfo) {
+            setSelectedProvince(selectedProvinceInfo.province_name);
+        }
+    };
+
+    const handlechangeDistrict = (e) => {
+        const selectedDistrictId = parseInt(e);
+        setSelectedDistrictId(selectedDistrictId);
+        const selectedDistrictInfo = districtListData.find((district) => district.districts_id === selectedDistrictId);
+        if (selectedDistrictInfo) {
+            setSelectedDistrict(selectedDistrictInfo.name);
+        }
+    };
+
+    const handlechangeWard = (e) => {
+        const selectedWardId = parseInt(e);
+        setSelectedWardId(selectedWardId);
+        const selectedWardInfo = wardListData.find((ward) => ward.wards_id === selectedWardId);
+        if (selectedWardInfo) {
+            setSelectedWard(selectedWardInfo.name);
+        }
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        switch (name) {
+            case "name":
+                setName(value);
+                break;
+            case "phoneNumber":
+                setPhoneNumber(value);
+                break;
+            case "email":
+                setEmail(value);
+                break;
+            case "streetAndNumber":
+                setStreetAndNumber(value);
+                break;
+            case "note":
+                setNote(value);
+                break;
+            default:
+                break;
+        }
+    };
+
+    const handleProceedToPayment = () => {
+        console.log("Name:", name);
+        console.log("Phone Number:", phoneNumber);
+        console.log("Email:", email);
+        console.log("Note:", note);
+        console.log("Address:",streetAndNumber + ', ' + selectedDistrict + ', ' + selectedWard + ', ' + selectedProvince);
+    };
+
     // useEffect(() => {
     //     console.log('Selected Items:', selectedItems);
 
     // }, [selectedItems]);
 
-    const HandleText1 = (e) => {
-        setChangeText1(e);
-        setDropdown1(false);
-    };
-
     return (
-        <div className=" w-[95%] md:w-[90%] lg:w-[80%] mx-auto" >
-            <div className="2xl:mx-auto pt-6 px-4 md:px-6 lg:px-20 xl:px-44 ">
-                <div>
-                    <div className="text-3xl lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">
-                        Check out
-                    </div>
-                </div>
-                <div className="mt-2">
-                    <Link
-                        to="/cart"
-                        className="text-base leading-4 underline  hover:text-gray-800 text-gray-600"
-                    >
-                        Back to my bag
-                    </Link>
-                </div>
-            </div>
-            <div className="flex justify-center items-center 2xl:mx-auto lg:pb-16 md:pb-12 py-9 px-4 md:px-6 lg:px-20 xl:px-44 ">
-
+        <div className="overflow-y-hidden">
+            <div className="flex justify-center items-center 2xl:container 2xl:mx-auto lg:py-16 md:py-12 py-9 px-4 md:px-6 lg:px-20 xl:px-44 ">
                 <div className="flex w-full sm:w-9/12 lg:w-full flex-col lg:flex-row justify-center items-center lg:space-x-10 2xl:space-x-36 space-y-12 lg:space-y-0">
-
+                    <div className="flex w-full  flex-col justify-start items-start">
+                        <div>
+                            <div className="text-3xl lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">
+                                Check out
+                            </div>
+                        </div>
+                        <div className="mt-2">
+                            <Link
+                                to="/cart"
+                                className="text-base leading-4 underline  hover:text-gray-800 text-gray-600"
+                            >
+                                Back to my bag
+                            </Link>
+                        </div>
+                        <div className="mt-12">
+                            <p className="text-xl font-semibold leading-5 text-gray-800">
+                                Shipping Details
+                            </p>
+                        </div>
+                        <div className="mt-8 flex flex-col justify-start items-start w-full space-y-8 ">
+                            <Input variant="standard" label="Your name" placeholder="Standard" name="name" value={name} onChange={handleInputChange} />
+                            <Input variant="standard" label="Phone number" placeholder="Standard" name="phoneNumber" value={phoneNumber} onChange={handleInputChange} />
+                            <Input variant="standard" label="Email" placeholder="Standard" name="email" value={email} onChange={handleInputChange} />
+                            <div className=" flex">
+                                <Select className=" w-[95%]" variant="standard" label="Province" onChange={handlechangeProvince}>
+                                    {
+                                        provincesListData.map((province, index) => (
+                                            <Option value={String(province.province_id)} key={index}>{province.province_name}</Option>
+                                        ))
+                                    }
+                                </Select>
+                                <Select disabled={selectedProvinceId === null} variant="standard" label="District" onChange={handlechangeDistrict}>
+                                    {
+                                        districtListData.map((district, index) => (
+                                            <Option value={String(district.districts_id)} key={index}>{district.name}</Option>
+                                        ))
+                                    }
+                                </Select>
+                            </div>
+                            <Select disabled={selectedDistrictId === null} variant="standard" label="Ward" onChange={handlechangeWard}>
+                                {
+                                    wardListData.map((ward, index) => (
+                                        <Option value={String(ward.wards_id)} key={index}>{ward.name}</Option>
+                                    ))
+                                }
+                            </Select>
+                            <Input variant="standard" label="Street and number" placeholder="Standard" name="streetAndNumber" value={streetAndNumber} onChange={handleInputChange} />
+                            <Input variant="standard" label="Note" placeholder="Standard" name="note" value={note} onChange={handleInputChange} />
+                        </div>
+                        <Button className=" mt-12 py-5" fullWidth onClick={handleProceedToPayment}>Proceed to payment</Button>
+                    </div>
                     <div className="flex flex-col justify-start bg-gray-50 w-full p-6 md:p-14">
                         <div>
                             <h1 className="text-2xl font-semibold leading-6 text-gray-800">
@@ -104,48 +256,6 @@ export default function Checkout() {
                             </div>
                         </div>
                     </div>
-                    <div className="flex w-full  flex-col justify-start items-start">
-
-                        <div className="mt-12">
-                            <p className="text-xl font-semibold leading-5 text-gray-800">
-                                Shipping Details
-                            </p>
-                        </div>
-                        <div className="mt-8 flex flex-col justify-start items-start w-full space-y-8 ">
-                            <Input variant="standard" label="Your name" placeholder="Standard" />
-                            <Input variant="standard" label="Phone number" placeholder="Standard" />
-                            <Input variant="standard" label="Email" placeholder="Standard" />
-                            <div className=" flex w-full">
-                                <Select className=" w-[95%]" variant="standard" label="Provine">
-                                    <Option>Material Tailwind HTML</Option>
-                                    <Option>Material Tailwind React</Option>
-                                    <Option>Material Tailwind Vue</Option>
-                                    <Option>Material Tailwind Angular</Option>
-                                    <Option>Material Tailwind Svelte</Option>
-                                </Select>
-                                <Select variant="standard" label="District">
-                                    <Option>Material Tailwind HTML</Option>
-                                    <Option>Material Tailwind React</Option>
-                                    <Option>Material Tailwind Vue</Option>
-                                    <Option>Material Tailwind Angular</Option>
-                                    <Option>Material Tailwind Svelte</Option>
-                                </Select>
-                            </div>
-                            <Select variant="standard" label="Ward">
-                                <Option>Material Tailwind HTML</Option>
-                                <Option>Material Tailwind React</Option>
-                                <Option>Material Tailwind Vue</Option>
-                                <Option>Material Tailwind Angular</Option>
-                                <Option>Material Tailwind Svelte</Option>
-                            </Select>
-                            <Input variant="standard" label="Street and number" placeholder="Standard" />
-                            <Input variant="standard" label="Note" placeholder="Standard" />
-                        </div>
-                        <button className="focus:outline-none focus:ring-gray-500 focus:ring-offset-2 mt-8 text-base font-medium focus:ring-2 focus:ring-ocus:ring-gray-800 leading-4 hover:bg-black py-4 w-full md:w-4/12 lg:w-full text-white bg-gray-800">
-                            Proceed to payment
-                        </button>
-                    </div>
-
                 </div>
             </div>
         </div>
