@@ -125,11 +125,15 @@ const Layoutcart = () => {
             dispatch(addItem({ itemId: cart.name, newQuantity: cart.quantity, Price: cart.price }));
         });
 
+        console.log(selectedItems)
+
         // Save the selected shipping method price to Redux
         const selectedShippingPrice = dataShipping[selectedShippingIndex]?.shipping_method_price || 0;
         dispatch(selectShippingPrice(selectedShippingPrice));
 
-        navigate("/checkout");
+        if (selectedItems.length > 0) {
+            navigate("/checkout");
+        }
     };
 
 
