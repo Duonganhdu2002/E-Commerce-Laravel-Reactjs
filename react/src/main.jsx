@@ -135,23 +135,16 @@ const App = () => {
                                 <Route path="login" element={<LoginBussiness />} />
                                 <Route path="register" element={<RegisterBussiness />} />
                                 <Route path="my-shipment" element={<div>My shipment</div>} />
-                                <Route path="mass-ship" element={<div>Mass ship</div>} />
-                                <Route path="shipping-setting" element={<div>Shipping setting</div>} />
                                 <Route path="my-oders" element={<MyOrdersBussiness />} />
-                                <Route path="return-refun" element={<div>Return/Refun</div>} />
                                 <Route path="cancelation" element={<div>Cancelation</div>} />
                                 <Route path="my-products" element={<MyProductsBussiness />} />
                                 <Route path="add-new-product" element={<AddProductsBussiness />} />
-                                <Route path="product-violations" element={<div>Product Violations</div>} />
-                                <Route path="product-setting" element={<div>Product Settings</div>} />
                                 <Route path="shop-rating" element={<ShopRating />} />
                                 <Route path="shop-information" element={<div>Shop Information</div>} />
                                 <Route path="shop-category" element={<div>Shop Category</div>} />
-                                <Route path="my-report" element={<div>My Report</div>} />
                                 <Route path="dashboard" element={<div>Dashboard Content</div>} />
                                 <Route path="inbox" element={<InboxBussiness />} />
                                 <Route path="profile" element={<ProfileBussiness />} />
-                                <Route path="settings" element={<div>Settings Content</div>} />
                                 <Route path="logout" element={<div>Logout Content</div>} />
                             </Route>
 
