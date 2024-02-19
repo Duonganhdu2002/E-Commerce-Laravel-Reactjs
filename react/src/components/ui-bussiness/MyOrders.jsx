@@ -1,7 +1,8 @@
 import {
     MagnifyingGlassIcon,
     ChevronUpDownIcon,
-    ArchiveBoxIcon,
+    ArrowRightIcon, 
+    ArrowLeftIcon
 } from "@heroicons/react/24/outline";
 import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
 import {
@@ -9,54 +10,15 @@ import {
     CardHeader,
     Input,
     Typography,
-    Button,
     CardBody,
     Chip,
     CardFooter,
-    Tabs,
-    TabsHeader,
-    Tab,
     Avatar,
     IconButton,
     Tooltip,
-    Select,
-    Option,
 } from "@material-tailwind/react";
 
-const TABS = [
-    {
-        label: "All",
-        value: "all",
-    },
-    {
-        label: "WFC",
-        value: "Wait for confirmation",
-    },
-    {
-        label: "WFG",
-        value: "Waiting for Goods",
-    },
-    {
-        label: "Delivering",
-        value: "Delivering",
-    },
-    {
-        label: "Delivered",
-        value: "Delivered",
-    },
-    {
-        label: "CF",
-        value: "Cancellation form",
-    },
-    {
-        label: "Returns/Refunds",
-        value: "Returns/Refunds",
-    },
-    {
-        label: "DF",
-        value: "Delivery failed",
-    },
-];
+import { useState } from "react";
 
 const TABLE_HEAD = [
     "Products",
@@ -109,60 +71,57 @@ const TABLE_ROWS = [
         date: "04/10/21",
         sc: "Viettel Express",
     },
+    {
+        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg",
+        name: "Richard Gran",
+        total: 8,
+        status: false,
+        date: "04/10/21",
+        sc: "Viettel Express",
+    },
+    {
+        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg",
+        name: "Richard Gran",
+        total: 8,
+        status: false,
+        date: "04/10/21",
+        sc: "Viettel Express",
+    },
 ];
 
+
+
 export function MyOrdersBussiness() {
+
+
+    const [active, setActive] = useState(1);
+
+    const next = () => {
+        if (active === 10) return;
+
+        setActive(active + 1);
+    };
+
+    const prev = () => {
+        if (active === 1) return;
+
+        setActive(active - 1);
+    };
+
+
     return (
-        <Card className="h-fit w-full">
+        <Card className="h-full w-full p-4">
             <CardHeader floated={false} shadow={false} className="rounded-none">
-                <div className="mb-8 flex items-center justify-between gap-8">
-                    <div>
-                        <Typography variant="h5" color="blue-gray">
-                            Orders list
-                        </Typography>
-                        <Typography color="gray" className="mt-1 font-normal">
-                            See information about all orders
-                        </Typography>
-                    </div>
-                    <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-                        <Button variant="outlined" size="sm">
-                            view all
-                        </Button>
-                        <Button className="flex items-center gap-3" size="sm">
-                            <ArchiveBoxIcon strokeWidth={2} className="h-4 w-4" />
-                            Batch delivery
-                        </Button>
-                    </div>
-                </div>
-                <div className=" flex mb-4 bg-blue-gray-100/40 rounded-lg p-2">
-                    <Tabs value="all" className="w-full overflow-auto z-0">
-                        <TabsHeader className=" bg-white/1">
-                            {TABS.map(({ label, value }) => (
-                                <Tab key={value} value={value}>
-                                    {label}
-                                </Tab>
-                            ))}
-                        </TabsHeader>
-                    </Tabs>
-                </div>
                 <div className="flex flex-col sm:flex-row w-full justify-center items-center">
-                    <div className="sm:w-[50%] w-full mb-4 sm:mb-0">
-                        <Select label="Select Version">
-                            <Option>Order ID</Option>
-                            <Option>Material Tailwind Vue</Option>
-                            <Option>Material Tailwind Angular</Option>
-                            <Option>Material Tailwind Svelte</Option>
-                        </Select>
-                    </div>
-                    <div className="sm:w-[80%] w-full">
+                    <div className="w-full">
                         <Input
-                            label="Search"
+                            label="Find order ID"
                             icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                         />
                     </div>
                 </div>
             </CardHeader>
-            <CardBody className="overflow-scroll px-0">
+            <CardBody className="px-4">
                 <table className=" w-full min-w-max table-auto text-left">
                     <thead>
                         <tr>
@@ -191,13 +150,14 @@ export function MyOrdersBussiness() {
                     <tbody>
                         {TABLE_ROWS.map(
                             ({ img, name, total, status, date, sc }, index) => {
+                                const key = `${name}-${index}`;
                                 const isLast = index === TABLE_ROWS.length - 1;
                                 const classes = isLast
                                     ? "p-4"
                                     : "p-4 border-b border-blue-gray-50";
 
                                 return (
-                                    <tr key={name}>
+                                    <tr key={key}>
                                         <td className={classes}>
                                             <div className="flex items-center gap-3">
                                                 <Avatar
@@ -256,7 +216,7 @@ export function MyOrdersBussiness() {
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                        <Typography
+                                            <Typography
                                                 variant="small"
                                                 color="blue-gray"
                                                 className="font-normal"
@@ -278,21 +238,28 @@ export function MyOrdersBussiness() {
                     </tbody>
                 </table>
             </CardBody>
-            <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-                <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal"
-                >
-                    Page 1 of 10006
-                </Typography>
-                <div className="flex gap-2">
-                    <Button variant="outlined" size="sm">
-                        Previous
-                    </Button>
-                    <Button variant="outlined" size="sm">
-                        Next
-                    </Button>
+            <CardFooter className="flex relative items-center justify-between border-t border-blue-gray-50 p-4">
+                <div className="flex items-center absolute gap-8 mt-24 right-0 mr-4">
+                    <IconButton
+                        size="sm"
+                        variant="outlined"
+                        onClick={prev}
+                        disabled={active === 1}
+                    >
+                        <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" />
+                    </IconButton>
+                    <Typography color="gray" className="font-normal">
+                        Page <strong className="text-gray-900">{active}</strong> of{" "}
+                        <strong className="text-gray-900">10</strong>
+                    </Typography>
+                    <IconButton
+                        size="sm"
+                        variant="outlined"
+                        onClick={next}
+                        disabled={active === 10}
+                    >
+                        <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
+                    </IconButton>
                 </div>
             </CardFooter>
         </Card>
