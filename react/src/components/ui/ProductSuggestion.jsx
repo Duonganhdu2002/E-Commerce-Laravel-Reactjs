@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from 'react-redux'
 import { productSugession } from "../../services/productService";
 import { Typography } from "@material-tailwind/react";
 
@@ -8,14 +9,15 @@ import { Typography } from "@material-tailwind/react";
 const ProductSuggestion = () => {
 
     const [data, setData] = useState([]);
+    const user_id = useSelector((state) => state.user.user.user_id);
 
     useEffect(() => {
-        getProductSugession(1);
-    }, [1]);
+        getProductSugession(user_id ? (user_id) : (1));
+    }, [user_id ? (user_id) : (1)]);
 
     const getProductSugession = async () => {
         try {
-            let res = await productSugession(1);
+            let res = await productSugession(user_id ? (user_id) : (1));
             if (res && res.data) {
                 setData(res.data);
             }
@@ -23,8 +25,6 @@ const ProductSuggestion = () => {
             console.error("Error fetching fields:", error);
         }
     };
-
-    // console.log(data);
 
     return (
         <div className=" flex justify-center items-center">
@@ -44,10 +44,10 @@ const ProductSuggestion = () => {
                                     <div className="w-full h-[300px] md:h-[330px] lg:h-[400px] xl:h-[460px]  bg-white shadow-md shadow-gray-300 rounded-xl duration-500 hover:scale-105 hover:shadow-2xl">
                                         <img
                                             className=" h-[200px] w-[200px] md:h-[220px] md:w-[220px] lg:h-[280px] lg:w-[280px] xl:h-[320px] xl:w-[320px] object-cover rounded-t-xl"
-                                            src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${product.images[1]}?raw=true`}
+                                            src={`src/assets/image/${product.images[1]}`}
                                             alt="Product"
                                         />
-                                        
+
                                         <div className="px-4 py-3 h-[20%] w-full">
                                             <span className="text-gray-400 mr-3 uppercase text-[12px] lg:text-[14px]">Brand</span>
                                             <p className="text-md lg:text-lg xl:text-xl font-bold text-black truncate block capitalize">{product.name}</p>

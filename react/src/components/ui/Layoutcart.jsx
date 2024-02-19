@@ -196,8 +196,8 @@ const Layoutcart = () => {
                                     </div>
                                     <Link to={`/product/${carts.product_id}`}>
                                         <div className="w-full">
-                                            <img className="w-24 h-24 object-cover hidden md:block" src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${carts.img}?raw=true`} alt="dress" />
-                                            <img className="w-24 h-24 object-cover md:hidden" src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${carts.img}?raw=true`} alt="dress" />
+                                            <img className="w-24 h-24 object-cover hidden md:block" src={`src/assets/image/${carts.img}`} alt="dress" />
+                                            <img className="w-24 h-24 object-cover md:hidden" src={`src/assets/image/${carts.img}`} alt="dress" />
                                         </div>
                                     </Link>
                                     <div className="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full h-full  pb-6 space-y-4 md:space-y-0">

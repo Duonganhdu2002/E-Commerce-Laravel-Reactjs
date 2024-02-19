@@ -22,9 +22,7 @@ export default function FurniturePrview() {
             console.error("Error: ", error);
         }
     };
-
-    console.log(listTop6Furniture)
-
+    
     return (
         <div className="flex justify-center items-center">
             <div className="h-auto w-[80%] mb-8">
@@ -42,7 +40,7 @@ export default function FurniturePrview() {
                                     <div className="w-full h-[300px] md:h-[330px] lg:h-[400px] xl:h-[460px]  bg-white shadow-md shadow-gray-300 rounded-xl duration-500 hover:scale-105 hover:shadow-2xl">
                                         <img
                                             className=" h-[200px] w-[200px] md:h-[220px] md:w-[220px] lg:h-[280px] lg:w-[280px] xl:h-[320px] xl:w-[320px] object-cover rounded-t-xl"
-                                            src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${product.images[1]}?raw=true`}
+                                            src={`src/assets/image/${product.images[1]}`}
                                             alt="Product"
                                         />
                                         <div className="px-4 py-3 h-[20%] w-full">
