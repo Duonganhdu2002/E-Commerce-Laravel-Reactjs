@@ -24,7 +24,7 @@ const Login = () => {
                 <form action="post">
                     <img src={Logo} alt="" className=" w-full h-20 py-2" />
                     <p className="text-xl text-gray-600 text-center">
-                        Welcome back!
+                        Become an seller professional!
                     </p>
                     <div className="2xl:flex 2xl:justify-between mt-12">
                         <div className=" 2xl:w-[47%] w-full my-2">
@@ -78,31 +78,56 @@ const Login = () => {
                         </div>
                     </div>
 
-                    <div className=" pb-2 mt-2">
-                        <div className="w-full">
-                            <Input
-                                label="Password"
-                                id="password"
-                                name="password"
-                                type="password"
-                                autoComplete="current-password"
-                            />
+                    <div className="2xl:flex justify-between">
+                        <div className="2xl:w-[47%] w-full my-2">
+                            <div className="w-full">
+                                <Input
+                                    label="Password"
+                                    id="password"
+                                    name="password"
+                                    type="password"
+                                    autoComplete="current-password"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="2xl:w-[47%] w-full my-2">
+                            <div className="w-full">
+                                <Input
+                                    label="Password confirm"
+                                    id="passwordconfirm"
+                                    name="passwordconfirm"
+                                    type="password"
+                                    autoComplete="passwordconfirm"
+                                />
+                            </div>
                         </div>
                     </div>
+
+                    <div className="w-full mt-2">
+                        <Input
+                            label="Shop name"
+                            id="shopname"
+                            name="shopname"
+                            type="text"
+                            autoComplete="shopnameword"
+                        />
+                    </div>
+
 
                     <div className="flex items-center text-black mb-4">
                         <Checkbox
                             label={
                                 <Typography
                                     color="blue-gray"
-                                    className="flex font-medium"
+                                    className="flex font-medium text-sm"
                                 >
                                     I agree with the
                                     <Typography
                                         as="a"
                                         href="#"
                                         color="blue"
-                                        className="font-medium transition-colors hover:text-blue-700"
+                                        className="font-medium transition-colors hover:text-blue-700 text-sm"
                                     >
                                         &nbsp;terms and conditions
                                     </Typography>
