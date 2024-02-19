@@ -110,8 +110,8 @@ class UserController extends Controller
 
 
 
-    // Hàm xử lý đăng ký (createUser trong UserController)
-    public function createUser(Request $request)
+
+    public function createAdmin(Request $request)
     {
         try {
             $input = $request->all();
@@ -124,7 +124,6 @@ class UserController extends Controller
                     'email' => 'required|email|unique:users,email',
                     'telephone' => 'required',
                     'full_name' => 'required',
-                    'type_account_id' => 'required|in:1,2,3', // Thêm quy tắc cho trường loại tài khoản
                 ]
             );
 
@@ -142,7 +141,102 @@ class UserController extends Controller
                 'password' => Hash::make($request->input('password')),
                 'full_name' => $request->input('full_name'),
                 'telephone' => $request->input('telephone'),
-                'type_account_id' => $request->input('type_account_id'), // Lấy giá trị từ dữ liệu đầu vào
+                'type_account_id' => $request->input('type_account_id', 1),
+
+            ]);
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'User Created Successfully',
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Error creating user',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function createBusiness(Request $request)
+    {
+        try {
+            $input = $request->all();
+
+            $validateUser = Validator::make(
+                $input,
+                [
+                    'password' => 'required',
+                    'username' => 'required',
+                    'email' => 'required|email|unique:users,email',
+                    'telephone' => 'required',
+                    'full_name' => 'required',
+                ]
+            );
+
+            if ($validateUser->fails()) {
+                return response()->json([
+                    'status' => 401,
+                    'message' => 'Validation error',
+                    'errors' => $validateUser->errors()
+                ], 401);
+            }
+
+            User::create([
+                'username' => $request->input('username'),
+                'email' => $request->input('email'),
+                'password' => Hash::make($request->input('password')),
+                'full_name' => $request->input('full_name'),
+                'telephone' => $request->input('telephone'),
+                'type_account_id' => $request->input('type_account_id', 2),
+
+            ]);
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'User Created Successfully',
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Error creating user',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function createCustomer(Request $request)
+    {
+        try {
+            $input = $request->all();
+
+            $validateUser = Validator::make(
+                $input,
+                [
+                    'password' => 'required',
+                    'username' => 'required',
+                    'email' => 'required|email|unique:users,email',
+                    'telephone' => 'required',
+                    'full_name' => 'required',
+                ]
+            );
+
+            if ($validateUser->fails()) {
+                return response()->json([
+                    'status' => 401,
+                    'message' => 'Validation error',
+                    'errors' => $validateUser->errors()
+                ], 401);
+            }
+
+            User::create([
+                'username' => $request->input('username'),
+                'email' => $request->input('email'),
+                'password' => Hash::make($request->input('password')),
+                'full_name' => $request->input('full_name'),
+                'telephone' => $request->input('telephone'),
+                'type_account_id' => $request->input('type_account_id', 3),
+
             ]);
 
             return response()->json([
