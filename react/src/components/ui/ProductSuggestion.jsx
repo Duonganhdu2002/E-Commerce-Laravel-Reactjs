@@ -9,15 +9,18 @@ import { Typography } from "@material-tailwind/react";
 const ProductSuggestion = () => {
 
     const [data, setData] = useState([]);
-    const user_id = useSelector((state) => state.user.user.user_id);
+    const user = useSelector((state) => state.user.user);
+    const user_id = user ? user.user_id : 1;
 
     useEffect(() => {
-        getProductSugession(user_id ? (user_id) : (1));
-    }, [user_id ? (user_id) : (1)]);
+        if (user_id !== 1) {
+            getProductSuggestion();
+        }
+    }, [user_id]);
 
-    const getProductSugession = async () => {
+    const getProductSuggestion = async () => {
         try {
-            let res = await productSugession(user_id ? (user_id) : (1));
+            let res = await productSugession(user_id);
             if (res && res.data) {
                 setData(res.data);
             }
@@ -60,7 +63,6 @@ const ProductSuggestion = () => {
                                         </div>
                                     </div>
                                 </Link>
-
                             ))}
                     </section>
                 </div>
