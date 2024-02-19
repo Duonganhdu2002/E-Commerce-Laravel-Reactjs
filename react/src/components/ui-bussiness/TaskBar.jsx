@@ -116,7 +116,7 @@ const TaskBar = () => {
                     </Accordion>
                 ))}
                 <hr className="my-2 border-blue-gray-50" />
-                <Link to="dashboard">
+                <Link to="/bussiness">
                     <ListItem>
                         <ListItemPrefix>
                             <InboxIcon className="h-5 w-5" />
