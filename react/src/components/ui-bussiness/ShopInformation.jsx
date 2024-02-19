@@ -23,15 +23,6 @@ return (
             </div>
         </CardHeader>
         <CardBody>
-            <div className="flex mt-4 border-b border-gray-900/10 mb-6 ">
-                <div className="mr-6">
-                    <a href="#" className="text-lg text-black hover:text-gray-800 border-b-2 border-transparent hover:border-black transition duration-300">Basic information</a>
-                </div>
-                <div className="mr-6">
-                    <a href="#" className="text-lg text-black hover:text-gray-800 border-b-2 border-transparent hover:border-black transition duration-300">Identification information</a>
-                </div>
-            </div>
-
             <div className="flex justify-between ">
                 <div>
                     <Typography variant="h5" color="blue-gray">
@@ -43,12 +34,8 @@ return (
                     <Button variant="outlined" size="sm">
                        See
                     </Button>
-                    <Button variant="outlined" size="sm">
-                        Edit
-                    </Button>
                 </div>
             </div>
-
         </CardBody>
     </Card>
         
