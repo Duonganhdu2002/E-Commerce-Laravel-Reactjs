@@ -59,10 +59,10 @@ const navListMenuItems = [
         func: "",
     },
     {
-        title: "Blog",
+        title: "Business Page",
         description: "Find the perfect solution for your needs.",
         icon: Bars4Icon,
-        link: "",
+        link: "/business",
         func: "",
     },
     {

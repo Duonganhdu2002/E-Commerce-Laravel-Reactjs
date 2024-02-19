@@ -266,7 +266,7 @@ export default function MenuBarAdmin() {
     return (
         <Navbar className="fixed mx-auto max-w-screen-7xl p-2 lg:pl-6 mb-2">
             <div className="relative mx-auto flex items-center justify-between text-blue-gray-900">
-                <Link to="/bussiness">
+                <Link to="/">
                     <div className="pl-4 mr-10">
                         <img
                             className="w-8 h-8 md:hidden"

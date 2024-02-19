@@ -25,7 +25,7 @@ const Login = () => {
             if (result.payload) {
                 setEmail('');
                 setPassword('');
-                navigate("/bussiness")
+                navigate("/business")
             }
         });
     };

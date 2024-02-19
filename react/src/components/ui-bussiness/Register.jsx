@@ -39,7 +39,7 @@ const Login = () => {
         try {
             const response = await sellerRegister(sellerData);
             // console.log(response);
-            navigate('/bussiness/login')
+            navigate('/business/login')
 
         } catch (error) {
             console.error(error.response);

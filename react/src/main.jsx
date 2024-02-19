@@ -105,10 +105,10 @@ const PrivateBusinessRoute = ({ element }) => {
 
     const seller = useSelector((state) => state.seller.seller);
 
-    if (seller.type_account_id === 2) {
+    if (seller.type_account_id === 2 ) {
         return element;
     } else {
-        return <Navigate to="/bussiness/login" />;
+        return <Navigate to="/business/login" />;
     }
 };
 
@@ -146,7 +146,7 @@ const App = () => {
 
                             {/* Bussiness */}
 
-                            <Route path="/bussiness" element={<Bussiness />}>
+                            <Route path="/business" element={<Bussiness />}>
                                 <Route index element={<PrivateBusinessRoute element={<DashboardBussiness />} />} />
                                 <Route path="login" element={<LoginBussiness />} />
                                 <Route path="register" element={<RegisterBussiness />} />
