@@ -21,7 +21,11 @@ const fetchRandomFourCategoryAndGetFourProduct = () => {
 }
 
 const searchProduct = (searchKey, user_id, page) => {
-    return axios.get(`/public/product/search-products?name=${searchKey}&page=${page}` + (user_id ? `&user_id=${user_id}` : ''));   
+    return axios.get(`/public/product/search-products?name=${searchKey}&page=${page}` + (user_id ? `&user_id=${user_id}` : ''));
 }
 
-export { fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession, fetchRandomFourCategoryAndGetFourProduct, searchProduct };
+const productWithBrand = (brandId, page) => {
+    return axios.get(`/public/product/indexByBrand/${brandId}?page=${page}`)
+}
+
+export { productWithBrand, fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession, fetchRandomFourCategoryAndGetFourProduct, searchProduct };

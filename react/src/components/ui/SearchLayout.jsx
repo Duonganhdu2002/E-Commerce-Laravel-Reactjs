@@ -11,8 +11,6 @@ import Star1 from "../../assets/icon/star-outline.svg";
 
 export default function SearchLayout() {
 
-
-
     const { searchKey } = useParams();
     const [data, setData] = useState([]);
     const [user_id, setUser_id] = useState(useSelector((state) => state.user.user)?.user_id || '');
