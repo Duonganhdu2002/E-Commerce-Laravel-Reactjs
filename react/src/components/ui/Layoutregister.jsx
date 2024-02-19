@@ -22,18 +22,36 @@ function Icon() {
 const LayoutRegister = () => {
     const navigate = useNavigate();
 
-    const [userData, setUserData] = useState({ username: '', email: '', password: '', full_name: '', telephone: '', });
+    // State để theo dõi thông tin của người dùng
+    const [userData, setUserData] = useState({
+        username: '',
+        email: '',
+        password: '',
+        full_name: '',
+        telephone: '',
+    });
 
-    const [errors, setErrors] = useState({ username: '', email: '', password: '', full_name: '', telephone: '', });
+    // State để theo dõi lỗi của từng trường input
+    const [errors, setErrors] = useState({
+        username: '',
+        email: '',
+        password: '',
+        full_name: '',
+        telephone: '',
+    });
 
-    const [showAlert, setShowAlert] = useState(false);
+    const [showAlert, setShowAlert] = useState(false); // Khởi tạo showAlert là false
 
+    // Xử lý thay đổi của trường input
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setUserData({ ...userData, [name]: value });
+
+        // Xóa lỗi của trường input khi người dùng bắt đầu nhập lại
         setErrors({ ...errors, [name]: '' });
     };
 
+    // Hàm kiểm tra xem trường input có bị trống hay không
     const validateField = (name, value) => {
         if (value.trim() === '') {
             return `Please enter ${name}.`;
@@ -41,11 +59,13 @@ const LayoutRegister = () => {
         return '';
     };
 
+    // Xử lý sự kiện đăng ký
     const handleRegistration = async () => {
         try {
             let isError = false;
             const newErrors = { ...errors };
 
+            // Kiểm tra các trường input và cập nhật lỗi tương ứng
             Object.keys(userData).forEach((key) => {
                 const error = validateField(key, userData[key]);
                 if (error !== '') {
@@ -54,13 +74,15 @@ const LayoutRegister = () => {
                 }
             });
 
+            // Nếu có lỗi, hiển thị cảnh báo và không thực hiện đăng ký
             if (isError) {
                 setErrors(newErrors);
-                setShowAlert(true);
+                setShowAlert(true); // Hiển thị cảnh báo
                 return;
             }
 
-
+            // Nếu không có lỗi, thực hiện đăng ký
+            const response = await userRegister(userData);
             navigate('/login');
         } catch (error) {
             console.error(error.response);
@@ -68,20 +90,21 @@ const LayoutRegister = () => {
         }
     };
 
+    // Ẩn cảnh báo khi không có lỗi nào được hiển thị
     useEffect(() => {
         const hasError = Object.values(errors).some(error => error !== '');
         setShowAlert(hasError);
     }, [errors]);
 
     return (
-        <div className="flex items-center justify-center bg-slate-200/50">
+        <div className=" flex items-center justify-around bg-slate-200/50">
             {showAlert && (
                 <Alert icon={<Icon />} color="red" variant="outlined" className="w-96 right-0 top-20 mr-10 mt-8 fixed bg-white z-20" onClick={() => setShowAlert(false)} visible={showAlert}>
-                    You have entered some information incorrectly. Please try again.
+                    You have entered some format incorrectly. Please try again.
                 </Alert>
             )}
-            <div className="flex items-center h-[880px] w-96">
-                <div className="flex flex-1 flex-col justify-center px-[8%] py-8 bg-white shadow-xl rounded-3xl">
+            <div className="flex items-center px-10 h-[880px]">
+                <div className="flex flex-1 flex-col justify-center px-14 py-8 bg-white shadow-xl rounded-3xl">
                     <Link to="/">
                         <img className="mx-auto h-28" src={Logo} alt="Your Company" />
                     </Link>
@@ -91,33 +114,39 @@ const LayoutRegister = () => {
 
                     <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-xl md:max-w-xl">
                         <form className="space-y-4" action="#" method="POST">
-                            <div className="md:flex justify-between">
-                                <div className=" md:mr-4 mb-4 md:mb-0">
-                                    <Input label="Username" name="username" autoComplete='username' onChange={handleInputChange} required/>
-                                    {errors.username && <p className="text-red-500">{errors.username}</p>}
+                            {/* Hiển thị lỗi cho mỗi trường input */}
+                            <div className="flex justify-between pb-2">
+                                <div className="w-[47%] ">
+                                    <div className="w-full">
+                                        <Input label="Username" name="username" autoComplete='username' onChange={handleInputChange} />
+                                    </div>
                                 </div>
 
-                                <div>
-                                    <Input label="Phone number" name='telephone' onChange={handleInputChange} autoComplete='telephone' required/>
-                                    {errors.telephone && <p className="text-red-500">{errors.telephone}</p>}
+                                <div className="w-[47%]">
+                                    <div className="w-full">
+                                        <Input label="Phone number" name='telephone' onChange={handleInputChange} autoComplete='telephone' />
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="md:flex justify-between">
-                                <div className=" md:mr-4 mb-4 md:mb-0">
-                                    <Input label="Full Name" onChange={handleInputChange} name="full_name" autoComplete='full_name' required/>
-                                    {errors.full_name && <p className="text-red-500">{errors.full_name}</p>}
+                            <div className="flex justify-between pb-2">
+                                <div className="w-[47%]">
+                                    <div className="w-full">
+                                        <Input label="Full Name" onChange={handleInputChange} name="full_name" autoComplete='full_name' />
+                                    </div>
                                 </div>
-                                <div>
-                                    <Input label="Email" name="email" autoComplete='email' onChange={handleInputChange} required/>
-                                    {errors.email && <p className="text-red-500">{errors.email}</p>}
+
+                                <div className="w-[47%]">
+                                    <div className="w-full">
+                                        <Input label="Email" name="email" autoComplete='email' onChange={handleInputChange} />
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="pb-2">
+                            <div className=" pb-2">
                                 <div className="w-full">
-                                    <Input label="Password" name="password" type="password" autoComplete="current-password" onChange={handleInputChange} required/>
-                                    {errors.password && <p className="text-red-500">{errors.password}</p>}
+                                    <Input label="Password" name="password" type="password" autoComplete="current-password" onChange={handleInputChange}
+                                    />
                                 </div>
                             </div>
 
@@ -158,13 +187,13 @@ const LayoutRegister = () => {
                             </Button>
                         </div>
 
-                        <div className="mt-5">
-                            Already a member?&nbsp;
+                        <div className=" mt-5">
+                            Already member?&nbsp;
                             <Link
                                 to="/Login" className="font-semibold text-slate-500 hover:text-black hover:underline">
-                                Login here
+                                Login
                             </Link>
-                            .
+                            &nbsp;here.
                         </div>
                     </div>
                 </div>
