@@ -69,7 +69,31 @@ class UserController extends Controller
             // Get authenticated user (excluding password)
             $user = Auth::user();
 
-        
+            // Check user type and return appropriate response
+            switch ($user->type_account_id) {
+                case 1: // Admin
+                    // echo "Đăng nhập admin";
+                    // Handle admin login
+                    break;
+
+                case 2: // Business
+                    // echo "Đăng nhập Business";
+                    // Handle business login
+                    break;
+
+                case 3: // Customer
+                    // echo "Đăng nhập Customer";
+                    // Handle customer login
+                    break;
+
+                default:
+                    // Invalid user type
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Invalid user type',
+                    ], 401);
+            }
+
             // Return the user data with address
             return response()->json([
                 'success' => true,
@@ -85,6 +109,8 @@ class UserController extends Controller
     }
 
 
+
+    // Hàm xử lý đăng ký (createUser trong UserController)
     public function createUser(Request $request)
     {
         try {
@@ -98,6 +124,7 @@ class UserController extends Controller
                     'email' => 'required|email|unique:users,email',
                     'telephone' => 'required',
                     'full_name' => 'required',
+                    'type_account_id' => 'required|in:1,2,3', // Thêm quy tắc cho trường loại tài khoản
                 ]
             );
 
@@ -115,8 +142,7 @@ class UserController extends Controller
                 'password' => Hash::make($request->input('password')),
                 'full_name' => $request->input('full_name'),
                 'telephone' => $request->input('telephone'),
-                'type_account_id' => $request->input('type_account_id', 1),
-
+                'type_account_id' => $request->input('type_account_id'), // Lấy giá trị từ dữ liệu đầu vào
             ]);
 
             return response()->json([
@@ -131,6 +157,7 @@ class UserController extends Controller
             ], 500);
         }
     }
+
 
     public function userList()
     {
