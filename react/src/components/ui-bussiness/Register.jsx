@@ -115,7 +115,7 @@ const Login = () => {
                     </div>
 
 
-                    <div className="flex items-center text-black mb-4">
+                    <div className="flex items-center text-black my-4">
                         <Checkbox
                             label={
                                 <Typography
