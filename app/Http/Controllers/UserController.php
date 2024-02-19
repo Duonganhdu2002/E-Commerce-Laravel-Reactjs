@@ -192,6 +192,7 @@ class UserController extends Controller
                 'type_account_id' => $request->input('type_account_id', 2),
                 'shop_avt' => $request->input('shop_avt', 'shop_avt.jpg'),
                 'shop_background' => $request->input('shop_background', 'shop_background.png'),
+                'avt_image' => $request->input('avt_image', 'avatar.jpg'),
 
             ]);
 
@@ -208,7 +209,7 @@ class UserController extends Controller
         }
     }
 
-    public function createCustomer(Request $request)
+    public function createUser(Request $request)
     {
         try {
             $input = $request->all();

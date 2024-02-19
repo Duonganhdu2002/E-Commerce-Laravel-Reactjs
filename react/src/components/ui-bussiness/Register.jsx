@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Input,
     Button,
@@ -9,13 +9,37 @@ import {
     Card,
     CardBody,
 } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/icon/logo-single.svg";
+import { sellerRegister } from "../../services/authService";
 
 const Login = () => {
 
-    const handleFormSubmit = (event) => {
-        event.preventDefault();
+    const navigate = useNavigate();
+
+    const [sellerData, setSellerData] = useState({
+        shop_username: '',
+        email: '',
+        password: '',
+        full_name: '',
+        telephone: '',
+        shop_name: '',
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setSellerData({ ...sellerData, [name]: value });
+    };
+
+    const handleRegistration = async () => {
+        try {
+            const response = await sellerRegister(sellerData);
+            // console.log(response);
+            navigate('/bussiness/login')
+
+        } catch (error) {
+            console.error(error.response);
+        }
     };
 
     return (
@@ -31,10 +55,11 @@ const Login = () => {
                             <div className="w-full">
                                 <Input
                                     label="Username"
-                                    id="username"
-                                    name="username"
+                                    id="shop_username"
+                                    name="shop_username"
                                     type="text"
-                                    autoComplete="username"
+                                    autoComplete="shop_username"
+                                    onChange={handleInputChange}
                                 />
                             </div>
                         </div>
@@ -43,10 +68,11 @@ const Login = () => {
                             <div className="w-full">
                                 <Input
                                     label="Phone number"
-                                    id="phonenumber"
-                                    name="phonenumber"
+                                    id="telephone"
+                                    name="telephone"
                                     type="text"
-                                    autoComplete="phonenumber"
+                                    autoComplete="telephone"
+                                    onChange={handleInputChange}
                                 />
                             </div>
                         </div>
@@ -57,10 +83,11 @@ const Login = () => {
                             <div className="w-full">
                                 <Input
                                     label="Full Name"
-                                    id="fullname"
-                                    name="fullname"
+                                    id="full_name"
+                                    name="full_name"
                                     type="text"
-                                    autoComplete="fullname"
+                                    autoComplete="full_name"
+                                    onChange={handleInputChange}
                                 />
                             </div>
                         </div>
@@ -73,6 +100,7 @@ const Login = () => {
                                     name="email"
                                     autoComplete="email"
                                     type="email"
+                                    onChange={handleInputChange}
                                 />
                             </div>
                         </div>
@@ -86,7 +114,8 @@ const Login = () => {
                                     id="password"
                                     name="password"
                                     type="password"
-                                    autoComplete="current-password"
+                                    autoComplete="password"
+                                    onChange={handleInputChange}
                                 />
                             </div>
                         </div>
@@ -99,6 +128,7 @@ const Login = () => {
                                     name="passwordconfirm"
                                     type="password"
                                     autoComplete="passwordconfirm"
+                                    onChange={handleInputChange}
                                 />
                             </div>
                         </div>
@@ -107,10 +137,11 @@ const Login = () => {
                     <div className="w-full mt-2">
                         <Input
                             label="Shop name"
-                            id="shopname"
-                            name="shopname"
+                            id="shop_name"
+                            name="shop_name"
                             type="text"
-                            autoComplete="shopnameword"
+                            autoComplete="shop_name"
+                            onChange={handleInputChange}
                         />
                     </div>
 
@@ -140,6 +171,7 @@ const Login = () => {
                     <div>
                         <Button
                             className="w-full"
+                            onClick={handleRegistration}
                         >
                             Sign up
                         </Button>

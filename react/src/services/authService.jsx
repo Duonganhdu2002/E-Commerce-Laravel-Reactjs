@@ -16,4 +16,10 @@ const userRegister = (userData) => {
     return axios.post("/user/register", userData);
 };
 
-export { fetchAllUser, fetchUserPagination, userLogin, userRegister };
+const sellerRegister = (sellerData) => {
+    return axios.post("/user/createBusiness", sellerData);
+};
+
+
+
+export { fetchAllUser, fetchUserPagination, userLogin, userRegister, sellerRegister };
