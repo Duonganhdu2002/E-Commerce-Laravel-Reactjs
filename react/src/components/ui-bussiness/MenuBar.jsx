@@ -36,19 +36,7 @@ const profileMenuItems = [
     {
         label: "Edit Profile",
         icon: Cog6ToothIcon,
-    },
-    {
-        label: "Inbox",
-        icon: InboxArrowDownIcon,
-    },
-    {
-        label: "Help",
-        icon: LifebuoyIcon,
-    },
-    {
-        label: "Sign Out",
-        icon: PowerIcon,
-    },
+    }
 ];
 
 import logo from "../../assets/icon/logo.svg";
@@ -94,21 +82,17 @@ function ProfileMenu() {
                         <MenuItem
                             key={label}
                             onClick={closeMenu}
-                            className={`flex items-center gap-2 rounded ${isLastItem
-                                ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
-                                : ""
-                                }`}
+                            className={`flex items-center gap-2 rounded`}
                         >
                             {React.createElement(icon, {
-                                className: `h-4 w-4 ${isLastItem ? "text-red-500" : ""
-                                    }`,
+                                className: `h-4 w-4`,
                                 strokeWidth: 2,
                             })}
                             <Typography
                                 as="span"
                                 variant="small"
                                 className="font-normal"
-                                color={isLastItem ? "red" : "inherit"}
+                                color="inherit"
                             >
                                 {label}
                             </Typography>
