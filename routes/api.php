@@ -39,7 +39,10 @@ Route::prefix('public')->group(function () {
         Route::get('best-selling-products/{categoryId}', [ProductController::class, 'getBestSellingProductsInCategory'])->name('best-selling-products');
 
         // xuất ra những sản phẩm bởi id của category
-        Route::get('indexByCate/{categoryId}', [ProductController::class, 'indexByCategory']);
+        Route::get('indexByCate/{categoryId}', [ProductController::class, 'indexByCategory'])->name('indexByCategory');
+
+        // xuất ra những sản phẩm bởi id của brand và phân trang = 10 sp
+        Route::get('indexByBrand/{brandId}', [ProductController::class, 'indexByBrand'])->name('indexByBrand');
 
         // Lọc sản phẩm theo danh mục và có trạng thái là 3
         Route::get('listProductWithCategory/{categoryId}', [ProductController::class, 'listProductWithCategory'])->name('product-with-category');
