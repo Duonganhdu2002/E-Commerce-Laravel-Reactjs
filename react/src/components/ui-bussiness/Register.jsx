@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useSelector } from 'react-redux'
+
 import {
     Input,
     Button,
@@ -15,6 +17,8 @@ import { sellerRegister } from "../../services/authService";
 
 const Login = () => {
 
+    const seller = useSelector((state) => state.seller.seller);
+    console.log(seller)
     const navigate = useNavigate();
 
     const [sellerData, setSellerData] = useState({

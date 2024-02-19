@@ -51,56 +51,34 @@ class UserController extends Controller
         }
     }
 
-
     public function login(Request $request)
     {
-        // Validate request data
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        // Attempt to log in
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            // Authentication successful
-
-            // Get authenticated user (excluding password)
             $user = Auth::user();
 
-            // Check user type and return appropriate response
-            switch ($user->type_account_id) {
-                case 1: // Admin
-                    // echo "Đăng nhập admin";
-                    // Handle admin login
-                    break;
+            // Check if type_account_id is equal to 3
+            if ($user->type_account_id == 3) {
+                return response()->json([
+                    'success' => true,
+                    'data' => $user,
+                ]);
+            } else {
+                // If type_account_id is not equal to 3, logout the user
+                Auth::logout();
 
-                case 2: // Business
-                    // echo "Đăng nhập Business";
-                    // Handle business login
-                    break;
-
-                case 3: // Customer
-                    // echo "Đăng nhập Customer";
-                    // Handle customer login
-                    break;
-
-                default:
-                    // Invalid user type
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Invalid user type',
-                    ], 401);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid account type',
+                ], 401);
             }
-
-            // Return the user data with address
-            return response()->json([
-                'success' => true,
-                'data' => $user,
-            ]);
         } else {
-            // Authentication failed
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid credentials',
@@ -108,7 +86,73 @@ class UserController extends Controller
         }
     }
 
+    public function loginBusiness(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            if ($user->type_account_id == 2) {
+                return response()->json([
+                    'success' => true,
+                    'data' => $user,
+                ]);
+            } else {
+                Auth::logout();
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid account type',
+                ], 401);
+            }
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid credentials',
+            ], 401);
+        }
+    }
+
+    public function loginAdmin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            // Check if type_account_id is equal to 3
+            if ($user->type_account_id == 1) {
+                return response()->json([
+                    'success' => true,
+                    'data' => $user,
+                ]);
+            } else {
+                // If type_account_id is not equal to 3, logout the user
+                Auth::logout();
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid account type',
+                ], 401);
+            }
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid credentials',
+            ], 401);
+        }
+    }
 
 
     public function createAdmin(Request $request)

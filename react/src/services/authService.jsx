@@ -12,6 +12,10 @@ const userLogin = (password) => {
     return axios.post("/user/login", password);
 }
 
+const sellerLogin = (password) => {
+    return axios.post("/user/loginBusiness", password);
+}
+
 const userRegister = (userData) => {
     return axios.post("/user/register", userData);
 };
@@ -22,4 +26,4 @@ const sellerRegister = (sellerData) => {
 
 
 
-export { fetchAllUser, fetchUserPagination, userLogin, userRegister, sellerRegister };
+export { fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister };

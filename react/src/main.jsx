@@ -102,13 +102,12 @@ const Admin = () => {
 }
 
 const PrivateBusinessRoute = ({ element }) => {
-    const user = useSelector((state) => state.user.user);
 
-    // Check if the user has the Business role
-    if (user && user.type_account_id === 2) {
+    const seller = useSelector((state) => state.seller.seller);
+
+    if (seller.type_account_id === 2) {
         return element;
     } else {
-        // Redirect to a login or unauthorized page
         return <Navigate to="/bussiness/login" />;
     }
 };
@@ -116,6 +115,7 @@ const PrivateBusinessRoute = ({ element }) => {
 
 const App = () => {
     const user = useSelector((state) => state.user.user);
+    const seller = useSelector((state) => state.seller.seller);
     return (
         <div>
             <BrowserRouter>
