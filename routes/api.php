@@ -15,12 +15,14 @@ use App\Http\Controllers\SearchHistoryController;
 use App\Http\Controllers\ProvincesController;
 
 Route::prefix('user')->group(function () {
-    Route::post('register', [UserController::class, 'createUser'])->name('register');
-    Route::post('login', [UserController::class, 'login']);
-    Route::get('info/{user_id}', [UserController::class, 'info']);
-    Route::get('auth-total', [UserController::class, 'getTotalUsers']);
-    Route::get('auth-list', [UserController::class, 'userList'])->name('userList');
-    Route::get('auth', [UserController::class, 'userPagination']);
+    Route::post('createAdmin', [UserController::class, 'createAdmin'])->name('createAdmin');
+    Route::post('createBusiness', [UserController::class, 'createBusiness'])->name('createBusiness');
+    Route::post('createCustomer', [UserController::class, 'createCustomer'])->name('createCustomer');
+    Route::post('login', [UserController::class, 'login'])->name('login');
+    Route::get('info/{user_id}', [UserController::class, 'info'])->name('info');
+    Route::get('auth-total', [UserController::class, 'getTotalUsers'])->name('getTotalUsers');
+    Route::get('auth-list', [UserController::class, 'userList'])->name('userList')->name('userList');
+    Route::get('auth', [UserController::class, 'userPagination'])->name('userPagination');
 });
 
 Route::prefix('public')->group(function () {
@@ -37,7 +39,10 @@ Route::prefix('public')->group(function () {
         Route::get('best-selling-products/{categoryId}', [ProductController::class, 'getBestSellingProductsInCategory'])->name('best-selling-products');
 
         // xuất ra những sản phẩm bởi id của category
-        Route::get('indexByCate/{categoryId}', [ProductController::class, 'indexByCategory']);
+        Route::get('indexByCate/{categoryId}', [ProductController::class, 'indexByCategory'])->name('indexByCategory');
+
+        // xuất ra những sản phẩm bởi id của brand và phân trang = 10 sp
+        Route::get('indexByBrand/{brandId}', [ProductController::class, 'indexByBrand'])->name('indexByBrand');
 
         // Lọc sản phẩm theo danh mục và có trạng thái là 3
         Route::get('listProductWithCategory/{categoryId}', [ProductController::class, 'listProductWithCategory'])->name('product-with-category');
