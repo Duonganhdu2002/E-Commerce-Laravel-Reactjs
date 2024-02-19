@@ -161,7 +161,6 @@ const App = () => {
                                 <Route path="dashboard" element={<PrivateBusinessRoute element={<div>Dashboard Content</div>} />} />
                                 <Route path="inbox" element={<PrivateBusinessRoute element={<InboxBussiness />} />} />
                                 <Route path="profile" element={<PrivateBusinessRoute element={<ProfileBussiness />} />} />
-                                <Route path="logout" element={<PrivateBusinessRoute element={<div>Logout Content</div>}/>} />
                             </Route>
 
                             {/* Admin */}

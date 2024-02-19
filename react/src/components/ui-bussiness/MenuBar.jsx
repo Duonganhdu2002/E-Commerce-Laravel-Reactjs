@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import {
     Navbar,
     Collapse,
@@ -53,6 +53,12 @@ const profileMenuItems = [
 
 import logo from "../../assets/icon/logo.svg";
 import logoSingle from "../../assets/icon/logo-single.svg";
+import { useSelector } from 'react-redux'
+import { clearSeller } from "../../redux/slices/sellerSlice";
+import { useDispatch } from 'react-redux';
+import Cookies from 'js-cookie';
+
+
 
 function ProfileMenu() {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -76,9 +82,8 @@ function ProfileMenu() {
                     />
                     <ChevronDownIcon
                         strokeWidth={2.5}
-                        className={`h-3 w-3 transition-transform ${
-                            isMenuOpen ? "rotate-180" : ""
-                        }`}
+                        className={`h-3 w-3 transition-transform ${isMenuOpen ? "rotate-180" : ""
+                            }`}
                     />
                 </Button>
             </MenuHandler>
@@ -89,16 +94,14 @@ function ProfileMenu() {
                         <MenuItem
                             key={label}
                             onClick={closeMenu}
-                            className={`flex items-center gap-2 rounded ${
-                                isLastItem
-                                    ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
-                                    : ""
-                            }`}
+                            className={`flex items-center gap-2 rounded ${isLastItem
+                                ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
+                                : ""
+                                }`}
                         >
                             {React.createElement(icon, {
-                                className: `h-4 w-4 ${
-                                    isLastItem ? "text-red-500" : ""
-                                }`,
+                                className: `h-4 w-4 ${isLastItem ? "text-red-500" : ""
+                                    }`,
                                 strokeWidth: 2,
                             })}
                             <Typography
@@ -171,9 +174,8 @@ function NavListMenu() {
                             Pages{" "}
                             <ChevronDownIcon
                                 strokeWidth={2}
-                                className={`h-3 w-3 transition-transform ${
-                                    isMenuOpen ? "rotate-180" : ""
-                                }`}
+                                className={`h-3 w-3 transition-transform ${isMenuOpen ? "rotate-180" : ""
+                                    }`}
                             />
                         </MenuItem>
                     </Typography>
@@ -241,6 +243,16 @@ function NavList() {
 
 export default function MenuBarAdmin() {
     const [isNavOpen, setIsNavOpen] = React.useState(false);
+    const seller = useSelector((state) => state.seller.seller);
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const handleLogOut = () => {
+        dispatch(clearSeller());
+        Cookies.remove('seller');
+        navigate("/business/login");
+    };
 
     const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
 
@@ -280,11 +292,25 @@ export default function MenuBarAdmin() {
                 >
                     <Bars2Icon className="h-6 w-6" />
                 </IconButton>
-                <Link to="login">
-                    <Button size="sm" variant="text">
-                        <span>Log In</span>
-                    </Button>
-                </Link>
+                {
+                    seller ? (
+                        <div>
+                            <Link to="login">
+                                <Button onClick={handleLogOut} size="sm" variant="text">
+                                    <span>Log out</span>
+                                </Button>
+                            </Link>
+                        </div>
+                    ) : (
+                        <div>
+                            <Link to="login">
+                                <Button size="sm" variant="text">
+                                    <span>Log In</span>
+                                </Button>
+                            </Link>
+                        </div>
+                    )
+                }
                 <ProfileMenu />
             </div>
             <Collapse open={isNavOpen} className="overflow-scroll">
