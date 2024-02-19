@@ -136,7 +136,7 @@ export default function Checkout() {
         console.log("Phone Number:", phoneNumber);
         console.log("Email:", email);
         console.log("Note:", note);
-        console.log("Address:",streetAndNumber + ', ' + selectedDistrict + ', ' + selectedWard + ', ' + selectedProvince);
+        console.log("Address:",streetAndNumber + ', ' + selectedWard + ', ' + selectedDistrict + ', ' + selectedProvince);
     };
 
     // useEffect(() => {
