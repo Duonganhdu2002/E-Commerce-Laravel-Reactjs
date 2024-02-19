@@ -128,7 +128,7 @@ export default function SearchLayout() {
                                     <div className="w-full h-[350px] md:h-[380px] lg:h-[450px] xl:h-[510px]  bg-white shadow-md shadow-gray-300 rounded-xl duration-500 hover:scale-105 hover:shadow-2xl">
                                         <img
                                             className=" h-[200px] w-[200px] md:h-[220px] md:w-[220px] lg:h-[280px] lg:w-[280px] xl:h-[320px] xl:w-[320px] object-cover rounded-t-xl"
-                                            src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${product.images?.[0]?.image_url}?raw=true`}
+                                            src={`../../../src/assets/image/${product.images?.[0]?.image_url}`}
                                             alt="Product"
                                         />
                                         <div className="px-4 py-3 h-[20%] w-full">

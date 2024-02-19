@@ -31,8 +31,6 @@ const accordionData = [
         title: "Shipment",
         links: [
             { path: "/bussiness/my-shipment", label: "My shipment" },
-            { path: "/bussiness/mass-ship", label: "Mass ship" },
-            { path: "/bussiness/shipping-setting", label: "Shipping setting" },
         ],
     },
     {
@@ -42,7 +40,6 @@ const accordionData = [
         links: [
             { path: "/bussiness/my-oders", label: "My orders" },
             { path: "/bussiness/cancelation", label: "Cancellation" },
-            { path: "/bussiness/return-refun", label: "Return/Refund" },
         ],
     },
     {
@@ -52,8 +49,6 @@ const accordionData = [
         links: [
             { path: "/bussiness/my-products", label: "My products" },
             { path: "/bussiness/add-new-product", label: "Add new product" },
-            { path: "/bussiness/product-violations", label: "Product violations" },
-            { path: "/bussiness/product-setting", label: "Product setting" },
         ],
     },
     {
@@ -64,7 +59,6 @@ const accordionData = [
             { path: "/bussiness/shop-rating", label: "Shop rating" },
             { path: "/bussiness/shop-information", label: "Shop information" },
             { path: "/bussiness/shop-category", label: "Shop category" },
-            { path: "/bussiness/my-report", label: "My report" },
         ],
     },
 ];
@@ -149,15 +143,6 @@ const TaskBar = () => {
                             <UserCircleIcon className="h-5 w-5" />
                         </ListItemPrefix>
                         Profile
-                    </ListItem>
-                </Link>
-                <Link to="settings">
-
-                    <ListItem>
-                        <ListItemPrefix>
-                            <Cog6ToothIcon className="h-5 w-5" />
-                        </ListItemPrefix>
-                        Settings
                     </ListItem>
                 </Link>
                 <Link to="logout">
