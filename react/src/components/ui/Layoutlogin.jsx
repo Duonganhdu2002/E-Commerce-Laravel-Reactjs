@@ -63,12 +63,12 @@ export default function LayoutLogin() {
                             <form className="space-y-6" onSubmit={handleLogin}>
                                 <div>
                                     <div className="w-full">
-                                        <Input label="Email address" value={email} onChange={(e) => setEmail(e.target.value)} id="email" name="email" type="email" autoComplete="email" required/>
+                                        <Input label="Email address" value={email} onChange={(e) => setEmail(e.target.value)} id="email" name="email" type="email" autoComplete="email" />
                                     </div>
                                 </div>
                                 <div>
                                     <div className="w-full">
-                                        <Input label="Password" value={password} onChange={(e) => setPassword(e.target.value)} id="password" name="password" type="password" autoComplete="current-password" required/>
+                                        <Input label="Password" value={password} onChange={(e) => setPassword(e.target.value)} id="password" name="password" type="password" autoComplete="current-password" />
                                     </div>
                                 </div>
                                 <div>

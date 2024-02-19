@@ -4,7 +4,7 @@ import {
     ArrowRightIcon, 
     ArrowLeftIcon
 } from "@heroicons/react/24/outline";
-import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import { PencilIcon } from "@heroicons/react/24/solid";
 import {
     Card,
     CardHeader,
@@ -21,7 +21,7 @@ import {
 import { useState } from "react";
 
 const TABLE_HEAD = [
-    "Products",
+    "Username",
     "Total order",
     "Status",
     "Countdown",

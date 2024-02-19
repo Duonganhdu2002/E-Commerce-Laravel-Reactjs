@@ -17,7 +17,7 @@ use App\Http\Controllers\ProvincesController;
 Route::prefix('user')->group(function () {
     Route::post('createAdmin', [UserController::class, 'createAdmin'])->name('createAdmin');
     Route::post('createBusiness', [UserController::class, 'createBusiness'])->name('createBusiness');
-    Route::post('register', [UserController::class, 'createCustomer'])->name('register');
+    Route::post('register', [UserController::class, 'createUser'])->name('register');
 
     Route::post('login', [UserController::class, 'login'])->name('login');
 

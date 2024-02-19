@@ -167,10 +167,11 @@ class UserController extends Controller
                 $input,
                 [
                     'password' => 'required',
-                    'username' => 'required',
+                    'shop_username' => 'required',
                     'email' => 'required|email|unique:users,email',
                     'telephone' => 'required',
                     'full_name' => 'required',
+                    'shop_name' => 'required',
                 ]
             );
 
@@ -183,12 +184,14 @@ class UserController extends Controller
             }
 
             User::create([
-                'username' => $request->input('username'),
+                'shop_username' => $request->input('shop_username'),
                 'email' => $request->input('email'),
                 'password' => Hash::make($request->input('password')),
                 'full_name' => $request->input('full_name'),
                 'telephone' => $request->input('telephone'),
                 'type_account_id' => $request->input('type_account_id', 2),
+                'shop_avt' => $request->input('shop_avt', 'shop_avt.jpg'),
+                'shop_background' => $request->input('shop_background', 'shop_background.png'),
 
             ]);
 
