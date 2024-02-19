@@ -16,6 +16,7 @@ import MyProductsBussiness from "./pages/bussiness/MyProducts";
 import DashboardBussiness from "./pages/bussiness/Dashboard";
 import AddProductsBussiness from "./components/ui-bussiness/AddProducts";
 import { MyOrdersBussiness } from "./components/ui-bussiness/MyOrders";
+import { CancellationBusiness } from "./components/ui-bussiness/Cancellation";
 import TaskBar from "./components/ui-bussiness/TaskBar";
 import MenuBarAdmin from "./components/ui-admin/MenuBar";
 import LoginAdmin from "./components/ui-admin/Login";
@@ -44,6 +45,7 @@ import Error404 from "./components/ui/error404";
 import { useSelector } from 'react-redux'
 import { ShopRating } from "./components/ui-bussiness/ShopRating";
 import { ShopInformation } from "./components/ui-bussiness/ShopInformation";
+
 
 const Customer = () => {
     return (
@@ -137,7 +139,7 @@ const App = () => {
                                 <Route path="register" element={<RegisterBussiness />} />
                                 <Route path="my-shipment" element={<div>My shipment</div>} />
                                 <Route path="my-oders" element={<MyOrdersBussiness />} />
-                                <Route path="cancelation" element={<div>Cancelation</div>} />
+                                <Route path="cancelation" element={<CancellationBusiness />} />
                                 <Route path="my-products" element={<MyProductsBussiness />} />
                                 <Route path="add-new-product" element={<AddProductsBussiness />} />
                                 <Route path="shop-rating" element={<ShopRating />} />
@@ -187,7 +189,7 @@ const App = () => {
 ReactDOM.createRoot(document.getElementById("root")).render(
     <Provider store={store}>
         <UserProvider>
-            <App/>
+            <App />
         </UserProvider>
     </Provider>
 );
