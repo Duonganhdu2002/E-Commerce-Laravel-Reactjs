@@ -22,9 +22,7 @@ export default function FurniturePrview() {
             console.error("Error: ", error);
         }
     };
-
-    console.log(listTop6Furniture)
-
+    
     return (
         <div className="flex justify-center items-center">
             <div className="h-auto w-[80%] mb-8">

@@ -436,7 +436,7 @@ class ProductController extends Controller
 
         // Lấy sản phẩm dựa trên từ khóa tìm kiếm gần đây
         foreach ($recentSearches as $search) {
-            $products = Product::where('name', 'like', "%$search%")->take(5)->get();
+            $products = Product::where('name', 'like', "%$search%")->take(2)->get();
             $relatedProducts = $relatedProducts->merge($products);
         }
 
