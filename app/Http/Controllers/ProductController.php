@@ -17,6 +17,8 @@ use App\Models\product_category as ProductCategory;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 
 class ProductController extends Controller
 {
@@ -66,40 +68,37 @@ class ProductController extends Controller
             return response()->json($arr, 404);
         }
     }
+
+
     public function indexByBrand($brandId)
     {
-        try {
-            // Assuming you have relationships between Product and ProductBrand, and Product and ProductImage
-            $products = ProductBrand::findOrFail($brandId)
-                ->products()
-                ->with('images') // assuming the relationship name is 'images' in the Product model
-                ->paginate(10); // paginate with 10 products per page
 
-            $result = [];
+        // Assuming you have relationships between Product and ProductBrand, and Product and ProductImage
+        $products = ProductBrand::findOrFail($brandId)
+            ->products()
+            ->with('images') // assuming the relationship name is 'images' in the Product model
+            ->paginate(10); // paginate with 10 products per page
 
-            foreach ($products as $product) {
-                $images = $product->images->pluck('image_url')->toArray();
 
-                $result[] = array_merge((new ProductResource($product))->toArray(request()), ['images' => $images]);
-            }
+        foreach ($products as $product) {
+            $product->images->pluck('image_url');
+        }
 
-            $arr = [
-                'status' => true,
-                'message' => 'Danh sách sản phẩm theo thương hiệu',
-                'data' => $result,
-            ];
-
-            return response()->json($arr, 200);
-        } catch (ModelNotFoundException $e) {
-            $arr = [
+        if ($products->isEmpty()) {
+            return response()->json([
                 'status' => false,
                 'message' => 'Thương hiệu sản phẩm không tồn tại hoặc không có sản phẩm nào',
                 'data' => null,
-            ];
-
-            return response()->json($arr, 404);
+            ], 404);
         }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Danh sách sản phẩm theo thương hiệu',
+            'data' => $products,
+        ], 200);
     }
+
     public function indexByUser($userId)
     {
         try {
