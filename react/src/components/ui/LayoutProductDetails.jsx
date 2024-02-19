@@ -299,7 +299,7 @@ const LayoutProductDetails = () => {
                         {imageUrls.length > 0 && currentImage ? (
                             <img
                                 className="h-[420px] w-[360px] object-cover"
-                                src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${currentImage}?raw=true`}
+                                src={`../../../src/assets/image/${currentImage}`}
                                 alt={data.name}
                             />
                         ) : (
@@ -316,7 +316,7 @@ const LayoutProductDetails = () => {
                             >
                                 <img
                                     className="h-[180px] w-[180px]"
-                                    src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${imageUrl}?raw=true`}
+                                    src={`../../../src/assets/image/${imageUrl}`}
                                     alt={`${data.name} - preview ${index + 1}`}
                                 />
                             </div>
@@ -335,7 +335,7 @@ const LayoutProductDetails = () => {
                         {data.created_by_user_id?.shop_background && (
                             <img
                                 className="h-56 shadow rounded-t w-full object-cover object-center"
-                                src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/shop/${data.created_by_user_id.shop_background}?raw=true`}
+                                src={`../../../src/assets/shop/${data.created_by_user_id.shop_background}`}
                                 alt="Shop Avatar"
                             />
 
@@ -344,7 +344,7 @@ const LayoutProductDetails = () => {
                             {data.created_by_user_id?.shop_avt && (
                                 <img
                                     className="w-full h-full overflow-hidden object-cover rounded"
-                                    src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/shop/${data.created_by_user_id.shop_avt}?raw=true`}
+                                    src={`../../../src/assets/shop/${data.created_by_user_id.shop_avt}`}
                                     alt="Shop Avatar"
                                 />
 
