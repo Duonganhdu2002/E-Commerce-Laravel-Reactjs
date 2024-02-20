@@ -36,6 +36,7 @@ Route::prefix('public')->group(function () {
         // Route::resource('/', ProductController::class);
 
         Route::get('show/{id}', [ProductController::class, 'show']);
+        Route::post('add', [ProductController::class, 'store']);
 
         //xuất ra 6 sản phẩm mới nhất
         Route::get('latest-products/{categoryId}', [ProductController::class, 'getLatestProductsInCategory'])->name('latest-products');
