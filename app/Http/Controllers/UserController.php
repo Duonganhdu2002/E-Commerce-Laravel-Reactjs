@@ -51,32 +51,102 @@ class UserController extends Controller
         }
     }
 
-
     public function login(Request $request)
     {
-        // Validate request data
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        // Attempt to log in
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            // Authentication successful
-
-            // Get authenticated user (excluding password)
             $user = Auth::user();
 
-        
-            // Return the user data with address
-            return response()->json([
-                'success' => true,
-                'data' => $user,
-            ]);
+            // Check if type_account_id is equal to 3
+            if ($user->type_account_id == 3) {
+                return response()->json([
+                    'success' => true,
+                    'data' => $user,
+                ]);
+            } else {
+                // If type_account_id is not equal to 3, logout the user
+                Auth::logout();
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid account type',
+                ], 401);
+            }
         } else {
-            // Authentication failed
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid credentials',
+            ], 401);
+        }
+    }
+
+    public function loginBusiness(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            if ($user->type_account_id == 2) {
+                return response()->json([
+                    'success' => true,
+                    'data' => $user,
+                ]);
+            } else {
+                Auth::logout();
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid account type',
+                ], 401);
+            }
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid credentials',
+            ], 401);
+        }
+    }
+
+    public function loginAdmin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            // Check if type_account_id is equal to 3
+            if ($user->type_account_id == 1) {
+                return response()->json([
+                    'success' => true,
+                    'data' => $user,
+                ]);
+            } else {
+                // If type_account_id is not equal to 3, logout the user
+                Auth::logout();
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid account type',
+                ], 401);
+            }
+        } else {
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid credentials',
@@ -85,7 +155,7 @@ class UserController extends Controller
     }
 
 
-    public function createUser(Request $request)
+    public function createAdmin(Request $request)
     {
         try {
             $input = $request->all();
@@ -131,6 +201,105 @@ class UserController extends Controller
             ], 500);
         }
     }
+
+    public function createBusiness(Request $request)
+    {
+        try {
+            $input = $request->all();
+
+            $validateUser = Validator::make(
+                $input,
+                [
+                    'password' => 'required',
+                    'shop_username' => 'required',
+                    'email' => 'required|email|unique:users,email',
+                    'telephone' => 'required',
+                    'full_name' => 'required',
+                    'shop_name' => 'required',
+                ]
+            );
+
+            if ($validateUser->fails()) {
+                return response()->json([
+                    'status' => 401,
+                    'message' => 'Validation error',
+                    'errors' => $validateUser->errors()
+                ], 401);
+            }
+
+            User::create([
+                'shop_username' => $request->input('shop_username'),
+                'email' => $request->input('email'),
+                'password' => Hash::make($request->input('password')),
+                'full_name' => $request->input('full_name'),
+                'telephone' => $request->input('telephone'),
+                'type_account_id' => $request->input('type_account_id', 2),
+                'shop_avt' => $request->input('shop_avt', 'shop_avt.jpg'),
+                'shop_background' => $request->input('shop_background', 'shop_background.png'),
+                'avt_image' => $request->input('avt_image', 'avatar.jpg'),
+
+            ]);
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'User Created Successfully',
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Error creating user',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function createUser(Request $request)
+    {
+        try {
+            $input = $request->all();
+
+            $validateUser = Validator::make(
+                $input,
+                [
+                    'password' => 'required',
+                    'username' => 'required',
+                    'email' => 'required|email|unique:users,email',
+                    'telephone' => 'required',
+                    'full_name' => 'required',
+                ]
+            );
+
+            if ($validateUser->fails()) {
+                return response()->json([
+                    'status' => 401,
+                    'message' => 'Validation error',
+                    'errors' => $validateUser->errors()
+                ], 401);
+            }
+
+            User::create([
+                'username' => $request->input('username'),
+                'email' => $request->input('email'),
+                'password' => Hash::make($request->input('password')),
+                'full_name' => $request->input('full_name'),
+                'telephone' => $request->input('telephone'),
+                'type_account_id' => $request->input('type_account_id', 3),
+
+            ]);
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'User Created Successfully',
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Error creating user',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }
+
 
     public function userList()
     {

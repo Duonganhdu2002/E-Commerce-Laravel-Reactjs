@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\product_brand as ProductBrand;
 use Illuminate\Http\Request;
 use App\Http\Resources\ProductResource as ProductResource;
 use App\Models\Product;
@@ -16,6 +17,8 @@ use App\Models\product_category as ProductCategory;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 
 class ProductController extends Controller
 {
@@ -65,6 +68,37 @@ class ProductController extends Controller
             return response()->json($arr, 404);
         }
     }
+
+
+    public function indexByBrand($brandId)
+    {
+
+        // Assuming you have relationships between Product and ProductBrand, and Product and ProductImage
+        $products = ProductBrand::findOrFail($brandId)
+            ->products()
+            ->with('images') // assuming the relationship name is 'images' in the Product model
+            ->paginate(10); // paginate with 10 products per page
+
+
+        foreach ($products as $product) {
+            $product->images->pluck('image_url');
+        }
+
+        if ($products->isEmpty()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Thương hiệu sản phẩm không tồn tại hoặc không có sản phẩm nào',
+                'data' => null,
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Danh sách sản phẩm theo thương hiệu',
+            'data' => $products,
+        ], 200);
+    }
+
     public function indexByUser($userId)
     {
         try {
@@ -377,7 +411,7 @@ class ProductController extends Controller
                 ->leftJoin('order', 'order_items.order_id', '=', 'order.order_id')
                 ->where('product.product_brand_id', $brandId)
                 ->where('order.order_status_id', 3)
-                ->groupBy('product.product_id',)
+                ->groupBy('product.product_id', )
                 ->groupBy(
                     'product.product_id',
                     'product.name',

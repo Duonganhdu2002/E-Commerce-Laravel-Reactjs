@@ -12,8 +12,18 @@ const userLogin = (password) => {
     return axios.post("/user/login", password);
 }
 
+const sellerLogin = (password) => {
+    return axios.post("/user/loginBusiness", password);
+}
+
 const userRegister = (userData) => {
     return axios.post("/user/register", userData);
 };
 
-export { fetchAllUser, fetchUserPagination, userLogin, userRegister };
+const sellerRegister = (sellerData) => {
+    return axios.post("/user/createBusiness", sellerData);
+};
+
+
+
+export { fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister };

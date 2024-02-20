@@ -30,7 +30,7 @@ const accordionData = [
         icon: <PresentationChartBarIcon className="h-5 w-5" />,
         title: "Shipment",
         links: [
-            { path: "/bussiness/my-shipment", label: "My shipment" },
+            { path: "/business/my-shipment", label: "My shipment" },
         ],
     },
     {
@@ -38,8 +38,8 @@ const accordionData = [
         icon: <DocumentTextIcon className="h-5 w-5" />,
         title: "Order",
         links: [
-            { path: "/bussiness/my-oders", label: "My orders" },
-            { path: "/bussiness/cancelation", label: "Cancellation" },
+            { path: "/business/my-oders", label: "My orders" },
+            { path: "/business/cancelation", label: "Cancellation" },
         ],
     },
     {
@@ -47,8 +47,8 @@ const accordionData = [
         icon: <ArchiveBoxIcon className="h-5 w-5" />,
         title: "Product",
         links: [
-            { path: "/bussiness/my-products", label: "My products" },
-            { path: "/bussiness/add-new-product", label: "Add new product" },
+            { path: "/business/my-products", label: "My products" },
+            { path: "/business/add-new-product", label: "Add new product" },
         ],
     },
     {
@@ -56,9 +56,9 @@ const accordionData = [
         icon: <ShoppingBagIcon className="h-5 w-5" />,
         title: "Shop",
         links: [
-            { path: "/bussiness/shop-rating", label: "Shop rating" },
-            { path: "/bussiness/shop-information", label: "Shop information" },
-            { path: "/bussiness/shop-category", label: "Shop category" },
+            { path: "/business/shop-rating", label: "Shop rating" },
+            { path: "/business/shop-information", label: "Shop information" },
+            { path: "/business/shop-category", label: "Shop category" },
         ],
     },
 ];
@@ -116,7 +116,7 @@ const TaskBar = () => {
                     </Accordion>
                 ))}
                 <hr className="my-2 border-blue-gray-50" />
-                <Link to="dashboard">
+                <Link to="/bussiness">
                     <ListItem>
                         <ListItemPrefix>
                             <InboxIcon className="h-5 w-5" />
@@ -145,16 +145,6 @@ const TaskBar = () => {
                         Profile
                     </ListItem>
                 </Link>
-                <Link to="logout">
-
-                    <ListItem>
-                        <ListItemPrefix>
-                            <PowerIcon className="h-5 w-5" />
-                        </ListItemPrefix>
-                        Log Out
-                    </ListItem>
-                </Link>
-
             </List>
         </Card>
     );

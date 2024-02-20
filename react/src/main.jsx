@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet, Navigate} from "react-router-dom";
 import "./index.css";
 import PopupChat from "./components/ui/PopupChat";
 import { UserProvider } from "./context/UserContext";
@@ -16,6 +16,7 @@ import MyProductsBussiness from "./pages/bussiness/MyProducts";
 import DashboardBussiness from "./pages/bussiness/Dashboard";
 import AddProductsBussiness from "./components/ui-bussiness/AddProducts";
 import { MyOrdersBussiness } from "./components/ui-bussiness/MyOrders";
+import { CancellationBusiness } from "./components/ui-bussiness/Cancellation";
 import TaskBar from "./components/ui-bussiness/TaskBar";
 import MenuBarAdmin from "./components/ui-admin/MenuBar";
 import LoginAdmin from "./components/ui-admin/Login";
@@ -44,6 +45,7 @@ import Error404 from "./components/ui/error404";
 import { useSelector } from 'react-redux'
 import { ShopRating } from "./components/ui-bussiness/ShopRating";
 import { ShopInformation } from "./components/ui-bussiness/ShopInformation";
+
 
 const Customer = () => {
     return (
@@ -99,8 +101,21 @@ const Admin = () => {
     );
 }
 
+const PrivateBusinessRoute = ({ element }) => {
+
+    const seller = useSelector((state) => state.seller.seller);
+
+    if (seller.type_account_id === 2 ) {
+        return element;
+    } else {
+        return <Navigate to="/business/login" />;
+    }
+};
+
+
 const App = () => {
     const user = useSelector((state) => state.user.user);
+    const seller = useSelector((state) => state.seller.seller);
     return (
         <div>
             <BrowserRouter>
@@ -131,22 +146,21 @@ const App = () => {
 
                             {/* Bussiness */}
 
-                            <Route path="/bussiness" element={<Bussiness />}>
-                                <Route index element={<DashboardBussiness />} />
+                            <Route path="/business" element={<Bussiness />}>
+                                <Route index element={<PrivateBusinessRoute element={<DashboardBussiness />} />} />
                                 <Route path="login" element={<LoginBussiness />} />
                                 <Route path="register" element={<RegisterBussiness />} />
-                                <Route path="my-shipment" element={<div>My shipment</div>} />
-                                <Route path="my-oders" element={<MyOrdersBussiness />} />
-                                <Route path="cancelation" element={<div>Cancelation</div>} />
-                                <Route path="my-products" element={<MyProductsBussiness />} />
-                                <Route path="add-new-product" element={<AddProductsBussiness />} />
-                                <Route path="shop-rating" element={<ShopRating />} />
-                                <Route path="shop-information" element={<ShopInformation />} />
-                                <Route path="shop-category" element={<div>Shop Category</div>} />
-                                <Route path="dashboard" element={<div>Dashboard Content</div>} />
-                                <Route path="inbox" element={<InboxBussiness />} />
-                                <Route path="profile" element={<ProfileBussiness />} />
-                                <Route path="logout" element={<div>Logout Content</div>} />
+                                <Route path="my-shipment" element={<PrivateBusinessRoute element={<div>My shipment</div>} />} />
+                                <Route path="my-oders" element={<PrivateBusinessRoute element={<MyOrdersBussiness />} />} />
+                                <Route path="cancelation" element={<PrivateBusinessRoute element={<CancellationBusiness />} />} />
+                                <Route path="my-products" element={<PrivateBusinessRoute element={<MyProductsBussiness />} />} />
+                                <Route path="add-new-product" element={<PrivateBusinessRoute element={<AddProductsBussiness />} />} />
+                                <Route path="shop-rating" element={<PrivateBusinessRoute element={<ShopRating />} />} />
+                                <Route path="shop-information" element={<PrivateBusinessRoute element={<ShopInformation />} />} />
+                                <Route path="shop-category" element={<PrivateBusinessRoute element={<div>Shop Category</div>}/>} />
+                                <Route path="dashboard" element={<PrivateBusinessRoute element={<div>Dashboard Content</div>} />} />
+                                <Route path="inbox" element={<PrivateBusinessRoute element={<InboxBussiness />} />} />
+                                <Route path="profile" element={<PrivateBusinessRoute element={<ProfileBussiness />} />} />
                             </Route>
 
                             {/* Admin */}
@@ -187,7 +201,7 @@ const App = () => {
 ReactDOM.createRoot(document.getElementById("root")).render(
     <Provider store={store}>
         <UserProvider>
-            <App/>
+            <App />
         </UserProvider>
     </Provider>
 );

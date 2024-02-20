@@ -10,7 +10,6 @@ import {
     Typography,
 } from "@material-tailwind/react";
 import { userRegister } from '../../services/authService';
-
 function Icon() {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-6 w-6">
@@ -18,8 +17,8 @@ function Icon() {
         </svg>
     );
 }
-
 const LayoutRegister = () => {
+    
     const navigate = useNavigate();
 
     // State để theo dõi thông tin của người dùng
@@ -163,21 +162,18 @@ const LayoutRegister = () => {
                                     }
                                 />
                             </div>
-
                             <div>
                                 <Button onClick={handleRegistration} type="button" className="flex w-full justify-center bg-[#1e293b] text-white ">
                                     Sign up
                                 </Button>
                             </div>
                         </form>
-
                         <p className="mt-3 text-center text-gray-500 relative">
                             <span className="mb-10 relative z-10 bg-white px-2 text-base">
                                 Or, sign up with{" "}
                             </span>
                             <span className="flex-1 absolute top-1/2 left-0 right-0 h-0.5 bg-gray-700/50"></span>
                         </p>
-
                         <div>
                             <Button
                                 size="lg" variant="outlined" color="blue-gray" className="flex w-full justify-center items-center mt-4">
@@ -201,5 +197,4 @@ const LayoutRegister = () => {
         </div>
     );
 };
-
 export default LayoutRegister;

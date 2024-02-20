@@ -1,7 +1,8 @@
 import {
     MagnifyingGlassIcon,
     ChevronUpDownIcon,
-    ArchiveBoxIcon,
+    ArrowRightIcon, 
+    ArrowLeftIcon
 } from "@heroicons/react/24/outline";
 import { PencilIcon } from "@heroicons/react/24/solid";
 import {
@@ -9,45 +10,13 @@ import {
     CardHeader,
     Input,
     Typography,
-    Button,
     CardBody,
     CardFooter,
-    Tabs,
-    TabsHeader,
-    Tab,
     IconButton,
     Tooltip,
-    Select,
-    Option,
-    Checkbox,
 } from "@material-tailwind/react";
+import { useState } from "react";
 
-const TABS = [
-    {
-        label: "All",
-        value: "all",
-    },
-    {
-        label: "Currently active",
-        value: "Currently active",
-    },
-    {
-        label: "Out of stock",
-        value: "Out of stock",
-    },
-    {
-        label: "Pending approva",
-        value: "Pending approva",
-    },
-    {
-        label: "Violation",
-        value: "Violation",
-    },
-    {
-        label: "Hidden",
-        value: "Hidden",
-    },
-];
 
 const TABLE_HEAD = [
     "Products Name",
@@ -67,8 +36,8 @@ const TABLE_ROWS = [
         cog: "SmartPhone",
         price: "$40",
         sc: "Viettel Express",
-        revenue:"$40",
-        adv:"None",
+        revenue: "$40",
+        adv: "None",
     },
     {
         name: "Alexa Liras",
@@ -76,8 +45,8 @@ const TABLE_ROWS = [
         cog: "SmartPhone",
         price: "$990",
         sc: "Viettel Express",
-        revenue:"$40",
-        adv:"None",
+        revenue: "$40",
+        adv: "None",
     },
     {
         name: "Laurent Perrier",
@@ -86,8 +55,8 @@ const TABLE_ROWS = [
         cog: "SmartPhone",
         price: "$450",
         sc: "Viettel Express",
-        revenue:"$40",
-        adv:"None",
+        revenue: "$40",
+        adv: "None",
     },
     {
         name: "Michael Levi",
@@ -95,8 +64,8 @@ const TABLE_ROWS = [
         cog: "SmartPhone",
         price: "$120",
         sc: "Viettel Express",
-        revenue:"$40",
-        adv:"None",
+        revenue: "$40",
+        adv: "None",
     },
     {
         name: "Richard Gran",
@@ -104,55 +73,49 @@ const TABLE_ROWS = [
         cog: "SmartPhone",
         price: "$4990",
         sc: "Viettel Express",
-        revenue:"$40",
-        adv:"None",
+        revenue: "$40",
+        adv: "None",
+    },
+    {
+        name: "Richard Gran",
+        sku: 8,
+        cog: "SmartPhone",
+        price: "$4990",
+        sc: "Viettel Express",
+        revenue: "$40",
+        adv: "None",
+    },
+    {
+        name: "Richard Gran",
+        sku: 8,
+        cog: "SmartPhone",
+        price: "$4990",
+        sc: "Viettel Express",
+        revenue: "$40",
+        adv: "None",
     },
 ];
 
 export function MyProductsBussiness() {
+    const [active, setActive] = useState(1);
+
+    const next = () => {
+        if (active === 10) return;
+
+        setActive(active + 1);
+    };
+
+    const prev = () => {
+        if (active === 1) return;
+
+        setActive(active - 1);
+    };
+
     return (
-        <Card className="h-fit w-full">
+        <Card className=" h-[89vh] w-full p-4">
             <CardHeader floated={false} shadow={false} className="rounded-none">
-                <div className="mb-8 flex items-center justify-between gap-8">
-                    <div>
-                        <Typography variant="h5" color="blue-gray">
-                            5 Products
-                        </Typography>
-                        <Typography color="gray" className="mt-1 font-normal">
-                            See information about all orders
-                        </Typography>
-                    </div>
-                    <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-                        <Button variant="outlined" size="sm">
-                            view all
-                        </Button>
-                        <Button className="flex items-center gap-3" size="sm">
-                            <ArchiveBoxIcon strokeWidth={2} className="h-4 w-4" />
-                            Add a new product
-                        </Button>
-                    </div>
-                </div>
-                <div className=" flex mb-4 bg-blue-gray-100/40 rounded-lg p-2">
-                    <Tabs value="all" className="w-full overflow-auto z-0">
-                        <TabsHeader className=" bg-white/1">
-                            {TABS.map(({ label, value }) => (
-                                <Tab key={value} value={value}>
-                                    {label}
-                                </Tab>
-                            ))}
-                        </TabsHeader>
-                    </Tabs>
-                </div>
                 <div className="flex flex-col sm:flex-row w-full justify-center items-center">
-                    <div className="sm:w-[50%] w-full mb-4 sm:mb-0">
-                        <Select label="Select Version">
-                            <Option>Order ID</Option>
-                            <Option>Material Tailwind Vue</Option>
-                            <Option>Material Tailwind Angular</Option>
-                            <Option>Material Tailwind Svelte</Option>
-                        </Select>
-                    </div>
-                    <div className="sm:w-[80%] w-full">
+                    <div className="w-full">
                         <Input
                             label="Search"
                             icon={<MagnifyingGlassIcon className="h-5 w-5" />}
@@ -160,11 +123,10 @@ export function MyProductsBussiness() {
                     </div>
                 </div>
             </CardHeader>
-            <CardBody className="overflow-scroll px-0">
+            <CardBody className="px-4">
                 <table className=" w-full min-w-max table-auto text-left">
                     <thead>
                         <tr>
-                            <th className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"><Checkbox defaultChecked /></th>
                             {TABLE_HEAD.map((head, index) => (
                                 <th
                                     key={head}
@@ -197,7 +159,6 @@ export function MyProductsBussiness() {
 
                                 return (
                                     <tr key={name}>
-                                        <td className={classes}><Checkbox defaultChecked /></td>
                                         <td className={classes}>
                                             <div className="flex items-center gap-3">
                                                 <div className="flex flex-col">
@@ -284,20 +245,27 @@ export function MyProductsBussiness() {
                 </table>
             </CardBody>
             <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-                <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal"
-                >
-                    Page 1 of 10006
-                </Typography>
-                <div className="flex gap-2">
-                    <Button variant="outlined" size="sm">
-                        Previous
-                    </Button>
-                    <Button variant="outlined" size="sm">
-                        Next
-                    </Button>
+                <div className="flex items-center absolute gap-8 mt-24 right-0 mr-4">
+                    <IconButton
+                        size="sm"
+                        variant="outlined"
+                        onClick={prev}
+                        disabled={active === 1}
+                    >
+                        <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" />
+                    </IconButton>
+                    <Typography color="gray" className="font-normal">
+                        Page <strong className="text-gray-900">{active}</strong> of{" "}
+                        <strong className="text-gray-900">10</strong>
+                    </Typography>
+                    <IconButton
+                        size="sm"
+                        variant="outlined"
+                        onClick={next}
+                        disabled={active === 10}
+                    >
+                        <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
+                    </IconButton>
                 </div>
             </CardFooter>
         </Card>
