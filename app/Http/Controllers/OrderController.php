@@ -131,6 +131,7 @@ class OrderController extends Controller
             'order_address' => 'required',
             'order_phone' => 'required',
             'order_name' => 'required',
+            'total' => 'required'
            
         ]);
 
@@ -148,20 +149,9 @@ class OrderController extends Controller
         $shipping_method_id = $input['shipping_method_id'];
         $order_address = $input['order_address']; 
         $order_phone = $input['order_phone'];      
-        $order_name = $input['order_name'];   
+        $order_name = $input['order_name']; 
+        $total = $input['total'] ;
       
-        $totalQuantity = count($product);
-
-        if ($totalQuantity > 20) {
-        $arr = [
-            'status' => false,
-            'message' => 'Số lượng sản phẩm vượt quá giới hạn (20 sản phẩm)',
-            'data' => null,
-        ];
-
-        return response()->json($arr, 400);
-    }
-
         try {
             $order = order::create([ 
                 'user_id' => $user_id,
@@ -170,6 +160,7 @@ class OrderController extends Controller
                 'order_address' => $order_address, 
                 'order_phone' => $order_phone,    
                 'order_name' => $order_name, 
+                'total' => $total,
             ]);
 
             // Thêm các sản phẩm vào đơn hàng
