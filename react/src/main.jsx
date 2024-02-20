@@ -105,6 +105,10 @@ const PrivateBusinessRoute = ({ element }) => {
 
     const seller = useSelector((state) => state.seller.seller);
 
+    if (!seller) {
+        return <Navigate to="/business/login" />;
+    }
+
     if (seller.type_account_id === 2 ) {
         return element;
     } else {
