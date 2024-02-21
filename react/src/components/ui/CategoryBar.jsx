@@ -18,32 +18,12 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
 
 const sortOptions = [
-    { name: 'Most Popular', href: '#', current: true },
     { name: 'Best Rating', href: '#', current: false },
     { name: 'Newest', href: '#', current: false },
     { name: 'Price: Low to High', href: '#', current: false },
     { name: 'Price: High to Low', href: '#', current: false },
 ]
-const subCategories = [
-    { name: 'Totes', href: '#' },
-    { name: 'Backpacks', href: '#' },
-    { name: 'Travel Bags', href: '#' },
-    { name: 'Hip Bags', href: '#' },
-    { name: 'Laptop Sleeves', href: '#' },
-]
 const filters = [
-    {
-        id: 'color',
-        name: 'Color',
-        options: [
-            { value: 'white', label: 'White', checked: false },
-            { value: 'beige', label: 'Beige', checked: false },
-            { value: 'blue', label: 'Blue', checked: true },
-            { value: 'brown', label: 'Brown', checked: false },
-            { value: 'green', label: 'Green', checked: false },
-            { value: 'purple', label: 'Purple', checked: false },
-        ],
-    },
     {
         id: 'category',
         name: 'Category',
@@ -56,8 +36,8 @@ const filters = [
         ],
     },
     {
-        id: 'size',
-        name: 'Size',
+        id: 'brand',
+        name: 'Brand',
         options: [
             { value: '2l', label: '2L', checked: false },
             { value: '6l', label: '6L', checked: false },
@@ -86,7 +66,6 @@ export default function CategoryBar() {
                             as={Fragment}
                             enter="transition-opacity ease-linear duration-300"
                             enterFrom="opacity-0"
-                            enterTo="opacity-100"
                             leave="transition-opacity ease-linear duration-300"
                             leaveFrom="opacity-100"
                             leaveTo="opacity-0"
@@ -119,17 +98,6 @@ export default function CategoryBar() {
 
                                     {/* Filters */}
                                     <form className="mt-4 border-t border-gray-200">
-                                        <h3 className="sr-only">Categories</h3>
-                                        <ul role="list" className="px-2 py-3 font-medium text-gray-900">
-                                            {subCategories.map((category) => (
-                                                <li key={category.name}>
-                                                    <a href={category.href} className="block px-2 py-3">
-                                                        {category.name}
-                                                    </a>
-                                                </li>
-                                            ))}
-                                        </ul>
-
                                         {filters.map((section) => (
                                             <Disclosure as="div" key={section.id} className="border-t border-gray-200 px-4 py-6">
                                                 {({ open }) => (
@@ -180,8 +148,8 @@ export default function CategoryBar() {
                 </Transition.Root>
 
                 <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
-                        <h1 className="text-4xl font-bold tracking-tight text-gray-900">New Arrivals</h1>
+                    <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-4">
+                        <h1 className="text-2xl md:text-2xl lg:text-4xl font-bold tracking-tight text-gray-900">New Arrivals</h1>
 
                         <div className="flex items-center">
                             <Menu as="div" className="relative inline-block text-left">
@@ -250,15 +218,6 @@ export default function CategoryBar() {
                         <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
                             {/* Filters */}
                             <form className="hidden lg:block">
-                                <h3 className="sr-only">Categories</h3>
-                                <ul role="list" className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900">
-                                    {subCategories.map((category) => (
-                                        <li key={category.name}>
-                                            <a href={category.href}>{category.name}</a>
-                                        </li>
-                                    ))}
-                                </ul>
-
                                 {filters.map((section) => (
                                     <Disclosure as="div" key={section.id} className="border-b border-gray-200 py-6">
                                         {({ open }) => (
