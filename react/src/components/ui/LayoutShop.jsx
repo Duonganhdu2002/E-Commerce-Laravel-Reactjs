@@ -104,23 +104,23 @@ export default function Shop() {
     return (
         <div className=" flex flex-col justify-center">
             <div className="flex items-center justify-center flex-col my-2">
-                <div className="flex items-center justify-center bg-black -z-10 2xl:w-[80%] xl:w-[80%] lg:w-[80%] md:w-[90%] w-[100%]">
+                <div className="flex items-center justify-center bg-black -z-10 lg:w-[80%] md:w-[90%] w-[100%]">
                     <img
                         src={`../../../src/assets/shop/${data.shop_background}`}
                         alt=""
-                        className="object-cover aspect-ratio opacity-60 w-full sm:h-72 "
+                        className="object-cover aspect-ratio opacity-60 w-full h-36 md:h-44 lg:h-52"
                     />
                 </div>
                 <div className="absolute flex px-2 2xl:w-[70%] xl:w-[70%] lg:w-[70%] md:w-[80%] w-[100%]">
                     <div className="  flex">
-                        <div>
+                        <div className=" mr-4 md:mr-8 lg:mr-12">
                             <img
                                 src={`../../../src/assets/shop/${data.shop_avt}`}
                                 alt=""
-                                className="rounded-full border-slate-400 border-8 w-60"
+                                className="rounded-full border-slate-400 border-2 mt-6 w-20 md:w-24 lg:w-32"
                             />
                         </div>
-                        <div className="flex flex-col ml-2 mb-auto">
+                        <div className="flex flex-col ml-2 my-auto">
                             <div className="flex flex-wrap item center">
                                 <p className=" flex items-center font-bold text-xl text-white">
                                     {data.shop_name}
@@ -133,11 +133,6 @@ export default function Shop() {
                                     alt=""
                                     className="w-5 fill-yellow-500 mr-2"
                                 />
-                            </div>
-                            <div>
-                                <p className=" flex items-center font-bold text-xl text-white mt-5">
-                                    {data.shop_introduce}
-                                </p>
                             </div>
                         </div>
                     </div>

@@ -19,7 +19,7 @@ class ShoppingCartController extends Controller
         try {
             $shoppingCartItems = ShoppingCart::where('user_id', $user_id)
                 ->join('product', 'shopping_cart.product_id', '=', 'product.product_id')
-                ->select('shopping_cart.*', 'product.price as price','product.name as name')
+                ->select('shopping_cart.*', 'product.price as price', 'product.name as name')
                 ->get();
 
             if ($shoppingCartItems->isEmpty()) {
@@ -164,17 +164,17 @@ class ShoppingCartController extends Controller
         return response()->json($arr, 200);
     }
     public function destroy(string $user_id, $product_id)
-{
-    try {
-        $shoppingCart = ShoppingCart::where('user_id', $user_id)->firstOrFail();
+    {
+        try {
+            $shoppingCart = ShoppingCart::where('user_id', $user_id)->firstOrFail();
 
-        $shoppingCart->products()->delete($product_id); 
+            $shoppingCart->products()->delete($product_id);
             $arr = [
                 'status' => true,
                 'message' => 'Sản phẩm đã được xóa khỏi giỏ hàng thành công',
                 'data' => null
             ];
-    
+
             return response()->json($arr, 200);
         } catch (ModelNotFoundException $e) {
             $arr = [
@@ -182,7 +182,7 @@ class ShoppingCartController extends Controller
                 'message' => 'Giỏ hàng không tồn tại hoặc sản phẩm không có trong giỏ hàng',
                 'data' => null
             ];
-    
+
             return response()->json($arr, 404);
         }
     }

@@ -172,7 +172,6 @@ class OrderController extends Controller
                 $productModel = Product::findOrFail($product['product_id']);
                 $order->products()->attach($productModel->product_id, ['quantity' => $product['quantity']]);
             }
-
              
             $productid = collect($product)->pluck('product_id')->toArray();
 
@@ -183,8 +182,6 @@ class OrderController extends Controller
             foreach ($productid as $productId) {
                 $shoppingCartController->destroy($user_id, [$productId]);
             }
-
-
 
             $arr = [
                 'status' => true,
