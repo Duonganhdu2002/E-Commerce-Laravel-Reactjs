@@ -542,7 +542,7 @@ class Str
             return false;
         }
 
-        return preg_match('/^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/iD', $value) > 0;
+        return preg_match('/^[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}$/D', $value) > 0;
     }
 
     /**
@@ -1188,7 +1188,7 @@ class Str
     /**
      * Replace the patterns matching the given regular expression.
      *
-     * @param  string  $pattern
+     * @param  array|string  $pattern
      * @param  \Closure|string  $replace
      * @param  array|string  $subject
      * @param  int  $limit
@@ -1298,6 +1298,10 @@ class Str
      */
     public static function apa($value)
     {
+        if ($value === '') {
+            return $value;
+        }
+
         $minorWords = [
             'and', 'as', 'but', 'for', 'if', 'nor', 'or', 'so', 'yet', 'a', 'an',
             'the', 'at', 'by', 'for', 'in', 'of', 'off', 'on', 'per', 'to', 'up', 'via',
@@ -1533,6 +1537,29 @@ class Str
         }
 
         return static::substr($string, 0, $limit);
+    }
+
+    /**
+     * Convert the given string to Base64 encoding.
+     *
+     * @param  string  $string
+     * @return string
+     */
+    public static function toBase64($string): string
+    {
+        return base64_encode($string);
+    }
+
+    /**
+     * Decode the given Base64 encoded string.
+     *
+     * @param  string  $string
+     * @param  bool  $strict
+     * @return string|false
+     */
+    public static function fromBase64($string, $strict = false)
+    {
+        return base64_decode($string, $strict);
     }
 
     /**
