@@ -24,11 +24,11 @@ const Layoutcart = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const user_id = useSelector((state) => state.user.user.user_id || '');
     
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const user_id = useSelector((state) => state.user.user.user_id || '');
     const [count, setCount] = useState({});
     const [totalPrice, setTotalPrice] = useState(0);
     const [cartChecked, setCartChecked] = useState({});
@@ -36,7 +36,6 @@ const Layoutcart = () => {
     const [selectedShippingIndex, setSelectedShippingIndex] = useState(0);
 
     // Call API cart
-
     useEffect(() => {
         const getFetchBrandsByFieldId = async () => {
             try {
@@ -57,18 +56,14 @@ const Layoutcart = () => {
                 setLoading(false);
             }
         };
-
         getFetchBrandsByFieldId();
-
         const intervalId = setInterval(() => {
             getFetchBrandsByFieldId();
         }, 7000);
-
         return () => clearInterval(intervalId);
     }, [user_id]);
 
     // API shipping method 
-
     useEffect(() => {
         const getShippingMethodAPI = async () => {
             try {
@@ -79,12 +74,10 @@ const Layoutcart = () => {
                 setError("Error fetching data");
             }
         };
-
         getShippingMethodAPI();
     }, []);
 
     // API update quantity
-
     useEffect(() => {
         const updateCartData = async () => {
             try {
@@ -102,14 +95,11 @@ const Layoutcart = () => {
         updateCartData();
     }, [count]);
 
-
     // API delete cart 
     // Function delete product 
-
     const handleDeleteCart = async (shoppingCartId) => {
         try {
-            let res = await deleteCart(shoppingCartId);
-            console.log(res);
+            await deleteCart(shoppingCartId);
         } catch (error) {
             console.error('Error deleting cart:', error);
             setError('Error deleting cart');
@@ -119,26 +109,19 @@ const Layoutcart = () => {
     // Lưu dữ liệu vào redux
     const handleCheckout = () => {
         dispatch(clearCart());
-
         const selectedItems = data.filter(cart => cartChecked[cart.shopping_cart_id]);
         selectedItems.forEach(cart => {
             dispatch(addItem({itemId: cart.shopping_cart_id, itemName: cart.name, newQuantity: cart.quantity, Price: cart.price }));
         });
-
         // Save the selected shipping method price to Redux
         const selectedShippingPrice = dataShipping[selectedShippingIndex]?.shipping_method_price || 0;
         const selectedShippingMethod = dataShipping[selectedShippingIndex]?.shipping_method_id || 0;
         dispatch(selectShippingPrice(selectedShippingPrice));
         dispatch(selectShippingMethod(selectedShippingMethod));
-
         if (selectedItems.length > 0) {
             navigate("/checkout");
         }
     };
-
-    console.log(data);
-
-
 
     // Tăng số lượng sp
     const addCount = (shoppingCartId) => {
@@ -169,7 +152,6 @@ const Layoutcart = () => {
             }
             return total;
         }, 0);
-
         setTotalPrice(selectedItemsTotal);
     }, [data, count, cartChecked]);
 
