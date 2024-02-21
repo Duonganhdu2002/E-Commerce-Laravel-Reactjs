@@ -156,7 +156,7 @@ const App = () => {
                                 <Route path="brand/:brandId" element={<BrandPage />} />
                                 <Route path="category/:categoryId" element={<CategoryPage />} />
                                 <Route path="product/:productId" element={<ProductDetails />} />
-                                <Route path="shop" element={<Shop />} />
+                                <Route path="shop/:user_id" element={<Shop />} />
                                 <Route path="profile" element={<PrivateCustomerRoute element={<Profile/>} />} />
                                 <Route path="checkout" element={<PrivateCustomerRoute element={<Checkout/>} />} />
                                 <Route path="search/:searchKey" element={<SearchLayout />} />

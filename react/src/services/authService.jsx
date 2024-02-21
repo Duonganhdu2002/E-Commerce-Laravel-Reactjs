@@ -24,6 +24,9 @@ const sellerRegister = (sellerData) => {
     return axios.post("/user/createBusiness", sellerData);
 };
 
+const getUserInfor = (userId) => {
+    return axios.get(`/user/info/${userId}`);
+};
 
 
-export { fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister };
+export { fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister, getUserInfor };

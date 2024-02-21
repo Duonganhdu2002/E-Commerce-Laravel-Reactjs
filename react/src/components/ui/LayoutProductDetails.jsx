@@ -391,7 +391,7 @@ const LayoutProductDetails = () => {
                             </div>
                             <div className="w-full xl:w-2/3 flex-col md:flex-row justify-center xl:justify-end flex md:pl-6">
                                 <div className="flex items-center justify-center xl:justify-start mt-1 md:mt-0 mb-5 md:mb-0">
-                                    <Button size="sm" className=" mr-3">VISIT</Button>
+                                    <Link to={`/shop/${data.created_by_user_id?.user_id}`}><Button size="sm" className=" mr-3">VISIT</Button></Link>
                                     <Button size="sm">MESSAGE</Button>
                                 </div>
                             </div>
