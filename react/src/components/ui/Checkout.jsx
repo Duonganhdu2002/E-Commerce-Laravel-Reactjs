@@ -3,8 +3,11 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Input, Select, Option, Button } from "@material-tailwind/react";
 import { districtList, provincesList, wardList } from "../../services/locationService";
+import { handleOrder } from "../../services/orderService";
 
 export default function Checkout() {
+
+    const [notification, setNotification] = useState('');
 
     // Mảng chứa dữ liệu được gọi từ API
     const [provincesListData, setProvincesListData] = useState([]);
@@ -14,6 +17,29 @@ export default function Checkout() {
     // Redux thông tin giỏ hàng và giá ship
     const selectedItems = useSelector(state => state.cart.items);
     const selectedShippingPrice = useSelector(state => state.cart.selectedShippingPrice);
+    const selectedShippingMethod = useSelector(state => state.cart.selectedShippingMethod);
+
+    //Redux store id user
+    const userId = useSelector(state => state.user.user.user_id || '');
+
+    // Biến lưu trữ order item
+    const product = selectedItems.map(item => ({
+        product_id: item.itemId,
+        quantity: item.newQuantity
+    }));
+
+
+    //Biến lưu trữ tất cả thông tin của đơn hàng gửi đến API
+    const [dataOrder, setDataOrder] = useState({
+        'user_id': null,
+        'product': null,
+        'shipping_method_id': null,
+        "order_address": null,
+        "order_phone": null,
+        "order_name": null,
+        "total": null,
+        'note': null
+    });
 
     // Các biến chứa id của Tỉnh, huyện, xã
     const [selectedProvinceId, setSelectedProvinceId] = useState(null);
@@ -28,7 +54,6 @@ export default function Checkout() {
     // Dữ liệu nhập từ form thông tin 
     const [name, setName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
-    const [email, setEmail] = useState("");
     const [streetAndNumber, setStreetAndNumber] = useState("");
     const [note, setNote] = useState("");
 
@@ -80,7 +105,19 @@ export default function Checkout() {
         fetchData();
     }, [selectedDistrictId]);
 
-    
+    // Order API
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await handleOrder(dataOrder);
+            } catch (error) {
+
+            }
+        }
+    })
+
+
     const handlechangeProvince = (e) => {
         const selectedProvinceId = parseInt(e);
         setSelectedProvinceId(selectedProvinceId);
@@ -117,9 +154,6 @@ export default function Checkout() {
             case "phoneNumber":
                 setPhoneNumber(value);
                 break;
-            case "email":
-                setEmail(value);
-                break;
             case "streetAndNumber":
                 setStreetAndNumber(value);
                 break;
@@ -131,18 +165,53 @@ export default function Checkout() {
         }
     };
 
-    const handleProceedToPayment = () => {
-        console.log("Name:", name);
-        console.log("Phone Number:", phoneNumber);
-        console.log("Email:", email);
-        console.log("Note:", note);
-        console.log("Address:",streetAndNumber + ', ' + selectedWard + ', ' + selectedDistrict + ', ' + selectedProvince);
+
+
+
+    const handleProceedToPayment = async () => {
+        if (!name || !phoneNumber || !streetAndNumber || !selectedWard || !selectedDistrict || !selectedProvince) {
+            alert('Vui lòng điền đầy đủ thông tin để tiếp tục đặt hàng.');
+            return;
+        }
+    
+        try {
+            await fetchData();
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
     };
+    
+    const fetchData = async () => {
+        try {
+            const updatedDataOrder = {
+                'user_id': userId,
+                'product': product.map(item => ({  
+                    'product_id': item.product_id,
+                    'quantity': item.quantity
+                })),
+                'shipping_method_id': selectedShippingMethod,
+                "order_address": streetAndNumber + ', ' + selectedWard + ', ' + selectedDistrict + ', ' + selectedProvince,
+                "order_phone": phoneNumber,
+                "order_name": name,
+                "total": (subtotal + parseFloat(selectedShippingPrice)).toFixed(2),
+                'note': note,
+            };
+        
+            let res = await handleOrder(updatedDataOrder);  
+            console.log(updatedDataOrder)
+   
+            console.log(res);
+        } catch (error) {
+            console.error("Error setting data order:", error);
+        }
+    };
+    
 
     // useEffect(() => {
     //     console.log('Selected Items:', selectedItems);
 
     // }, [selectedItems]);
+
 
     return (
         <div className="overflow-y-hidden">
@@ -170,7 +239,6 @@ export default function Checkout() {
                         <div className="mt-8 flex flex-col justify-start items-start w-full space-y-8 ">
                             <Input variant="standard" label="Your name" placeholder="Standard" name="name" value={name} onChange={handleInputChange} />
                             <Input variant="standard" label="Phone number" placeholder="Standard" name="phoneNumber" value={phoneNumber} onChange={handleInputChange} />
-                            <Input variant="standard" label="Email" placeholder="Standard" name="email" value={email} onChange={handleInputChange} />
                             <div className=" flex">
                                 <Select className=" w-[95%]" variant="standard" label="Province" onChange={handlechangeProvince}>
                                     {

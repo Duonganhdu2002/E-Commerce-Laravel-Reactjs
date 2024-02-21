@@ -17,7 +17,7 @@ import { getCart, updateCart, deleteCart } from "../../services/cartService";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import Cancel from "../../assets/icon/cancle.svg";
-import { clearCart, addItem,selectShippingPrice } from "../../redux/slices/cartSlice";
+import { clearCart, addItem,selectShippingPrice, selectShippingMethod } from "../../redux/slices/cartSlice";
 import { getShippingMethod } from "../../services/shippingMethodService";
 
 const Layoutcart = () => {
@@ -122,19 +122,21 @@ const Layoutcart = () => {
 
         const selectedItems = data.filter(cart => cartChecked[cart.shopping_cart_id]);
         selectedItems.forEach(cart => {
-            dispatch(addItem({ itemId: cart.name, newQuantity: cart.quantity, Price: cart.price }));
+            dispatch(addItem({itemId: cart.shopping_cart_id, itemName: cart.name, newQuantity: cart.quantity, Price: cart.price }));
         });
-
-        console.log(selectedItems)
 
         // Save the selected shipping method price to Redux
         const selectedShippingPrice = dataShipping[selectedShippingIndex]?.shipping_method_price || 0;
+        const selectedShippingMethod = dataShipping[selectedShippingIndex]?.shipping_method_id || 0;
         dispatch(selectShippingPrice(selectedShippingPrice));
+        dispatch(selectShippingMethod(selectedShippingMethod));
 
         if (selectedItems.length > 0) {
             navigate("/checkout");
         }
     };
+
+    console.log(data);
 
 
 
