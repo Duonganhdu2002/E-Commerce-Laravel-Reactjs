@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Alert } from "@material-tailwind/react";
+import { useSelector } from 'react-redux';
 import LogoGoogle1 from "../../assets/icon/Google__G__logo.svg";
 import Logo from "../../assets/icon/logo.svg";
 import {
@@ -18,8 +19,20 @@ function Icon() {
     );
 }
 const LayoutRegister = () => {
-    
+
+    const loading = useSelector((state) => state.user.loading);
+
     const navigate = useNavigate();
+
+    const [formData, setFormData] = useState({
+        username: '',
+        email: '',
+        password: '',
+        full_name: '',
+        telephone: '',
+        confirmpassword: '',
+    });
+
 
     // State để theo dõi thông tin của người dùng
     const [userData, setUserData] = useState({
@@ -41,13 +54,18 @@ const LayoutRegister = () => {
 
     const [showAlert, setShowAlert] = useState(false); // Khởi tạo showAlert là false
 
+    const [acceptTerms, setAcceptTerms] = useState(false);
+
+
     // Xử lý thay đổi của trường input
     const handleInputChange = (e) => {
         const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
         setUserData({ ...userData, [name]: value });
 
-        // Xóa lỗi của trường input khi người dùng bắt đầu nhập lại
-        setErrors({ ...errors, [name]: '' });
+        // Kiểm tra và cập nhật lỗi của trường input
+        const error = validateField(name, value);
+        setErrors({ ...errors, [name]: error });
     };
 
     // Hàm kiểm tra xem trường input có bị trống hay không
@@ -67,16 +85,65 @@ const LayoutRegister = () => {
             // Kiểm tra các trường input và cập nhật lỗi tương ứng
             Object.keys(userData).forEach((key) => {
                 const error = validateField(key, userData[key]);
+                newErrors[key] = error;
                 if (error !== '') {
-                    newErrors[key] = error;
                     isError = true;
                 }
             });
 
+            if (isError || !acceptTerms) {
+                setErrors(newErrors);
+                setShowAlert(true);
+                return;
+            }
+
+            if (!formData.username.trim()) {
+                newErrors.username = "Username is required";
+                isError = true;
+            }
+
+            if (!formData.full_name.trim()) {
+                newErrors.full_name = "Full Name is required";
+                isError = true;
+            }
+
+            if (!formData.email.trim()) {
+                newErrors.email = "Email is required";
+                isError = true;
+            } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+                newErrors.email = "Email is not valid";
+                isError = true;
+            }
+
+            if (!formData.password.trim()) {
+                newErrors.password = "Password is required";
+                isError = true;
+            } else if (formData.password.length < 8) {
+                newErrors.password = "Password should be at least 8 characters";
+                isError = true;
+            }
+
+            if (formData.confirmpassword !== formData.password) {
+                newErrors.confirmpassword = "Password is not matched!";
+                isError = true;
+            }
+
+            if (!formData.telephone.trim()) {
+                newErrors.telephone = "Telephone is required";
+                isError = true;
+            } else if (!/^\d+$/.test(formData.telephone)) {
+                newErrors.telephone = "Telephone should contain only numbers";
+                isError = true;
+            } else if (formData.telephone.length < 10) {
+                newErrors.telephone = "Telephone should be at least 10 characters";
+                isError = true;
+            }
+
+            setErrors(newErrors);
+
             // Nếu có lỗi, hiển thị cảnh báo và không thực hiện đăng ký
             if (isError) {
-                setErrors(newErrors);
-                setShowAlert(true); // Hiển thị cảnh báo
+                setShowAlert(true);
                 return;
             }
 
@@ -95,6 +162,10 @@ const LayoutRegister = () => {
         setShowAlert(hasError);
     }, [errors]);
 
+    const isFormValid = () => {
+        return Object.values(formData).every(value => value.trim() !== '') && acceptTerms;
+    };
+
     return (
         <div className=" flex items-center justify-around bg-slate-200/50">
             {showAlert && (
@@ -102,8 +173,8 @@ const LayoutRegister = () => {
                     You have entered some format incorrectly. Please try again.
                 </Alert>
             )}
-            <div className="flex items-center px-10 h-[880px]">
-                <div className="flex flex-1 flex-col justify-center px-14 py-8 bg-white shadow-xl rounded-3xl">
+            <div className="flex items-center h-full py-10">
+                <div className="flex flex-1 flex-col justify-center px-4 sm:px-10 md:px-14 py-8 bg-white shadow-xl rounded-3xl">
                     <Link to="/">
                         <img className="mx-auto h-28" src={Logo} alt="Your Company" />
                     </Link>
@@ -112,32 +183,36 @@ const LayoutRegister = () => {
                     </h2>
 
                     <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-xl md:max-w-xl">
-                        <form className="space-y-4" action="#" method="POST">
+                        <form action="#" method="POST">
                             {/* Hiển thị lỗi cho mỗi trường input */}
-                            <div className="flex justify-between pb-2">
-                                <div className="w-[47%] ">
+                            <div className="md:flex pb-2">
+                                <div className='pb-2 md:pb-0 md:mr-3'>
                                     <div className="w-full">
                                         <Input label="Username" name="username" autoComplete='username' onChange={handleInputChange} />
+                                        {errors.username && <span className="text-red-500">{errors.username}</span>}
                                     </div>
                                 </div>
 
-                                <div className="w-[47%]">
+                                <div className='w-full'>
                                     <div className="w-full">
                                         <Input label="Phone number" name='telephone' onChange={handleInputChange} autoComplete='telephone' />
+                                        {errors.telephone && <span className="text-red-500">{errors.telephone}</span>}
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="flex justify-between pb-2">
-                                <div className="w-[47%]">
+                            <div className="md:flex pb-2">
+                                <div className='pb-2 md:pb-0 md:mr-3'>
                                     <div className="w-full">
                                         <Input label="Full Name" onChange={handleInputChange} name="full_name" autoComplete='full_name' />
+                                        {errors.full_name && <span className="text-red-500">{errors.full_name}</span>}
                                     </div>
                                 </div>
 
-                                <div className="w-[47%]">
+                                <div className='w-full'>
                                     <div className="w-full">
                                         <Input label="Email" name="email" autoComplete='email' onChange={handleInputChange} />
+                                        {errors.email && <span className="text-red-500">{errors.email}</span>}
                                     </div>
                                 </div>
                             </div>
@@ -146,11 +221,21 @@ const LayoutRegister = () => {
                                 <div className="w-full">
                                     <Input label="Password" name="password" type="password" autoComplete="current-password" onChange={handleInputChange}
                                     />
+                                    {errors.password && <span className="text-red-500">{errors.password}</span>}
+                                </div>
+                            </div>
+                            <div className=" pb-2">
+                                <div className="w-full">
+                                    <Input label="Confirm Password" name="confirmpassword" type="password" autoComplete="current-password" onChange={handleInputChange}
+                                    />
+                                    {errors.confirmpassword && <span className="text-red-500">{errors.confirmpassword}</span>}
                                 </div>
                             </div>
 
-                            <div className="flex items-center text-black">
+                            <div className="flex items-center">
                                 <Checkbox
+                                    checked={acceptTerms}
+                                    onChange={() => setAcceptTerms(!acceptTerms)}
                                     label={
                                         <Typography color="blue-gray" className="flex font-medium">
                                             I agree with the
@@ -163,8 +248,8 @@ const LayoutRegister = () => {
                                 />
                             </div>
                             <div>
-                                <Button onClick={handleRegistration} type="button" className="flex w-full justify-center bg-[#1e293b] text-white ">
-                                    Sign up
+                                <Button onClick={handleRegistration} type="button" disabled={!isFormValid()} className={`flex w-full justify-center bg-[#1e293b] text-white ${!isFormValid() && 'opacity-50 cursor-not-allowed'}`} loading={loading}>
+                                    {loading ? "Loading" : "Sign up"}
                                 </Button>
                             </div>
                         </form>
