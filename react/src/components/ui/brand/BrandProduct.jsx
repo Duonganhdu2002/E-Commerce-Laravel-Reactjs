@@ -87,16 +87,13 @@ export default function BrandProduct() {
     calculateVisiblePages();
   }, [active, dataFull.last_page]);
 
-  // console.log(data)
+  console.log(data)
   // console.log(dataFull)
 
   return (
     <div className=' flex justify-center items-center'>
       <div className=' w-[95%] md:w-[90%] lg:w-[80%]'>
         <div className=" w-full">
-          <Typography className=" text-xl my-8" variant="lead">
-            IS WHAT YOU NEED?
-          </Typography>
           <section
             id="Projects"
             className=" mx-auto grid grid-cols-2 lg:grid-cols-4  md:grid-cols-3 2xl:grid-cols-5 justify-items-center justify-center gap-y-8 gap-x-6 mt-6 mb-5"
@@ -112,7 +109,6 @@ export default function BrandProduct() {
                       alt="Product"
                     />
                     <div className="px-4 py-3 h-[20%] w-full">
-                      <span className="text-gray-400 mr-3 uppercase text-[12px] lg:text-[14px]">Brand</span>
                       <p className="text-md lg:text-lg xl:text-xl font-bold text-black truncate block capitalize">{product.name}</p>
                       <div className="space-x-1 flex justify-center mt-2 md:mt-4 lg:mt-6 xl:mt-8">
                         {Array.from({ length: Math.round(product.average_rating) }, (_, index) => (

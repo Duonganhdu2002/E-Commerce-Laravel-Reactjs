@@ -37,11 +37,11 @@ export default function Category() {
                             <div className='flex flex-col float-left w-[60px] lg:w-[90px] h-auto mx-2 duration-500 hover:scale-110 hover:transform hover:-translate-y-2'>
 
                                 <div className='h-[60px] lg:h-[90px] border border-gray-300 rounded-xl flex justify-center items-center'>
-                                    <img className=' w-6 h-6' src={`/src/assets/icon_category/${categories.icon}`} alt="" />
+                                    <img className=' w-6' src={`/src/assets/icon_category/${categories.icon}`} alt="" />
                                 </div>
 
                                 <div className=' h-[20px] flex justify-center items-center my-2'>
-                                    <h3 className="text-[12px] lg:text-[14px] font-medium text-gray-600 dark:text-white">{categories.field_name}</h3>
+                                    <h3 className="text-[12px] lg:text-[14px] font-medium text-gray-600 dark:text-white">{categories.product_category_name}</h3>
                                 </div>
 
                             </div>

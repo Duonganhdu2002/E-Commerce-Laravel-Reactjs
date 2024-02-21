@@ -117,10 +117,24 @@ const PrivateBusinessRoute = ({ element }) => {
     }
 };
 
+const PrivateCustomerRoute = ({ element }) => {
+
+    const user = useSelector((state) => state.user.user);
+
+    if (!user) {
+        return <Navigate to="/login" />;
+    }
+    
+    if (user.type_account_id === 3) {
+        return element;
+    } else {
+        return <Navigate to="/login" />;
+    }
+};
+
 
 const App = () => {
     const user = useSelector((state) => state.user.user);
-    const seller = useSelector((state) => state.seller.seller);
     return (
         <div>
             <BrowserRouter>
@@ -137,17 +151,17 @@ const App = () => {
                                 <Route index element={<Home />} />
                                 <Route path="login" element={<Login />} />
                                 <Route path="register" element={<Register />} />
-                                <Route path={user ? "/cart" : "/login"} element={<Cart />} />
+                                <Route path="cart" element={<PrivateCustomerRoute element={<Cart/>} />} />
                                 <Route path="fields/:fieldId" element={<Field />} />
                                 <Route path="brand/:brandId" element={<BrandPage />} />
                                 <Route path="category/:categoryId" element={<CategoryPage />} />
                                 <Route path="product/:productId" element={<ProductDetails />} />
-                                <Route path="shop" element={<Shop />} />
-                                <Route path="profile" element={<Profile />} />
-                                <Route path="checkout" element={<Checkout />} />
+                                <Route path="shop/:user_id" element={<Shop />} />
+                                <Route path="profile" element={<PrivateCustomerRoute element={<Profile/>} />} />
+                                <Route path="checkout" element={<PrivateCustomerRoute element={<Checkout/>} />} />
                                 <Route path="search/:searchKey" element={<SearchLayout />} />
-                                <Route path="orderstatus" element={<OrderStatus />} />
-                                <Route path="success" element={<Success />} />
+                                <Route path="orderstatus" element={<PrivateCustomerRoute element={<OrderStatus/>} />} />
+                                <Route path="success" element={<PrivateCustomerRoute element={<Success/>} />} />
                             </Route>
 
                             {/* Bussiness */}

@@ -73,11 +73,10 @@ class ProductController extends Controller
     public function indexByBrand($brandId)
     {
 
-        // Assuming you have relationships between Product and ProductBrand, and Product and ProductImage
         $products = ProductBrand::findOrFail($brandId)
             ->products()
-            ->with('images') // assuming the relationship name is 'images' in the Product model
-            ->paginate(10); // paginate with 10 products per page
+            ->with('images') 
+            ->paginate(10); 
 
 
         foreach ($products as $product) {

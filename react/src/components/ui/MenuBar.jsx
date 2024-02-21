@@ -42,6 +42,7 @@ import logo from "../../assets/icon/logo.svg";
 import logoSingle from "../../assets/icon/logo-single.svg";
 import { useNavigate } from 'react-router-dom';
 import Search from "../../assets/icon/search.svg"
+import { getCart } from "../../services/cartService";
 
 const navListMenuItems = [
     {
@@ -106,34 +107,6 @@ const navListMenuItems = [
         icon: RectangleGroupIcon,
         link: "/login",
         func: "handleClickLogOut()",
-    },
-];
-
-const navProductList = [
-    {
-        title: "Products",
-        price: 222,
-        icon: SquaresPlusIcon,
-    },
-    {
-        title: "About Us",
-        price: 222,
-        icon: UserGroupIcon,
-    },
-    {
-        title: "Blog",
-        price: 222,
-        icon: Bars4Icon,
-    },
-    {
-        title: "Services",
-        price: 222,
-        icon: SunIcon,
-    },
-    {
-        title: "Support",
-        price: 222,
-        icon: GlobeAmericasIcon,
     },
 ];
 
@@ -221,40 +194,62 @@ function NavListMenu() {
 }
 
 function NavProductList() {
-    
-    const user = useSelector((state) => state.user.user);
 
+    const user = useSelector((state) => state.user.user);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const renderItems = navProductList.map(({ title, price, icon }, key) => (
-        <div key={key}>
-            <MenuItem className="flex items-center gap-3 rounded-lg">
-                <div className="flex items-center justify-center rounded-lg !bg-blue-gray-50 p-2 ">
-                    {" "}
-                    {React.createElement(icon, {
-                        strokeWidth: 2,
-                        className: "h-6 text-gray-900 w-6",
-                    })}
-                </div>
-                <div>
-                    <Typography
-                        variant="h2"
-                        color="blue-gray"
-                        className="flex items-center text-sm font-bold"
-                    >
-                        {title}
-                    </Typography>
-                    <Typography
-                        variant="h1"
-                        className="text-xs !font-medium text-blue-gray-500"
-                    >
-                        {price}
-                    </Typography>
-                </div>
-            </MenuItem>
-        </div>
-    ));
+    const [data, setData] = useState([]);
 
+    useEffect(() => {
+        if (user && user.user_id) {
+            const fetchData = async () => {
+                try {
+                    let res = await getCart(user.user_id);
+                    setData(res.data);
+                } catch (error) {
+                    console.error("Error fetching data:", error);
+                }
+            };
+
+            fetchData();
+
+            const intervalId = setInterval(fetchData, 5000);
+
+            return () => clearInterval(intervalId);
+        }
+    }, [user]);
+
+
+    const renderItems = data.map(({ name, price, img, product_id }, key) => (
+        <Link key={key} to={`/product/${product_id}`}>
+            <div>
+                <MenuItem className="flex items-center gap-3 rounded-lg">
+                    <div className="flex items-center justify-center rounded-lg !bg-blue-gray-50 p-2">
+                        <img
+                            src={`../../../src/assets/image/${img}`}
+                            alt={name}
+                            className="h-6 text-gray-900 w-6"
+                        />
+                    </div>
+                    <div>
+                        <Typography
+                            variant="h2"
+                            color="blue-gray"
+                            className="flex items-center text-sm font-bold"
+                        >
+                            {name}
+                        </Typography>
+                        <Typography
+                            variant="h1"
+                            className="text-xs !font-medium text-blue-gray-500"
+                        >
+                            {price}
+                        </Typography>
+                    </div>
+                </MenuItem>
+            </div>
+        </Link>
+    ));
     return (
         <React.Fragment>
             <Menu
@@ -275,11 +270,11 @@ function NavProductList() {
                             selected={isMenuOpen || isMobileMenuOpen}
                             onClick={() => setIsMobileMenuOpen((cur) => !cur)}
                         >
-                            <Link to={user ? "/cart" : "/login"}>
+                            <Link to="/cart">
                                 <div className="">
                                     <Badge
                                         className=" w-3"
-                                        content="0"
+                                        content={user ? (data.length) : ("0")}
                                         withBorder
                                     >
                                         <ShoppingCartIcon
@@ -292,11 +287,15 @@ function NavProductList() {
                         </ListItem>
                     </Typography>
                 </MenuHandler>
-                <MenuList className="hidden max-w-screen-xl rounded-xl lg:block">
-                    <ul className="grid grid-cols-1 gap-y-2 outline-none outline-0">
-                        {renderItems}
-                    </ul>
-                </MenuList>
+                {
+                    user && data.length > 0 && (
+                        <MenuList className="hidden max-w-screen-xl rounded-xl lg:block">
+                            <ul className="grid grid-cols-1 gap-y-2 outline-none outline-0">
+                                {renderItems}
+                            </ul>
+                        </MenuList>
+                    )
+                }
             </Menu>
             <div className="block lg:hidden">
                 <Collapse open={isMobileMenuOpen}>{renderItems}</Collapse>
@@ -340,12 +339,12 @@ function NavList() {
 export default function MenuBar() {
 
     const user = useSelector((state) => state.user.user);
-    // console.log(user)
     const dispatch = useDispatch();
 
     const [openNav, setOpenNav] = useState(false);
     const [scrollingUp, setScrollingUp] = useState(true);
     const [hidden, setHidden] = useState(false);
+    const [data, setData] = useState([]);
 
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
@@ -365,9 +364,8 @@ export default function MenuBar() {
                 window.location.reload();
             }
         }
-        
-    };
 
+    };
 
     const handleInputChange = (e) => {
         setSearchTerm(e.target.value);
@@ -404,6 +402,25 @@ export default function MenuBar() {
 
         return () => clearTimeout(timeoutId);
     }, [scrollingUp]);
+
+    useEffect(() => {
+        if (user && user.user_id) {
+            const fetchData = async () => {
+                try {
+                    let res = await getCart(user.user_id);
+                    setData(res.data);
+                } catch (error) {
+                    console.error("Error fetching data:", error);
+                }
+            };
+
+            fetchData();
+
+            const intervalId = setInterval(fetchData, 5000);
+
+            return () => clearInterval(intervalId);
+        }
+    }, [user]);
 
     return (
         <Navbar
@@ -483,9 +500,9 @@ export default function MenuBar() {
                     <NavProductList />
                 </div>
 
-                <Link to={user ? "/cart" : "/login"}>
+                <Link to="/cart">
                     <div className=" lg:hidden">
-                        <Badge className=" w-3" content="0" withBorder>
+                        <Badge className=" w-3" content={user ? (data.length) : ("0")} withBorder>
                             <ShoppingCartIcon
                                 className="h-6 w-6"
                                 strokeWidth={2}
@@ -518,7 +535,7 @@ export default function MenuBar() {
                                 <Typography className=" mb-3 text-gray-900">Hello </Typography>
                                 <Typography className=" text-gray-900 mx-3 font-semibold">{user.username}</Typography>
                             </div>
-                            <Button variant="gradient" size="sm" fullWidth>
+                            <Button onClick={handleLogOut} variant="gradient" size="sm" fullWidth>
                                 Log out
                             </Button>
                         </div>
