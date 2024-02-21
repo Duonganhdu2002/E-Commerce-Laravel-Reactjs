@@ -106,7 +106,7 @@ Route::prefix('public')->group(function () {
     });
 
     Route::prefix('order')->group(function () {
-        Route::get('/list', [OrderController::class, 'index']);
+        Route::get('list', [OrderController::class, 'index']);
         //tuy chon cac san pham tu gio hang them vao don hang
         Route::post('make', [OrderController::class, 'checkout']);
         // chi tiet don hang

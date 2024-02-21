@@ -35,9 +35,14 @@ export const cartSlice = createSlice({
             state.selectedShippingPrice = action.payload;
             localStorage.setItem('shippingPrice', action.payload);
         },
+        selectShippingMethod: (state, action) => {
+            state.selectedShippingMethod = action.payload; 
+            localStorage.setItem('shippingMehthod', action.payload);
+        },
+
     },
 });
 
-export const { addItem, removeItem, updateItemQuantity, clearCart, selectShippingPrice } = cartSlice.actions;
+export const { addItem, removeItem, updateItemQuantity, clearCart, selectShippingPrice, selectShippingMethod } = cartSlice.actions;
 
 export default cartSlice.reducer;

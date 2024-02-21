@@ -131,8 +131,8 @@ class OrderController extends Controller
             'order_address' => 'required',
             'order_phone' => 'required',
             'order_name' => 'required',
-            'total' => 'required'
-           
+            'total' => 'required',
+            'order_note' => 'sometimes',
         ]);
 
         if ($validator->fails()) {
@@ -150,7 +150,9 @@ class OrderController extends Controller
         $order_address = $input['order_address']; 
         $order_phone = $input['order_phone'];      
         $order_name = $input['order_name']; 
+        $order_note = $input['order_note']; 
         $total = $input['total'] ;
+        $order_note = $input['order_note'] ?? null;
       
         try {
             $order = order::create([ 
@@ -160,7 +162,9 @@ class OrderController extends Controller
                 'order_address' => $order_address, 
                 'order_phone' => $order_phone,    
                 'order_name' => $order_name, 
+                'order_note' => $order_note, 
                 'total' => $total,
+
             ]);
 
             // Thêm các sản phẩm vào đơn hàng
