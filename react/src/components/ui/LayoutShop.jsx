@@ -21,8 +21,39 @@ export const LayoutShop = () => {
     return (
         <div className=" w-full">
             <h1>It really matters and then like it really doesn't matter.
-            What matters is the people who are sparked by it. And the people
-            who are like offended by it, it doesn't matter.</h1>
+                What matters is the people who are sparked by it. And the people
+                who are like offended by it, it doesn't matter.
+            </h1>
+        </div>
+    );
+}
+
+
+export const LayoutProfile = ({ data }) => {
+    return (
+        <div className=" min-w-full">
+            <div>
+                <p className=" font-semibold text-2xl text-left">Shop information</p>
+                <div className=" w-full flex ">
+                    <div className=" mr-12">
+                        <p>Contact shop with email: {data.email}</p>
+                    </div>
+                    <div>
+                        <p>Contact shop with email: {data.email}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export const LayoutCategory = () => {
+    return (
+        <div className=" w-full">
+            <h1>It really matters and then like it really doesn't matter.
+                What matters is the people who are sparked by it. And the people
+                who are like offended by it, it doesn't matter.
+            </h1>
         </div>
     );
 }
@@ -34,28 +65,24 @@ export default function Shop() {
     const { user_id } = useParams();
     const [data, setData] = useState([]);
 
-    const data1 = [
+    const bigData = [
         {
             label: "Shop",
             value: "dashboard",
             icon: Square3Stack3DIcon,
-            desc: <LayoutShop/>
+            desc: <LayoutShop />,
         },
         {
             label: "Product",
             value: "profile",
             icon: UserCircleIcon,
-            desc: `It really matters and then like it really doesn't matter.
-            What matters is the people who are sparked by it. And the people
-            who are like offended by it, it doesn't matter.`,
+            desc: <LayoutProfile data={data} />,
         },
         {
             label: "Category",
             value: "settings",
             icon: Cog6ToothIcon,
-            desc: `We're not always in the position that we want to be at.
-        We're constantly growing. We're constantly making mistakes. We're
-        constantly trying to express ourselves and actualize our dreams.`,
+            desc: <LayoutCategory />,
         },
     ];
 
@@ -77,11 +104,11 @@ export default function Shop() {
     return (
         <div className=" flex flex-col justify-center">
             <div className="flex items-center justify-center flex-col my-2">
-                <div className="flex items-center justify-center bg-black -z-10 2xl:w-[80%] xl:w-[80%] lg:w-[80%] md:w-[90%] w-[100%] md:rounded-2xl">
+                <div className="flex items-center justify-center bg-black -z-10 2xl:w-[80%] xl:w-[80%] lg:w-[80%] md:w-[90%] w-[100%]">
                     <img
                         src={`../../../src/assets/shop/${data.shop_background}`}
                         alt=""
-                        className="object-cover aspect-ratio opacity-60 w-full sm:h-72 md:rounded-2xl"
+                        className="object-cover aspect-ratio opacity-60 w-full sm:h-72 "
                     />
                 </div>
                 <div className="absolute flex px-2 2xl:w-[70%] xl:w-[70%] lg:w-[70%] md:w-[80%] w-[100%]">
@@ -99,14 +126,13 @@ export default function Shop() {
                                     {data.shop_name}
                                 </p>
                             </div>
-                            <div className=" flex flex-wrap text-white">
-                                <p className=" mt-4">4.9/5.0 &nbsp;</p>
+                            <div className=" mt-4 flex flex-wrap text-white items-center">
+                                <p>{(data.average_rating)?.toFixed(2)}/5.0 &nbsp;</p>
                                 <img
                                     src={Star}
                                     alt=""
-                                    className="w-5 fill-yellow-500"
+                                    className="w-5 fill-yellow-500 mr-2"
                                 />
-
                             </div>
                             <div>
                                 <p className=" flex items-center font-bold text-xl text-white mt-5">
@@ -124,10 +150,10 @@ export default function Shop() {
                 </div>
             </div>
             <div className=" flex items-center justify-center my-6">
-                <div className=" flex items-center justify-around h-full border font-semibold 2xl:w-[80%] xl:w-[80%] lg:w-[80%] md:w-[90%] w-[100%]">
+                <div className=" flex items-center justify-around h-full border font-semibold lg:w-[80%] md:w-[90%] w-[95%]">
                     <Tabs value="dashboard">
                         <TabsHeader>
-                            {data1.map(({ label, value, icon }) => (
+                            {bigData.map(({ label, value, icon }) => (
                                 <Tab key={value} value={value}>
                                     <div className="flex items-center gap-2">
                                         {React.createElement(icon, { className: "w-5 h-5" })}
@@ -137,8 +163,8 @@ export default function Shop() {
                             ))}
                         </TabsHeader>
                         <TabsBody className=" w-full">
-                            {data1.map(({ value, desc }) => (
-                                <TabPanel className=" w-full" key={value} value={value}>
+                            {bigData.map(({ value, desc }) => (
+                                <TabPanel key={value} value={value}>
                                     {desc}
                                 </TabPanel>
                             ))}
