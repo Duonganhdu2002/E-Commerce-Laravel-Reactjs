@@ -7,8 +7,6 @@ import { handleOrder } from "../../services/orderService";
 
 export default function Checkout() {
 
-    const [notification, setNotification] = useState('');
-
     // Mảng chứa dữ liệu được gọi từ API
     const [provincesListData, setProvincesListData] = useState([]);
     const [districtListData, setDistrictListData] = useState([]);
@@ -19,27 +17,11 @@ export default function Checkout() {
     const selectedShippingPrice = useSelector(state => state.cart.selectedShippingPrice);
     const selectedShippingMethod = useSelector(state => state.cart.selectedShippingMethod);
 
+
+    console.log(selectedItems)
+
     //Redux store id user
     const userId = useSelector(state => state.user.user.user_id || '');
-
-    // Biến lưu trữ order item
-    const product = selectedItems.map(item => ({
-        product_id: item.itemId,
-        quantity: item.newQuantity
-    }));
-
-
-    //Biến lưu trữ tất cả thông tin của đơn hàng gửi đến API
-    const [dataOrder, setDataOrder] = useState({
-        'user_id': null,
-        'product': null,
-        'shipping_method_id': null,
-        "order_address": null,
-        "order_phone": null,
-        "order_name": null,
-        "total": null,
-        'note': null
-    });
 
     // Các biến chứa id của Tỉnh, huyện, xã
     const [selectedProvinceId, setSelectedProvinceId] = useState(null);
@@ -105,19 +87,6 @@ export default function Checkout() {
         fetchData();
     }, [selectedDistrictId]);
 
-    // Order API
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                let res = await handleOrder(dataOrder);
-            } catch (error) {
-
-            }
-        }
-    })
-
-
     const handlechangeProvince = (e) => {
         const selectedProvinceId = parseInt(e);
         setSelectedProvinceId(selectedProvinceId);
@@ -165,29 +134,26 @@ export default function Checkout() {
         }
     };
 
-
-
-
     const handleProceedToPayment = async () => {
         if (!name || !phoneNumber || !streetAndNumber || !selectedWard || !selectedDistrict || !selectedProvince) {
             alert('Vui lòng điền đầy đủ thông tin để tiếp tục đặt hàng.');
             return;
         }
-    
+
         try {
             await fetchData();
         } catch (error) {
             console.error("Error fetching data:", error);
         }
     };
-    
+
     const fetchData = async () => {
         try {
             const updatedDataOrder = {
                 'user_id': userId,
-                'product': product.map(item => ({  
-                    'product_id': item.product_id,
-                    'quantity': item.quantity
+                'product': selectedItems.map(item => ({
+                    'product_id': item.itemId,
+                    'quantity': item.newQuantity
                 })),
                 'shipping_method_id': selectedShippingMethod,
                 "order_address": streetAndNumber + ', ' + selectedWard + ', ' + selectedDistrict + ', ' + selectedProvince,
@@ -196,22 +162,13 @@ export default function Checkout() {
                 "total": (subtotal + parseFloat(selectedShippingPrice)).toFixed(2),
                 'note': note,
             };
-        
-            let res = await handleOrder(updatedDataOrder);  
-            console.log(updatedDataOrder)
-   
-            console.log(res);
+
+            await handleOrder(updatedDataOrder);
+
         } catch (error) {
             console.error("Error setting data order:", error);
         }
     };
-    
-
-    // useEffect(() => {
-    //     console.log('Selected Items:', selectedItems);
-
-    // }, [selectedItems]);
-
 
     return (
         <div className="overflow-y-hidden">
@@ -286,7 +243,7 @@ export default function Checkout() {
                                 selectedItems && selectedItems.length > 0 && selectedItems.map((carts, index) => (
                                     <div className="flex justify-between w-full mb-24 items-center" key={index}>
                                         <p className="text-lg leading-4 text-gray-600">
-                                            {carts.itemId}
+                                            {carts.itemName}
                                         </p>
                                         <p className="text-lg font-semibold leading-4 text-gray-600">
                                             {carts.newQuantity} x {carts.Price}
