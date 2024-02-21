@@ -132,7 +132,7 @@ class OrderController extends Controller
             'order_phone' => 'required',
             'order_name' => 'required',
             'total' => 'required',
-            'order_note' => 'sometimes',
+            'order_note' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -152,7 +152,7 @@ class OrderController extends Controller
         $order_name = $input['order_name']; 
         $order_note = $input['order_note']; 
         $total = $input['total'] ;
-        $order_note = $input['order_note'] ?? null;
+       
       
         try {
             $order = order::create([ 
@@ -179,7 +179,12 @@ class OrderController extends Controller
             // Xóa các sản phẩm khỏi giỏ hàng sau khi đặt hàng thành công
             $user_id = $input['user_id'];
             $shoppingCartController = new ShoppingCartController();
-            $shoppingCartController->destroy($user_id, $productid);
+
+            foreach ($productid as $productId) {
+                $shoppingCartController->destroy($user_id, [$productId]);
+            }
+
+
 
             $arr = [
                 'status' => true,

@@ -168,23 +168,22 @@ class ShoppingCartController extends Controller
     try {
         $shoppingCart = ShoppingCart::where('user_id', $user_id)->firstOrFail();
 
-        $shoppingCart->products()->delete($product_id);
-
-        $arr = [
-            'status' => true,
-            'message' => 'Sản phẩm đã được xóa khỏi giỏ hàng thành công',
-            'data' => null
-        ];
-
-        return response()->json($arr, 200);
-    } catch (ModelNotFoundException $e) {
-        $arr = [
-            'success' => false,
-            'message' => 'Giỏ hàng không tồn tại hoặc sản phẩm không có trong giỏ hàng',
-            'data' => null
-        ];
-
-        return response()->json($arr, 404);
+        $shoppingCart->products()->delete($product_id); 
+            $arr = [
+                'status' => true,
+                'message' => 'Sản phẩm đã được xóa khỏi giỏ hàng thành công',
+                'data' => null
+            ];
+    
+            return response()->json($arr, 200);
+        } catch (ModelNotFoundException $e) {
+            $arr = [
+                'success' => false,
+                'message' => 'Giỏ hàng không tồn tại hoặc sản phẩm không có trong giỏ hàng',
+                'data' => null
+            ];
+    
+            return response()->json($arr, 404);
+        }
     }
-}
 }
