@@ -163,27 +163,28 @@ class ShoppingCartController extends Controller
 
         return response()->json($arr, 200);
     }
-    public function destroy(string $id)
-    {
-        try {
-            $sc = ShoppingCart::findOrFail($id);
-            $sc->delete();
+    public function destroy(string $user_id, $product_id)
+{
+    try {
+        $shoppingCart = ShoppingCart::where('user_id', $user_id)->firstOrFail();
 
-            $arr = [
-                'status' => true,
-                'message' => 'đã được xóa thành công',
-                'data' => null
-            ];
+        $shoppingCart->products()->delete($product_id);
 
-            return response()->json($arr, 200);
-        } catch (ModelNotFoundException $e) {
-            $arr = [
-                'success' => false,
-                'message' => ' không tồn tại',
-                'data' => null
-            ];
+        $arr = [
+            'status' => true,
+            'message' => 'Sản phẩm đã được xóa khỏi giỏ hàng thành công',
+            'data' => null
+        ];
 
-            return response()->json($arr, 404);
-        }
+        return response()->json($arr, 200);
+    } catch (ModelNotFoundException $e) {
+        $arr = [
+            'success' => false,
+            'message' => 'Giỏ hàng không tồn tại hoặc sản phẩm không có trong giỏ hàng',
+            'data' => null
+        ];
+
+        return response()->json($arr, 404);
     }
+}
 }

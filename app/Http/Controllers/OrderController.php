@@ -169,6 +169,14 @@ class OrderController extends Controller
                 $order->products()->attach($productModel->product_id, ['quantity' => $product['quantity']]);
             }
 
+             
+            $productid = collect($product)->pluck('product_id')->toArray();
+
+            // Xóa các sản phẩm khỏi giỏ hàng sau khi đặt hàng thành công
+            $user_id = $input['user_id'];
+            $shoppingCartController = new ShoppingCartController();
+            $shoppingCartController->destroy($user_id, $productid);
+
             $arr = [
                 'status' => true,
                 'message' => 'Đặt hàng thành công',
