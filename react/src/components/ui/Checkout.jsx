@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Input, Select, Option, Button } from "@material-tailwind/react";
 import { districtList, provincesList, wardList } from "../../services/locationService";
 import { handleOrder } from "../../services/orderService";
 
 export default function Checkout() {
+
+    //Loading
+    const [loading, setLoading] = useState(false);
+
+    // Navigate
+    const navigate = useNavigate();
 
     // Mảng chứa dữ liệu được gọi từ API
     const [provincesListData, setProvincesListData] = useState([]);
@@ -16,9 +22,6 @@ export default function Checkout() {
     const selectedItems = useSelector(state => state.cart.items);
     const selectedShippingPrice = useSelector(state => state.cart.selectedShippingPrice);
     const selectedShippingMethod = useSelector(state => state.cart.selectedShippingMethod);
-
-
-    console.log(selectedItems)
 
     //Redux store id user
     const userId = useSelector(state => state.user.user.user_id || '');
@@ -149,6 +152,7 @@ export default function Checkout() {
 
     const fetchData = async () => {
         try {
+            setLoading(true);
             const updatedDataOrder = {
                 'user_id': userId,
                 'product': selectedItems.map(item => ({
@@ -160,13 +164,15 @@ export default function Checkout() {
                 "order_phone": phoneNumber,
                 "order_name": name,
                 "total": (subtotal + parseFloat(selectedShippingPrice)).toFixed(2),
-                'note': note,
+                'order_note': note,
             };
 
             await handleOrder(updatedDataOrder);
-
+            setLoading(false);
+            navigate('/success');
         } catch (error) {
             console.error("Error setting data order:", error);
+            setLoading(false)
         }
     };
 
@@ -222,7 +228,7 @@ export default function Checkout() {
                             <Input variant="standard" label="Street and number" placeholder="Standard" name="streetAndNumber" value={streetAndNumber} onChange={handleInputChange} />
                             <Input variant="standard" label="Note" placeholder="Standard" name="note" value={note} onChange={handleInputChange} />
                         </div>
-                        <Button className=" mt-12 py-5" fullWidth onClick={handleProceedToPayment}>Proceed to payment</Button>
+                        <Button loading={loading} className=" mt-12 py-5 text-center" fullWidth onClick={handleProceedToPayment}>Proceed to payment</Button>
                     </div>
                     <div className="flex flex-col justify-start bg-gray-50 w-full p-6 md:p-14">
                         <div>

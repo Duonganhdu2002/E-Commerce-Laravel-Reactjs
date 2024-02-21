@@ -45,6 +45,7 @@ import Error404 from "./components/ui/error404";
 import { useSelector } from 'react-redux'
 import { ShopRating } from "./components/ui-bussiness/ShopRating";
 import { ShopInformation } from "./components/ui-bussiness/ShopInformation";
+import Success from "./components/ui/Success";
 
 
 const Customer = () => {
@@ -146,6 +147,7 @@ const App = () => {
                                 <Route path="checkout" element={<Checkout />} />
                                 <Route path="search/:searchKey" element={<SearchLayout />} />
                                 <Route path="orderstatus" element={<OrderStatus />} />
+                                <Route path="success" element={<Success />} />
                             </Route>
 
                             {/* Bussiness */}
