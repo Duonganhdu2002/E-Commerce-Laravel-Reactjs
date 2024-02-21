@@ -40,7 +40,7 @@ export default function Brand() {
                                 </div>
 
                                 <div className=' h-[20px] flex justify-center items-center my-2'>
-                                    <h3 className="text-[12px] lg:text-[14px] font-medium text-gray-600 dark:text-white">{fields.field_name}</h3>
+                                    <h3 className="text-[12px] lg:text-[14px] font-medium text-gray-600 dark:text-white">{fields.product_brand_name}</h3>
                                 </div>
 
                             </div>
