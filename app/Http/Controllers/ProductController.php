@@ -663,5 +663,59 @@ class ProductController extends Controller
         ], 200);
     }
 
+    public function sortProducts($sortBy)
+{
+    $perPage = 8;
+
+    switch ($sortBy) {
+        case 'rating':
+            $products = Product::select(
+                'product.product_id',
+                'product.name',
+                'product.description',
+                'product.price',
+                'product.stock',
+                DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
+            )
+                ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
+                ->groupBy(
+                    'product.product_id',
+                    'product.name',
+                    'product.description',
+                    'product.price',
+                    'product.stock'
+                )
+                ->orderBy('average_rating', 'desc')
+                ->paginate($perPage);
+            break;
+
+        case 'newest':
+            $products = Product::orderBy('created_at', 'desc')->paginate($perPage);
+            break;
+
+        case 'price_high_to_low':
+            $products = Product::orderBy('price', 'desc')->paginate($perPage);
+            break;
+
+        case 'price_low_to_high':
+            $products = Product::orderBy('price', 'asc')->paginate($perPage);
+            break;
+
+        default:
+            $products = Product::paginate($perPage);
+            break;
+    }
+
+    foreach ($products as &$product) {
+        $productImages = ProductImage::where('product_id', $product->product_id)->pluck('image_url');
+        $product->images = $productImages;
+    }
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Danh sách sản phẩm được lọc theo ' . $sortBy,
+        'data' => $products,
+    ], 200);
+}
 
 }
