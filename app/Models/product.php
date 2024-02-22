@@ -46,4 +46,16 @@ class product extends Model
         return $this->belongsTo('product_id', 'product_id');
     }
     
+    public function productSizes()
+    {
+        return $this->hasMany(product_size::class, 'product_id', 'product_id');
+    }
+
+    // Định nghĩa mối quan hệ với bảng ProductColor
+    public function productColors()
+    {
+        return $this->hasMany(product_color::class, 'product_id', 'product_id');
+    }
+
+
 }

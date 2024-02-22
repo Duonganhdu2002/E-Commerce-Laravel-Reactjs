@@ -27,7 +27,7 @@ class ShoppingCartController extends Controller
         try {
             $shoppingCartItems = ShoppingCart::where('user_id', $user_id)
                 ->join('product', 'shopping_cart.product_id', '=', 'product.product_id')
-                ->select('shopping_cart.*', 'product.price as price','product.name as name')
+                ->select('shopping_cart.*', 'product.price as price', 'product.name as name')
                 ->get();
 
             if ($shoppingCartItems->isEmpty()) {
@@ -206,7 +206,13 @@ class ShoppingCartController extends Controller
                 return response()->json(['status' => false, 'message' => 'Giỏ hàng không tồn tại', 'data' => null], 404);
             }
         } catch (ModelNotFoundException $e) {
-            return response()->json(['status' => false, 'message' => 'Giỏ hàng không tồn tại', 'data' => null], 404);
+            $arr = [
+                'success' => false,
+                'message' => 'Giỏ hàng không tồn tại hoặc sản phẩm không có trong giỏ hàng',
+                'data' => null
+            ];
+    
+            return response()->json($arr, 404);
         }
     }
 }

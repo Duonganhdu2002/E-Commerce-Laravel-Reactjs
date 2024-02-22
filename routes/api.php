@@ -15,7 +15,7 @@ use App\Http\Controllers\SearchHistoryController;
 use App\Http\Controllers\ProvincesController;
 
 Route::prefix('user')->group(function () {
-    
+
     Route::post('createAdmin', [UserController::class, 'createAdmin'])->name('createAdmin');
     Route::post('createBusiness', [UserController::class, 'createBusiness'])->name('createBusiness');
     Route::post('register', [UserController::class, 'createUser'])->name('register');
@@ -32,9 +32,7 @@ Route::prefix('user')->group(function () {
 
 Route::prefix('public')->group(function () {
     Route::prefix('product')->group(function () {
-        // index, store, update, destroy
-        // Route::resource('/', ProductController::class);
-
+        
         Route::get('show/{id}', [ProductController::class, 'show']);
         Route::post('add', [ProductController::class, 'store']);
 
@@ -56,8 +54,8 @@ Route::prefix('public')->group(function () {
         // Lọc sản phẩm theo thương hiệu và có trạng thái là 3
         Route::get('listProductWithBrand/{categoryId}', [ProductController::class, 'listProductWithBrand']);
 
-        // xuất ra những sản phẩm của user tạo ra
-        Route::get('/user/{userId}', [ProductController::class, 'indexByUser']);
+        // xuất ra những sản phẩm của user tạo ra( chủ shop)
+        Route::get('user/{id}', [ProductController::class, 'indexByUser']);
 
         // chức năng tìm kiếm sản phẩm theo tên của sản phẩm, brand, category
         Route::get('/search-products', [SearchHistoryController::class, 'search']);
@@ -101,7 +99,7 @@ Route::prefix('public')->group(function () {
     Route::prefix('cart')->group(function () {
         Route::post('add-to-cart', [ShoppingCartController::class, 'store']);
         Route::get('show/{user_id}', [ShoppingCartController::class, 'index']);
-        Route::delete('/delete/{user_id}/{product_id}', [ShoppingCartController::class, 'destroy']);
+        Route::delete('delete/{product_id}', [ShoppingCartController::class, 'destroy']);
         Route::put('update/{product_id}', [ShoppingCartController::class, 'update']);
     });
 
