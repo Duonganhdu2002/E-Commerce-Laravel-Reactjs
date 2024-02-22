@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\OrderResource ;
 use App\Models\order ;
+use App\Models\order_items ;
 use App\Models\product ;
-use App\Models\user_address ;
+use App\Models\shopping_cart ;
+use Illuminate\Support\Facades\DB;
 
 
 
@@ -118,7 +120,7 @@ class OrderController extends Controller
         }
     }
 
-    public function checkout(Request $request) //tuy chon san pham de tao don hang
+    public function checkout(Request $request, ShoppingCartController $shoppingCartController) //tuy chon san pham de tao don hang
     {
         $input = $request->all();
 
@@ -167,25 +169,45 @@ class OrderController extends Controller
 
             ]);
 
-            // Thêm các sản phẩm vào đơn hàng
-            foreach ($product as $product) {
-                $productModel = Product::findOrFail($product['product_id']);
-                $order->products()->attach($productModel->product_id, ['quantity' => $product['quantity']]);
-            }
+            $orderedProductIds = [];
 
-             
-            $productid = collect($product)->pluck('product_id')->toArray();
+            // Loop through each product in the request
+            foreach ($input['product'] as $productItem) {
+                $product = Product::find($productItem['product_id']);
 
-            // Xóa các sản phẩm khỏi giỏ hàng sau khi đặt hàng thành công
-            $user_id = $input['user_id'];
-            $shoppingCartController = new ShoppingCartController();
+                // Check if there is enough stock
+                if ($product->stock < $productItem['quantity']) {                  
+                    $arr = [
+                        'success' => false,
+                        'message' => 'Không đủ hàng trong kho',
+                        'data' => null
+                    ];
+                    return response()->json($arr, 200);
+                }
 
-            foreach ($productid as $productId) {
-                $shoppingCartController->destroy($user_id, [$productId]);
-            }
+            $orderItem = new Order_Items([
+                'product_id' => $product->product_id,
+                'quantity' => $productItem['quantity'],
+                'price' => $product->price,
+            ]);
 
+            $order->orderItems()->save($orderItem);
 
+            $product->update([
+                'stock' => $product->stock - $productItem['quantity'],
+            ]);
 
+            $orderedProductIds[] = $product->product_id;
+        }
+
+        $shoppingCart = Shopping_Cart::find($user_id);
+
+        $productsToRemove = $shoppingCart->products()->whereIn('product_id', $orderedProductIds)->get();
+        
+        foreach ($productsToRemove as $product) {
+            $shoppingCartController->destroy($user_id, $product->product_id);
+        }
+        
             $arr = [
                 'status' => true,
                 'message' => 'Đặt hàng thành công',

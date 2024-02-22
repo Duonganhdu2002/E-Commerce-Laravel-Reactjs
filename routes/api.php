@@ -57,7 +57,7 @@ Route::prefix('public')->group(function () {
         Route::get('listProductWithBrand/{categoryId}', [ProductController::class, 'listProductWithBrand']);
 
         // xuất ra những sản phẩm của user tạo ra
-        // Route::get('products/user/{userId}', [ProductController::class, 'indexByUser']);
+        Route::get('/user/{userId}', [ProductController::class, 'indexByUser']);
 
         // chức năng tìm kiếm sản phẩm theo tên của sản phẩm, brand, category
         Route::get('/search-products', [SearchHistoryController::class, 'search']);
@@ -101,7 +101,7 @@ Route::prefix('public')->group(function () {
     Route::prefix('cart')->group(function () {
         Route::post('add-to-cart', [ShoppingCartController::class, 'store']);
         Route::get('show/{user_id}', [ShoppingCartController::class, 'index']);
-        Route::delete('delete/{product_id}', [ShoppingCartController::class, 'destroy']);
+        Route::delete('/delete/{user_id}/{product_id}', [ShoppingCartController::class, 'destroy']);
         Route::put('update/{product_id}', [ShoppingCartController::class, 'update']);
     });
 

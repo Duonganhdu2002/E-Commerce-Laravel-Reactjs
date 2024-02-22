@@ -14,6 +14,14 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ShoppingCartController extends Controller
 {
+
+    protected $shoppingCart;
+
+    public function __construct(ShoppingCart $shoppingCart)
+    {
+        $this->shoppingCart = $shoppingCart;
+    }
+
     public function index($user_id)
     {
         try {
@@ -163,27 +171,42 @@ class ShoppingCartController extends Controller
 
         return response()->json($arr, 200);
     }
-    public function destroy(string $user_id, $product_id)
-{
-    try {
-        $shoppingCart = ShoppingCart::where('user_id', $user_id)->firstOrFail();
+    public function destroy( $user_id, $product_id)
+    {
+        try {
+            $validator = Validator::make(
+                [
+                    'user_id' => $user_id,
+                    'product_id' => $product_id,
+                ],
+                [
+                    'user_id' => 'required|exists:shopping_cart,user_id',
+                    'product_id' => 'required|exists:product,product_id',
+                ]
+            );
 
-        $shoppingCart->products()->delete($product_id); 
-            $arr = [
-                'status' => true,
-                'message' => 'Sản phẩm đã được xóa khỏi giỏ hàng thành công',
-                'data' => null
-            ];
-    
-            return response()->json($arr, 200);
+            if ($validator->fails()) {
+                return response()->json(['status' => false, 'message' => 'Lỗi kiểm tra dữ liệu', 'data' => $validator->errors()], 400);
+            }
+
+            
+            $shoppingCart = ShoppingCart::where('user_id', $user_id)->first();
+                
+            if ($shoppingCart) {
+                $productInCart = $shoppingCart->products()->where('product_id', $product_id)->first();
+                if ($productInCart) {
+                    
+                    $productInCart->delete();
+
+                    return response()->json(['status' => true, 'message' => 'Sản phẩm đã được xóa khỏi giỏ hàng', 'data' => null], 200);
+                } else {
+                    return response()->json(['status' => false, 'message' => 'Sản phẩm không có trong giỏ hàng', 'data' => null], 404);
+                }
+            } else {
+                return response()->json(['status' => false, 'message' => 'Giỏ hàng không tồn tại', 'data' => null], 404);
+            }
         } catch (ModelNotFoundException $e) {
-            $arr = [
-                'success' => false,
-                'message' => 'Giỏ hàng không tồn tại hoặc sản phẩm không có trong giỏ hàng',
-                'data' => null
-            ];
-    
-            return response()->json($arr, 404);
+            return response()->json(['status' => false, 'message' => 'Giỏ hàng không tồn tại', 'data' => null], 404);
         }
     }
 }
