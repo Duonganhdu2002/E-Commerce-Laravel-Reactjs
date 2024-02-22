@@ -612,4 +612,56 @@ class ProductController extends Controller
             ], 500);
         }
     }
+
+
+    public function filterByCategoriesAndBrands(Request $request)
+    {
+        // Lấy danh sách category_id và brand_id từ request
+        $categoryIds = $request->input('category_ids');
+        $brandIds = $request->input('brand_ids');
+
+        // Bắt đầu truy vấn từ model Product
+        $query = Product::query();
+
+        // Thêm điều kiện tìm kiếm theo category_ids nếu có
+        if (!empty($categoryIds)) {
+            $query->whereIn('product_id', function ($subquery) use ($categoryIds) {
+                $subquery->select('product_id')
+                    ->from('product')
+                    ->join('product_category', 'product.product_category_id', '=', 'product_category.product_category_id')
+                    ->whereIn('product_category.product_category_id', $categoryIds);
+            });
+        }
+
+        // Thêm điều kiện tìm kiếm theo brand_ids nếu có
+        if (!empty($brandIds)) {
+            $query->whereIn('product_id', function ($subquery) use ($brandIds) {
+                $subquery->select('product_id')
+                    ->from('product')
+                    ->join('product_brand', 'product.product_brand_id', '=', 'product_brand.product_brand_id')
+                    ->whereIn('product_brand.product_brand_id', $brandIds);
+            });
+        }
+
+        // Thực hiện truy vấn để lấy danh sách sản phẩm
+        $products = $query->get();
+
+        // Kiểm tra xem danh sách sản phẩm có trống không
+        if ($products->isEmpty()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Không có sản phẩm nào được tìm thấy dựa trên các điều kiện lọc',
+                'data' => null,
+            ], 404);
+        }
+
+        // Trả về JSON response chứa danh sách sản phẩm được lọc
+        return response()->json([
+            'status' => true,
+            'message' => 'Danh sách sản phẩm được lọc theo category và brand',
+            'data' => $products,
+        ], 200);
+    }
+
+
 }
