@@ -15,7 +15,7 @@ use App\Http\Controllers\SearchHistoryController;
 use App\Http\Controllers\ProvincesController;
 
 Route::prefix('user')->group(function () {
-    
+
     Route::post('createAdmin', [UserController::class, 'createAdmin'])->name('createAdmin');
     Route::post('createBusiness', [UserController::class, 'createBusiness'])->name('createBusiness');
     Route::post('register', [UserController::class, 'createUser'])->name('register');
@@ -56,8 +56,8 @@ Route::prefix('public')->group(function () {
         // Lọc sản phẩm theo thương hiệu và có trạng thái là 3
         Route::get('listProductWithBrand/{categoryId}', [ProductController::class, 'listProductWithBrand']);
 
-        // xuất ra những sản phẩm của user tạo ra
-        // Route::get('products/user/{userId}', [ProductController::class, 'indexByUser']);
+        // xuất ra những sản phẩm của user tạo ra( chủ shop)
+        Route::get('user/{id}', [ProductController::class, 'indexByUser']);
 
         // chức năng tìm kiếm sản phẩm theo tên của sản phẩm, brand, category
         Route::get('/search-products', [SearchHistoryController::class, 'search']);

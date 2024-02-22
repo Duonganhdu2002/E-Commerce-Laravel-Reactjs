@@ -75,8 +75,8 @@ class ProductController extends Controller
 
         $products = ProductBrand::findOrFail($brandId)
             ->products()
-            ->with('images') 
-            ->paginate(10); 
+            ->with('images')
+            ->paginate(10);
 
 
         foreach ($products as $product) {
@@ -98,28 +98,114 @@ class ProductController extends Controller
         ], 200);
     }
 
-    public function indexByUser($userId)
+    // public function indexByUser($userId)
+    // {
+    //     try {
+    //         $products = Product::where('created_by_user_id', $userId)->get();
+
+
+    //         $arr = [
+    //             'status' => true,
+    //             'message' => 'Danh sách sản phẩm của người dùng',
+    //             'data' => ProductResource::collection($products)
+    //         ];
+
+    //         return response()->json($arr, 200);
+    //     } catch (ModelNotFoundException $e) {
+    //         $arr = [
+    //             'status' => false,
+    //             'message' => 'Người dùng không tồn tại hoặc không có sản phẩm nào được tạo bởi người dùng này',
+    //             'data' => null,
+    //         ];
+
+    //         return response()->json($arr, 404);
+    //     }
+    // }
+
+
+    public function indexByUser(string $userId)
     {
         try {
-            $products = Product::where('created_by_user_id', $userId)->get();
+            $creator = User::findOrFail($userId);
+            $products = Product::with(['images', 'productSizes', 'productColors', 'productBrand', 'productCategory'])
+                ->where('created_by_user_id', $userId)
+                ->get();
+
+            if ($products->isEmpty()) {
+                $arr = [
+                    'status' => false,
+                    'message' => 'Người dùng chưa tạo sản phẩm nào',
+                    'data' => null,
+                ];
+
+                return response()->json($arr, 404);
+            }
+
+            $formattedProducts = $products->map(function ($product) {
+                $reviews = ProductReview::with('user')
+                    ->where('product_id', $product->product_id)
+                    ->get();
+
+                $averageRating = $reviews->avg('rating');
+                $totalReviews = $reviews->count();
+
+                // Lấy danh sách các URL hình ảnh của sản phẩm
+                $imageUrls = $product->images->pluck('image_url');
+                $sizes = $product->productSizes->pluck('size_name');
+                $colors = $product->productColors->pluck('color_name');
+
+                return [
+                    'product_id' => $product->product_id,
+                    'name' => $product->name,
+                    'description' => $product->description,
+                    'created_by_user_id' => $product->created_by_user_id,
+                    'product_brand_id' => $product->product_brand_id,
+                    'product_category_id' => $product->product_category_id,
+                    'price' => $product->price,
+                    'stock' => $product->stock,
+                    'discount_id' => $product->discount_id,
+                    'created_at' => $product->created_at,
+                    'updated_at' => $product->updated_at,
+                    'deleted_at' => $product->deleted_at,
+                    'image_urls' => $imageUrls,
+                    'sizes' => $sizes,
+                    'colors' => $colors,
+                    'reviews' => $reviews, // Bạn có thể giữ nguyên reviews nếu muốn truy cập đến các thông tin khác
+                    'average_rating' => $averageRating,
+                    'total_reviews' => $totalReviews,
+                ];
+            });
 
             $arr = [
                 'status' => true,
-                'message' => 'Danh sách sản phẩm của người dùng',
-                'data' => ProductResource::collection($products)
+                'message' => 'Thông tin sản phẩm của người dùng',
+                'data' => [
+                    'user_id' => $creator->user_id,
+                    'username' => $creator->username,
+                    'full_name' => $creator->full_name,
+                    'shop_name' => $creator->shop_name,
+                    'shop_username' => $creator->shop_username,
+                    'shop_avt' => $creator->shop_avt,
+                    'shop_background' => $creator->shop_background,
+                    'shop_introduce' => $creator->shop_introduce,
+                    'products' => $formattedProducts,
+                ],
             ];
 
             return response()->json($arr, 200);
         } catch (ModelNotFoundException $e) {
             $arr = [
                 'status' => false,
-                'message' => 'Người dùng không tồn tại hoặc không có sản phẩm nào được tạo bởi người dùng này',
+                'message' => 'Không tìm thấy người dùng',
                 'data' => null,
             ];
 
             return response()->json($arr, 404);
         }
     }
+
+
+
 
     public function store(Request $request)
     {
