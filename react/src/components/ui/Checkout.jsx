@@ -159,7 +159,8 @@ export default function Checkout() {
                 'user_id': userId,
                 'product': selectedItems.map(item => ({
                     'product_id': item.itemId,
-                    'quantity': item.newQuantity
+                    'quantity': item.newQuantity,
+                    'spCartId' : item.shoppingCartId
                 })),
                 'shipping_method_id': selectedShippingMethod,
                 "order_address": streetAndNumber + ', ' + selectedWard + ', ' + selectedDistrict + ', ' + selectedProvince,

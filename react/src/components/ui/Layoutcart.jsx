@@ -111,7 +111,7 @@ const Layoutcart = () => {
         dispatch(clearCart());
         const selectedItems = data.filter(cart => cartChecked[cart.shopping_cart_id]);
         selectedItems.forEach(cart => {
-            dispatch(addItem({itemId: cart.product_id, itemName: cart.name, newQuantity: cart.quantity, Price: cart.price }));
+            dispatch(addItem({itemId: cart.product_id, itemName: cart.name, newQuantity: cart.quantity, Price: cart.price, shoppingCartId: cart.shopping_cart_id}));
         });
         // Save the selected shipping method price to Redux
         const selectedShippingPrice = dataShipping[selectedShippingIndex]?.shipping_method_price || 0;
