@@ -32,9 +32,7 @@ Route::prefix('user')->group(function () {
 
 Route::prefix('public')->group(function () {
     Route::prefix('product')->group(function () {
-        // index, store, update, destroy
-        // Route::resource('/', ProductController::class);
-
+        
         Route::get('show/{id}', [ProductController::class, 'show']);
         Route::post('add', [ProductController::class, 'store']);
 
@@ -101,7 +99,7 @@ Route::prefix('public')->group(function () {
     Route::prefix('cart')->group(function () {
         Route::post('add-to-cart', [ShoppingCartController::class, 'store']);
         Route::get('show/{user_id}', [ShoppingCartController::class, 'index']);
-        Route::delete('delete/{product_id}', [ShoppingCartController::class, 'destroy']);
+        Route::delete('delete/{product_id}', [ShoppingCartController::class, 'destroyShoppingCart']);
         Route::put('update/{product_id}', [ShoppingCartController::class, 'update']);
     });
 
