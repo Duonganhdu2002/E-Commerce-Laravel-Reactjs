@@ -171,11 +171,9 @@ class OrderController extends Controller
 
             $orderedProductIds = [];
 
-            // Loop through each product in the request
             foreach ($input['product'] as $productItem) {
                 $product = Product::find($productItem['product_id']);
 
-                // Check if there is enough stock
                 if ($product->stock < $productItem['quantity']) {                  
                     $arr = [
                         'success' => false,

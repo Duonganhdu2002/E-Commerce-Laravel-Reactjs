@@ -206,12 +206,13 @@ class ShoppingCartController extends Controller
                 return response()->json(['status' => false, 'message' => 'Giỏ hàng không tồn tại', 'data' => null], 404);
             }
         } catch (ModelNotFoundException $e) {
+            
             $arr = [
                 'success' => false,
                 'message' => 'Giỏ hàng không tồn tại hoặc sản phẩm không có trong giỏ hàng',
                 'data' => null
             ];
-    
+
             return response()->json($arr, 404);
         }
     }

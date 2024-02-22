@@ -99,7 +99,7 @@ Route::prefix('public')->group(function () {
     Route::prefix('cart')->group(function () {
         Route::post('add-to-cart', [ShoppingCartController::class, 'store']);
         Route::get('show/{user_id}', [ShoppingCartController::class, 'index']);
-        Route::delete('delete/{product_id}', [ShoppingCartController::class, 'destroy']);
+        Route::delete('delete/{product_id}', [ShoppingCartController::class, 'destroyShoppingCart']);
         Route::put('update/{product_id}', [ShoppingCartController::class, 'update']);
     });
 
