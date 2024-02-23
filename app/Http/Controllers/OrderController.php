@@ -117,11 +117,13 @@ class OrderController extends Controller
         }
     }
 
-    public function destroyShoppingCart($id)
+    public function destroyShoppingCart($user_id, $product_id)
     {
         try {
-            // Tìm sản phẩm trong giỏ hàng theo ID
-            $cartItem = ShoppingCart::findOrFail($id);
+            // Tìm sản phẩm trong giỏ hàng theo user_id và product_id
+            $cartItem = ShoppingCart::where('user_id', $user_id)
+                ->where('product_id', $product_id)
+                ->firstOrFail();
 
             // Xóa sản phẩm
             $cartItem->delete();
@@ -132,16 +134,16 @@ class OrderController extends Controller
         }
     }
 
+
     public function checkout(Request $request)
     {
         $input = $request->all();
 
         $validator = Validator::make($input, [
             'user_id' => 'required',
-            'products' => 'required|array',
-            'products.*.product_id' => 'required|exists:product,product_id',
-            'products.*.quantity' => 'required|integer|min:1',
-            'products.*.shoppingcart_id' => 'required|integer|min:1',
+            'product' => 'required|array',
+            'product.*.product_id' => 'required|exists:product,product_id',
+            'product.*.quantity' => 'required|integer|min:1',
             'shipping_method_id' => 'required|exists:shipping_method,shipping_method_id',
             'order_address' => 'required',
             'order_phone' => 'required',
@@ -158,6 +160,8 @@ class OrderController extends Controller
             ], 400);
         }
 
+        $user_id = $input['user_id'];
+    
         try {
             $order = Order::create([
                 'user_id' => $input['user_id'],
@@ -170,7 +174,7 @@ class OrderController extends Controller
                 'total' => $input['total'],
             ]);
 
-            foreach ($input['products'] as $productItem) {
+            foreach ($input['product'] as $productItem) {
                 $product = Product::findOrFail($productItem['product_id']);
                 $order->products()->attach($product->product_id, ['quantity' => $productItem['quantity']]);
                 $newStock = $product->stock - $productItem['quantity'];
@@ -178,10 +182,10 @@ class OrderController extends Controller
             }
 
             // Xóa sản phẩm khỏi giỏ hàng sau khi đặt hàng thành công
-            $shoppingCartIds = collect($input['products'])->pluck('shoppingcart_id')->toArray();
+            $productIds = collect($input['product'])->pluck('product_id')->toArray();
 
-            foreach ($shoppingCartIds as $shoppingCartId) {
-                $this->destroyShoppingCart($shoppingCartId);
+            foreach ($productIds as $productIds) {
+                $this->destroyShoppingCart($user_id, $productIds);
             }
 
             return response()->json([
