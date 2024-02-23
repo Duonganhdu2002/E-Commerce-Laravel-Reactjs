@@ -274,8 +274,7 @@ function NavProductList() {
                                 <div className="">
                                     <Badge
                                         className=" w-3"
-                                        content={user ? (data.length) : ("0")}
-                                        withBorder
+                                        content={user ? (data.length > 0 ? (data.length) : ("0")) : ("0")}                                        withBorder
                                     >
                                         <ShoppingCartIcon
                                             className="h-6 w-6"
@@ -471,7 +470,6 @@ export default function MenuBar() {
 
                 <div className="hidden gap-2 lg:flex">
                     {user ? (
-                        // Render content for logged-in user
                         <div className=" items-center flex">
                             <Typography>Hello </Typography>
                             <Typography className=" mx-3 font-semibold">{user.username}</Typography>
@@ -482,7 +480,6 @@ export default function MenuBar() {
                         </div>
 
                     ) : (
-                        // Render content for non-logged-in user
                         <div>
                             <Link to="/login">
                                 <Button variant="text" size="sm" color="blue-gray">
@@ -502,7 +499,7 @@ export default function MenuBar() {
 
                 <Link to="/cart">
                     <div className=" lg:hidden">
-                        <Badge className=" w-3" content={user ? (data.length) : ("0")} withBorder>
+                        <Badge className=" w-3" content={user ? (data.length > 0 ? (data.length) : ("0")) : ("0")} withBorder>
                             <ShoppingCartIcon
                                 className="h-6 w-6"
                                 strokeWidth={2}
@@ -529,7 +526,6 @@ export default function MenuBar() {
                 <NavList />
                 <div>
                     {user ? (
-                        // Render content for logged-in user
                         <div className=" items-center flex flex-col md:flex-row">
                             <div className=" flex">
                                 <Typography className=" mb-3 text-gray-900">Hello </Typography>
@@ -541,7 +537,6 @@ export default function MenuBar() {
                         </div>
 
                     ) : (
-                        // Render content for non-logged-in user
                         <div>
                             <Link to="/login">
                                 <Button variant="text" size="sm" color="blue-gray">
