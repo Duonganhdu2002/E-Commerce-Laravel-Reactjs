@@ -1,5 +1,5 @@
 
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
@@ -42,7 +42,23 @@ function classNames(...classes) {
 }
 
 export default function CategoryBar({ data }) {
+
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+    const [dataThis, setDataThis] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await fetchAllCategoryByUser();
+                setDataThis(res);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     return (
         <div className="bg-white">
