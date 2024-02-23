@@ -35,25 +35,21 @@ const Layoutcart = () => {
     const [dataShipping, setDataShipping] = useState([]);
     const [selectedShippingIndex, setSelectedShippingIndex] = useState(0);
 
-    console.log(data)
-
-    // Tạo một đối tượng để lưu trữ sản phẩm theo từng created_by_user_id
     const productsByUser = {};
 
-    // Lặp qua mảng sản phẩm và phân loại chúng vào đối tượng theo created_by_user_id
     data.forEach((carts) => {
         const userId = carts.created_by_user_id;
 
-        // Nếu đối tượng chưa có key tương ứng, tạo một mảng mới
         if (!productsByUser[userId]) {
-            productsByUser[userId] = [];
+            productsByUser[userId] = {
+                shopName: carts.shopName || null,
+                products: [],
+            };
         }
 
-        // Thêm sản phẩm vào mảng tương ứng
-        productsByUser[userId].push(carts);
+        productsByUser[userId].products.push(carts);
     });
 
-    // productsByUser bây giờ chứa các mảng sản phẩm được phân loại theo created_by_user_id
     console.log(productsByUser);
 
 
