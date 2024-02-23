@@ -81,7 +81,7 @@ const Layoutcart = () => {
         // return () => clearInterval(intervalId);
     }, [user_id]);
 
-    // API shipping method 
+    // API shipping method
     useEffect(() => {
         const getShippingMethodAPI = async () => {
             try {
@@ -113,8 +113,8 @@ const Layoutcart = () => {
         updateCartData();
     }, [count]);
 
-    // API delete cart 
-    // Function delete product 
+    // API delete cart
+    // Function delete product
     const handleDeleteCart = async (shoppingCartId) => {
         try {
             await deleteCart(shoppingCartId);
@@ -207,7 +207,7 @@ const Layoutcart = () => {
                                                         <img className="w-24 h-24 object-cover md:hidden" src={`src/assets/image/${carts.img}`} alt="dress" />
                                                     </div>
                                                 </Link>
-                                                <div className="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full h-full  pb-6 space-y-4 md:space-y-0">
+                                                <div className="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full h-full  pb-10 space-y-4 md:space-y-0">
                                                     <div className="w-full flex flex-col justify-start items-start space-y-8">
                                                         <h4 className="text-xl xl:text-2xl font-semibold leading-6 text-gray-800">{carts.name}</h4>
                                                         <div className="flex justify-start items-start flex-col space-y-2">
@@ -236,7 +236,7 @@ const Layoutcart = () => {
                                                             </div>
                                                             <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">  ${parseFloat((carts.price * carts.quantity).toFixed(2))}</p>
                                                         </div>
-                                                        <div className=" flex justify-end absolute right-0 bottom-0">
+                                                        <div className=" flex justify-end absolute right-0 mt-8 md:mt-0 md:bottom-0 md:top-24">
                                                             <img onClick={() => handleDeleteCart(carts.shopping_cart_id)} className="w-6 h-6 cursor-pointer" src={Cancel} alt="" />
                                                         </div>
                                                     </div>
