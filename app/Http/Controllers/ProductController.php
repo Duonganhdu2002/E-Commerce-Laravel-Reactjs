@@ -717,4 +717,66 @@ class ProductController extends Controller
             'data' => $products,
         ], 200);
     }
+
+    public function sortUserProducts($sortBy, $userId)
+    {
+        $perPage = 8;
+
+        switch ($sortBy) {
+            case 'sell':
+                $products = Product::select(
+                    'product.product_id',
+                    'product.name',
+                    'product.description',
+                    'product.price',
+                    'product.stock',
+                    DB::raw('IFNULL(SUM(order_items.quantity), 0) as total_sell')
+                )
+                    ->leftJoin('order_items', 'product.product_id', '=', 'order_items.product_id')
+                    ->where('product.created_by_user_id', $userId)
+                    ->groupBy(
+                        'product.product_id',
+                        'product.name',
+                        'product.description',
+                        'product.price',
+                        'product.stock'
+                    )
+                    ->orderBy('total_sell', 'desc')
+                    ->paginate($perPage);
+                break;
+
+            case 'newest':
+                $products = Product::where('created_by_user_id', $userId)
+                    ->orderBy('created_at', 'desc')
+                    ->paginate($perPage);
+                break;
+
+            case 'price_high_to_low':
+                $products = Product::where('created_by_user_id', $userId)
+                    ->orderBy('price', 'desc')
+                    ->paginate($perPage);
+                break;
+
+            case 'price_low_to_high':
+                $products = Product::where('created_by_user_id', $userId)
+                    ->orderBy('price', 'asc')
+                    ->paginate($perPage);
+                break;
+
+            default:
+                $products = Product::where('created_by_user_id', $userId)->paginate($perPage);
+                break;
+        }
+
+        foreach ($products as &$product) {
+            $productImages = ProductImage::where('product_id', $product->product_id)->pluck('image_url');
+            $product->images = $productImages;
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Danh sách sản phẩm của user_id ' . $userId . ' được lọc theo ' . $sortBy,
+            'data' => $products,
+        ], 200);
+    }
 }
