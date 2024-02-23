@@ -15,6 +15,7 @@ import {
     UserCircleIcon,
     Cog6ToothIcon,
 } from "@heroicons/react/24/solid";
+import CategoryBar from "./CategoryBar";
 
 
 export const LayoutShop = () => {
@@ -47,13 +48,10 @@ export const LayoutProfile = ({ data }) => {
     );
 }
 
-export const LayoutCategory = () => {
+export const LayoutCategory = ({ data }) => {
     return (
         <div className=" w-full">
-            <h1>It really matters and then like it really doesn't matter.
-                What matters is the people who are sparked by it. And the people
-                who are like offended by it, it doesn't matter.
-            </h1>
+            <CategoryBar data={data}/>
         </div>
     );
 }
@@ -73,7 +71,7 @@ export default function Shop() {
             desc: <LayoutShop />,
         },
         {
-            label: "Product",
+            label: "Profile",
             value: "profile",
             icon: UserCircleIcon,
             desc: <LayoutProfile data={data} />,
@@ -82,7 +80,7 @@ export default function Shop() {
             label: "Category",
             value: "settings",
             icon: Cog6ToothIcon,
-            desc: <LayoutCategory />,
+            desc: <LayoutCategory data={data} />,
         },
     ];
 
