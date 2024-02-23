@@ -274,7 +274,7 @@ function NavProductList() {
                                 <div className="">
                                     <Badge
                                         className=" w-3"
-                                        content={user ? (data.length > 0 ? (data.length) : "0") : ("0")}
+                                        content={user ? (data.length) : ("0")}
                                         withBorder
                                     >
                                         <ShoppingCartIcon
@@ -502,7 +502,7 @@ export default function MenuBar() {
 
                 <Link to="/cart">
                     <div className=" lg:hidden">
-                        <Badge className=" w-3" content={user ? (data.length > 0 ? (data.length) : "0") : ("0")} withBorder>
+                        <Badge className=" w-3" content={user ? (data.length) : ("0")} withBorder>
                             <ShoppingCartIcon
                                 className="h-6 w-6"
                                 strokeWidth={2}

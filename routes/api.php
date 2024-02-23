@@ -83,6 +83,10 @@ Route::prefix('public')->group(function () {
             Route::post('upload/{productId}', [ProductImageController::class, 'upload']);
             Route::resource('/', ProductImageController::class);
         });
+
+        //hiển thị danh sách sản phẩm theo sắp xếp
+        Route::get('/sort-products/{sortBy}', [ProductController::class, 'sortProducts']);
+
     });
 
     Route::prefix('field')->group(function () {

@@ -12,9 +12,9 @@ class product extends Model
     protected $fillable = ['product_id', 'name', 'description', 'created_by_user_id', 'product_brand_id', 'product_category_id', 'price', 'stock', 'discount_id', 'created_at', 'modified_at', 'deleted_at'];
     protected $primaryKey = 'product_id';
 
-    public function orders()
+    public function orderItems()
     {
-        return $this->belongsToMany(Order::class, 'order_items', 'product_id', 'order_id');
+        return $this->belongsTo(order_items::class, 'product_id', 'order_id');
     }
     public function productBrand()
     {
@@ -41,6 +41,11 @@ class product extends Model
         return $this->hasMany(product_image::class, 'product_id', 'product_id');
     }
 
+    public function shoppingCart()
+    {
+        return $this->belongsTo('product_id', 'product_id');
+    }
+    
     public function productSizes()
     {
         return $this->hasMany(product_size::class, 'product_id', 'product_id');

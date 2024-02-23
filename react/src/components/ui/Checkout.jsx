@@ -150,8 +150,6 @@ export default function Checkout() {
         }
     };
 
-    console.log(selectedItems)
-
     const fetchData = async () => {
         try {
             setLoading(true);
@@ -159,8 +157,7 @@ export default function Checkout() {
                 'user_id': userId,
                 'product': selectedItems.map(item => ({
                     'product_id': item.itemId,
-                    'quantity': item.newQuantity,
-                    'spCartId' : item.shoppingCartId
+                    'quantity': item.newQuantity
                 })),
                 'shipping_method_id': selectedShippingMethod,
                 "order_address": streetAndNumber + ', ' + selectedWard + ', ' + selectedDistrict + ', ' + selectedProvince,
@@ -169,8 +166,6 @@ export default function Checkout() {
                 "total": (subtotal + parseFloat(selectedShippingPrice)).toFixed(2),
                 'order_note': note,
             };
-
-            console.log(updatedDataOrder)
 
             await handleOrder(updatedDataOrder);
             setLoading(false);
