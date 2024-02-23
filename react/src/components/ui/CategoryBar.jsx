@@ -1,8 +1,33 @@
+import {
+    Card,
+    Typography,
+    List,
+    ListItem,
+    ListItemPrefix,
+    ListItemSuffix,
+    Chip,
+    Drawer,
+    Button,
+    Accordion,
+    AccordionHeader,
+    AccordionBody,
+    IconButton,
+} from "@material-tailwind/react";
+import {
+    PresentationChartBarIcon,
+    ShoppingBagIcon,
+    UserCircleIcon,
+    Cog6ToothIcon,
+    InboxIcon,
+    PowerIcon,
+} from "@heroicons/react/24/solid";
+import { ChevronRightIcon } from "@heroicons/react/24/outline";
 
 import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
+import { fetchAllCategoryByUser } from '../../services/categoryService'
 
 const sortOptions = [
     { name: 'Best Rating', href: '#', current: false },
@@ -41,7 +66,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function CategoryBar({ data }) {
+export default function CategoryBar({ data, user_id }) {
 
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
@@ -50,113 +75,29 @@ export default function CategoryBar({ data }) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await fetchAllCategoryByUser();
-                setDataThis(res);
+                let res = await fetchAllCategoryByUser(user_id);
+                setDataThis(res.data);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
         };
 
         fetchData();
-    }, []);
+    }, [user_id]);
+
+    console.log(dataThis)
+
+    const [open, setOpen] = useState(0);
+    const handleOpen = (value) => {
+        setOpen(open === value ? 0 : value);
+    };
 
     return (
         <div className="bg-white">
             <div>
-                {/* Mobile filter dialog */}
-                <Transition.Root show={mobileFiltersOpen} as={Fragment}>
-                    <Dialog as="div" className="relative z-40 lg:hidden" onClose={setMobileFiltersOpen}>
-                        <Transition.Child
-                            as={Fragment}
-                            enter="transition-opacity ease-linear duration-300"
-                            enterFrom="opacity-0"
-                            enterTo="opacity-100"
-                            leave="transition-opacity ease-linear duration-300"
-                            leaveFrom="opacity-100"
-                            leaveTo="opacity-0"
-                        >
-                            <div className="fixed inset-0 bg-black bg-opacity-25" />
-                        </Transition.Child>
-
-                        <div className="fixed inset-0 z-40 flex">
-                            <Transition.Child
-                                as={Fragment}
-                                enter="transition ease-in-out duration-300 transform"
-                                enterFrom="translate-x-full"
-                                enterTo="translate-x-0"
-                                leave="transition ease-in-out duration-300 transform"
-                                leaveFrom="translate-x-0"
-                                leaveTo="translate-x-full"
-                            >
-                                <Dialog.Panel className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
-                                    <div className="flex items-center justify-between px-4">
-                                        <h2 className="text-lg font-medium text-gray-900">Filters</h2>
-                                        <button
-                                            type="button"
-                                            className="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400"
-                                            onClick={() => setMobileFiltersOpen(false)}
-                                        >
-                                            <span className="sr-only">Close menu</span>
-                                            <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-                                        </button>
-                                    </div>
-
-                                    {/* Filters */}
-                                    <form className="mt-4 border-t border-gray-200">
-                                        <h3 className="sr-only">Categories</h3>
-
-                                        {filters.map((section) => (
-                                            <Disclosure as="div" key={section.id} className="border-t border-gray-200 px-4 py-6">
-                                                {({ open }) => (
-                                                    <>
-                                                        <h3 className="-mx-2 -my-3 flow-root">
-                                                            <Disclosure.Button className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
-                                                                <span className="font-medium text-gray-900">{section.name}</span>
-                                                                <span className="ml-6 flex items-center">
-                                                                    {open ? (
-                                                                        <MinusIcon className="h-5 w-5" aria-hidden="true" />
-                                                                    ) : (
-                                                                        <PlusIcon className="h-5 w-5" aria-hidden="true" />
-                                                                    )}
-                                                                </span>
-                                                            </Disclosure.Button>
-                                                        </h3>
-                                                        <Disclosure.Panel className="pt-6">
-                                                            <div className="space-y-6">
-                                                                {section.options.map((option, optionIdx) => (
-                                                                    <div key={option.value} className="flex items-center">
-                                                                        <input
-                                                                            id={`filter-mobile-${section.id}-${optionIdx}`}
-                                                                            name={`${section.id}[]`}
-                                                                            defaultValue={option.value}
-                                                                            type="checkbox"
-                                                                            defaultChecked={option.checked}
-                                                                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                                                        />
-                                                                        <label
-                                                                            htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
-                                                                            className="ml-3 min-w-0 flex-1 text-gray-500"
-                                                                        >
-                                                                            {option.label}
-                                                                        </label>
-                                                                    </div>
-                                                                ))}
-                                                            </div>
-                                                        </Disclosure.Panel>
-                                                    </>
-                                                )}
-                                            </Disclosure>
-                                        ))}
-                                    </form>
-                                </Dialog.Panel>
-                            </Transition.Child>
-                        </div>
-                    </Dialog>
-                </Transition.Root>
-
                 <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
-                        <h1 className="text-4xl font-bold tracking-tight text-gray-900">New Arrivals</h1>
+                        <h1 className="text-xl md:text-2xl lg:text-4xl font-bold tracking-tight text-gray-900">New Arrivals</h1>
 
                         <div className="flex items-center">
                             <Menu as="div" className="relative inline-block text-left">
@@ -218,58 +159,59 @@ export default function CategoryBar({ data }) {
                     </div>
 
                     <section aria-labelledby="products-heading" className="pb-24 pt-6">
+
                         <h2 id="products-heading" className="sr-only">
                             Products
                         </h2>
 
                         <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
                             {/* Filters */}
-                            <form className="hidden lg:block">
-                                <h3 className="sr-only">Categories</h3>
+                            <Card className="w-full p-4 shadow-xl shadow-blue-gray-900/5">
+                                <div className="mb-2 p-4">
+                                    <Typography variant="h5" color="blue-gray">
+                                        Filter
+                                    </Typography>
+                                </div>
+                                <List>
+                                    <Accordion
+                                        open={open === 1}
+                                        icon={
+                                            <ChevronDownIcon
+                                                strokeWidth={2.5}
+                                                className={`mx-auto h-4 w-4 transition-transform ${open === 1 ? "rotate-180" : ""}`}
+                                            />
+                                        }
+                                    >
+                                        <ListItem className="p-0" selected={open === 1}>
+                                            <AccordionHeader onClick={() => handleOpen(1)} className="border-b-0 p-3">
+                                                <ListItemPrefix>
+                                                    <PresentationChartBarIcon className="h-5 w-5" />
+                                                </ListItemPrefix>
+                                                <Typography color="blue-gray" className="mr-auto font-normal">
+                                                    Category
+                                                </Typography>
+                                            </AccordionHeader>
+                                        </ListItem>
+                                        <AccordionBody className="py-1">
+                                            <List className="p-0">
 
-                                {filters.map((section) => (
-                                    <Disclosure as="div" key={section.id} className="border-b border-gray-200 py-6">
-                                        {({ open }) => (
-                                            <>
-                                                <h3 className="-my-3 flow-root">
-                                                    <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
-                                                        <span className="font-medium text-gray-900">{section.name}</span>
-                                                        <span className="ml-6 flex items-center">
-                                                            {open ? (
-                                                                <MinusIcon className="h-5 w-5" aria-hidden="true" />
-                                                            ) : (
-                                                                <PlusIcon className="h-5 w-5" aria-hidden="true" />
-                                                            )}
-                                                        </span>
-                                                    </Disclosure.Button>
-                                                </h3>
-                                                <Disclosure.Panel className="pt-6">
-                                                    <div className="space-y-4">
-                                                        {section.options.map((option, optionIdx) => (
-                                                            <div key={option.value} className="flex items-center">
-                                                                <input
-                                                                    id={`filter-${section.id}-${optionIdx}`}
-                                                                    name={`${section.id}[]`}
-                                                                    defaultValue={option.value}
-                                                                    type="checkbox"
-                                                                    defaultChecked={option.checked}
-                                                                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                                                />
-                                                                <label
-                                                                    htmlFor={`filter-${section.id}-${optionIdx}`}
-                                                                    className="ml-3 text-sm text-gray-600"
-                                                                >
-                                                                    {option.label}
-                                                                </label>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                </Disclosure.Panel>
-                                            </>
-                                        )}
-                                    </Disclosure>
-                                ))}
-                            </form>
+                                                {
+                                                    dataThis && dataThis.length > 0 && dataThis.map((categoryName) => (
+                                                        <div key={categoryName.product_category_id}>
+                                                            <ListItem>
+                                                                <ListItemPrefix>
+                                                                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                                                                </ListItemPrefix>
+                                                                {categoryName.product_category_name}
+                                                            </ListItem>
+                                                        </div>
+                                                    ))
+                                                }
+                                            </List>
+                                        </AccordionBody>
+                                    </Accordion>
+                                </List>
+                            </Card>
 
                             {/* Product grid */}
                             <div className="lg:col-span-3">

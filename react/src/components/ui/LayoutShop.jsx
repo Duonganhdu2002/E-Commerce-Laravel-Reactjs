@@ -44,10 +44,10 @@ export const LayoutProfile = ({ data }) => {
     );
 }
 
-export const LayoutCategory = ({ data }) => {
+export const LayoutCategory = ({ data, user_id}) => {
     return (
         <div className=" w-full">
-            <CategoryBar data={data} />
+            <CategoryBar data={data} user_id={user_id} />
         </div>
     );
 }
@@ -76,7 +76,7 @@ export default function Shop() {
             label: "Category",
             value: "settings",
             icon: Cog6ToothIcon,
-            desc: <LayoutCategory data={data} />,
+            desc: <LayoutCategory data={data} user_id={user_id} />,
         },
     ];
 
