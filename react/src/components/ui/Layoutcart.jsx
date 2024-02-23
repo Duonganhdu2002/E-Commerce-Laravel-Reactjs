@@ -75,10 +75,10 @@ const Layoutcart = () => {
             }
         };
         getFetchBrandsByFieldId();
-        const intervalId = setInterval(() => {
-            getFetchBrandsByFieldId();
-        }, 7000);
-        return () => clearInterval(intervalId);
+        // const intervalId = setInterval(() => {
+        //     getFetchBrandsByFieldId();
+        // }, 7000);
+        // return () => clearInterval(intervalId);
     }, [user_id]);
 
     // API shipping method 
@@ -183,61 +183,69 @@ const Layoutcart = () => {
                     <div className="flex flex-col justify-start items-start bg-gray-50 px-4 py-4 md:py-6 md:p-6 xl:p-8 w-full">
                         <p className="text-lg md:text-xl font-semibold leading-6 xl:leading-5 text-gray-800">List product</p>
                         {
-                            data && data.length > 0 && data.map((carts, index) => (
-                                <div key={index} className="mt-4 md:mt-6 flex  flex-col md:flex-row justify-start items-start md:items-center md:space-x-6 xl:space-x-8 w-full ">
-                                    <div className=" w-[5%]">
-                                        <Checkbox
-                                            defaultChecked={cartChecked[carts.shopping_cart_id]}
-                                            onChange={(e) => {
-                                                setCartChecked((prevCartChecked) => ({
-                                                    ...prevCartChecked,
-                                                    [carts.shopping_cart_id]: e.target.checked,
-                                                }));
-                                            }}
-                                        />
-                                    </div>
-                                    <Link to={`/product/${carts.product_id}`}>
-                                        <div className="w-full">
-                                            <img className="w-24 h-24 object-cover hidden md:block" src={`src/assets/image/${carts.img}`} alt="dress" />
-                                            <img className="w-24 h-24 object-cover md:hidden" src={`src/assets/image/${carts.img}`} alt="dress" />
-                                        </div>
-                                    </Link>
-                                    <div className="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full h-full  pb-6 space-y-4 md:space-y-0">
-                                        <div className="w-full flex flex-col justify-start items-start space-y-8">
-                                            <h4 className="text-xl xl:text-2xl font-semibold leading-6 text-gray-800">{carts.name}</h4>
-                                            <div className="flex justify-start items-start flex-col space-y-2">
-
-                                                <p className="text-sm leading-none text-gray-800 mb-2">
-                                                    <span className="text-gray-300">Size: </span> {carts.size}
-                                                </p>
-                                                <p className="text-sm leading-none text-gray-800">
-                                                    <span className="text-gray-300">Color: </span> {carts.color}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className=" flex flex-col relative h-full">
-                                            <div className="flex justify-between space-x-8 items-end w-full">
-                                                <p className="text-base xl:text-lg leading-6">
-                                                    ${carts.price}
-                                                </p>
-                                                <div className="flex justify-center">
-                                                    <span onClick={() => minusCount(carts.shopping_cart_id)} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 border-r-0 w-7 h-7 flex items-center justify-center pb-1">
-                                                        -
-                                                    </span>
-                                                    <input id="counter" aria-label="input" className="border border-gray-300 h-full text-center w-14 pb-1" type="text" value={count[carts.shopping_cart_id] || 0} onChange={(e) => e.target.value} />
-                                                    <span onClick={() => addCount(carts.shopping_cart_id)} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 border-l-0 w-7 h-7 flex items-center justify-center pb-1 ">
-                                                        +
-                                                    </span>
+                            Object.keys(productsByUser).map((userId) => {
+                                const product = productsByUser[userId];
+                                return (
+                                    <div className=" my-6" key={userId} >
+                                        <p>{product.shopName}</p>
+                                        {product.products.map((carts, index) => (
+                                            <div key={index} className="mt-4 md:mt-6 flex  flex-col md:flex-row justify-start items-start md:items-center md:space-x-6 xl:space-x-8 w-full ">
+                                                <div className=" w-[5%]">
+                                                    <Checkbox
+                                                        defaultChecked={cartChecked[carts.shopping_cart_id]}
+                                                        onChange={(e) => {
+                                                            setCartChecked((prevCartChecked) => ({
+                                                                ...prevCartChecked,
+                                                                [carts.shopping_cart_id]: e.target.checked,
+                                                            }));
+                                                        }}
+                                                    />
                                                 </div>
-                                                <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">  ${parseFloat((carts.price * carts.quantity).toFixed(2))}</p>
+                                                <Link to={`/product/${carts.product_id}`}>
+                                                    <div className="w-full">
+                                                        <img className="w-24 h-24 object-cover hidden md:block" src={`src/assets/image/${carts.img}`} alt="dress" />
+                                                        <img className="w-24 h-24 object-cover md:hidden" src={`src/assets/image/${carts.img}`} alt="dress" />
+                                                    </div>
+                                                </Link>
+                                                <div className="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full h-full  pb-6 space-y-4 md:space-y-0">
+                                                    <div className="w-full flex flex-col justify-start items-start space-y-8">
+                                                        <h4 className="text-xl xl:text-2xl font-semibold leading-6 text-gray-800">{carts.name}</h4>
+                                                        <div className="flex justify-start items-start flex-col space-y-2">
+
+                                                            <p className="text-sm leading-none text-gray-800 mb-2">
+                                                                <span className="text-gray-300">Size: </span> {carts.size}
+                                                            </p>
+                                                            <p className="text-sm leading-none text-gray-800">
+                                                                <span className="text-gray-300">Color: </span> {carts.color}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div className=" flex flex-col relative h-full">
+                                                        <div className="flex justify-between space-x-8 items-end w-full">
+                                                            <p className="text-base xl:text-lg leading-6">
+                                                                ${carts.price}
+                                                            </p>
+                                                            <div className="flex justify-center">
+                                                                <span onClick={() => minusCount(carts.shopping_cart_id)} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 border-r-0 w-7 h-7 flex items-center justify-center pb-1">
+                                                                    -
+                                                                </span>
+                                                                <input id="counter" aria-label="input" className="border border-gray-300 h-full text-center w-14 pb-1" type="text" value={count[carts.shopping_cart_id] || 0} onChange={(e) => e.target.value} />
+                                                                <span onClick={() => addCount(carts.shopping_cart_id)} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 border-l-0 w-7 h-7 flex items-center justify-center pb-1 ">
+                                                                    +
+                                                                </span>
+                                                            </div>
+                                                            <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">  ${parseFloat((carts.price * carts.quantity).toFixed(2))}</p>
+                                                        </div>
+                                                        <div className=" flex justify-end absolute right-0 bottom-0">
+                                                            <img onClick={() => handleDeleteCart(carts.shopping_cart_id)} className="w-6 h-6 cursor-pointer" src={Cancel} alt="" />
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div className=" flex justify-end absolute right-0 bottom-0">
-                                                <img onClick={() => handleDeleteCart(carts.shopping_cart_id)} className="w-6 h-6 cursor-pointer" src={Cancel} alt="" />
-                                            </div>
-                                        </div>
+                                        ))}
                                     </div>
-                                </div>
-                            ))
+                                );
+                            })
                         }
                     </div>
 

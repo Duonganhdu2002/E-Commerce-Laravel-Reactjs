@@ -213,9 +213,9 @@ function NavProductList() {
 
             fetchData();
 
-            const intervalId = setInterval(fetchData, 5000);
+            // const intervalId = setInterval(fetchData, 5000);
 
-            return () => clearInterval(intervalId);
+            // return () => clearInterval(intervalId);
         }
     }, [user]);
 
@@ -415,9 +415,9 @@ export default function MenuBar() {
 
             fetchData();
 
-            const intervalId = setInterval(fetchData, 5000);
+            // const intervalId = setInterval(fetchData, 5000);
 
-            return () => clearInterval(intervalId);
+            // return () => clearInterval(intervalId);
         }
     }, [user]);
 
