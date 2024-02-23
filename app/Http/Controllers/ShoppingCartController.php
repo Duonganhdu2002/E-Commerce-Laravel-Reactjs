@@ -171,49 +171,18 @@ class ShoppingCartController extends Controller
 
         return response()->json($arr, 200);
     }
-    public function destroy( $user_id, $product_id)
+    public function destroy($id)
     {
         try {
-            $validator = Validator::make(
-                [
-                    'user_id' => $user_id,
-                    'product_id' => $product_id,
-                ],
-                [
-                    'user_id' => 'required|exists:shopping_cart,user_id',
-                    'product_id' => 'required|exists:product,product_id',
-                ]
-            );
+            // Tìm sản phẩm trong giỏ hàng theo ID
+            $cartItem = ShoppingCart::findOrFail($id);
 
-            if ($validator->fails()) {
-                return response()->json(['status' => false, 'message' => 'Lỗi kiểm tra dữ liệu', 'data' => $validator->errors()], 400);
-            }
+            // Xóa sản phẩm
+            $cartItem->delete();
 
-            
-            $shoppingCart = ShoppingCart::where('user_id', $user_id)->first();
-                
-            if ($shoppingCart) {
-                $productInCart = $shoppingCart->products()->where('product_id', $product_id)->first();
-                if ($productInCart) {
-                    
-                    $productInCart->delete();
-
-                    return response()->json(['status' => true, 'message' => 'Sản phẩm đã được xóa khỏi giỏ hàng', 'data' => null], 200);
-                } else {
-                    return response()->json(['status' => false, 'message' => 'Sản phẩm không có trong giỏ hàng', 'data' => null], 404);
-                }
-            } else {
-                return response()->json(['status' => false, 'message' => 'Giỏ hàng không tồn tại', 'data' => null], 404);
-            }
-        } catch (ModelNotFoundException $e) {
-            
-            $arr = [
-                'success' => false,
-                'message' => 'Giỏ hàng không tồn tại hoặc sản phẩm không có trong giỏ hàng',
-                'data' => null
-            ];
-
-            return response()->json($arr, 404);
+            return response()->json(['message' => 'Sản phẩm đã được xóa khỏi giỏ hàng.']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Đã xảy ra lỗi khi xóa sản phẩm khỏi giỏ hàng.'], 500);
         }
     }
 }

@@ -166,7 +166,7 @@ export default function Checkout() {
                 "total": (subtotal + parseFloat(selectedShippingPrice)).toFixed(2),
                 'order_note': note,
             };
-
+            console.log(updatedDataOrder)
             await handleOrder(updatedDataOrder);
             setLoading(false);
             navigate('/success');

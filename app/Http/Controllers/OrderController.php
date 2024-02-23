@@ -8,9 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\OrderResource;
 use App\Models\order;
 use App\Models\product;
-use App\Models\shopping_cart as ShoppingCartController;
-use App\Models\user_address;
-
+use App\Models\shopping_cart as ShoppingCart;
 
 
 
@@ -119,6 +117,21 @@ class OrderController extends Controller
         }
     }
 
+    public function destroyShoppingCart($id)
+    {
+        try {
+            // Tìm sản phẩm trong giỏ hàng theo ID
+            $cartItem = ShoppingCart::findOrFail($id);
+
+            // Xóa sản phẩm
+            $cartItem->delete();
+
+            return response()->json(['message' => 'Sản phẩm đã được xóa khỏi giỏ hàng.']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Đã xảy ra lỗi khi xóa sản phẩm khỏi giỏ hàng.'], 500);
+        }
+    }
+
     public function checkout(Request $request)
     {
         $input = $request->all();
@@ -128,6 +141,7 @@ class OrderController extends Controller
             'products' => 'required|array',
             'products.*.product_id' => 'required|exists:product,product_id',
             'products.*.quantity' => 'required|integer|min:1',
+            'products.*.shoppingcart_id' => 'required|integer|min:1',
             'shipping_method_id' => 'required|exists:shipping_method,shipping_method_id',
             'order_address' => 'required',
             'order_phone' => 'required',
@@ -159,12 +173,16 @@ class OrderController extends Controller
             foreach ($input['products'] as $productItem) {
                 $product = Product::findOrFail($productItem['product_id']);
                 $order->products()->attach($product->product_id, ['quantity' => $productItem['quantity']]);
+                $newStock = $product->stock - $productItem['quantity'];
+                $product->update(['stock' => $newStock]);
             }
 
             // Xóa sản phẩm khỏi giỏ hàng sau khi đặt hàng thành công
-            $shoppingCartController = new ShoppingCartController();
-            $productIds = collect($input['products'])->pluck('product_id')->toArray();
-            $shoppingCartController->destroy($input['user_id'], $productIds);
+            $shoppingCartIds = collect($input['products'])->pluck('shoppingcart_id')->toArray();
+
+            foreach ($shoppingCartIds as $shoppingCartId) {
+                $this->destroyShoppingCart($shoppingCartId);
+            }
 
             return response()->json([
                 'status' => true,
