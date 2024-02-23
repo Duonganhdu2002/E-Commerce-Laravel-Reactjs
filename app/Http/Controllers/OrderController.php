@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\OrderResource ;
-use App\Models\order ;
-use App\Models\product ;
-use App\Models\user_address ;
+use App\Http\Resources\OrderResource;
+use App\Models\order;
+use App\Models\product;
+use App\Models\user_address;
 
 
 
@@ -52,17 +52,17 @@ class OrderController extends Controller
             return response()->json($arr, 404);
         }
     }
-    
+
     public function update(Request $request, string $id)
     {
         $input = $request->all();
 
         $validator = Validator::make($input, [
             'user_id' => 'required',
-            
-            
+
+
         ]);
-    
+
         if ($validator->fails()) {
             $arr = [
                 'status' => false,
@@ -71,9 +71,9 @@ class OrderController extends Controller
             ];
             return response()->json($arr, 200);
         }
-    
+
         $order = order::find($id);
-    
+
         if (!$order) {
             $arr = [
                 'status' => false,
@@ -82,15 +82,15 @@ class OrderController extends Controller
             ];
             return response()->json($arr, 404);
         }
-    
+
         $order->update($input);
-    
+
         $arr = [
             'status' => true,
             'message' => 'cập nhật thành công',
             'data' => new OrderResource($order)
         ];
-    
+
         return response()->json($arr, 200);
     }
 
@@ -118,15 +118,15 @@ class OrderController extends Controller
         }
     }
 
-    public function checkout(Request $request) //tuy chon san pham de tao don hang
+    public function checkout(Request $request)
     {
         $input = $request->all();
 
         $validator = Validator::make($input, [
             'user_id' => 'required',
-            'product' => 'required|array',
-            'product.*.product_id' => 'required|exists:product,product_id',
-            'product.*.quantity' => 'required|integer|min:1',
+            'products' => 'required|array',
+            'products.*.product_id' => 'required|exists:product,product_id',
+            'products.*.quantity' => 'required|integer|min:1',
             'shipping_method_id' => 'required|exists:shipping_method,shipping_method_id',
             'order_address' => 'required',
             'order_phone' => 'required',
@@ -136,78 +136,56 @@ class OrderController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $arr = [
+            return response()->json([
                 'status' => false,
                 'message' => 'Lỗi kiểm tra dữ liệu',
                 'data' => $validator->errors()
-            ];
-            return response()->json($arr, 400);
+            ], 400);
         }
 
-        $user_id = $input['user_id'];
-        $product = $input['product'];
-        $shipping_method_id = $input['shipping_method_id'];
-        $order_address = $input['order_address']; 
-        $order_phone = $input['order_phone'];      
-        $order_name = $input['order_name']; 
-        $order_note = $input['order_note']; 
-        $total = $input['total'] ;
-       
-      
         try {
-            $order = order::create([ 
-                'user_id' => $user_id,
-                'order_status_id' => 1, 
-                'shipping_method_id' => $shipping_method_id,
-                'order_address' => $order_address, 
-                'order_phone' => $order_phone,    
-                'order_name' => $order_name, 
-                'order_note' => $order_note, 
-                'total' => $total,
-
+            $order = Order::create([
+                'user_id' => $input['user_id'],
+                'order_status_id' => 1,
+                'shipping_method_id' => $input['shipping_method_id'],
+                'order_address' => $input['order_address'],
+                'order_phone' => $input['order_phone'],
+                'order_name' => $input['order_name'],
+                'order_note' => $input['order_note'],
+                'total' => $input['total'],
             ]);
 
-            // Thêm các sản phẩm vào đơn hàng
-            foreach ($product as $product) {
-                $productModel = Product::findOrFail($product['product_id']);
-                $order->products()->attach($productModel->product_id, ['quantity' => $product['quantity']]);
+            foreach ($input['products'] as $productItem) {
+                $product = Product::findOrFail($productItem['product_id']);
+                $order->products()->attach($product->product_id, ['quantity' => $productItem['quantity']]);
             }
-             
-            $productid = collect($product)->pluck('product_id')->toArray();
 
-            // Xóa các sản phẩm khỏi giỏ hàng sau khi đặt hàng thành công
-            $user_id = $input['user_id'];
+            // Xóa sản phẩm khỏi giỏ hàng sau khi đặt hàng thành công
             $shoppingCartController = new ShoppingCartController();
+            $productIds = collect($input['products'])->pluck('product_id')->toArray();
+            $shoppingCartController->destroy($input['user_id'], $productIds);
 
-            foreach ($productid as $productId) {
-                $shoppingCartController->destroy($user_id, [$productId]);
-            }
-
-            $arr = [
+            return response()->json([
                 'status' => true,
                 'message' => 'Đặt hàng thành công',
                 'data' => new OrderResource($order)
-            ];
-
-            return response()->json($arr, 201);
+            ], 201);
         } catch (ModelNotFoundException $e) {
-            $arr = [
+            return response()->json([
                 'status' => false,
                 'message' => 'Lỗi khi thực hiện thanh toán',
                 'data' => null,
-            ];
-
-            return response()->json($arr, 500);
+            ], 500);
         }
     }
 
     public function getOrderDetails($orderId)
     {
         try {
-           
+
             $order = Order::with(['items.product'])->findOrFail($orderId);
 
-            
+
             $items = $order->items->map(function ($item) {
                 return [
                     'product_id' => $item->product->product_id,
@@ -216,7 +194,7 @@ class OrderController extends Controller
                 ];
             });
 
-          
+
             $details = [
                 'order_id' => $order->order_id,
                 'user_id' => $order->user_id,
