@@ -1,23 +1,23 @@
 import {
     Button,
-    Checkbox,
     Card,
+    Checkbox,
     List,
     ListItem,
     ListItemPrefix,
     Typography,
 } from "@material-tailwind/react";
-import Lock from "../../assets/icon/lock-svgrepo-com.svg";
-import Visa from "../../assets/icon/visa-svgrepo-com.svg";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from "react-router-dom";
 import AmericanExpress from "../../assets/icon/american-express-logo-svgrepo-com.svg";
+import Cancel from "../../assets/icon/cancle.svg";
+import Lock from "../../assets/icon/lock-svgrepo-com.svg";
 import Mastercard from "../../assets/icon/mastercard-svgrepo-com.svg";
 import PayPal from "../../assets/icon/paypal-svgrepo-com.svg";
-import { Link, useNavigate } from "react-router-dom";
-import { getCart, updateCart, deleteCart } from "../../services/cartService";
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
-import Cancel from "../../assets/icon/cancle.svg";
-import { clearCart, addItem, selectShippingPrice, selectShippingMethod } from "../../redux/slices/cartSlice";
+import Visa from "../../assets/icon/visa-svgrepo-com.svg";
+import { addItem, clearCart, selectShippingMethod, selectShippingPrice } from "../../redux/slices/cartSlice";
+import { deleteCart, getCart, updateCart } from "../../services/cartService";
 import { getShippingMethod } from "../../services/shippingMethodService";
 
 const Layoutcart = () => {
@@ -234,7 +234,7 @@ const Layoutcart = () => {
                                                                     +
                                                                 </span>
                                                             </div>
-                                                            <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">  ${parseFloat((carts.price * carts.quantity).toFixed(2))}</p>
+                                                            <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800 ">  ${parseFloat((carts.price * carts.quantity).toFixed(2))}</p>
                                                         </div>
                                                         <div className=" flex justify-end absolute right-0 mt-8 md:mt-0 md:bottom-0 md:top-24">
                                                             <img onClick={() => handleDeleteCart(carts.shopping_cart_id)} className="w-6 h-6 cursor-pointer" src={Cancel} alt="" />
