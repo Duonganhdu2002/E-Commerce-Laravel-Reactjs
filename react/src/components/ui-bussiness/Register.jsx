@@ -271,7 +271,8 @@ const Login = () => {
                         </Link>
                     </form>
                 </CardBody>
-            </Card></div>
+            </Card>
+        </div>
     );
 };
 
