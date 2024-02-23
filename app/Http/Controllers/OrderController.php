@@ -150,6 +150,7 @@ class OrderController extends Controller
             'order_name' => 'required',
             'total' => 'required',
             'order_note' => 'nullable',
+            'shop_id' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -172,6 +173,7 @@ class OrderController extends Controller
                 'order_name' => $input['order_name'],
                 'order_note' => $input['order_note'],
                 'total' => $input['total'],
+                'shop_id' => $input['shop_id'],
             ]);
 
             foreach ($input['product'] as $productItem) {

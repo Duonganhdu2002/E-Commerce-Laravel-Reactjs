@@ -25,9 +25,16 @@ class ShoppingCartController extends Controller
     public function index($user_id)
     {
         try {
-            $shoppingCartItems = ShoppingCart::where('user_id', $user_id)
+            $shoppingCartItems = ShoppingCart::where('shopping_cart.user_id', $user_id)
                 ->join('product', 'shopping_cart.product_id', '=', 'product.product_id')
-                ->select('shopping_cart.*', 'product.price as price', 'product.name as name')
+                ->join('users', 'shopping_cart.user_id', '=', 'users.user_id')
+                ->select(
+                    'shopping_cart.*',
+                    'product.price as price',
+                    'product.name as name',
+                    'product.created_by_user_id as created_by_user_id',
+                    'users.shop_name as shopName'
+                )
                 ->get();
 
             if ($shoppingCartItems->isEmpty()) {
