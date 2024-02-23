@@ -80,7 +80,7 @@ const Login = () => {
 
                     <form className="space-y-6" onSubmit={handleLogin}>
                         <div className="mt-12">
-                            <Input label="Email address" value={email} onChange={(e) => setEmail(e.target.value)} id="email" name="email" type="email" autoComplete="email" error={emailError} />
+                            <Input label="Email address" value={email} onChange={(e) => setEmail(e.target.value)} id="email" name="email" autoComplete="email" error={emailError} />
                             {emailError && <p className="text-red-500 text-sm">Please enter your email.</p>}
                         </div>
                         <div className="mt-4">
