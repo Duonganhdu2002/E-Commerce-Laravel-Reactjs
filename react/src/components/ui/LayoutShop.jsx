@@ -156,7 +156,7 @@ export default function Shop() {
                                 </Tab>
                             ))}
                         </TabsHeader>
-                        <TabsBody className="w-[95vh]">
+                        <TabsBody className="w-full">
                             {bigData.map(({ value, desc }) => (
                                 <TabPanel key={value} value={value}>
                                     {desc}
