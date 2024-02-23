@@ -15,6 +15,8 @@ import {
     UserCircleIcon,
     Cog6ToothIcon,
 } from "@heroicons/react/24/solid";
+import CategoryBar from "./CategoryBar";
+import ShopInformation from "./ShopInformation";
 
 
 export const LayoutShop = () => {
@@ -34,26 +36,18 @@ export const LayoutProfile = ({ data }) => {
         <div className=" min-w-full">
             <div>
                 <p className=" font-semibold text-2xl text-left">Shop information</p>
-                <div className=" w-full flex ">
-                    <div className=" mr-12">
-                        <p>Contact shop with email: {data.email}</p>
-                    </div>
-                    <div>
-                        <p>Contact shop with email: {data.email}</p>
-                    </div>
+                <div>
+                    <ShopInformation />
                 </div>
             </div>
         </div>
     );
 }
 
-export const LayoutCategory = () => {
+export const LayoutCategory = ({ data }) => {
     return (
         <div className=" w-full">
-            <h1>It really matters and then like it really doesn't matter.
-                What matters is the people who are sparked by it. And the people
-                who are like offended by it, it doesn't matter.
-            </h1>
+            <CategoryBar data={data} />
         </div>
     );
 }
@@ -73,7 +67,7 @@ export default function Shop() {
             desc: <LayoutShop />,
         },
         {
-            label: "Product",
+            label: "Profile",
             value: "profile",
             icon: UserCircleIcon,
             desc: <LayoutProfile data={data} />,
@@ -82,7 +76,7 @@ export default function Shop() {
             label: "Category",
             value: "settings",
             icon: Cog6ToothIcon,
-            desc: <LayoutCategory />,
+            desc: <LayoutCategory data={data} />,
         },
     ];
 
@@ -162,7 +156,7 @@ export default function Shop() {
                                 </Tab>
                             ))}
                         </TabsHeader>
-                        <TabsBody className=" w-full">
+                        <TabsBody className="w-full">
                             {bigData.map(({ value, desc }) => (
                                 <TabPanel key={value} value={value}>
                                     {desc}

@@ -19,6 +19,7 @@ class order extends Model
         'order_phone',
         'order_name',
         'total',
+        'shop_id',
     ];
 
     protected $primaryKey = 'order_id';

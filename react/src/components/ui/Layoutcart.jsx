@@ -17,7 +17,7 @@ import { getCart, updateCart, deleteCart } from "../../services/cartService";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import Cancel from "../../assets/icon/cancle.svg";
-import { clearCart, addItem,selectShippingPrice, selectShippingMethod } from "../../redux/slices/cartSlice";
+import { clearCart, addItem, selectShippingPrice, selectShippingMethod } from "../../redux/slices/cartSlice";
 import { getShippingMethod } from "../../services/shippingMethodService";
 
 const Layoutcart = () => {
@@ -25,7 +25,7 @@ const Layoutcart = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user_id = useSelector((state) => state.user.user.user_id || '');
-    
+
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -34,6 +34,24 @@ const Layoutcart = () => {
     const [cartChecked, setCartChecked] = useState({});
     const [dataShipping, setDataShipping] = useState([]);
     const [selectedShippingIndex, setSelectedShippingIndex] = useState(0);
+
+    const productsByUser = {};
+
+    data.forEach((carts) => {
+        const userId = carts.created_by_user_id;
+
+        if (!productsByUser[userId]) {
+            productsByUser[userId] = {
+                shopName: carts.shopName || null,
+                products: [],
+            };
+        }
+
+        productsByUser[userId].products.push(carts);
+    });
+
+    console.log(productsByUser);
+
 
     // Call API cart
     useEffect(() => {
@@ -111,7 +129,7 @@ const Layoutcart = () => {
         dispatch(clearCart());
         const selectedItems = data.filter(cart => cartChecked[cart.shopping_cart_id]);
         selectedItems.forEach(cart => {
-            dispatch(addItem({itemId: cart.product_id, itemName: cart.name, newQuantity: cart.quantity, Price: cart.price }));
+            dispatch(addItem({ itemId: cart.product_id, itemName: cart.name, newQuantity: cart.quantity, Price: cart.price }));
         });
         // Save the selected shipping method price to Redux
         const selectedShippingPrice = dataShipping[selectedShippingIndex]?.shipping_method_price || 0;
