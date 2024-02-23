@@ -34,7 +34,6 @@ const Layoutcart = () => {
     const [cartChecked, setCartChecked] = useState({});
     const [dataShipping, setDataShipping] = useState([]);
     const [selectedShippingIndex, setSelectedShippingIndex] = useState(0);
-    console.log(data)
 
     // Call API cart
     useEffect(() => {

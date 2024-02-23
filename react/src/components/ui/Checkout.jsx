@@ -150,8 +150,6 @@ export default function Checkout() {
         }
     };
 
-    console.log(selectedItems)
-
     const fetchData = async () => {
         try {
             setLoading(true);
