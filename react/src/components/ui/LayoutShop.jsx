@@ -16,6 +16,7 @@ import {
     Cog6ToothIcon,
 } from "@heroicons/react/24/solid";
 import CategoryBar from "./CategoryBar";
+import ShopInformation from "./ShopInformation";
 
 
 export const LayoutShop = () => {
@@ -35,13 +36,8 @@ export const LayoutProfile = ({ data }) => {
         <div className=" min-w-full">
             <div>
                 <p className=" font-semibold text-2xl text-left">Shop information</p>
-                <div className=" w-full flex ">
-                    <div className=" mr-12">
-                        <p>Contact shop with email: {data.email}</p>
-                    </div>
-                    <div>
-                        <p>Contact shop with email: {data.email}</p>
-                    </div>
+                <div>
+                    <ShopInformation />
                 </div>
             </div>
         </div>
@@ -51,7 +47,7 @@ export const LayoutProfile = ({ data }) => {
 export const LayoutCategory = ({ data }) => {
     return (
         <div className=" w-full">
-            <CategoryBar data={data}/>
+            <CategoryBar data={data} />
         </div>
     );
 }
@@ -160,7 +156,7 @@ export default function Shop() {
                                 </Tab>
                             ))}
                         </TabsHeader>
-                        <TabsBody className=" w-full">
+                        <TabsBody className="w-full">
                             {bigData.map(({ value, desc }) => (
                                 <TabPanel key={value} value={value}>
                                     {desc}

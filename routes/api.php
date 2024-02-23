@@ -100,7 +100,10 @@ Route::prefix('public')->group(function () {
 
     Route::prefix('category')->group(function () {
         Route::get('list', [ProductCategoryController::class, 'index']);
+        //show category theo field
         Route::get('id={categoryId}', [ProductCategoryController::class, 'showById']);
+        //show category theo user
+        Route::get('{user_id}', [ProductCategoryController::class, 'showUserCategories']);
     });
 
     Route::prefix('cart')->group(function () {
