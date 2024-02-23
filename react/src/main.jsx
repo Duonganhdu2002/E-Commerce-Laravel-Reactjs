@@ -45,6 +45,7 @@ import Error404 from "./components/ui/error404";
 import { useSelector } from 'react-redux'
 import { ShopRating } from "./components/ui-bussiness/ShopRating";
 import { ShopInformation } from "./components/ui-bussiness/ShopInformation";
+import  ShopCategory from "./components/ui-bussiness/ShopCategory";
 import Success from "./components/ui/Success";
 
 
@@ -124,7 +125,7 @@ const PrivateCustomerRoute = ({ element }) => {
     if (!user) {
         return <Navigate to="/login" />;
     }
-    
+
     if (user.type_account_id === 3) {
         return element;
     } else {
@@ -177,7 +178,7 @@ const App = () => {
                                 <Route path="add-new-product" element={<PrivateBusinessRoute element={<AddProductsBussiness />} />} />
                                 <Route path="shop-rating" element={<PrivateBusinessRoute element={<ShopRating />} />} />
                                 <Route path="shop-information" element={<PrivateBusinessRoute element={<ShopInformation />} />} />
-                                <Route path="shop-category" element={<PrivateBusinessRoute element={<div>Shop Category</div>}/>} />
+                                <Route path="shop-category" element={<PrivateBusinessRoute element={<ShopCategory/>}/>} />
                                 <Route path="dashboard" element={<PrivateBusinessRoute element={<div>Dashboard Content</div>} />} />
                                 <Route path="inbox" element={<PrivateBusinessRoute element={<InboxBussiness />} />} />
                                 <Route path="profile" element={<PrivateBusinessRoute element={<ProfileBussiness />} />} />

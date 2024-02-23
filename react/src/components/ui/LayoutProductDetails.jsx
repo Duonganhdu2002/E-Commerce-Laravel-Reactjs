@@ -303,24 +303,44 @@ const LayoutProductDetails = () => {
                                 alt={data.name}
                             />
                         ) : (
-                            <div></div>
+                            <img
+                                className="h-[420px] w-[360px] object-cover"
+                                src={`https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png`}
+                                alt="Placeholder Image"
+                            />
                         )}
                     </div>
 
                     <div className="w-full lg:w-4/12 grid lg:grid-cols-1 sm:grid-cols-3 grid-cols-2 gap-6">
-                        {limitedImageUrls.map((imageUrl, index) => (
-                            <div
-                                key={index}
-                                className="flex justify-center items-center py-4 cursor-pointer"
-                                onClick={() => handleThumbnailClick(imageUrl)}
-                            >
+                        {limitedImageUrls.length > 0 ? (
+                            limitedImageUrls.map((imageUrl, index) => (
+                                <div
+                                    key={index}
+                                    className="flex justify-center items-center cursor-pointer"
+                                    onClick={() => handleThumbnailClick(imageUrl)}
+                                >
+                                    <img
+                                        className="h-[200px] w-[180px] object-cover"
+                                        src={`../../../src/assets/image/${imageUrl}`}
+                                        alt={`${data.name} - preview ${index + 1}`}
+                                    />
+                                </div>
+                            ))
+                        ) : (
+                            <div className=" py-4">
                                 <img
-                                    className="h-[180px] w-[180px]"
-                                    src={`../../../src/assets/image/${imageUrl}`}
-                                    alt={`${data.name} - preview ${index + 1}`}
+                                    className="h-[200px] w-[180px] object-cover mb-5"
+                                    src={`https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png`}
+                                    alt="Placeholder Image"
+                                />
+                                <img
+                                    className="h-[200px] w-[180px] object-cover"
+                                    src={`https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png`}
+                                    alt="Placeholder Image"
                                 />
                             </div>
-                        ))}
+                        )}
+
                     </div>
                 </div>
             </div>

@@ -18,6 +18,8 @@ export default function LayoutLogin() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showAlert, setShowAlert] = useState(false); // Khởi tạo showAlert là false
+    const [emailError, setEmailError] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -25,6 +27,26 @@ export default function LayoutLogin() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
+
+        // Kiểm tra trường email
+        if (email === "") {
+            setEmailError(true);
+        } else {
+            setEmailError(false);
+        }
+
+        // Kiểm tra trường password
+        if (password === "") {
+            setPasswordError(true);
+        } else {
+            setPasswordError(false);
+        }
+
+        // Nếu có lỗi ở bất kỳ trường nào, không thực hiện đăng nhập
+        if (email === "" || password === "") {
+            return;
+        }
+
         let userCredential = { email, password };
         dispatch(loginUser(userCredential)).then((result) => {
             if (result.payload) {
@@ -63,12 +85,14 @@ export default function LayoutLogin() {
                             <form className="space-y-6" onSubmit={handleLogin}>
                                 <div>
                                     <div className="w-full">
-                                        <Input label="Email address" value={email} onChange={(e) => setEmail(e.target.value)} id="email" name="email" type="email" autoComplete="email" />
+                                        <Input label="Email address" value={email} onChange={(e) => setEmail(e.target.value)} id="email" name="email" autoComplete="email" error={emailError} />
+                                        {emailError && <p className="text-red-500 text-sm">Please enter your email.</p>}
                                     </div>
                                 </div>
                                 <div>
                                     <div className="w-full">
-                                        <Input label="Password" value={password} onChange={(e) => setPassword(e.target.value)} id="password" name="password" type="password" autoComplete="current-password" />
+                                        <Input label="Password" value={password} onChange={(e) => setPassword(e.target.value)} id="password" name="password" type="password" autoComplete="current-password" error={passwordError} />
+                                        {passwordError && <p className="text-red-500 text-sm">Please enter your password.</p>}
                                     </div>
                                 </div>
                                 <div>
