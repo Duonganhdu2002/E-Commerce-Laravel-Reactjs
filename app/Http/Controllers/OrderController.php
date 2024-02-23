@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\OrderResource;
 use App\Models\order;
 use App\Models\product;
+use App\Models\shopping_cart as ShoppingCartController;
 use App\Models\user_address;
 
 

@@ -20,11 +20,18 @@ class order extends Model
         'order_name',
         'total',
     ];
-    
+
     protected $primaryKey = 'order_id';
-    public function orderItems()
+
+
+    public function products()
     {
-        return $this->hasMany(Order_Items::class, 'order_id', 'order_id');
+        return $this->belongsToMany(Product::class, 'order_items', 'order_id', 'product_id');
+    }
+
+    public function items()
+    {
+        return $this->hasMany(order_items::class, 'order_id', 'order_id');
     }
 
 }
