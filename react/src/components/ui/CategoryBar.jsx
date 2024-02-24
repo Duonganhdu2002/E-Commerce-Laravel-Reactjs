@@ -80,7 +80,7 @@ export default function CategoryBar({ data, user_id }) {
         fetchData();
     }, [user_id]);
 
-    console.log(categoryList)
+    // console.log(categoryList)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -95,7 +95,7 @@ export default function CategoryBar({ data, user_id }) {
         fetchData();
     }, [user_id, sortType, page]);
 
-    console.log(dataProduct)
+    // console.log(dataProduct)
 
     const [open, setOpen] = useState(0);
     const handleOpen = (value) => {

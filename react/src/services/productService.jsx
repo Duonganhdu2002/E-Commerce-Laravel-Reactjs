@@ -36,4 +36,8 @@ const productSortUser = (sortType, user_id, page) => {
     return axios.get(`/public/product/sort-products/${sortType}/${user_id}?page=${page}`)
 }
 
-export { productSort, productSortUser, productWithBrand, fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession, fetchRandomFourCategoryAndGetFourProduct, searchProduct };
+const bestSellerUser = (user_id) => {
+    return axios.get(`/public/product/best-selling-user-products/${user_id}`)
+}
+
+export { bestSellerUser, productSort, productSortUser, productWithBrand, fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession, fetchRandomFourCategoryAndGetFourProduct, searchProduct };

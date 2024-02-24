@@ -20,20 +20,6 @@ import ShopInformation from "./ShopInformation";
 import ShopProduct from "./ShopProduct";
 
 
-export const LayoutProfile = ({ data }) => {
-    return (
-        <div className=" min-w-full">
-            <div>
-                <p className=" font-semibold text-2xl text-left">Shop information</p>
-                <div>
-                    <ShopInformation />
-                </div>
-            </div>
-        </div>
-    );
-}
-
-
 export default function Shop() {
 
     const { user_id } = useParams();
@@ -67,7 +53,7 @@ export default function Shop() {
         fetchData();
     }, [user_id]);
 
-    console.log(data)
+    // console.log(data)
 
     return (
         <div className=" flex flex-col justify-center">
