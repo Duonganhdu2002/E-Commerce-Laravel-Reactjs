@@ -663,27 +663,45 @@ class ProductController extends Controller
     {
         $categoryIds = $request->input('category_ids');
         $brandIds = $request->input('brand_ids');
-        $userId = $request->input('user_id'); 
+        $userId = $request->input('user_id');
         $sortBy = $request->input('sortBy');
 
-        $query = Product::query();
+        $query = Product::query()->select(
+            'product.product_id',
+            'product.name',
+            'product.description',
+            'product.price',
+            'product.stock',
+            DB::raw('SUM(order_items.quantity) as total_sales'),
+            DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
+        )
+            ->leftJoin('order_items', 'product.product_id', '=', 'order_items.product_id')
+            ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
+            ->where('product.created_by_user_id', $userId)
+            ->groupBy(
+                'product.product_id',
+                'product.name',
+                'product.description',
+                'product.price',
+                'product.stock'
+            );
 
         if (!empty($categoryIds)) {
-            $query->whereIn('product_id', function ($subquery) use ($categoryIds, $userId) {
-                $subquery->select('product_id')
+            $query->whereIn('product.product_id', function ($subquery) use ($categoryIds, $userId) {
+                $subquery->select('product.product_id')
                     ->from('product')
                     ->join('product_category', 'product.product_category_id', '=', 'product_category.product_category_id')
-                    ->where('product.created_by_user_id', '=', $userId) 
+                    ->where('product.created_by_user_id', '=', $userId)
                     ->whereIn('product_category.product_category_id', $categoryIds);
             });
         }
 
         if (!empty($brandIds)) {
-            $query->whereIn('product_id', function ($subquery) use ($brandIds, $userId) {
-                $subquery->select('product_id')
+            $query->whereIn('product.product_id', function ($subquery) use ($brandIds, $userId) {
+                $subquery->select('product.product_id')
                     ->from('product')
                     ->join('product_brand', 'product.product_brand_id', '=', 'product_brand.product_brand_id')
-                    ->where('product.created_by_user_id', '=', $userId) 
+                    ->where('product.created_by_user_id', '=', $userId)
                     ->whereIn('product_brand.product_brand_id', $brandIds);
             });
         }
@@ -691,32 +709,25 @@ class ProductController extends Controller
         $perPage = 9;
 
         switch ($sortBy) {
-                // case 'sell':
-                //     $query->orderBy('total_sell', 'desc')
-                //         ->paginate($perPage);
-                //     break;
-
             case 'newest':
-                $query->orderBy('created_at', 'desc')
-                    ->paginate($perPage);
+                $query->orderBy('product.created_at', 'desc');
                 break;
 
             case 'price_high_to_low':
-                $query->orderBy('price', 'desc')
-                    ->paginate($perPage);
+                $query->orderBy('product.price', 'desc');
                 break;
 
             case 'price_low_to_high':
-                $query->orderBy('price', 'asc')
-                    ->paginate($perPage);
-                break;
-
-            default:
-                $query->paginate($perPage);
+                $query->orderBy('product.price', 'asc');
                 break;
         }
 
-        $products = $query->get();
+        $products = $query->paginate($perPage);
+
+        foreach ($products as &$product) {
+            $productImages = ProductImage::where('product_id', $product->product_id)->pluck('image_url');
+            $product->images = $productImages;
+        }
 
         if ($products->isEmpty()) {
             return response()->json([
@@ -726,39 +737,10 @@ class ProductController extends Controller
             ], 404);
         }
 
-        $formattedProducts = $products->map(function ($product) {
-            $reviews = ProductReview::with('user')
-                ->where('product_id', $product->product_id)
-                ->get();
-
-            $averageRating = $reviews->avg('rating');
-            $totalReviews = $reviews->count();
-
-            $imageUrls = $product->images->pluck('image_url');
-
-            return [
-                'product_id' => $product->product_id,
-                'name' => $product->name,
-                'description' => $product->description,
-                'created_by_user_id' => $product->created_by_user_id,
-                'product_brand_id' => $product->product_brand_id,
-                'product_category_id' => $product->product_category_id,
-                'price' => $product->price,
-                'stock' => $product->stock,
-                'discount_id' => $product->discount_id,
-                'created_at' => $product->created_at,
-                'updated_at' => $product->updated_at,
-                'deleted_at' => $product->deleted_at,
-                'image_urls' => $imageUrls,
-                'average_rating' => $averageRating,
-                'total_reviews' => $totalReviews,
-            ];
-        });
-
         return response()->json([
             'status' => true,
             'message' => 'Danh sách sản phẩm được lọc theo category và brand',
-            'data' => $formattedProducts,
+            'data' => $products,
         ], 200);
     }
 
