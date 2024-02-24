@@ -8,4 +8,8 @@ const fetchAllCategoryByFieldId = (fieldId) => {
     return axios.get(`/public/category/id=${fieldId}`);
 }
 
-export { fetchAllCategory, fetchAllCategoryByFieldId };
+const fetchAllCategoryByUser = (user_id) => {
+    return axios.get(`/public/category/${user_id}`);
+}
+
+export { fetchAllCategory, fetchAllCategoryByFieldId, fetchAllCategoryByUser };

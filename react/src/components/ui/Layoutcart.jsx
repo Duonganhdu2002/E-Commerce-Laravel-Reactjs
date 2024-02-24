@@ -46,11 +46,11 @@ const Layoutcart = () => {
                 products: [],
             };
         }
-
         productsByUser[userId].products.push(carts);
     });
 
     console.log(productsByUser);
+    console.log(data)
 
 
     // Call API cart
@@ -75,10 +75,10 @@ const Layoutcart = () => {
             }
         };
         getFetchBrandsByFieldId();
-        // const intervalId = setInterval(() => {
-        //     getFetchBrandsByFieldId();
-        // }, 7000);
-        // return () => clearInterval(intervalId);
+        const intervalId = setInterval(() => {
+            getFetchBrandsByFieldId();
+        }, 7000);
+        return () => clearInterval(intervalId);
     }, [user_id]);
 
     // API shipping method
@@ -127,19 +127,43 @@ const Layoutcart = () => {
     // Lưu dữ liệu vào redux
     const handleCheckout = () => {
         dispatch(clearCart());
-        const selectedItems = data.filter(cart => cartChecked[cart.shopping_cart_id]);
-        selectedItems.forEach(cart => {
-            dispatch(addItem({ itemId: cart.product_id, itemName: cart.name, newQuantity: cart.quantity, Price: cart.price }));
+
+        let selectedShopId = null;
+        let hasProductsFromDifferentShops = false;
+
+        Object.keys(productsByUser).forEach(userId => {
+            const products = productsByUser[userId].products;
+
+            if (selectedShopId === null && products.length > 0 && cartChecked[products[0].shopping_cart_id]) {
+                selectedShopId = userId;
+            }
+
+            products.forEach(cart => {
+                if (cartChecked[cart.shopping_cart_id]) {
+                    if (userId === selectedShopId) {
+                        dispatch(addItem({ itemId: cart.product_id, itemName: cart.name, newQuantity: cart.quantity, Price: cart.price, shop_id: cart.created_by_user_id }));
+                    } else {
+                        hasProductsFromDifferentShops = true;
+                    }
+                }
+            });
         });
-        // Save the selected shipping method price to Redux
+
         const selectedShippingPrice = dataShipping[selectedShippingIndex]?.shipping_method_price || 0;
         const selectedShippingMethod = dataShipping[selectedShippingIndex]?.shipping_method_id || 0;
+
         dispatch(selectShippingPrice(selectedShippingPrice));
         dispatch(selectShippingMethod(selectedShippingMethod));
-        if (selectedItems.length > 0) {
+
+        if (hasProductsFromDifferentShops) {
+            // Hiển thị thông báo nếu có sản phẩm từ cửa hàng khác
+            alert("You can only select products from the same shop for checkout.");
+        } else {
             navigate("/checkout");
         }
     };
+
+
 
     // Tăng số lượng sp
     const addCount = (shoppingCartId) => {

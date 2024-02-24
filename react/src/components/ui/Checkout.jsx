@@ -150,6 +150,8 @@ export default function Checkout() {
         }
     };
 
+    console.log(selectedItems)
+
     const fetchData = async () => {
         try {
             setLoading(true);
@@ -165,6 +167,7 @@ export default function Checkout() {
                 "order_name": name,
                 "total": (subtotal + parseFloat(selectedShippingPrice)).toFixed(2),
                 'order_note': note,
+                'shop_id' : selectedItems[0].shop_id,
             };
             console.log(updatedDataOrder)
             await handleOrder(updatedDataOrder);
