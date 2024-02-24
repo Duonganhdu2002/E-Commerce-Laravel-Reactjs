@@ -230,7 +230,6 @@ export default function MenuBarAdmin() {
     const seller = useSelector((state) => state.seller.seller);
     // const seller_id = seller.user_id;
     // console.log(seller_id)
-
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -268,7 +267,7 @@ export default function MenuBarAdmin() {
                 </Link>
                 <div className="hidden lg:block">
                     <NavList />
-                </div>
+                </div>                
                 <IconButton
                     size="sm"
                     color="blue-gray"

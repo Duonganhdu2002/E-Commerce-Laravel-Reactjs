@@ -663,7 +663,7 @@ class ProductController extends Controller
     {
         $categoryIds = $request->input('category_ids');
         $brandIds = $request->input('brand_ids');
-        $userId = $request->input('user_id'); // Thêm tham số user_id từ request
+        $userId = $request->input('user_id'); 
         $sortBy = $request->input('sortBy');
 
         $query = Product::query();
@@ -673,7 +673,7 @@ class ProductController extends Controller
                 $subquery->select('product_id')
                     ->from('product')
                     ->join('product_category', 'product.product_category_id', '=', 'product_category.product_category_id')
-                    ->where('product.created_by_user_id', '=', $userId) // Thêm điều kiện lọc theo người tạo sản phẩm (cửa hàng)
+                    ->where('product.created_by_user_id', '=', $userId) 
                     ->whereIn('product_category.product_category_id', $categoryIds);
             });
         }
@@ -683,28 +683,18 @@ class ProductController extends Controller
                 $subquery->select('product_id')
                     ->from('product')
                     ->join('product_brand', 'product.product_brand_id', '=', 'product_brand.product_brand_id')
-                    ->where('product.created_by_user_id', '=', $userId) // Thêm điều kiện lọc theo người tạo sản phẩm (cửa hàng)
+                    ->where('product.created_by_user_id', '=', $userId) 
                     ->whereIn('product_brand.product_brand_id', $brandIds);
             });
         }
 
-        // $products = $query->get();
-
-        // if ($products->isEmpty()) {
-        //     return response()->json([
-        //         'status' => false,
-        //         'message' => 'Không có sản phẩm nào được tìm thấy dựa trên các điều kiện lọc',
-        //         'data' => null,
-        //     ], 404);
-        // }
-
         $perPage = 9;
 
         switch ($sortBy) {
-            // case 'sell':
-            //     $query->orderBy('total_sell', 'desc')
-            //         ->paginate($perPage);
-            //     break;
+                // case 'sell':
+                //     $query->orderBy('total_sell', 'desc')
+                //         ->paginate($perPage);
+                //     break;
 
             case 'newest':
                 $query->orderBy('created_at', 'desc')
@@ -722,12 +712,19 @@ class ProductController extends Controller
                 break;
 
             default:
-                // Không sắp xếp
                 $query->paginate($perPage);
                 break;
         }
 
         $products = $query->get();
+
+        if ($products->isEmpty()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Không có sản phẩm nào được tìm thấy dựa trên các điều kiện lọc',
+                'data' => null,
+            ], 404);
+        }
 
         $formattedProducts = $products->map(function ($product) {
             $reviews = ProductReview::with('user')
@@ -737,7 +734,6 @@ class ProductController extends Controller
             $averageRating = $reviews->avg('rating');
             $totalReviews = $reviews->count();
 
-            // Lấy danh sách các URL hình ảnh của sản phẩm
             $imageUrls = $product->images->pluck('image_url');
 
             return [
@@ -1018,5 +1014,4 @@ class ProductController extends Controller
             'data' => $products,
         ], 200);
     }
-
 }
