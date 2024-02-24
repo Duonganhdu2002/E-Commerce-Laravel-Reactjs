@@ -864,10 +864,8 @@ class ProductController extends Controller
     }
 
 
-    public function sortUserProducts( $sortBy, $userId)
+    public function sortUserProducts($sortBy, $userId)
     {
-        
-
         $perPage = 8;
 
         switch ($sortBy) {
@@ -913,7 +911,7 @@ class ProductController extends Controller
                         'product.price',
                         'product.stock'
                     )
-                    ->orderBy('created_at', 'desc')
+                    ->orderBy('product.created_at', 'desc')
                     ->paginate($perPage);
                 break;
 
@@ -993,7 +991,6 @@ class ProductController extends Controller
             'message' => 'Danh sách sản phẩm của user_id ' . $userId . ' được lọc theo ' . $sortBy,
             'data' => $products,
         ], 200);
-
     }
 
 }
