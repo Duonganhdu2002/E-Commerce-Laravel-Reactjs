@@ -7,19 +7,18 @@ import {
     Accordion,
     AccordionHeader,
     AccordionBody,
-    Checkbox
+    Checkbox,
+    Button, IconButton,
 } from "@material-tailwind/react";
-import {
-    PresentationChartBarIcon,
-} from "@heroicons/react/24/solid";
-import { ChevronRightIcon } from "@heroicons/react/24/outline";
 
+import { } from "@material-tailwind/react";
+import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { Fragment, useEffect, useState } from 'react'
-import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
-import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
+import { Menu, Transition } from '@headlessui/react'
+import { ChevronDownIcon, PresentationChartBarIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
 import { fetchAllCategoryByUser } from '../../services/categoryService'
 import { productSortUser } from "../../services/productService";
+import { Link } from "react-router-dom"
 
 const sortOptions = [
     { name: 'Best Rating', href: '#', current: false },
@@ -242,29 +241,29 @@ export default function CategoryBar({ data, user_id }) {
                         <div className="lg:col-span-3">
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {Array.from({ length: 9 }).map((_, index) => (
-                                    <div key={index} className="bg-white rounded-lg shadow-lg p-4">
-                                        {/* Product Image */}
-                                        <div className="relative overflow-hidden mb-4">
+                                    <Link key={index} to={`/product`}>
+                                        <div className="w-fit mx-auto h-[300px] md:h-[330px] lg:h-[400px] xl:h-[460px]  bg-white shadow-md shadow-gray-300 rounded-xl duration-500 hover:scale-105 hover:shadow-2xl">
                                             <img
-                                                className="object-cover w-full h-40 rounded-md"
-                                                src="https://placekitten.com/400/300"  // Replace with your actual image source
-                                                alt={`Product ${index + 1}`}
+                                                className=" h-[200px] w-[200px] md:h-[220px] md:w-[220px] lg:h-[280px] lg:w-[280px] xl:h-[320px] xl:w-[320px] object-cover rounded-t-xl"
+                                                src="../../../src/assets/image/Bedroom1.1.jpg"
+                                                alt="Product"
                                             />
-                                        </div>
 
-                                        {/* Product Details */}
-                                        <h3 className="text-xl font-bold text-gray-900 mb-2">Product Name {index + 1}</h3>
-                                        <p className="text-gray-500 text-sm mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-
-                                        {/* Price and Add to Cart */}
-                                        <div className="flex items-center justify-between">
-                                            <span className="text-gray-900 font-bold text-lg">$29.99</span>
-                                            <button className="bg-gray-900 text-white text-sm py-1 px-4 rounded-xl font-bold hover:bg-gray-800">
-                                                Add to Cart
-                                            </button>
+                                            <div className="px-4 py-3 h-[20%] w-full">
+                                                <p className="text-md lg:text-lg xl:text-xl font-bold text-black truncate block capitalize">bda</p>
+                                                <div className="flex items-center">
+                                                    <p className="text-md lg:text-lg xl:text-xl font-semibold text-black cursor-auto my-1">$76247</p>
+                                                    <del>
+                                                        <p className="text-sm text-gray-600 cursor-auto ml-2">$7364782</p>
+                                                    </del>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </Link>
                                 ))}
+                            </div>
+                            <div className=" flex justify-center mt-12">
+                                <SimplePagination />
                             </div>
                         </div>
                     </div>
@@ -272,4 +271,46 @@ export default function CategoryBar({ data, user_id }) {
             </main>
         </div>
     )
+}
+
+
+export function SimplePagination() {
+    const [active, setActive] = useState(1);
+
+    const next = () => {
+        if (active === 10) return;
+
+        setActive(active + 1);
+    };
+
+    const prev = () => {
+        if (active === 1) return;
+
+        setActive(active - 1);
+    };
+
+    return (
+        <div className="flex items-center gap-8">
+            <IconButton
+                size="sm"
+                variant="outlined"
+                onClick={prev}
+                disabled={active === 1}
+            >
+                <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" />
+            </IconButton>
+            <Typography color="gray" className="font-normal">
+                Page <strong className="text-gray-900">{active}</strong> of{" "}
+                <strong className="text-gray-900">10</strong>
+            </Typography>
+            <IconButton
+                size="sm"
+                variant="outlined"
+                onClick={next}
+                disabled={active === 10}
+            >
+                <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
+            </IconButton>
+        </div>
+    );
 }

@@ -17,18 +17,7 @@ import {
 } from "@heroicons/react/24/solid";
 import CategoryBar from "./CategoryBar";
 import ShopInformation from "./ShopInformation";
-
-
-export const LayoutShop = () => {
-    return (
-        <div className=" w-full">
-            <h1>It really matters and then like it really doesn't matter.
-                What matters is the people who are sparked by it. And the people
-                who are like offended by it, it doesn't matter.
-            </h1>
-        </div>
-    );
-}
+import ShopProduct from "./ShopProduct";
 
 
 export const LayoutProfile = ({ data }) => {
@@ -44,15 +33,6 @@ export const LayoutProfile = ({ data }) => {
     );
 }
 
-export const LayoutCategory = ({ data, user_id}) => {
-    return (
-        <div className=" w-full">
-            <CategoryBar data={data} user_id={user_id} />
-        </div>
-    );
-}
-
-
 
 export default function Shop() {
 
@@ -64,19 +44,13 @@ export default function Shop() {
             label: "Shop",
             value: "dashboard",
             icon: Square3Stack3DIcon,
-            desc: <LayoutShop />,
-        },
-        {
-            label: "Profile",
-            value: "profile",
-            icon: UserCircleIcon,
-            desc: <LayoutProfile data={data} />,
+            desc: <ShopProduct data={data} user_id={user_id} />,
         },
         {
             label: "Category",
             value: "settings",
             icon: Cog6ToothIcon,
-            desc: <LayoutCategory data={data} user_id={user_id} />,
+            desc: <CategoryBar data={data} user_id={user_id} />,
         },
     ];
 
