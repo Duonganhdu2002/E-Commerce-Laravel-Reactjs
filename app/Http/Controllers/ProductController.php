@@ -407,6 +407,51 @@ class ProductController extends Controller
         }
     }
 
+    public function getBestSellingUserProducts(Request $request, $userId)
+{
+    try {
+        $topProducts = Product::select(
+            'product.product_id',
+            'product.name',
+            'product.description',
+            'product.price',
+            'product.stock',
+            DB::raw('SUM(order_items.quantity) as total_sales'),
+            DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
+        )
+            ->leftJoin('order_items', 'product.product_id', '=', 'order_items.product_id')
+            ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
+            ->where('product.created_by_user_id', $userId)
+            ->groupBy(
+                'product.product_id',
+                'product.name',
+                'product.description',
+                'product.price',
+                'product.stock'
+            )
+            ->orderByDesc('total_sales')
+            ->take(8)
+            ->get();
+
+        foreach ($topProducts as &$product) {
+            $productImages = ProductImage::where('product_id', $product->product_id)->pluck('image_url');
+            $product->images = $productImages;
+        }
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Top 8 sản phẩm của user id ' . $userId . ' bán chạy nhất',
+            'data' => $topProducts
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 500,
+            'message' => 'Internal Server Error',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
+
     public function listProductWithCategory(Request $request, $categoryId)
     {
         try {
