@@ -664,6 +664,7 @@ class ProductController extends Controller
         $categoryIds = $request->input('category_ids');
         $brandIds = $request->input('brand_ids');
         $userId = $request->input('user_id'); // Thêm tham số user_id từ request
+        $sortBy = $request->input('sortBy');
 
         $query = Product::query();
 
@@ -687,16 +688,46 @@ class ProductController extends Controller
             });
         }
 
-        $products = $query->get();
+        // $products = $query->get();
 
-        if ($products->isEmpty()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Không có sản phẩm nào được tìm thấy dựa trên các điều kiện lọc',
-                'data' => null,
-            ], 404);
+        // if ($products->isEmpty()) {
+        //     return response()->json([
+        //         'status' => false,
+        //         'message' => 'Không có sản phẩm nào được tìm thấy dựa trên các điều kiện lọc',
+        //         'data' => null,
+        //     ], 404);
+        // }
+
+        $perPage = 9;
+
+        switch ($sortBy) {
+            // case 'sell':
+            //     $query->orderBy('total_sell', 'desc')
+            //         ->paginate($perPage);
+            //     break;
+
+            case 'newest':
+                $query->orderBy('created_at', 'desc')
+                    ->paginate($perPage);
+                break;
+
+            case 'price_high_to_low':
+                $query->orderBy('price', 'desc')
+                    ->paginate($perPage);
+                break;
+
+            case 'price_low_to_high':
+                $query->orderBy('price', 'asc')
+                    ->paginate($perPage);
+                break;
+
+            default:
+                // Không sắp xếp
+                $query->paginate($perPage);
+                break;
         }
 
+        $products = $query->get();
 
         $formattedProducts = $products->map(function ($product) {
             $reviews = ProductReview::with('user')
@@ -708,8 +739,6 @@ class ProductController extends Controller
 
             // Lấy danh sách các URL hình ảnh của sản phẩm
             $imageUrls = $product->images->pluck('image_url');
-            $sizes = $product->productSizes->pluck('size_name');
-            $colors = $product->productColors->pluck('color_name');
 
             return [
                 'product_id' => $product->product_id,
@@ -725,9 +754,6 @@ class ProductController extends Controller
                 'updated_at' => $product->updated_at,
                 'deleted_at' => $product->deleted_at,
                 'image_urls' => $imageUrls,
-                'sizes' => $sizes,
-                'colors' => $colors,
-                'reviews' => $reviews,
                 'average_rating' => $averageRating,
                 'total_reviews' => $totalReviews,
             ];
