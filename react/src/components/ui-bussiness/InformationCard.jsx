@@ -114,7 +114,7 @@ const InformationCard = () => {
                     </div>
                 </div>
 
-                {/* New customers */}
+        
                 <div className="sm:flex justify-between relative p-6 rounded-2xl bg-white shadow">
                     <div className="flex flex-col justify-center space-y-2">
                         <div className="flex justify-center sm:justify-start items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-gray-500 dark:text-gray-200">

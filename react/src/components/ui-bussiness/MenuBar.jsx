@@ -228,6 +228,8 @@ function NavList() {
 export default function MenuBarAdmin() {
     const [isNavOpen, setIsNavOpen] = React.useState(false);
     const seller = useSelector((state) => state.seller.seller);
+    // const seller_id = seller.user_id;
+    // console.log(seller_id)
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
