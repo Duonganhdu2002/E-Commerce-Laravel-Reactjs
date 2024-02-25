@@ -260,8 +260,8 @@ class OrderController extends Controller
                 ->join('shipping_method', 'order.shipping_method_id', '=', 'shipping_method.shipping_method_id')
                 ->join('users', 'order.user_id', '=', 'users.user_id')
                 ->where('order.shop_id', $sellerId)
-                ->get();
-
+                ->paginate(7); 
+            
             return response()->json([
                 'status' => 200,
                 'message' => 'List of orders for seller with ID ' . $sellerId,

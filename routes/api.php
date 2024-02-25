@@ -88,10 +88,10 @@ Route::prefix('public')->group(function () {
         });
 
         //hiển thị danh sách sản phẩm theo sắp xếp
-        Route::get('/sort-products/{sortBy}', [ProductController::class, 'sortProducts']);
+        // Route::get('/sort-products/{sortBy}', [ProductController::class, 'sortProducts']);
 
         //hiển thị danh sách sản phẩm theo sắp xếp
-        Route::get('/sort-products/{sortBy}/{user_id}', [ProductController::class, 'sortUserProducts']);
+        // Route::get('/sort-products/{sortBy}/{user_id}', [ProductController::class, 'sortUserProducts']);
 
     });
 
