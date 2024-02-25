@@ -123,6 +123,8 @@ Route::prefix('public')->group(function () {
         Route::get('list', [OrderController::class, 'index']);
         Route::post('make', [OrderController::class, 'checkout']);
         Route::get('/details/{order_id}', [OrderController::class, 'getOrderDetails']);
+        //show các đơn hàng được đặt của seller
+        Route::get('{user_id}', [OrderController::class, 'getSellerOrders']);
     });
 
     Route::prefix('location')->group(function () {

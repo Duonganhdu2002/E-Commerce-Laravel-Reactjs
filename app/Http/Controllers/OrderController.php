@@ -244,4 +244,35 @@ class OrderController extends Controller
             ], 404);
         }
     }
+
+    public function getSellerOrders($sellerId)
+    {
+        try {
+            $orders = Order::select(
+                'order.order_id',
+                'users.username as buyer_username',
+                'order.total',
+                'order_status.order_status_name as order_status',
+                'order.created_at',
+                'shipping_method.shipping_method_name as shipping_method'
+            )
+                ->join('order_status', 'order.order_status_id', '=', 'order_status.order_status_id')
+                ->join('shipping_method', 'order.shipping_method_id', '=', 'shipping_method.shipping_method_id')
+                ->join('users', 'order.user_id', '=', 'users.user_id')
+                ->where('order.shop_id', $sellerId)
+                ->get();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'List of orders for seller with ID ' . $sellerId,
+                'data' => $orders
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Internal Server Error',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
