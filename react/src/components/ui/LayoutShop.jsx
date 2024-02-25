@@ -9,6 +9,7 @@ import {
     TabsBody,
     Tab,
     TabPanel,
+    Button,
 } from "@material-tailwind/react";
 import {
     Square3Stack3DIcon,
@@ -58,29 +59,29 @@ export default function Shop() {
     return (
         <div className=" flex flex-col justify-center">
             <div className="flex items-center justify-center flex-col my-2">
-                <div className="flex items-center justify-center bg-black -z-10 2xl:w-[80%] xl:w-[80%] lg:w-[80%] md:w-[90%] w-[100%]">
+                <div className="flex items-center justify-center bg-black rounded-2xl -z-10 2xl:w-[80%] xl:w-[80%] lg:w-[80%] md:w-[90%] w-[100%]">
                     <img
                         src={`../../../src/assets/shop/${data.shop_background}`}
                         alt=""
-                        className="object-cover aspect-ratio opacity-60 w-full sm:h-72 "
+                        className="object-cover aspect-ratio opacity-60 w-full sm:h-72 h-96 rounded-2xl "
                     />
                 </div>
-                <div className="absolute flex px-2 2xl:w-[70%] xl:w-[70%] lg:w-[70%] md:w-[80%] w-[100%]">
-                    <div className="  flex">
-                        <div>
+                <div className="absolute sm:flex px-2 2xl:w-[70%] xl:w-[70%] lg:w-[70%] md:w-[80%] w-[100%]">
+                    <div className="  sm:flex ">
+                        <div className="flex justify-center">
                             <img
                                 src={`../../../src/assets/shop/${data.shop_avt}`}
                                 alt=""
                                 className="rounded-full border-slate-400 border-8 w-60"
                             />
                         </div>
-                        <div className="flex flex-col ml-2 mb-auto">
-                            <div className="flex flex-wrap item center">
+                        <div className="flex flex-col ml-2 mt-4">
+                            <div className="flex justify-center sm:justify-start flex-wrap item center">
                                 <p className=" flex items-center font-bold text-xl text-white">
                                     {data.shop_name}
                                 </p>
                             </div>
-                            <div className=" mt-4 flex flex-wrap text-white items-center">
+                            <div className=" mt-4 flex justify-center sm:justify-start flex-wrap text-white items-center">
                                 <p>{(data.average_rating)?.toFixed(2)}/5.0 &nbsp;</p>
                                 <img
                                     src={Star}
@@ -89,17 +90,17 @@ export default function Shop() {
                                 />
                             </div>
                             <div>
-                                <p className=" flex items-center font-bold text-xl text-white mt-5">
+                                <p className=" flex justify-center sm:justify-start items-center font-bold text-xl text-white mt-5">
                                     {data.shop_introduce}
                                 </p>
                             </div>
                         </div>
                     </div>
-                    <div className=" flex flex-wrap mt-auto ml-auto">
-                        <button className="flex items-center justify-center mr-2 border-white text-white border rounded-lg w-24 h-10 font-medium hover:bg-slate-800 my-2 ml-auto">
+                    <div className=" flex flex-wrap justify-center mt-auto ml-auto">
+                        <Button className="flex items-center justify-center mr-2 mt-6 border-white text-white border rounded-lg w-24 h-10 font-medium hover:bg-slate-800 my-2 sm:ml-auto" variant="outlined">
                             <img src={Speech} alt="" className="w-5 mr-2" />
                             Chat
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>
