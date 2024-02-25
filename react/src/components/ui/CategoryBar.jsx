@@ -25,11 +25,6 @@ import { fetchAllCategoryByUser } from '../../services/categoryService'
 import { productFilter } from "../../services/productService";
 import { Link } from "react-router-dom"
 
-const sortOptions = [
-    { name: 'Price: Low to High' },
-    { name: 'Price: High to Low' },
-    { name: 'Newest' },
-]
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -46,7 +41,7 @@ export default function CategoryBar({ data, user_id }) {
     const [category_ids, setCategory_ids] = useState([]);
     const [brand_ids, setBrand_ids] = useState([]);
     const type_sort = ['newest', 'price_high_to_low', 'price_low_to_high'];
-    const [typeSelect, setTypeSelect] = useState(type_sort[2])
+    const [typeSelect, setTypeSelect] = useState(type_sort[0])
 
     console.log(typeSelect)
 
@@ -56,8 +51,6 @@ export default function CategoryBar({ data, user_id }) {
         "user_id": user_id,
         "type_sort": typeSelect
     }
-
-    console.log(defaultProduct)
 
     // API show tất cả category của shop
     useEffect(() => {
@@ -88,7 +81,7 @@ export default function CategoryBar({ data, user_id }) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                await fetchDataABC(defaultProduct, page);
+                await fetchDataABC(defaultProduct, page, typeSelect);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -98,7 +91,7 @@ export default function CategoryBar({ data, user_id }) {
 
         fetchDataABC(defaultProduct, page, category_ids).then((res) => {
         });
-    }, [page, category_ids]);
+    }, [page, category_ids, typeSelect]);
 
     // onchange giá trị mảng category_ids
     const handleCheckboxChange = (categoryId) => {
@@ -179,6 +172,10 @@ export default function CategoryBar({ data, user_id }) {
 
     // End pagination
 
+    const handleSortChange = (selectedValue) => {
+        setTypeSelect(selectedValue);
+    };
+
     return (
         <div className="bg-white">
             <main className="mx-auto px-4 sm:px-6 lg:px-8">
@@ -187,8 +184,10 @@ export default function CategoryBar({ data, user_id }) {
 
                     <div className="flex items-center">
                         <div className=" max-w-24 mr-24">
-                            <Select variant="standard" label="Sort">
-                                <Option>HTML</Option>
+                            <Select variant="standard" label="Sort" value={typeSelect} onChange={handleSortChange}>
+                                <Option value={type_sort[0]}>Newest</Option>
+                                <Option value={type_sort[2]}>Low to High</Option>
+                                <Option value={type_sort[1]}>High to Low</Option>
                             </Select>
                         </div>
                     </div>
