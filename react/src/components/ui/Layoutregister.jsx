@@ -19,8 +19,7 @@ function Icon() {
     );
 }
 const LayoutRegister = () => {
-
-    const loading = useSelector((state) => state.user.loading);
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -78,6 +77,7 @@ const LayoutRegister = () => {
 
     // Xử lý sự kiện đăng ký
     const handleRegistration = async () => {
+        setLoading(true);
         try {
             let isError = false;
             const newErrors = { ...errors };
@@ -155,6 +155,8 @@ const LayoutRegister = () => {
         } catch (error) {
             console.error(error.response);
             setShowAlert(true);
+        } finally {
+            setLoading(false);
         }
     };
 
