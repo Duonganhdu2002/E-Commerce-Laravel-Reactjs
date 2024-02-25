@@ -43,8 +43,6 @@ export default function CategoryBar({ data, user_id }) {
     const type_sort = ['newest', 'price_high_to_low', 'price_low_to_high'];
     const [typeSelect, setTypeSelect] = useState(type_sort[0])
 
-    console.log(typeSelect)
-
     const defaultProduct = {
         "category_ids": category_ids,
         "brand_ids": brand_ids,
