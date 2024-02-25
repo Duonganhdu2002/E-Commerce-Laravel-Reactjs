@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route, Outlet, Navigate} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
 import "./index.css";
 import PopupChat from "./components/ui/PopupChat";
 import { UserProvider } from "./context/UserContext";
@@ -45,8 +45,10 @@ import Error404 from "./components/ui/error404";
 import { useSelector } from 'react-redux'
 import { ShopRating } from "./components/ui-bussiness/ShopRating";
 import { ShopInformation } from "./components/ui-bussiness/ShopInformation";
-import  ShopCategory from "./components/ui-bussiness/ShopCategory";
+import MyShipment from "./components/ui-bussiness/MyShipment";
+import ShopCategory from "./components/ui-bussiness/ShopCategory";
 import Success from "./components/ui/Success";
+import Background from "./assets/image/4060492.jpg"
 
 
 const Customer = () => {
@@ -65,7 +67,7 @@ const Customer = () => {
 const Bussiness = () => {
     return (
         <div className="flex flex-col h-screen relative ">
-            <div className="fixed bg-gray-100 w-full h-full -z-10"></div>
+            <div className="fixed bg-gray-100 w-full h-full -z-10"><img src={Background} alt="" className=" w-full h-full object-cover"/></div>
             <div className=" top-0 z-10 mt-1">
                 <MenuBarBussiness />
             </div>
@@ -86,7 +88,7 @@ const Bussiness = () => {
 const Admin = () => {
     return (
         <div className="flex flex-col h-screen relative ">
-            <div className="fixed bg-gray-100 w-full h-full -z-10"></div>
+            <div className="fixed bg-gray-100 w-full h-full -z-10"><img src={Background} alt="" className=" w-full h-full object-cover"/></div>
             <div className=" top-0 z-10 mt-1">
                 <MenuBarAdmin />
             </div>
@@ -111,7 +113,7 @@ const PrivateBusinessRoute = ({ element }) => {
         return <Navigate to="/business/login" />;
     }
 
-    if (seller.type_account_id === 2 ) {
+    if (seller.type_account_id === 2) {
         return element;
     } else {
         return <Navigate to="/business/login" />;
@@ -152,17 +154,17 @@ const App = () => {
                                 <Route index element={<Home />} />
                                 <Route path="login" element={<Login />} />
                                 <Route path="register" element={<Register />} />
-                                <Route path="cart" element={<PrivateCustomerRoute element={<Cart/>} />} />
+                                <Route path="cart" element={<PrivateCustomerRoute element={<Cart />} />} />
                                 <Route path="fields/:fieldId" element={<Field />} />
                                 <Route path="brand/:brandId" element={<BrandPage />} />
                                 <Route path="category/:categoryId" element={<CategoryPage />} />
                                 <Route path="product/:productId" element={<ProductDetails />} />
                                 <Route path="shop/:user_id" element={<Shop />} />
-                                <Route path="profile" element={<PrivateCustomerRoute element={<Profile/>} />} />
-                                <Route path="checkout" element={<PrivateCustomerRoute element={<Checkout/>} />} />
+                                <Route path="profile" element={<PrivateCustomerRoute element={<Profile />} />} />
+                                <Route path="checkout" element={<PrivateCustomerRoute element={<Checkout />} />} />
                                 <Route path="search/:searchKey" element={<SearchLayout />} />
-                                <Route path="orderstatus" element={<PrivateCustomerRoute element={<OrderStatus/>} />} />
-                                <Route path="success" element={<PrivateCustomerRoute element={<Success/>} />} />
+                                <Route path="orderstatus" element={<PrivateCustomerRoute element={<OrderStatus />} />} />
+                                <Route path="success" element={<PrivateCustomerRoute element={<Success />} />} />
                             </Route>
 
                             {/* Bussiness */}
@@ -171,14 +173,14 @@ const App = () => {
                                 <Route index element={<PrivateBusinessRoute element={<DashboardBussiness />} />} />
                                 <Route path="login" element={<LoginBussiness />} />
                                 <Route path="register" element={<RegisterBussiness />} />
-                                <Route path="my-shipment" element={<PrivateBusinessRoute element={<div>My shipment</div>} />} />
+                                <Route path="my-shipment" element={<PrivateBusinessRoute element={<MyShipment />} />} />
                                 <Route path="my-oders" element={<PrivateBusinessRoute element={<MyOrdersBussiness />} />} />
                                 <Route path="cancelation" element={<PrivateBusinessRoute element={<CancellationBusiness />} />} />
                                 <Route path="my-products" element={<PrivateBusinessRoute element={<MyProductsBussiness />} />} />
                                 <Route path="add-new-product" element={<PrivateBusinessRoute element={<AddProductsBussiness />} />} />
                                 <Route path="shop-rating" element={<PrivateBusinessRoute element={<ShopRating />} />} />
                                 <Route path="shop-information" element={<PrivateBusinessRoute element={<ShopInformation />} />} />
-                                <Route path="shop-category" element={<PrivateBusinessRoute element={<ShopCategory/>}/>} />
+                                <Route path="shop-category" element={<PrivateBusinessRoute element={<ShopCategory />} />} />
                                 <Route path="dashboard" element={<PrivateBusinessRoute element={<div>Dashboard Content</div>} />} />
                                 <Route path="inbox" element={<PrivateBusinessRoute element={<InboxBussiness />} />} />
                                 <Route path="profile" element={<PrivateBusinessRoute element={<ProfileBussiness />} />} />
