@@ -664,7 +664,7 @@ class ProductController extends Controller
         $categoryIds = $request->input('category_ids');
         $brandIds = $request->input('brand_ids');
         $userId = $request->input('user_id');
-        $sortBy = $request->input('sortBy');
+        $sortBy = $request->input('type_sort');
 
         $query = Product::query()->select(
             'product.product_id',
