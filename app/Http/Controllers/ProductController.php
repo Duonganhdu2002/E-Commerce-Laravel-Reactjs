@@ -408,49 +408,49 @@ class ProductController extends Controller
     }
 
     public function getBestSellingUserProducts(Request $request, $userId)
-{
-    try {
-        $topProducts = Product::select(
-            'product.product_id',
-            'product.name',
-            'product.description',
-            'product.price',
-            'product.stock',
-            DB::raw('SUM(order_items.quantity) as total_sales'),
-            DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
-        )
-            ->leftJoin('order_items', 'product.product_id', '=', 'order_items.product_id')
-            ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
-            ->where('product.created_by_user_id', $userId)
-            ->groupBy(
+    {
+        try {
+            $topProducts = Product::select(
                 'product.product_id',
                 'product.name',
                 'product.description',
                 'product.price',
-                'product.stock'
+                'product.stock',
+                DB::raw('SUM(order_items.quantity) as total_sales'),
+                DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
             )
-            ->orderByDesc('total_sales')
-            ->take(8)
-            ->get();
+                ->leftJoin('order_items', 'product.product_id', '=', 'order_items.product_id')
+                ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
+                ->where('product.created_by_user_id', $userId)
+                ->groupBy(
+                    'product.product_id',
+                    'product.name',
+                    'product.description',
+                    'product.price',
+                    'product.stock'
+                )
+                ->orderByDesc('total_sales')
+                ->take(8)
+                ->get();
 
-        foreach ($topProducts as &$product) {
-            $productImages = ProductImage::where('product_id', $product->product_id)->pluck('image_url');
-            $product->images = $productImages;
+            foreach ($topProducts as &$product) {
+                $productImages = ProductImage::where('product_id', $product->product_id)->pluck('image_url');
+                $product->images = $productImages;
+            }
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Top 8 sản phẩm của user id ' . $userId . ' bán chạy nhất',
+                'data' => $topProducts
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Internal Server Error',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'Top 8 sản phẩm của user id ' . $userId . ' bán chạy nhất',
-            'data' => $topProducts
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 500,
-            'message' => 'Internal Server Error',
-            'error' => $e->getMessage()
-        ], 500);
     }
-}
 
     public function listProductWithCategory(Request $request, $categoryId)
     {
@@ -661,37 +661,74 @@ class ProductController extends Controller
 
     public function filterByCategoriesAndBrands(Request $request)
     {
-        // Lấy danh sách category_id và brand_id từ request
         $categoryIds = $request->input('category_ids');
         $brandIds = $request->input('brand_ids');
+        $userId = $request->input('user_id');
+        $sortBy = $request->input('type_sort');
 
-        // Bắt đầu truy vấn từ model Product
-        $query = Product::query();
+        $query = Product::query()->select(
+            'product.product_id',
+            'product.name',
+            'product.description',
+            'product.price',
+            'product.stock',
+            DB::raw('SUM(order_items.quantity) as total_sales'),
+            DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
+        )
+            ->leftJoin('order_items', 'product.product_id', '=', 'order_items.product_id')
+            ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
+            ->where('product.created_by_user_id', $userId)
+            ->groupBy(
+                'product.product_id',
+                'product.name',
+                'product.description',
+                'product.price',
+                'product.stock'
+            );
 
-        // Thêm điều kiện tìm kiếm theo category_ids nếu có
         if (!empty($categoryIds)) {
-            $query->whereIn('product_id', function ($subquery) use ($categoryIds) {
-                $subquery->select('product_id')
+            $query->whereIn('product.product_id', function ($subquery) use ($categoryIds, $userId) {
+                $subquery->select('product.product_id')
                     ->from('product')
                     ->join('product_category', 'product.product_category_id', '=', 'product_category.product_category_id')
+                    ->where('product.created_by_user_id', '=', $userId)
                     ->whereIn('product_category.product_category_id', $categoryIds);
             });
         }
 
-        // Thêm điều kiện tìm kiếm theo brand_ids nếu có
         if (!empty($brandIds)) {
-            $query->whereIn('product_id', function ($subquery) use ($brandIds) {
-                $subquery->select('product_id')
+            $query->whereIn('product.product_id', function ($subquery) use ($brandIds, $userId) {
+                $subquery->select('product.product_id')
                     ->from('product')
                     ->join('product_brand', 'product.product_brand_id', '=', 'product_brand.product_brand_id')
+                    ->where('product.created_by_user_id', '=', $userId)
                     ->whereIn('product_brand.product_brand_id', $brandIds);
             });
         }
 
-        // Thực hiện truy vấn để lấy danh sách sản phẩm
-        $products = $query->get();
+        $perPage = 9;
 
-        // Kiểm tra xem danh sách sản phẩm có trống không
+        switch ($sortBy) {
+            case 'newest':
+                $query->orderBy('product.created_at', 'desc');
+                break;
+
+            case 'price_high_to_low':
+                $query->orderBy('product.price', 'desc');
+                break;
+
+            case 'price_low_to_high':
+                $query->orderBy('product.price', 'asc');
+                break;
+        }
+
+        $products = $query->paginate($perPage);
+
+        foreach ($products as &$product) {
+            $productImages = ProductImage::where('product_id', $product->product_id)->pluck('image_url');
+            $product->images = $productImages;
+        }
+
         if ($products->isEmpty()) {
             return response()->json([
                 'status' => false,
@@ -700,7 +737,6 @@ class ProductController extends Controller
             ], 404);
         }
 
-        // Trả về JSON response chứa danh sách sản phẩm được lọc
         return response()->json([
             'status' => true,
             'message' => 'Danh sách sản phẩm được lọc theo category và brand',
@@ -708,256 +744,256 @@ class ProductController extends Controller
         ], 200);
     }
 
+
     public function sortProducts($sortBy)
-{
-    $perPage = 8;
+    {
+        $perPage = 8;
 
-    switch ($sortBy) {
-        case 'rating':
-            $products = Product::select(
-                'product.product_id',
-                'product.name',
-                'product.description',
-                'product.price',
-                'product.stock',
-                DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
-            )
-                ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
-                ->groupBy(
+        switch ($sortBy) {
+            case 'rating':
+                $products = Product::select(
                     'product.product_id',
                     'product.name',
                     'product.description',
                     'product.price',
-                    'product.stock'
+                    'product.stock',
+                    DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
                 )
-                ->orderBy('average_rating', 'desc')
-                ->paginate($perPage);
-            break;
+                    ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
+                    ->groupBy(
+                        'product.product_id',
+                        'product.name',
+                        'product.description',
+                        'product.price',
+                        'product.stock'
+                    )
+                    ->orderBy('average_rating', 'desc')
+                    ->paginate($perPage);
+                break;
 
-        case 'newest':
-            $products = Product::select(
-                'product.product_id',
-                'product.name',
-                'product.description',
-                'product.price',
-                'product.stock',
-                DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
-            )
-                ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
-                ->groupBy(
+            case 'newest':
+                $products = Product::select(
                     'product.product_id',
                     'product.name',
                     'product.description',
                     'product.price',
-                    'product.stock'
+                    'product.stock',
+                    DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
                 )
-                ->orderBy('product.created_at', 'desc')
-                ->paginate($perPage);
-            break;
+                    ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
+                    ->groupBy(
+                        'product.product_id',
+                        'product.name',
+                        'product.description',
+                        'product.price',
+                        'product.stock'
+                    )
+                    ->orderBy('product.created_at', 'desc')
+                    ->paginate($perPage);
+                break;
 
-        case 'price_high_to_low':
-            $products = Product::select(
-                'product.product_id',
-                'product.name',
-                'product.description',
-                'product.price',
-                'product.stock',
-                DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
-            )
-                ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
-                ->groupBy(
+            case 'price_high_to_low':
+                $products = Product::select(
                     'product.product_id',
                     'product.name',
                     'product.description',
                     'product.price',
-                    'product.stock'
+                    'product.stock',
+                    DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
                 )
-                ->orderBy('price', 'desc')
-                ->paginate($perPage);
-            break;
+                    ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
+                    ->groupBy(
+                        'product.product_id',
+                        'product.name',
+                        'product.description',
+                        'product.price',
+                        'product.stock'
+                    )
+                    ->orderBy('price', 'desc')
+                    ->paginate($perPage);
+                break;
 
-        case 'price_low_to_high':
-            $products = Product::select(
-                'product.product_id',
-                'product.name',
-                'product.description',
-                'product.price',
-                'product.stock',
-                DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
-            )
-                ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
-                ->groupBy(
+            case 'price_low_to_high':
+                $products = Product::select(
                     'product.product_id',
                     'product.name',
                     'product.description',
                     'product.price',
-                    'product.stock'
+                    'product.stock',
+                    DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
                 )
-                ->orderBy('price', 'asc')
-                ->paginate($perPage);
-            break;
+                    ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
+                    ->groupBy(
+                        'product.product_id',
+                        'product.name',
+                        'product.description',
+                        'product.price',
+                        'product.stock'
+                    )
+                    ->orderBy('price', 'asc')
+                    ->paginate($perPage);
+                break;
 
-        default:
-            $products = Product::select(
-                'product.product_id',
-                'product.name',
-                'product.description',
-                'product.price',
-                'product.stock',
-                DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
-            )
-                ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
-                ->groupBy(
+            default:
+                $products = Product::select(
                     'product.product_id',
                     'product.name',
                     'product.description',
                     'product.price',
-                    'product.stock'
+                    'product.stock',
+                    DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
                 )
-                ->paginate($perPage);
-            break;
+                    ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
+                    ->groupBy(
+                        'product.product_id',
+                        'product.name',
+                        'product.description',
+                        'product.price',
+                        'product.stock'
+                    )
+                    ->paginate($perPage);
+                break;
+        }
+
+        foreach ($products as &$product) {
+            $productImages = ProductImage::where('product_id', $product->product_id)->pluck('image_url');
+            $product->images = $productImages;
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Danh sách sản phẩm được lọc theo ' . $sortBy,
+            'data' => $products,
+        ], 200);
     }
 
-    foreach ($products as &$product) {
-        $productImages = ProductImage::where('product_id', $product->product_id)->pluck('image_url');
-        $product->images = $productImages;
+
+    public function sortUserProducts($sortBy, $userId)
+    {
+        $perPage = 8;
+
+        switch ($sortBy) {
+            case 'sell':
+                $products = Product::select(
+                    'product.product_id',
+                    'product.name',
+                    'product.description',
+                    'product.price',
+                    'product.stock',
+                    DB::raw('IFNULL(SUM(order_items.quantity), 0) as total_sell'),
+                    DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
+                )
+                    ->leftJoin('order_items', 'product.product_id', '=', 'order_items.product_id')
+                    ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
+                    ->where('product.created_by_user_id', $userId)
+                    ->groupBy(
+                        'product.product_id',
+                        'product.name',
+                        'product.description',
+                        'product.price',
+                        'product.stock'
+                    )
+                    ->orderBy('total_sell', 'desc')
+                    ->paginate($perPage);
+                break;
+
+            case 'newest':
+                $products = Product::select(
+                    'product.product_id',
+                    'product.name',
+                    'product.description',
+                    'product.price',
+                    'product.stock',
+                    DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
+                )
+                    ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
+                    ->where('product.created_by_user_id', $userId)
+                    ->groupBy(
+                        'product.product_id',
+                        'product.name',
+                        'product.description',
+                        'product.price',
+                        'product.stock'
+                    )
+                    ->orderBy('product.created_at', 'desc')
+                    ->paginate($perPage);
+                break;
+
+            case 'price_high_to_low':
+                $products = Product::select(
+                    'product.product_id',
+                    'product.name',
+                    'product.description',
+                    'product.price',
+                    'product.stock',
+                    DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
+                )
+                    ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
+                    ->where('product.created_by_user_id', $userId)
+                    ->groupBy(
+                        'product.product_id',
+                        'product.name',
+                        'product.description',
+                        'product.price',
+                        'product.stock'
+                    )
+                    ->orderBy('price', 'desc')
+                    ->paginate($perPage);
+                break;
+
+            case 'price_low_to_high':
+                $products = Product::select(
+                    'product.product_id',
+                    'product.name',
+                    'product.description',
+                    'product.price',
+                    'product.stock',
+                    DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
+                )
+                    ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
+                    ->where('product.created_by_user_id', $userId)
+                    ->groupBy(
+                        'product.product_id',
+                        'product.name',
+                        'product.description',
+                        'product.price',
+                        'product.stock'
+                    )
+                    ->orderBy('price', 'asc')
+                    ->paginate($perPage);
+                break;
+
+            default:
+                $products = Product::select(
+                    'product.product_id',
+                    'product.name',
+                    'product.description',
+                    'product.price',
+                    'product.stock',
+                    DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
+                )
+                    ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
+                    ->where('product.created_by_user_id', $userId)
+                    ->groupBy(
+                        'product.product_id',
+                        'product.name',
+                        'product.description',
+                        'product.price',
+                        'product.stock'
+                    )
+                    ->paginate($perPage);
+                break;
+        }
+
+        foreach ($products as &$product) {
+            $productImages = ProductImage::where('product_id', $product->product_id)->pluck('image_url');
+            $product->images = $productImages;
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Danh sách sản phẩm của user_id ' . $userId . ' được lọc theo ' . $sortBy,
+            'data' => $products,
+        ], 200);
     }
-
-    return response()->json([
-        'status' => true,
-        'message' => 'Danh sách sản phẩm được lọc theo ' . $sortBy,
-        'data' => $products,
-    ], 200);
-}
-
-
-public function sortUserProducts($sortBy, $userId)
-{
-    $perPage = 8;
-
-    switch ($sortBy) {
-        case 'sell':
-            $products = Product::select(
-                'product.product_id',
-                'product.name',
-                'product.description',
-                'product.price',
-                'product.stock',
-                DB::raw('IFNULL(SUM(order_items.quantity), 0) as total_sell'),
-                DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
-            )
-                ->leftJoin('order_items', 'product.product_id', '=', 'order_items.product_id')
-                ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
-                ->where('product.created_by_user_id', $userId)
-                ->groupBy(
-                    'product.product_id',
-                    'product.name',
-                    'product.description',
-                    'product.price',
-                    'product.stock'
-                )
-                ->orderBy('total_sell', 'desc')
-                ->paginate($perPage);
-            break;
-
-        case 'newest':
-            $products = Product::select(
-                'product.product_id',
-                'product.name',
-                'product.description',
-                'product.price',
-                'product.stock',
-                DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
-            )
-                ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
-                ->where('product.created_by_user_id', $userId)
-                ->groupBy(
-                    'product.product_id',
-                    'product.name',
-                    'product.description',
-                    'product.price',
-                    'product.stock'
-                )
-                ->orderBy('created_at', 'desc')
-                ->paginate($perPage);
-            break;
-
-        case 'price_high_to_low':
-            $products = Product::select(
-                'product.product_id',
-                'product.name',
-                'product.description',
-                'product.price',
-                'product.stock',
-                DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
-            )
-                ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
-                ->where('product.created_by_user_id', $userId)
-                ->groupBy(
-                    'product.product_id',
-                    'product.name',
-                    'product.description',
-                    'product.price',
-                    'product.stock'
-                )
-                ->orderBy('price', 'desc')
-                ->paginate($perPage);
-            break;
-
-        case 'price_low_to_high':
-            $products = Product::select(
-                'product.product_id',
-                'product.name',
-                'product.description',
-                'product.price',
-                'product.stock',
-                DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
-            )
-                ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
-                ->where('product.created_by_user_id', $userId)
-                ->groupBy(
-                    'product.product_id',
-                    'product.name',
-                    'product.description',
-                    'product.price',
-                    'product.stock'
-                )
-                ->orderBy('price', 'asc')
-                ->paginate($perPage);
-            break;
-
-        default:
-            $products = Product::select(
-                'product.product_id',
-                'product.name',
-                'product.description',
-                'product.price',
-                'product.stock',
-                DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
-            )
-                ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
-                ->where('product.created_by_user_id', $userId)
-                ->groupBy(
-                    'product.product_id',
-                    'product.name',
-                    'product.description',
-                    'product.price',
-                    'product.stock'
-                )
-                ->paginate($perPage);
-            break;
-    }
-
-    foreach ($products as &$product) {
-        $productImages = ProductImage::where('product_id', $product->product_id)->pluck('image_url');
-        $product->images = $productImages;
-    }
-
-    return response()->json([
-        'status' => true,
-        'message' => 'Danh sách sản phẩm của user_id ' . $userId . ' được lọc theo ' . $sortBy,
-        'data' => $products,
-    ], 200);
-}
-
 }
