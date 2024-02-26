@@ -271,17 +271,15 @@ function NavProductList() {
                             onClick={() => setIsMobileMenuOpen((cur) => !cur)}
                         >
                             <Link to="/cart">
-                                <div className="">
-                                    <Badge
-                                        className=" w-3"
-                                        content={user ? (data.length > 0 ? (data.length) : ("0")) : ("0")}                                        withBorder
-                                    >
-                                        <ShoppingCartIcon
-                                            className="h-6 w-6"
-                                            strokeWidth={2}
-                                        />
-                                    </Badge>
-                                </div>
+                                <Badge
+                                    className=" w-3"
+                                    content={user ? (data.length > 0 ? (data.length) : ("0")) : ("0")} withBorder
+                                >
+                                    <ShoppingCartIcon
+                                        className="h-6 w-6"
+                                        strokeWidth={2}
+                                    />
+                                </Badge>
                             </Link>
                         </ListItem>
                     </Typography>

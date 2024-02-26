@@ -16,6 +16,7 @@ import {
     Avatar,
     IconButton,
     Tooltip,
+    Button,
 } from "@material-tailwind/react";
 
 import { useEffect, useState } from "react";
@@ -97,14 +98,15 @@ export function MyOrdersBussiness() {
 
     const seller_id = useSelector((state) => state.seller.seller.user_id);
     const [data, setData] = useState([]);
-    const [bigData, setBigData] = useState([]);
+    const [dataFull, setDataFull] = useState([]);
+    const [page, setPage] = useState(1);
 
     // Call API list order by user
     useEffect(() => {
         const fetchData = async () => {
             try {
                 let res = await listOrder(seller_id);
-                setBigData(res.data);
+                setDataFull(res.data);
                 setData(res.data.data)
             } catch (error) {
                 console.error("Error fetching fields:", error);
@@ -113,22 +115,61 @@ export function MyOrdersBussiness() {
         fetchData()
     }, [seller_id]);
 
-    console.log(data)
-
     const [active, setActive] = useState(1);
+    const [visiblePages, setVisiblePages] = useState([]);
+
+    const getItemProps = (index) => ({
+        variant: active === index ? 'filled' : 'text',
+        color: 'gray',
+        onClick: () => {
+            setPage(index);
+            setActive(index);
+        },
+    });
 
     const next = () => {
-        if (active === 10) return;
+        if (active === dataFull.last_page) return;
 
         setActive(active + 1);
+        setPage(active + 1);
     };
 
     const prev = () => {
-        if (active === 1) return;
+        if (active === dataFull.from) return;
 
         setActive(active - 1);
+        setPage(active - 1);
     };
 
+    useEffect(() => {
+        const calculateVisiblePages = async () => {
+            const totalVisiblePages = 3;
+            const totalPageCount = dataFull.last_page;
+
+            let startPage, endPage;
+            if (totalPageCount <= totalVisiblePages) {
+                startPage = 1;
+                endPage = totalPageCount;
+            } else {
+                const middlePage = Math.floor(totalVisiblePages / 2);
+                if (active <= middlePage + 1) {
+                    startPage = 1;
+                    endPage = totalVisiblePages;
+                } else if (active >= totalPageCount - middlePage) {
+                    startPage = totalPageCount - totalVisiblePages + 1;
+                    endPage = totalPageCount;
+                } else {
+                    startPage = active - middlePage;
+                    endPage = active + middlePage;
+                }
+            }
+
+            const visiblePagesArray = Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index);
+            setVisiblePages(visiblePagesArray);
+        };
+
+        calculateVisiblePages();
+    }, [active, dataFull.last_page]);
 
     return (
         <Card className="h-full w-full p-4">
@@ -220,7 +261,7 @@ export function MyOrdersBussiness() {
                                                             ? "blue-gray"
                                                             : data.order_status === "Shipped" || data.order_status === "Delivered"
                                                                 ? "green"
-                                                                : "defaultColor" 
+                                                                : "defaultColor"
                                                     }
                                                 />
                                             </div>
@@ -259,30 +300,37 @@ export function MyOrdersBussiness() {
                     </tbody>
                 </table>
             </CardBody>
-            <CardFooter className="flex relative items-center justify-between border-t border-blue-gray-50 p-4">
-                <div className="flex items-center absolute gap-8 mt-24 right-0 mr-4">
-                    <IconButton
-                        size="sm"
-                        variant="outlined"
-                        onClick={prev}
-                        disabled={active === 1}
-                    >
-                        <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" />
-                    </IconButton>
-                    <Typography color="gray" className="font-normal">
-                        Page <strong className="text-gray-900">{active}</strong> of{" "}
-                        <strong className="text-gray-900">10</strong>
-                    </Typography>
-                    <IconButton
-                        size="sm"
-                        variant="outlined"
-                        onClick={next}
-                        disabled={active === 10}
-                    >
-                        <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
-                    </IconButton>
+            <div className="flex justify-end  my-6 mt-12">
+                <Button
+                    variant="text"
+                    className="flex items-center gap-2"
+                    onClick={prev}
+                    disabled={active === dataFull.from}
+                >
+                    <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
+                </Button>
+
+                <div className="flex items-center gap-2">
+                    {visiblePages.map((pageNumber) => (
+                        <IconButton
+                            key={pageNumber}
+                            {...getItemProps(pageNumber)}
+                        >
+                            {pageNumber}
+                        </IconButton>
+                    ))}
                 </div>
-            </CardFooter>
+
+                <Button
+                    variant="text"
+                    className="flex items-center gap-2"
+                    onClick={next}
+                    disabled={active === dataFull.last_page}
+                >
+                    Next
+                    <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
+                </Button>
+            </div>
         </Card>
     );
 }
