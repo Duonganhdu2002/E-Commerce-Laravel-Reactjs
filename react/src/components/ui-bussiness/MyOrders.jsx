@@ -1,7 +1,7 @@
 import {
     MagnifyingGlassIcon,
     ChevronUpDownIcon,
-    ArrowRightIcon, 
+    ArrowRightIcon,
     ArrowLeftIcon
 } from "@heroicons/react/24/outline";
 import { PencilIcon } from "@heroicons/react/24/solid";
@@ -18,7 +18,9 @@ import {
     Tooltip,
 } from "@material-tailwind/react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from 'react-redux'
+import { listOrder } from "../../services/orderService";
 
 const TABLE_HEAD = [
     "Username",
@@ -93,6 +95,25 @@ const TABLE_ROWS = [
 
 export function MyOrdersBussiness() {
 
+    const seller_id = useSelector((state) => state.seller.seller.user_id);
+    const [data, setData] = useState([]);
+    const [bigData, setBigData] = useState([]);
+
+    // Call API list order by user
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await listOrder(seller_id);
+                setBigData(res.data);
+                setData(res.data.data)
+            } catch (error) {
+                console.error("Error fetching fields:", error);
+            }
+        }
+        fetchData()
+    }, [seller_id]);
+
+    console.log(data)
 
     const [active, setActive] = useState(1);
 
@@ -148,10 +169,10 @@ export function MyOrdersBussiness() {
                         </tr>
                     </thead>
                     <tbody>
-                        {TABLE_ROWS.map(
-                            ({ img, name, total, status, date, sc }, index) => {
-                                const key = `${name}-${index}`;
-                                const isLast = index === TABLE_ROWS.length - 1;
+                        {data && data.length > 0 && data.map(
+                            (data, index) => {
+                                const key = `${index}`;
+                                const isLast = index === data.length - 1;
                                 const classes = isLast
                                     ? "p-4"
                                     : "p-4 border-b border-blue-gray-50";
@@ -161,8 +182,8 @@ export function MyOrdersBussiness() {
                                         <td className={classes}>
                                             <div className="flex items-center gap-3">
                                                 <Avatar
-                                                    src={img}
-                                                    alt={name}
+                                                    src="../../../src/assets/shop/shop_avt.jpg"
+                                                    alt={data.buyer_username}
                                                     size="sm"
                                                     variant="rounded"
                                                 />
@@ -172,7 +193,7 @@ export function MyOrdersBussiness() {
                                                         color="blue-gray"
                                                         className="font-normal"
                                                     >
-                                                        {name}
+                                                        {data.buyer_username}
                                                     </Typography>
                                                 </div>
                                             </div>
@@ -184,7 +205,7 @@ export function MyOrdersBussiness() {
                                                     color="blue-gray"
                                                     className="font-normal"
                                                 >
-                                                    {total}
+                                                    {data.total}
                                                 </Typography>
                                             </div>
                                         </td>
@@ -193,15 +214,13 @@ export function MyOrdersBussiness() {
                                                 <Chip
                                                     variant="ghost"
                                                     size="sm"
-                                                    value={
-                                                        status
-                                                            ? "delivered"
-                                                            : "delivering"
-                                                    }
+                                                    value={data.order_status}
                                                     color={
-                                                        status
-                                                            ? "green"
-                                                            : "blue-gray"
+                                                        data.order_status === "Processing"
+                                                            ? "blue-gray"
+                                                            : data.order_status === "Shipped" || data.order_status === "Delivered"
+                                                                ? "green"
+                                                                : "defaultColor" 
                                                     }
                                                 />
                                             </div>
@@ -212,7 +231,9 @@ export function MyOrdersBussiness() {
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                {date}
+                                                {
+                                                    new Date(data.created_at).toLocaleDateString()
+                                                }
                                             </Typography>
                                         </td>
                                         <td className={classes}>
@@ -221,7 +242,7 @@ export function MyOrdersBussiness() {
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                {sc}
+                                                {data.shipping_method}
                                             </Typography>
                                         </td>
                                         <td className={classes}>

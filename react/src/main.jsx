@@ -137,7 +137,6 @@ const PrivateCustomerRoute = ({ element }) => {
 
 
 const App = () => {
-    const user = useSelector((state) => state.user.user);
     return (
         <div>
             <BrowserRouter>
