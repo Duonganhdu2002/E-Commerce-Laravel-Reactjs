@@ -67,7 +67,7 @@ const Customer = () => {
 const Business = () => {
     return (
         <div className="flex flex-col h-screen relative ">
-            <div className="fixed bg-gray-50 w-full h-full -z-10"><img src={Background} alt="" className=" w-full h-full object-cover"/></div>
+            <div className="fixed bg-gray-100 w-full h-full -z-10"></div>
             <div className=" top-0 z-10 mt-1">
                 <MenuBarBusiness />
             </div>
@@ -88,7 +88,7 @@ const Business = () => {
 const Admin = () => {
     return (
         <div className="flex flex-col h-screen relative ">
-            <div className="fixed bg-gray-50 w-full h-full -z-10"><img src={Background} alt="" className=" w-full h-full object-cover"/></div>
+            <div className="fixed bg-gray-100 w-full h-full -z-10"></div>
             <div className=" top-0 z-10 mt-1">
                 <MenuBarAdmin />
             </div>
@@ -180,7 +180,7 @@ const App = () => {
                                 <Route path="shop-rating" element={<PrivateBusinessRoute element={<ShopRating />} />} />
                                 <Route path="shop-information" element={<PrivateBusinessRoute element={<ShopInformation />} />} />
                                 <Route path="shop-category" element={<PrivateBusinessRoute element={<ShopCategory />} />} />
-                                <Route path="dashboard" element={<PrivateBusinessRoute element={<div>Dashboard Content</div>} />} />
+                                <Route path="dashboard" element={<PrivateBusinessRoute element={<Business />} />} />
                                 <Route path="inbox" element={<PrivateBusinessRoute element={<InboxBusiness />} />} />
                                 <Route path="profile" element={<PrivateBusinessRoute element={<ProfileBusiness />} />} />
                             </Route>

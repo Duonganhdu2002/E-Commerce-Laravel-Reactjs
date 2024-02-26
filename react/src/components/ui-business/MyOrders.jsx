@@ -29,7 +29,7 @@ const TABLE_HEAD = [
     "Status",
     "Countdown",
     "All SC",
-    "Action",
+    "Detail",
 ];
 
 const TABLE_ROWS = [
