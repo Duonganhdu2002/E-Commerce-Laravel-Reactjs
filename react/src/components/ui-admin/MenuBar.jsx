@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import {
     Navbar,
     Collapse,
@@ -36,23 +36,17 @@ const profileMenuItems = [
     {
         label: "Edit Profile",
         icon: Cog6ToothIcon,
-    },
-    {
-        label: "Inbox",
-        icon: InboxArrowDownIcon,
-    },
-    {
-        label: "Help",
-        icon: LifebuoyIcon,
-    },
-    {
-        label: "Sign Out",
-        icon: PowerIcon,
-    },
+    }
 ];
 
 import logo from "../../assets/icon/logo.svg";
 import logoSingle from "../../assets/icon/logo-single.svg";
+import { useSelector } from 'react-redux'
+import { clearSeller } from "../../redux/slices/sellerSlice";
+import { useDispatch } from 'react-redux';
+import Cookies from 'js-cookie';
+
+
 
 function ProfileMenu() {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -76,9 +70,8 @@ function ProfileMenu() {
                     />
                     <ChevronDownIcon
                         strokeWidth={2.5}
-                        className={`h-3 w-3 transition-transform ${
-                            isMenuOpen ? "rotate-180" : ""
-                        }`}
+                        className={`h-3 w-3 transition-transform ${isMenuOpen ? "rotate-180" : ""
+                            }`}
                     />
                 </Button>
             </MenuHandler>
@@ -89,23 +82,17 @@ function ProfileMenu() {
                         <MenuItem
                             key={label}
                             onClick={closeMenu}
-                            className={`flex items-center gap-2 rounded ${
-                                isLastItem
-                                    ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
-                                    : ""
-                            }`}
+                            className={`flex items-center gap-2 rounded`}
                         >
                             {React.createElement(icon, {
-                                className: `h-4 w-4 ${
-                                    isLastItem ? "text-red-500" : ""
-                                }`,
+                                className: `h-4 w-4`,
                                 strokeWidth: 2,
                             })}
                             <Typography
                                 as="span"
                                 variant="small"
                                 className="font-normal"
-                                color={isLastItem ? "red" : "inherit"}
+                                color="inherit"
                             >
                                 {label}
                             </Typography>
@@ -171,9 +158,8 @@ function NavListMenu() {
                             Pages{" "}
                             <ChevronDownIcon
                                 strokeWidth={2}
-                                className={`h-3 w-3 transition-transform ${
-                                    isMenuOpen ? "rotate-180" : ""
-                                }`}
+                                className={`h-3 w-3 transition-transform ${isMenuOpen ? "rotate-180" : ""
+                                    }`}
                             />
                         </MenuItem>
                     </Typography>
@@ -211,15 +197,7 @@ const navListItems = [
     {
         label: "Account",
         icon: UserCircleIcon,
-    },
-    {
-        label: "Blocks",
-        icon: CubeTransparentIcon,
-    },
-    {
-        label: "Docs",
-        icon: CodeBracketSquareIcon,
-    },
+    }
 ];
 
 function NavList() {
@@ -249,6 +227,16 @@ function NavList() {
 
 export default function MenuBarAdmin() {
     const [isNavOpen, setIsNavOpen] = React.useState(false);
+    const admin = useSelector((state) => state.admin.admin);
+ 
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const handleLogOut = () => {
+        dispatch(clearSeller());
+        Cookies.remove('admin');
+        navigate("/admin/login");
+    };
 
     const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
 
@@ -262,7 +250,7 @@ export default function MenuBarAdmin() {
     return (
         <Navbar className="fixed mx-auto max-w-screen-7xl p-2 lg:pl-6 mb-2">
             <div className="relative mx-auto flex items-center justify-between text-blue-gray-900">
-                <Link to="/admin">
+                <Link to="/">
                     <div className="pl-4 mr-10">
                         <img
                             className="w-8 h-8 md:hidden"
@@ -278,7 +266,7 @@ export default function MenuBarAdmin() {
                 </Link>
                 <div className="hidden lg:block">
                     <NavList />
-                </div>
+                </div>                
                 <IconButton
                     size="sm"
                     color="blue-gray"
@@ -288,11 +276,25 @@ export default function MenuBarAdmin() {
                 >
                     <Bars2Icon className="h-6 w-6" />
                 </IconButton>
-                <Link to="login">
-                    <Button size="sm" variant="text">
-                        <span>Log In</span>
-                    </Button>
-                </Link>
+                {
+                    admin ? (
+                        <div>
+                            <Link to="login">
+                                <Button onClick={handleLogOut} size="sm" variant="text">
+                                    <span>Log out</span>
+                                </Button>
+                            </Link>
+                        </div>
+                    ) : (
+                        <div>
+                            <Link to="login">
+                                <Button size="sm" variant="text">
+                                    <span>Log In</span>
+                                </Button>
+                            </Link>
+                        </div>
+                    )
+                }
                 <ProfileMenu />
             </div>
             <Collapse open={isNavOpen} className="overflow-scroll">

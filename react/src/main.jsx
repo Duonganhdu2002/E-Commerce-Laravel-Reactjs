@@ -128,10 +128,25 @@ const PrivateCustomerRoute = ({ element }) => {
         return <Navigate to="/login" />;
     }
 
-    if (user.type_account_id === 1) {
+    if (user.type_account_id === 3) {
         return element;
     } else {
         return <Navigate to="/login" />;
+    }
+};
+
+const PrivateAdminRoute = ({ element }) => {
+
+    const admin = useSelector((state) => state.admin.admin);
+
+    if (!admin) {
+        return <Navigate to="/admin/login" />;
+    }
+
+    if (admin.type_account_id === 1) {
+        return element;
+    } else {
+        return <Navigate to="/admin/login" />;
     }
 };
 
@@ -188,24 +203,24 @@ const App = () => {
                             {/* Admin */}
 
                             <Route path="/admin" element={<Admin />}>
-                                <Route index element={<DashboardAdmin />} />
+                                <Route index element={<PrivateAdminRoute element={<DashboardAdmin />} />} />
                                 <Route path="login" element={<LoginAdmin />} />
                                 <Route path="register" element={<RegisterAdmin />} />
-                                <Route path="my-shipment" element={<div>My shipment</div>} />
-                                <Route path="mass-ship" element={<div>Mass ship</div>} />
-                                <Route path="shipping-setting" element={<div>Shipping setting</div>} />
-                                <Route path="my-oders" element={<div>My oders</div>} />
-                                <Route path="return-refun" element={<div>Return/Refun</div>} />
-                                <Route path="cancelation" element={<div>Cancelation</div>} />
-                                <Route path="my-products" element={<MyProductsAdmin />} />
-                                <Route path="add-new-product" element={<div>Add New Product</div>} />
+                                <Route path="my-shipment" element={<PrivateAdminRoute element={<div>My shipment</div>} />} />
+                                <Route path="mass-ship" element={<PrivateAdminRoute element={<div>Mass ship</div>} />} />
+                                <Route path="shipping-setting" element={<PrivateAdminRoute element={<div>Shipping setting</div>} />} />
+                                <Route path="my-oders" element={<PrivateAdminRoute element={<div>My oders</div>} />} />
+                                <Route path="return-refun" element={<PrivateAdminRoute element={<div>Return/Refun</div>} />} />
+                                <Route path="cancelation" element={<PrivateAdminRoute element={<div>Cancelation</div>} />} />
+                                <Route path="my-products" element={<PrivateAdminRoute element={<MyProductsAdmin />} />} />
+                                <Route path="add-new-product" element={<PrivateAdminRoute element={<div>Add New Product</div>} />} />
                                 <Route path="product-violations" element={<div>Product Violations</div>} />
                                 <Route path="product-setting" element={<div>Product Settings</div>} />
                                 <Route path="shop-rating" element={<div>Shop Rating</div>} />
                                 <Route path="shop-information" element={<div>Shop Information</div>} />
                                 <Route path="shop-category" element={<div>Shop Category</div>} />
                                 <Route path="my-report" element={<div>My Report</div>} />
-                                <Route path="dashboard" element={<div>Dashboard Content</div>} />
+                                <Route path="dashboard" element={<PrivateAdminRoute element={<div>Dashboard Content</div>} />} />
                                 <Route path="inbox" element={<InboxAdmin />} />
                                 <Route path="profile" element={<ProfileAdmin />} />
                                 <Route path="settings" element={<div>Settings Content</div>} />

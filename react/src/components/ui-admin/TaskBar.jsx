@@ -62,7 +62,7 @@ const accordionData = [
         icon: <ShoppingBagIcon className="h-5 w-5" />,
         title: "Order",
         links: [
-            { path: "/admin/shop-rating", label: "Order list" },
+            { path: "/admin/shop-rating-list", label: "Order list" },
             { path: "/admin/shop-rating", label: "Order user" },
         ],
     },
@@ -79,8 +79,8 @@ const accordionData = [
         icon: <ShoppingBagIcon className="h-5 w-5" />,
         title: "Product",
         links: [
-            { path: "/admin/shop-rating", label: "Product list" },
-            { path: "/admin/shop-rating", label: "Product user list" },
+            { path: "/admin/product-list", label: "Product list" },
+            { path: "/admin/product-user-list", label: "Product user list" },
         ],
     },
     {
@@ -88,8 +88,8 @@ const accordionData = [
         icon: <ShoppingBagIcon className="h-5 w-5" />,
         title: "Review",
         links: [
-            { path: "/admin/shop-rating", label: "Review list" },
-            { path: "/admin/shop-rating", label: "Review user list" },
+            { path: "/admin/review-list", label: "Review list" },
+            { path: "/admin/review-user-list", label: "Review user list" },
         ],
     },
 
@@ -98,7 +98,7 @@ const accordionData = [
         icon: <ShoppingBagIcon className="h-5 w-5" />,
         title: "Shopping method",
         links: [
-            { path: "/admin/shop-rating", label: "Shoppping method list" },
+            { path: "/admin/shopping-method-list", label: "Shopping method list" },
         ],
     },
 ];
@@ -164,18 +164,7 @@ const TaskBarAdmin = () => {
                         Dashboard
                     </ListItem>
                 </Link>
-                <Link to="inbox">
 
-                    <ListItem>
-                        <ListItemPrefix>
-                            <InboxIcon className="h-5 w-5" />
-                        </ListItemPrefix>
-                        Inbox
-                        <ListItemSuffix>
-                            <Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
-                        </ListItemSuffix>
-                    </ListItem>
-                </Link>
                 <Link to="profile">
 
                     <ListItem>

@@ -8,12 +8,16 @@ const fetchUserPagination = (pageNumber) => {
     return axios.get(`/auth/auth?page=${pageNumber}`);
 }
 
-const userLogin = (password) => {
-    return axios.post("/user/login", password);
+const userLogin = (userCredential) => {
+    return axios.post("/user/login", userCredential);
 }
 
-const sellerLogin = (password) => {
-    return axios.post("/user/loginBusiness", password);
+const sellerLogin = (sellerCredential) => {
+    return axios.post("/user/loginBusiness", sellerCredential);
+}
+
+const adminLogin = (adminCredential) => {
+    return axios.post("/user/loginAdmin", adminCredential);
 }
 
 const userRegister = (userData) => {
@@ -28,5 +32,4 @@ const getUserInfor = (userId) => {
     return axios.get(`/user/info/${userId}`);
 };
 
-
-export { fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister, getUserInfor };
+export {adminLogin, fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister, getUserInfor };
