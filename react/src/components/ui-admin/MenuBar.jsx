@@ -45,6 +45,7 @@ import { useSelector } from 'react-redux'
 import { clearSeller } from "../../redux/slices/sellerSlice";
 import { useDispatch } from 'react-redux';
 import Cookies from 'js-cookie';
+import { clearAdmin } from "../../redux/slices/adminSlice";
 
 
 
@@ -233,7 +234,7 @@ export default function MenuBarAdmin() {
     const dispatch = useDispatch();
 
     const handleLogOut = () => {
-        dispatch(clearSeller());
+        dispatch(clearAdmin());
         Cookies.remove('admin');
         navigate("/admin/login");
     };
