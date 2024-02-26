@@ -8,9 +8,11 @@ import {
     CardBody,
     ButtonGroup,
     Button,
+    Input,
+    timeline,
 } from "@material-tailwind/react";
 
-const TABLE_HEAD = ["Infomation Product", "Review"];
+const TABLE_HEAD = ["Infomation Product", "Review", "Action"];
 
 const TABLE_ROWS = [
     {
@@ -53,47 +55,26 @@ export function ShopRating() {
                 </div>
             </CardHeader>
             <CardBody className="border-t border-gray-900/10 ">
-                <div className="grid grid-cols-6 gap-x-4 gap-y-4 sm:grid-cols-6">
-                    <div className="sm:col-span-3">
-                        <label htmlFor="product-name" className="block text-sm font-medium leading-6 text-gray-900">Product Name</label>
-                        <div className="mt-2">
-                            <input type="text" name="product-name" id="product-name" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6 pl-2" />
-                        </div>
+                <div className="sm:grid grid-cols-6 gap-x-4 gap-y-4 space-y-2 sm:space-y-0">
+                    <div className="col-span-3">
+                        <Input label="Product Name" />
                     </div>
 
-
-                    <div className="sm:col-span-3">
-                        <label htmlFor="classification" className="block text-sm font-medium leading-6 text-gray-900">Classification</label>
-                        <div className="mt-2">
-                            <input type="text" name="classification" id="classification" className="block pl-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6 " />
-                        </div>
+                    <div className="col-span-3">
+                        <Input label="Classification" />
                     </div>
 
-
-                    <div className="sm:col-span-3">
-                        <label htmlFor="buyer" className="block text-sm font-medium leading-6 text-gray-900">Buyer</label>
-                        <div className="mt-2">
-                            <input id="buyer" name="buyer" type="text" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6 pl-2" />
-                        </div>
+                    <div className="col-span-3">
+                        <Input label="Buyer" />
                     </div>
 
-
-                    <div className="sm:col-span-3">
-                        <label htmlFor="time" className="block text-sm font-medium leading-6 text-gray-900">Time</label>
-                        <div className="mt-2">
-                            <DatePicker
-                                selected={selectedDate}
-                                onChange={(date) => setSelectedDate(date)}
-                                dateFormat="MM/dd/yyyy"
-                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6 pl-2"
-                            />
-                        </div>
+                    <div className="col-span-3">
+                        <Input label="Time" type="date" />
                     </div>
-
 
                     <div className=" flex sm:col-span-6 mt-4 mb-4">
-                        <Button className="px-4 py-2 bg-gray-300 text-black rounded-md focus:outline-none focus:bg-gray-400 mr-3">Submit</Button>
-                        <Button className="px-4 py-2 bg-gray-300 text-black rounded-md focus:outline-none focus:bg-gray-400">Retype</Button>
+                        <Button className="mr-3">Submit</Button>
+                        <Button>Retype</Button>
                     </div>
 
                 </div>
@@ -111,7 +92,7 @@ export function ShopRating() {
                     </div>
                 </div>
 
-                <div className="flex w-max flex-col gap-4 font-normal mb-6">
+                <div className="flex flex-col gap-4 font-normal mb-6">
                     <ButtonGroup variant="outlined">
                         <Button>All</Button>
                         <Button>5 Star</Button>
@@ -122,44 +103,68 @@ export function ShopRating() {
                     </ButtonGroup>
                 </div>
 
-                <table className="w-full min-w-max table-auto text-left">
-                    <colgroup>
-                        <col style={{ width: '50%' }} />
-                        <col style={{ width: '50%' }} />
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            {TABLE_HEAD.map((head) => (
-                                <th key={head} className="border-b border-blue-gray-100 bg-blue-gray-100 p-4">
-                                    <Typography variant='h6' color="black" className="font-normal leading-none opacity-70">
-                                        {head}
-                                    </Typography>
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {TABLE_ROWS.map(({ name, rv }, index) => {
-                            const isLast = index === TABLE_ROWS.length - 1;
-                            const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
+                <Card className="h-full w-full overflow-scroll">
+                    <table className="w-full min-w-max table-auto text-left">
+                        <thead>
+                            <tr>
+                                {TABLE_HEAD.map((head) => (
+                                    <th
+                                        key={head}
+                                        className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="font-normal leading-none opacity-70"
+                                        >
+                                            {head}
+                                        </Typography>
+                                    </th>
+                                ))}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {TABLE_ROWS.map(({ name, rv }, index) => {
+                                const isLast = index === TABLE_ROWS.length - 1;
+                                const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
 
-                            return (
-                                <tr key={name}>
-                                    <td className={classes}>
-                                        <Typography variant="small" color="black" className="font-normal">
-                                            {name}
-                                        </Typography>
-                                    </td>
-                                    <td className={`${classes} bg-blue-gray-50/50`}>
-                                        <Typography variant="small" color="black" className="font-normal">
-                                            {rv}
-                                        </Typography>
-                                    </td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
+                                return (
+                                    <tr key={name}>
+                                        <td className={classes}>
+                                            <Typography
+                                                variant="small"
+                                                color="blue-gray"
+                                                className="font-normal"
+                                            >
+                                                {name}
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <Typography
+                                                variant="small"
+                                                color="blue-gray"
+                                                className="font-normal"
+                                            >
+                                                {rv}
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <Typography
+                                                as="a"
+                                                href="#"
+                                                variant="small"
+                                                color="blue-gray"
+                                                className="font-medium"
+                                            >
+                                                Edit
+                                            </Typography>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </Card>
             </CardBody>
         </Card>
     );
