@@ -128,7 +128,7 @@ const PrivateCustomerRoute = ({ element }) => {
         return <Navigate to="/login" />;
     }
 
-    if (user.type_account_id === 3) {
+    if (user.type_account_id === 1) {
         return element;
     } else {
         return <Navigate to="/login" />;
