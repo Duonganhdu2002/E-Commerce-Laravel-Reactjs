@@ -94,7 +94,7 @@ const TABLE_ROWS = [
 
 
 
-export function MyOrdersBussiness() {
+export function MyOrdersBusiness() {
 
     const seller_id = useSelector((state) => state.seller.seller.user_id);
     const [data, setData] = useState([]);

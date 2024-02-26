@@ -7,17 +7,17 @@ import { UserProvider } from "./context/UserContext";
 import SubFooter from "./components/ui/Subfooter";
 import { Provider } from "react-redux";
 import { store } from "./redux/Store";
-import MenuBarBussiness from "./components/ui-bussiness/MenuBar";
-import LoginBussiness from "./components/ui-bussiness/Login";
-import RegisterBussiness from "./components/ui-bussiness/Register";
-import ProfileBussiness from "./components/ui-bussiness/Profile";
-import InboxBussiness from "./components/ui-bussiness/Inbox";
-import MyProductsBussiness from "./pages/bussiness/MyProducts";
-import DashboardBussiness from "./pages/bussiness/Dashboard";
-import AddProductsBussiness from "./components/ui-bussiness/AddProducts";
-import { MyOrdersBussiness } from "./components/ui-bussiness/MyOrders";
-import { CancellationBusiness } from "./components/ui-bussiness/Cancellation";
-import TaskBar from "./components/ui-bussiness/TaskBar";
+import MenuBarBusiness from "./components/ui-business/MenuBar";
+import LoginBusiness from "./components/ui-business/Login";
+import RegisterBusiness from "./components/ui-business/Register";
+import ProfileBusiness from "./components/ui-business/Profile";
+import InboxBusiness from "./components/ui-business/Inbox";
+import MyProductsBusiness from "./pages/business/MyProducts";
+import DashboardBusiness from "./pages/business/Dashboard";
+import AddProductsBusiness from "./components/ui-business/AddProducts";
+import { MyOrdersBusiness } from "./components/ui-business/MyOrders";
+import { CancellationBusiness } from "./components/ui-business/Cancellation";
+import TaskBar from "./components/ui-business/TaskBar";
 import MenuBarAdmin from "./components/ui-admin/MenuBar";
 import LoginAdmin from "./components/ui-admin/Login";
 import RegisterAdmin from "./components/ui-admin/Register";
@@ -43,10 +43,10 @@ import SubFooter2 from "./components/ui/SubFooter2";
 import SearchLayout from "./components/ui/SearchLayout";
 import Error404 from "./components/ui/error404";
 import { useSelector } from 'react-redux'
-import { ShopRating } from "./components/ui-bussiness/ShopRating";
-import { ShopInformation } from "./components/ui-bussiness/ShopInformation";
-import MyShipment from "./components/ui-bussiness/MyShipment";
-import ShopCategory from "./components/ui-bussiness/ShopCategory";
+import { ShopRating } from "./components/ui-business/ShopRating";
+import { ShopInformation } from "./components/ui-business/ShopInformation";
+import MyShipment from "./components/ui-business/MyShipment";
+import ShopCategory from "./components/ui-business/ShopCategory";
 import Success from "./components/ui/Success";
 import Background from "./assets/image/4060492.jpg"
 
@@ -64,12 +64,12 @@ const Customer = () => {
     );
 }
 
-const Bussiness = () => {
+const Business = () => {
     return (
         <div className="flex flex-col h-screen relative ">
             <div className="fixed bg-gray-50 w-full h-full -z-10"><img src={Background} alt="" className=" w-full h-full object-cover"/></div>
             <div className=" top-0 z-10 mt-1">
-                <MenuBarBussiness />
+                <MenuBarBusiness />
             </div>
 
             <div className="flex flex-grow md:flex-row mt-24 px-2">
@@ -166,23 +166,23 @@ const App = () => {
                                 <Route path="success" element={<PrivateCustomerRoute element={<Success />} />} />
                             </Route>
 
-                            {/* Bussiness */}
+                            {/* Business */}
 
-                            <Route path="/business" element={<Bussiness />}>
-                                <Route index element={<PrivateBusinessRoute element={<DashboardBussiness />} />} />
-                                <Route path="login" element={<LoginBussiness />} />
-                                <Route path="register" element={<RegisterBussiness />} />
+                            <Route path="/business" element={<Business />}>
+                                <Route index element={<PrivateBusinessRoute element={<DashboardBusiness />} />} />
+                                <Route path="login" element={<LoginBusiness />} />
+                                <Route path="register" element={<RegisterBusiness />} />
                                 <Route path="my-shipment" element={<PrivateBusinessRoute element={<MyShipment />} />} />
-                                <Route path="my-oders" element={<PrivateBusinessRoute element={<MyOrdersBussiness />} />} />
+                                <Route path="my-oders" element={<PrivateBusinessRoute element={<MyOrdersBusiness />} />} />
                                 <Route path="cancelation" element={<PrivateBusinessRoute element={<CancellationBusiness />} />} />
-                                <Route path="my-products" element={<PrivateBusinessRoute element={<MyProductsBussiness />} />} />
-                                <Route path="add-new-product" element={<PrivateBusinessRoute element={<AddProductsBussiness />} />} />
+                                <Route path="my-products" element={<PrivateBusinessRoute element={<MyProductsBusiness />} />} />
+                                <Route path="add-new-product" element={<PrivateBusinessRoute element={<AddProductsBusiness />} />} />
                                 <Route path="shop-rating" element={<PrivateBusinessRoute element={<ShopRating />} />} />
                                 <Route path="shop-information" element={<PrivateBusinessRoute element={<ShopInformation />} />} />
                                 <Route path="shop-category" element={<PrivateBusinessRoute element={<ShopCategory />} />} />
                                 <Route path="dashboard" element={<PrivateBusinessRoute element={<div>Dashboard Content</div>} />} />
-                                <Route path="inbox" element={<PrivateBusinessRoute element={<InboxBussiness />} />} />
-                                <Route path="profile" element={<PrivateBusinessRoute element={<ProfileBussiness />} />} />
+                                <Route path="inbox" element={<PrivateBusinessRoute element={<InboxBusiness />} />} />
+                                <Route path="profile" element={<PrivateBusinessRoute element={<ProfileBusiness />} />} />
                             </Route>
 
                             {/* Admin */}
