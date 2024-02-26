@@ -28,43 +28,77 @@ const accordionData = [
     {
         id: 1,
         icon: <PresentationChartBarIcon className="h-5 w-5" />,
-        title: "Shipment",
+        title: "User",
         links: [
-            { path: "/admin/my-shipment", label: "My shipment" },
-            { path: "/admin/mass-ship", label: "Mass ship" },
-            { path: "/admin/shipping-setting", label: "Shipping setting" },
+            { path: "/admin/my-shipment", label: "User list" },
         ],
     },
     {
         id: 2,
         icon: <DocumentTextIcon className="h-5 w-5" />,
-        title: "Order",
+        title: "Field",
         links: [
-            { path: "/admin/my-oders", label: "My orders" },
-            { path: "/admin/cancelation", label: "Cancellation" },
-            { path: "/admin/return-refun", label: "Return/Refund" },
+            { path: "/admin/my-oders", label: "Field list" },
         ],
     },
     {
         id: 3,
         icon: <ArchiveBoxIcon className="h-5 w-5" />,
-        title: "Product",
+        title: "Category",
         links: [
-            { path: "/admin/my-products", label: "My products" },
-            { path: "/admin/add-new-product", label: "Add new product" },
-            { path: "/admin/product-violations", label: "Product violations" },
-            { path: "/admin/product-setting", label: "Product setting" },
+            { path: "/admin/my-products", label: "Category list" },
         ],
     },
     {
         id: 4,
         icon: <ShoppingBagIcon className="h-5 w-5" />,
-        title: "Shop",
+        title: "Brand",
         links: [
-            { path: "/admin/shop-rating", label: "Shop rating" },
-            { path: "/admin/shop-information", label: "Shop information" },
-            { path: "/admin/shop-category", label: "Shop category" },
-            { path: "/admin/my-report", label: "My report" },
+            { path: "/admin/shop-rating", label: "Brand list" },
+        ],
+    },
+    {
+        id: 5,
+        icon: <ShoppingBagIcon className="h-5 w-5" />,
+        title: "Order",
+        links: [
+            { path: "/admin/shop-rating", label: "Order list" },
+            { path: "/admin/shop-rating", label: "Order user" },
+        ],
+    },
+    {
+        id: 6,
+        icon: <ShoppingBagIcon className="h-5 w-5" />,
+        title: "Order status",
+        links: [
+            { path: "/admin/shop-rating", label: "Order status list" },
+        ],
+    },
+    {
+        id: 7,
+        icon: <ShoppingBagIcon className="h-5 w-5" />,
+        title: "Product",
+        links: [
+            { path: "/admin/shop-rating", label: "Product list" },
+            { path: "/admin/shop-rating", label: "Product user list" },
+        ],
+    },
+    {
+        id: 8,
+        icon: <ShoppingBagIcon className="h-5 w-5" />,
+        title: "Review",
+        links: [
+            { path: "/admin/shop-rating", label: "Review list" },
+            { path: "/admin/shop-rating", label: "Review user list" },
+        ],
+    },
+
+    {
+        id: 9,
+        icon: <ShoppingBagIcon className="h-5 w-5" />,
+        title: "Shopping method",
+        links: [
+            { path: "/admin/shop-rating", label: "Shoppping method list" },
         ],
     },
 ];
