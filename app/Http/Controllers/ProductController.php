@@ -173,28 +173,80 @@ class ProductController extends Controller
 
 
     public function store(Request $request)
-    {
-        $input = $request->all();
+{
+    $input = $request->all();
 
-        $validator = Validator::make($input, [
-            'name' => 'required',
-        ]);
-        if ($validator->fails()) {
-            $arr = [
-                'success' => false,
-                'message' => 'Lỗi kiểm tra dữ liệu',
-                'data' => $validator->errors()
-            ];
-            return response()->json($arr, 200);
-        }
-        $product = Product::create($input);
+    $validator = Validator::make($input, [
+        'name' => 'required',
+        'description' => 'required',
+        'created_by_user_id' => 'required',
+        'product_brand_id' => 'required',
+        'product_category_id' => 'required',
+        'price' => 'required',
+        'stock' => 'required',
+        'discount_id' => 'nullable',
+        'image_url.*' => 'required',
+    ]);
+
+    if ($validator->fails()) {
         $arr = [
-            'status' => true,
-            'message' => "Sản phẩm đã lưu thành công",
-            'data' => new ProductResource($product)
+            'status' => false,
+            'message' => 'Lỗi kiểm tra dữ liệu',
+            'data' => $validator->errors()
         ];
-        return response()->json($arr, 201);
+
+        return response()->json($arr, 200);
     }
+
+    
+    $product = Product::create($input);
+
+    $productId = $product->id;
+
+    
+    if ($request->hasFile('image_url')) {
+        $productImageController = new ProductImageController();
+        
+        foreach ($request->file('image_url') as $image) {
+            $imageData = ['image_url' => $productImageController->upload($request, $productId)];
+            $product->images()->create($imageData);
+        }
+    } else {
+        $arr = [
+            'status' => false,
+            'message' => 'Bạn cần phải thêm ít nhất một ảnh để tạo sản phẩm',
+            'data' => [],
+        ];
+        return response()->json($arr, 400);
+    }
+
+    
+    if ($request->has('sizes')) {
+        $productSizeController = new ProductSizeController();
+        
+        foreach ($request->input('sizes') as $size) {
+            $sizeData = ['size' => $size];
+            $product->productSizes()->create($sizeData);
+        }
+    }
+
+    if ($request->has('colors')) {
+        $productColorController = new ProductColorController();
+        
+        foreach ($request->input('colors') as $color) {
+            $colorData = ['color' => $color];
+            $product->productColors()->create($colorData);
+        }
+    }
+
+    $arr = [
+        'status' => true,
+        'message' => 'Sản phẩm và thông tin liên quan đã được lưu thành công',
+        'data' => new ProductResource($product),
+    ];
+
+    return response()->json($arr, 201);
+}
 
     // Hàm xử lý hiển thị thông tin sản phẩm và danh sách ảnh
     public function show(string $id)
