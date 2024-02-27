@@ -26,8 +26,7 @@ Route::prefix('user')->group(function () {
 
     Route::get('info/{user_id}', [UserController::class, 'info'])->name('info');
     Route::get('auth-total', [UserController::class, 'getTotalUsers'])->name('getTotalUsers');
-    Route::get('auth-list', [UserController::class, 'userList'])->name('userList')->name('userList');
-    Route::get('auth', [UserController::class, 'userPagination'])->name('userPagination');
+    Route::get('auth-list', [UserController::class, 'userList'])->name('userList');
 });
 
 Route::prefix('public')->group(function () {

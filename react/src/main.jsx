@@ -49,6 +49,7 @@ import MyShipment from "./components/ui-business/MyShipment";
 import ShopCategory from "./components/ui-business/ShopCategory";
 import Success from "./components/ui/Success";
 import Background from "./assets/image/4060492.jpg"
+import { UserList } from "./components/ui-admin/UserList";
 
 
 const Customer = () => {
@@ -206,7 +207,7 @@ const App = () => {
                                 <Route index element={<PrivateAdminRoute element={<DashboardAdmin />} />} />
                                 <Route path="login" element={<LoginAdmin />} />
                                 <Route path="register" element={<RegisterAdmin />} />
-                                <Route path="user-list" element={<PrivateAdminRoute element={<div>My shipment</div>} />} />
+                                <Route path="user-list" element={<PrivateAdminRoute element={<UserList/>} />} />
                                 <Route path="field-list" element={<PrivateAdminRoute element={<div>Mass ship</div>} />} />
                                 <Route path="category-list" element={<PrivateAdminRoute element={<div>Shipping setting</div>} />} />
                                 <Route path="brand-list" element={<PrivateAdminRoute element={<div>My oders</div>} />} />
