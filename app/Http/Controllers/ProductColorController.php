@@ -25,12 +25,13 @@ class ProductColorController extends Controller
 
         return response()->json($arr, 200);
     }
-    public function store(Request $request)
+    public function store(Request $request, array $colorData, $productId)
     {
-        $input = $request->all();
+        $colorData['product_id'] = $productId;
 
-        $validator = Validator::make($input, [
+        $validator = Validator::make($colorData, [
             'color_name' => 'required',
+            'product_id' => 'required',
         ]);
         if ($validator->fails()) {
             $arr = [
@@ -40,7 +41,8 @@ class ProductColorController extends Controller
             ];
             return response()->json($arr, 200);
         }
-        $pc = PC::create($input);
+        $pc = PC::create($colorData);
+
         $arr = [
             'status' => true,
             'message' => "đã lưu thành công",

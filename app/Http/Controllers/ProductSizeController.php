@@ -25,12 +25,13 @@ class ProductSizeController extends Controller
         return response()->json($arr, 200);
     }
 
-    public function store(Request $request)
+    public function store(array $sizeData, $productId)
     {
-        $input = $request->all();
+        $request = new Request($sizeData);
 
-        $validator = Validator::make($input, [
+        $validator = Validator::make($sizeData, [
             'size_name' => 'required',
+            'product_id' => 'required',
         ]);
         if ($validator->fails()) {
             $arr = [
@@ -40,7 +41,7 @@ class ProductSizeController extends Controller
             ];
             return response()->json($arr, 200);
         }
-        $ps = product_size::create($input);
+        $ps = product_size::create($request->all());
         $arr = [
             'status' => true,
             'message' => "đã lưu thành công",
