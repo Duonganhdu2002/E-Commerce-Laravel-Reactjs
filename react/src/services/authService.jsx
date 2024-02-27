@@ -1,7 +1,7 @@
 import axios from "./axiosCustom";
 
-const fetchAllUser = () => {
-    return axios.get("/auth/auth-list");
+const fetchAllUser = (page) => {
+    return axios.get(`/user/auth-list?page=${page}`);
 }
 
 const fetchUserPagination = (pageNumber) => {
@@ -32,4 +32,5 @@ const getUserInfor = (userId) => {
     return axios.get(`/user/info/${userId}`);
 };
 
-export {adminLogin, fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister, getUserInfor };
+
+export { adminLogin, fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister, getUserInfor };

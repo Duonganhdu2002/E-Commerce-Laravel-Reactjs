@@ -320,12 +320,14 @@ class UserController extends Controller
 
     public function userList()
     {
-        $users = User::paginate(10); 
-        
+        $users = User::where('type_account_id', 2)
+            ->orWhere('type_account_id', 3)
+            ->paginate(7);
+
         $arr = [
             'status' => true,
             'message' => 'Danh sách tài khoản',
-            'data' => $users  
+            'data' => $users
         ];
 
         return response()->json($arr, 200);

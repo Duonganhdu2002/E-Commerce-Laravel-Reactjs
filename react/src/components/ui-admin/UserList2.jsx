@@ -1,29 +1,21 @@
-import React from "react";
-
 import {
+    MagnifyingGlassIcon,
     ChevronUpDownIcon,
     ArrowRightIcon,
-    ArrowLeftIcon,
-    Square3Stack3DIcon,
-    UserCircleIcon,
-    Cog6ToothIcon,
+    ArrowLeftIcon
 } from "@heroicons/react/24/outline";
 import { PencilIcon } from "@heroicons/react/24/solid";
 import {
     Card,
+    CardHeader,
+    Input,
     Typography,
     CardBody,
     CardFooter,
     IconButton,
     Tooltip,
-    Tabs,
-    TabsHeader,
-    TabsBody,
-    Tab,
-    TabPanel,
     Button
 } from "@material-tailwind/react";
-
 import { useEffect, useState } from "react";
 import { fetchAllUser } from "../../services/authService";
 
@@ -31,6 +23,7 @@ const TABLE_HEAD = [
     "Avt",
     "ID",
     "Username",
+    "Type account",
     "Email",
     "Warehouse",
     "Revenue",
@@ -105,7 +98,7 @@ const TABLE_ROWS = [
     },
 ];
 
-const Customer = () => {
+export function UserList() {
 
     const [data, setData] = useState([]);
     const [dataFull, setDataFull] = useState([]);
@@ -116,7 +109,7 @@ const Customer = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await fetchAllUser(page);
+                let res = await fetchAllUser();
                 setData(res.data.data);
                 setDataFull(res.data);
             } catch (error) {
@@ -124,7 +117,7 @@ const Customer = () => {
             }
         }
         fetchData();
-    }, [page]);
+    }, []);
 
     const [active, setActive] = useState(1);
     const [visiblePages, setVisiblePages] = useState([]);
@@ -183,7 +176,17 @@ const Customer = () => {
     }, [active, dataFull.last_page]);
 
     return (
-        <div>
+        <Card className=" h-[89vh] w-full p-4">
+            <CardHeader floated={false} shadow={false} className="rounded-none">
+                <div className="flex flex-col sm:flex-row w-full justify-center items-center">
+                    <div className="w-full">
+                        <Input
+                            label="Search"
+                            icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                        />
+                    </div>
+                </div>
+            </CardHeader>
             <CardBody className="px-4">
                 <table className=" w-full min-w-max table-auto text-left">
                     <thead>
@@ -196,7 +199,7 @@ const Customer = () => {
                                     <Typography
                                         variant="small"
                                         color="blue-gray"
-                                        className="flex items-center justify-between font-normal leading-none opacity-70"
+                                        className="flex items-center justify-between gap-2 font-normal leading-none opacity-70"
                                     >
                                         {head}{" "}
                                         {index !== TABLE_HEAD.length - 1 && (
@@ -211,30 +214,36 @@ const Customer = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map(
-                            (users, index) => {
+                        {TABLE_ROWS.map(
+                            ({ name, sku, cog, price, sc, revenue, adv }, index) => {
                                 const isLast = index === TABLE_ROWS.length - 1;
                                 const classes = isLast
                                     ? "p-4"
                                     : "p-4 border-b border-blue-gray-50";
 
                                 return (
-                                    <tr key={index}>
+                                    <tr key={name}>
                                         <td className={classes}>
                                             <div className="flex items-center gap-3">
                                                 <div className="flex flex-col">
-                                                    <img className=" w-10 h-10 rounded-full object-cover" src={ `../../../src/assets/shop/${users.avt_image}`} alt="" />
+                                                    <Typography
+                                                        variant="small"
+                                                        color="blue-gray"
+                                                        className="font-normal"
+                                                    >
+                                                        {name}
+                                                    </Typography>
                                                 </div>
                                             </div>
                                         </td>
                                         <td className={classes}>
                                             <div className="flex flex-col">
-                                                  <Typography
+                                                <Typography
                                                     variant="small"
                                                     color="blue-gray"
                                                     className="font-normal"
                                                 >
-                                                    {users.user_id}
+                                                    {sku}
                                                 </Typography>
                                             </div>
                                         </td>
@@ -245,7 +254,7 @@ const Customer = () => {
                                                     color="blue-gray"
                                                     className="font-normal"
                                                 >
-                                                    {users.username}
+                                                    {cog}
                                                 </Typography>
                                             </div>
                                         </td>
@@ -255,7 +264,7 @@ const Customer = () => {
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                {users.email}
+                                                {price}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
@@ -264,7 +273,7 @@ const Customer = () => {
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                {users.full_name}
+                                                {sc}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
@@ -273,7 +282,7 @@ const Customer = () => {
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                {users.telephone}
+                                                {revenue}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
@@ -282,7 +291,7 @@ const Customer = () => {
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                {users.telephone}
+                                                {adv}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
@@ -300,88 +309,41 @@ const Customer = () => {
                 </table>
             </CardBody>
             <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-                <div>
+                <div className=" flex justify-center">
+                    <div className="flex items-center my-6 mt-12">
+                        <Button
+                            variant="text"
+                            className="flex items-center gap-2"
+                            onClick={prev}
+                            disabled={active === dataFull.from}
+                        >
+                            <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
+                        </Button>
 
-                </div>
-                <div className="flex items-center mt-2">
-                    <Button
-                        variant="text"
-                        className="flex items-center gap-2"
-                        onClick={prev}
-                        disabled={active === dataFull.from}
-                    >
-                        <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
-                    </Button>
+                        <div className="flex items-center gap-2">
+                            {visiblePages.map((pageNumber) => (
+                                <IconButton
+                                    key={pageNumber}
+                                    {...getItemProps(pageNumber)}
+                                >
+                                    {pageNumber}
+                                </IconButton>
+                            ))}
+                        </div>
 
-                    <div className="flex items-center gap-2">
-                        {visiblePages.map((pageNumber) => (
-                            <IconButton
-                                key={pageNumber}
-                                {...getItemProps(pageNumber)}
-                            >
-                                {pageNumber}
-                            </IconButton>
-                        ))}
+
+                        <Button
+                            variant="text"
+                            className="flex items-center gap-2"
+                            onClick={next}
+                            disabled={active === dataFull.last_page}
+                        >
+                            Next
+                            <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
+                        </Button>
                     </div>
-
-
-                    <Button
-                        variant="text"
-                        className="flex items-center gap-2"
-                        onClick={next}
-                        disabled={active === dataFull.last_page}
-                    >
-                        Next
-                        <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
-                    </Button>
                 </div>
             </CardFooter>
-        </div>
-    );
-}
-
-
-const DataTab = [
-    {
-        label: "Dashboard",
-        value: "dashboard",
-        icon: Square3Stack3DIcon,
-        desc: <Customer />
-    },
-    {
-        label: "Profile",
-        value: "profile",
-        icon: UserCircleIcon,
-        desc: `Because it's about motivating the doers. Because I'm here
-      to follow my dreams and inspire other people to follow their dreams, too.`,
-    },
-];
-
-export function UserList() {
-
-    return (
-        <Card className=" h-fit w-full p-4">
-            <Tabs value="dashboard">
-                <TabsHeader>
-                    {DataTab.map(({ label, value, icon }) => (
-                        <Tab key={value} value={value}>
-                            <div className="flex items-center gap-2">
-                                {React.createElement(icon, { className: "w-5 h-5" })}
-                                {label}
-                            </div>
-                        </Tab>
-                    ))}
-                </TabsHeader>
-                <TabsBody>
-                    {DataTab.map(({ value, desc }) => (
-                        <TabPanel key={value} value={value}>
-                            {desc}
-                        </TabPanel>
-                    ))}
-                </TabsBody>
-            </Tabs>
-
         </Card>
     );
 }
-
