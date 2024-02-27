@@ -1,5 +1,4 @@
-import { ArchiveBoxIcon, ChevronUpDownIcon, MagnifyingGlassIcon, } from "@heroicons/react/24/outline";
-import { PencilIcon } from "@heroicons/react/24/solid";
+import { ArchiveBoxIcon, ChevronUpDownIcon, MagnifyingGlassIcon, EyeIcon } from "@heroicons/react/24/outline";
 import { Avatar, Button, Card, CardBody, CardFooter, CardHeader, Chip, IconButton, Input, Option, Select, Tab, Tabs, TabsHeader, Tooltip, Typography, } from "@material-tailwind/react";
 
 const TABS = [
@@ -197,9 +196,9 @@ export function CancellationBusiness() {
                                             <Typography variant="small" color="blue-gray" className="font-normal" > {sc} </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <Tooltip content="Edit User">
+                                            <Tooltip content="User Details">
                                                 <IconButton variant="text">
-                                                    <PencilIcon className="h-4 w-4" />
+                                                    <EyeIcon className="h-4 w-4" />
                                                 </IconButton>
                                             </Tooltip>
                                         </td>

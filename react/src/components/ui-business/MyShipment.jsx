@@ -1,299 +1,224 @@
-import React from 'react'
+import {
+    MagnifyingGlassIcon,
+    ChevronUpDownIcon,
+} from "@heroicons/react/24/outline";
+import { PencilIcon, ArrowDownTrayIcon } from "@heroicons/react/24/solid";
 import {
     Card,
     CardHeader,
-    CardBody,
-    CardFooter,
+    Input,
     Typography,
     Button,
-    Input,
+    CardBody,
     Chip,
-    Timeline,
-    TimelineItem,
-    TimelineConnector,
-    TimelineHeader,
-    TimelineIcon,
-    TimelineBody,
+    CardFooter,
+    Tabs,
+    TabsHeader,
+    Tab,
+    Avatar,
+    IconButton,
+    Tooltip,
 } from "@material-tailwind/react";
-import { EllipsisVerticalIcon, MagnifyingGlassIcon, UserCircleIcon, PhoneIcon } from "@heroicons/react/24/solid";
+
+const TABS = [
+    {
+        label: "All",
+        value: "all",
+    },
+    {
+        label: "Delivered",
+        value: "Delivered",
+    },
+    {
+        label: "Pending",
+        value: "Pending",
+    },
+    {
+        label: "In-Transit",
+        value: "In-Transit",
+    },
+];
+
+const TABLE_HEAD = ["Products", "Status", "Time", "Download"];
+
+const TABLE_ROWS = [
+    {
+        img: "https://lzd-img-global.slatic.net/g/p/3155709012daf005299359ec6a1dfd62.jpg_200x200q80.jpg_.webp",
+        name: "Jean",
+        sku: "#12333959",
+        online: true,
+        date: "23/04/18",
+    },
+    {
+        img: "https://lzd-img-global.slatic.net/g/p/3155709012daf005299359ec6a1dfd62.jpg_200x200q80.jpg_.webp",
+        name: "Jean",
+        sku: "#12333959",
+        online: false,
+        date: "23/04/18",
+    },
+    {
+        img: "https://lzd-img-global.slatic.net/g/p/3155709012daf005299359ec6a1dfd62.jpg_200x200q80.jpg_.webp",
+        name: "Jean",
+        sku: "#12333959",
+        online: false,
+        date: "19/09/17",
+    },
+    {
+        img: "https://lzd-img-global.slatic.net/g/p/3155709012daf005299359ec6a1dfd62.jpg_200x200q80.jpg_.webp",
+        name: "Jean",
+        sku: "#12333959",
+        online: undefined,
+        date: "24/12/08",
+    },
+    {
+        img: "https://lzd-img-global.slatic.net/g/p/3155709012daf005299359ec6a1dfd62.jpg_200x200q80.jpg_.webp",
+        name: "Jean",
+        sku: "#12333959",
+        online: true,
+        date: "04/10/21",
+    },
+];
 
 export default function MyShipment() {
     return (
-        <div className=''>
-            <div className=' space-y-8'>
-                    <Input
-                        className=' bg-white shadow-lg'
-                        label="Search"
-                        icon={<MagnifyingGlassIcon className="h-5 w-5" />}
-                    />
-
-                <div className="flex flex-wrap justify-center space-x-4 space-y-10 mb-12">
-                    <Card className='w-full lg:w-1/2 2xl:w-1/3 px-2 mb-4'>
-                        <CardHeader className=' flex items-center justify-around h-12'>
-                            <div className='flex space-x-2'>
-                                <p>Cargo ID:</p>
-                                <p className=' font-bold text-gray-900'>#1266769</p>
-                            </div>
-                            <div className=' flex space-x-2'>
-                                <Chip color="green" value="delivery" />
-                                <EllipsisVerticalIcon className=' w-6 cursor-pointer' />
-                            </div>
-                        </CardHeader>
-                        <CardBody className='pb-0'>
-                            <div className="">
-                                <Timeline>
-                                    <TimelineItem>
-                                        <TimelineConnector />
-                                        <TimelineHeader className="h-3">
-                                            <TimelineIcon />
-                                            <Typography variant="h6" color="blue-gray" className="leading-none">
-                                                06.05.2024
-                                            </Typography>
-                                            <Typography variant="h6" color="blue-gray" className="leading-none">
-                                                Anytown, NY 12345
-                                            </Typography>
-                                        </TimelineHeader>
-                                        <TimelineBody className="pb-8">
-                                            <Typography variant="small" color="gray" className="font-normal  text-gray-600">
-                                                8:00AM
-                                            </Typography>
-                                            <Typography variant="small" color="gray" className="font-normal text-gray-600">
-                                                123 Main St.
-                                            </Typography>
-                                        </TimelineBody>
-                                    </TimelineItem>
-                                    <TimelineItem>
-                                        <TimelineConnector />
-                                        <TimelineHeader className="h-3">
-                                            <TimelineIcon />
-                                            <Typography variant="h6" color="blue-gray" className="leading-none">
-                                                06.05.2024
-                                            </Typography>
-                                            <Typography variant="h6" color="blue-gray" className="leading-none">
-                                                Anytown, NY 12345
-                                            </Typography>
-                                        </TimelineHeader>
-                                        <TimelineBody className="pb-8">
-                                            <Typography variant="small" color="gray" className="font-normal  text-gray-600">
-                                                8:00AM
-                                            </Typography>
-                                            <Typography variant="small" color="gray" className="font-normal text-gray-600">
-                                                123 Main St.
-                                            </Typography>
-                                        </TimelineBody>
-                                    </TimelineItem>
-                                    <TimelineItem>
-                                        <TimelineHeader className="h-3">
-                                            <TimelineIcon />
-                                            <Typography variant="h6" color="blue-gray" className="leading-none">
-                                                06.05.2024
-                                            </Typography>
-                                            <Typography variant="h6" color="blue-gray" className="leading-none">
-                                                Anytown, NY 12345
-                                            </Typography>
-                                        </TimelineHeader>
-                                        <TimelineBody className="pb-8">
-                                            <Typography variant="small" color="gray" className="font-normal  text-gray-600">
-                                                8:00AM
-                                            </Typography>
-                                            <Typography variant="small" color="gray" className="font-normal text-gray-600">
-                                                123 Main St.
-                                            </Typography>
-                                        </TimelineBody>
-                                    </TimelineItem>
-                                </Timeline>
-                            </div>
-                        </CardBody>
-                        <CardFooter className='flex justify-between border-t-2'>
-                            <div className='flex items-center space-x-2'>
-                                <div><UserCircleIcon className='w-14' /></div>
-                                <div>
-                                    <p className=' font-semibold text-lg'>Thoshon Eve</p>
-                                    <p className=' text-base'>Client</p>
-                                </div>
-                            </div>
-                            <PhoneIcon className=' w-6 space-x-2' />
-                        </CardFooter>
-                    </Card>
-
-                    <Card className=' w-full lg:w-1/2 2xl:w-1/3 px-2 mb-4'>
-                        <CardHeader className=' flex items-center justify-around h-12'>
-                            <div className='flex space-x-2'>
-                                <p>Cargo ID:</p>
-                                <p className=' font-bold text-gray-900'>#1266769</p>
-                            </div>
-                            <div className=' flex space-x-2'>
-                                <Chip color="yellow" value="pick-up" />
-                                <EllipsisVerticalIcon className=' w-6 cursor-pointer' />
-                            </div>
-                        </CardHeader>
-                        <CardBody className='pb-0'>
-                            <div className="">
-                                <Timeline>
-                                    <TimelineItem>
-                                        <TimelineConnector />
-                                        <TimelineHeader className="h-3">
-                                            <TimelineIcon />
-                                            <Typography variant="h6" color="blue-gray" className="leading-none">
-                                                06.05.2024
-                                            </Typography>
-                                            <Typography variant="h6" color="blue-gray" className="leading-none">
-                                                Anytown, NY 12345
-                                            </Typography>
-                                        </TimelineHeader>
-                                        <TimelineBody className="pb-8">
-                                            <Typography variant="small" color="gray" className="font-normal  text-gray-600">
-                                                8:00AM
-                                            </Typography>
-                                            <Typography variant="small" color="gray" className="font-normal text-gray-600">
-                                                123 Main St.
-                                            </Typography>
-                                        </TimelineBody>
-                                    </TimelineItem>
-                                    <TimelineItem>
-                                        <TimelineConnector />
-                                        <TimelineHeader className="h-3">
-                                            <TimelineIcon />
-                                            <Typography variant="h6" color="blue-gray" className="leading-none">
-                                                06.05.2024
-                                            </Typography>
-                                            <Typography variant="h6" color="blue-gray" className="leading-none">
-                                                Anytown, NY 12345
-                                            </Typography>
-                                        </TimelineHeader>
-                                        <TimelineBody className="pb-8">
-                                            <Typography variant="small" color="gray" className="font-normal  text-gray-600">
-                                                8:00AM
-                                            </Typography>
-                                            <Typography variant="small" color="gray" className="font-normal text-gray-600">
-                                                123 Main St.
-                                            </Typography>
-                                        </TimelineBody>
-                                    </TimelineItem>
-                                    <TimelineItem>
-                                        <TimelineHeader className="h-3">
-                                            <TimelineIcon />
-                                            <Typography variant="h6" color="blue-gray" className="leading-none">
-                                                06.05.2024
-                                            </Typography>
-                                            <Typography variant="h6" color="blue-gray" className="leading-none">
-                                                Anytown, NY 12345
-                                            </Typography>
-                                        </TimelineHeader>
-                                        <TimelineBody className="pb-8">
-                                            <Typography variant="small" color="gray" className="font-normal  text-gray-600">
-                                                8:00AM
-                                            </Typography>
-                                            <Typography variant="small" color="gray" className="font-normal text-gray-600">
-                                                123 Main St.
-                                            </Typography>
-                                        </TimelineBody>
-                                    </TimelineItem>
-                                </Timeline>
-                            </div>
-                        </CardBody>
-                        <CardFooter className='flex justify-between border-t-2'>
-                            <div className='flex items-center space-x-2'>
-                                <div><UserCircleIcon className='w-14' /></div>
-                                <div>
-                                    <p className=' font-semibold text-lg'>Thoshon Eve</p>
-                                    <p className=' text-base'>Client</p>
-                                </div>
-                            </div>
-                            <PhoneIcon className=' w-6 space-x-2' />
-                        </CardFooter>
-                    </Card>
-
-                    <Card className=' w-full lg:w-1/2 2xl:w-1/3 px-2 mb-4'>
-                        <CardHeader className=' flex items-center justify-around h-12'>
-                            <div className='flex space-x-2'>
-                                <p>Cargo ID:</p>
-                                <p className=' font-bold text-gray-900'>#1266769</p>
-                            </div>
-                            <div className=' flex space-x-2'>
-                                <Chip color="red" value="transfer" />
-                                <EllipsisVerticalIcon className=' w-6 cursor-pointer' />
-                            </div>
-                        </CardHeader>
-                        <CardBody className='pb-0'>
-                            <div className="">
-                                <Timeline>
-                                    <TimelineItem>
-                                        <TimelineConnector />
-                                        <TimelineHeader className="h-3">
-                                            <TimelineIcon />
-                                            <Typography variant="h6" color="blue-gray" className="leading-none">
-                                                06.05.2024
-                                            </Typography>
-                                            <Typography variant="h6" color="blue-gray" className="leading-none">
-                                                Anytown, NY 12345
-                                            </Typography>
-                                        </TimelineHeader>
-                                        <TimelineBody className="pb-8">
-                                            <Typography variant="small" color="gray" className="font-normal  text-gray-600">
-                                                8:00AM
-                                            </Typography>
-                                            <Typography variant="small" color="gray" className="font-normal text-gray-600">
-                                                123 Main St.
-                                            </Typography>
-                                        </TimelineBody>
-                                    </TimelineItem>
-                                    <TimelineItem>
-                                        <TimelineConnector />
-                                        <TimelineHeader className="h-3">
-                                            <TimelineIcon />
-                                            <Typography variant="h6" color="blue-gray" className="leading-none">
-                                                06.05.2024
-                                            </Typography>
-                                            <Typography variant="h6" color="blue-gray" className="leading-none">
-                                                Anytown, NY 12345
-                                            </Typography>
-                                        </TimelineHeader>
-                                        <TimelineBody className="pb-8">
-                                            <Typography variant="small" color="gray" className="font-normal  text-gray-600">
-                                                8:00AM
-                                            </Typography>
-                                            <Typography variant="small" color="gray" className="font-normal text-gray-600">
-                                                123 Main St.
-                                            </Typography>
-                                        </TimelineBody>
-                                    </TimelineItem>
-                                    <TimelineItem>
-                                        <TimelineHeader className="h-3">
-                                            <TimelineIcon />
-                                            <Typography variant="h6" color="blue-gray" className="leading-none">
-                                                06.05.2024
-                                            </Typography>
-                                            <Typography variant="h6" color="blue-gray" className="leading-none">
-                                                Anytown, NY 12345
-                                            </Typography>
-                                        </TimelineHeader>
-                                        <TimelineBody className="pb-8">
-                                            <Typography variant="small" color="gray" className="font-normal  text-gray-600">
-                                                8:00AM
-                                            </Typography>
-                                            <Typography variant="small" color="gray" className="font-normal text-gray-600">
-                                                123 Main St.
-                                            </Typography>
-                                        </TimelineBody>
-                                    </TimelineItem>
-                                </Timeline>
-                            </div>
-                        </CardBody>
-                        <CardFooter className='flex justify-between border-t-2'>
-                            <div className='flex items-center space-x-2'>
-                                <div><UserCircleIcon className='w-14' /></div>
-                                <div>
-                                    <p className=' font-semibold text-lg'>Thoshon Eve</p>
-                                    <p className=' text-base'>Client</p>
-                                </div>
-                            </div>
-                            <PhoneIcon className=' w-6 space-x-2' />
-                        </CardFooter>
-                    </Card>
+        <Card className="h-full w-full">
+            <CardHeader floated={false} shadow={false} className="rounded-none">
+                <div className="mb-8 flex items-center justify-between gap-8">
+                    <div>
+                        <Typography variant="h5" color="blue-gray">
+                            Shipment list
+                        </Typography>
+                        <Typography color="gray" className="mt-1 font-normal">
+                            See information about all members
+                        </Typography>
+                    </div>
+                    <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+                        <Button variant="outlined" size="sm">
+                            view all
+                        </Button>
+                        <Button className="flex items-center gap-3" size="sm">
+                            <ArrowDownTrayIcon strokeWidth={2} className="h-4 w-4" /> download all labels
+                        </Button>
+                    </div>
                 </div>
+                <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+                    <Tabs value="all" className="w-full">
+                        <TabsHeader>
+                            {TABS.map(({ label, value }) => (
+                                <Tab key={value} value={value}>
+                                    &nbsp;&nbsp;{label}&nbsp;&nbsp;
+                                </Tab>
+                            ))}
+                        </TabsHeader>
+                    </Tabs>
+                    <div className="w-full md:w-72">
+                        <Input
+                            label="Search"
+                            icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                        />
+                    </div>
+                </div>
+            </CardHeader>
+            <CardBody className="overflow-scroll px-0">
+                <table className="mt-4 w-full min-w-max table-auto text-left">
+                    <thead>
+                        <tr>
+                            {TABLE_HEAD.map((head, index) => (
+                                <th
+                                    key={head}
+                                    className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
+                                >
+                                    <Typography
+                                        variant="small"
+                                        color="blue-gray"
+                                        className="flex items-center justify-between gap-2 font-normal leading-none opacity-70"
+                                    >
+                                        {head}{" "}
+                                        {index !== TABLE_HEAD.length - 1 && (
+                                            <ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
+                                        )}
+                                    </Typography>
+                                </th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {TABLE_ROWS.map(
+                            ({ img, name, sku, online, date }, index) => {
+                                const isLast = index === TABLE_ROWS.length - 1;
+                                const classes = isLast
+                                    ? "p-4"
+                                    : "p-4 border-b border-blue-gray-50";
 
-            </div>
-        </div>
+                                return (
+                                    <tr key={name}>
+                                        <td className={classes}>
+                                            <div className="flex items-center gap-3">
+                                                <Avatar src={img} alt={name} size="sm" />
+                                                <div className="flex flex-col">
+                                                    <Typography
+                                                        variant="small"
+                                                        color="blue-gray"
+                                                        className="font-normal"
+                                                    >
+                                                        {name}
+                                                    </Typography>
+                                                    <Typography
+                                                        variant="small"
+                                                        color="blue-gray"
+                                                        className="font-normal opacity-70"
+                                                    >
+                                                        SKU: {sku}
+                                                    </Typography>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className={classes}>
+                                            <div className="w-max">
+                                                <Chip
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    value={online === true ? "delivered" : (online === false ? "pending" : "in-transit")}
+                                                    color={online === true ? "green" : (online === false ? "blue-gray" : "yellow")}
+                                                />
+                                            </div>
+                                        </td>
+                                        <td className={classes}>
+                                            <Typography
+                                                variant="small"
+                                                color="blue-gray"
+                                                className="font-normal"
+                                            >
+                                                {date}
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <Tooltip content="Dowwnload labels">
+                                                <IconButton variant="text">
+                                                    <ArrowDownTrayIcon className="h-4 w-4" />
+                                                </IconButton>
+                                            </Tooltip>
+                                        </td>
+                                    </tr>
+                                );
+                            },
+                        )}
+                    </tbody>
+                </table>
+            </CardBody>
+            <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+                <Typography variant="small" color="blue-gray" className="font-normal">
+                    Page 1 of 10
+                </Typography>
+                <div className="flex gap-2">
+                    <Button variant="outlined" size="sm">
+                        Previous
+                    </Button>
+                    <Button variant="outlined" size="sm">
+                        Next
+                    </Button>
+                </div>
+            </CardFooter>
+        </Card>
     )
 }
