@@ -101,7 +101,7 @@ class ProductController extends Controller
     public function indexByUser(string $userId)
     {
         try {
-            $creator = User::findOrFail($userId);
+            
             $products = Product::with(['images', 'productSizes', 'productColors', 'productBrand', 'productCategory'])
                 ->where('created_by_user_id', $userId)
                 ->get();
@@ -145,7 +145,7 @@ class ProductController extends Controller
                     'image_urls' => $imageUrls,
                     'sizes' => $sizes,
                     'colors' => $colors,
-                    'reviews' => $reviews, // Bạn có thể giữ nguyên reviews nếu muốn truy cập đến các thông tin khác
+                    'reviews' => $reviews, 
                     'average_rating' => $averageRating,
                     'total_reviews' => $totalReviews,
                 ];
@@ -154,17 +154,7 @@ class ProductController extends Controller
             $arr = [
                 'status' => true,
                 'message' => 'Thông tin sản phẩm của người dùng',
-                'data' => [
-                    'user_id' => $creator->user_id,
-                    'username' => $creator->username,
-                    'full_name' => $creator->full_name,
-                    'shop_name' => $creator->shop_name,
-                    'shop_username' => $creator->shop_username,
-                    'shop_avt' => $creator->shop_avt,
-                    'shop_background' => $creator->shop_background,
-                    'shop_introduce' => $creator->shop_introduce,
-                    'products' => $formattedProducts,
-                ],
+                'data' => $formattedProducts
             ];
 
             return response()->json($arr, 200);

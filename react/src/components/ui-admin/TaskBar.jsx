@@ -30,7 +30,7 @@ const accordionData = [
         icon: <PresentationChartBarIcon className="h-5 w-5" />,
         title: "User",
         links: [
-            { path: "/admin/my-shipment", label: "User list" },
+            { path: "/admin/user-list", label: "User list" },
         ],
     },
     {
@@ -38,7 +38,7 @@ const accordionData = [
         icon: <DocumentTextIcon className="h-5 w-5" />,
         title: "Field",
         links: [
-            { path: "/admin/my-oders", label: "Field list" },
+            { path: "/admin/field-list", label: "Field list" },
         ],
     },
     {
@@ -46,7 +46,7 @@ const accordionData = [
         icon: <ArchiveBoxIcon className="h-5 w-5" />,
         title: "Category",
         links: [
-            { path: "/admin/my-products", label: "Category list" },
+            { path: "/admin/category-list", label: "Category list" },
         ],
     },
     {
@@ -54,7 +54,7 @@ const accordionData = [
         icon: <ShoppingBagIcon className="h-5 w-5" />,
         title: "Brand",
         links: [
-            { path: "/admin/shop-rating", label: "Brand list" },
+            { path: "/admin/brand-list", label: "Brand list" },
         ],
     },
     {
@@ -62,8 +62,8 @@ const accordionData = [
         icon: <ShoppingBagIcon className="h-5 w-5" />,
         title: "Order",
         links: [
-            { path: "/admin/shop-rating-list", label: "Order list" },
-            { path: "/admin/shop-rating", label: "Order user" },
+            { path: "/admin/order-list", label: "Order list" },
+            { path: "/admin/order-user", label: "Order user" },
         ],
     },
     {
@@ -71,7 +71,7 @@ const accordionData = [
         icon: <ShoppingBagIcon className="h-5 w-5" />,
         title: "Order status",
         links: [
-            { path: "/admin/shop-rating", label: "Order status list" },
+            { path: "/admin/order-status-list", label: "Order status list" },
         ],
     },
     {
@@ -112,7 +112,7 @@ const TaskBarAdmin = () => {
     };
 
     return (
-        <Card className=" fixed h-[94vh] w-full max-w-[20rem] p-4 shadow-md shadow-blue-gray-900/30 z-10">
+        <Card className=" fixed w-full max-w-[20rem] p-4 shadow-md shadow-blue-gray-900/30 z-10">
             <div className="mb-2 p-4">
                 <Typography variant="h5" color="blue-gray">
                     Sidebar
