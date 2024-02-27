@@ -48,9 +48,11 @@ import { ShopInformation } from "./components/ui-business/ShopInformation";
 import MyShipment from "./components/ui-business/MyShipment";
 import ShopCategory from "./components/ui-business/ShopCategory";
 import Success from "./components/ui/Success";
-import Background from "./assets/image/4060492.jpg"
 import { UserList } from "./components/ui-admin/UserList";
-
+import FieldList from "./components/ui-admin/FieldList";
+import CategoryList from "./components/ui-admin/CategoryList";
+import BrandList from "./components/ui-admin/BrandList";
+import OrderList from "./components/ui-admin/OrderList";
 
 const Customer = () => {
     return (
@@ -207,11 +209,11 @@ const App = () => {
                                 <Route index element={<PrivateAdminRoute element={<DashboardAdmin />} />} />
                                 <Route path="login" element={<LoginAdmin />} />
                                 <Route path="register" element={<RegisterAdmin />} />
-                                <Route path="user-list" element={<PrivateAdminRoute element={<UserList/>} />} />
-                                <Route path="field-list" element={<PrivateAdminRoute element={<div>Mass ship</div>} />} />
-                                <Route path="category-list" element={<PrivateAdminRoute element={<div>Shipping setting</div>} />} />
-                                <Route path="brand-list" element={<PrivateAdminRoute element={<div>My oders</div>} />} />
-                                <Route path="order-list" element={<PrivateAdminRoute element={<div>Return/Refun</div>} />} />
+                                <Route path="user-list" element={<PrivateAdminRoute element={<UserList />} />} />
+                                <Route path="field-list" element={<PrivateAdminRoute element={<FieldList />} />} />
+                                <Route path="category-list" element={<PrivateAdminRoute element={<CategoryList />} />} />
+                                <Route path="brand-list" element={<PrivateAdminRoute element={<BrandList />} />} />
+                                <Route path="order-list" element={<PrivateAdminRoute element={<OrderList />} />} />
                                 <Route path="order-user" element={<PrivateAdminRoute element={<div>Cancelation</div>} />} />
                                 <Route path="my-products" element={<PrivateAdminRoute element={<MyProductsAdmin />} />} />
                                 <Route path="order-status-list" element={<PrivateAdminRoute element={<div>Add New Product</div>} />} />
