@@ -110,6 +110,9 @@ Route::prefix('public')->group(function () {
         Route::get('id={categoryId}', [ProductCategoryController::class, 'showById']);
         //show category theo user
         Route::get('{user_id}', [ProductCategoryController::class, 'showUserCategories']);
+        //show category theo user có phân trang
+        Route::get('paging/{user_id}', [ProductCategoryController::class, 'showUserCategorieswithP']);
+
     });
 
     Route::prefix('cart')->group(function () {
