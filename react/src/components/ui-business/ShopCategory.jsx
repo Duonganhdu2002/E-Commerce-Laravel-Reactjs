@@ -5,8 +5,8 @@ import { Avatar, Button, Card, CardBody, CardFooter, CardHeader, Chip, IconButto
 
 const TABLE_HEAD = [
     "Name list",
-    "Product",
-    "On/Off",
+    "Name",
+    "Belong to",
     "Action",
 ];
 
@@ -47,21 +47,9 @@ export default function ShopCategory() {
     return (
         <Card className="h-fit w-full">
             <CardHeader floated={false} shadow={false} className="rounded-none">
-                <div className="mb-8 flex items-center justify-between gap-8">
-                    <div>
-                        <Typography variant="h5" color="blue-gray"> Category list </Typography>
-                        <Typography color="gray" className="mt-1 font-normal"> See information about all category </Typography>
-                    </div>
-                    <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-                        <Button variant="outlined" size="sm"> Preview </Button>
-                        <Button className="flex items-center gap-3" size="sm">
-                            <ArchiveBoxIcon strokeWidth={2} className="h-4 w-4" />
-                            Add categories
-                        </Button>
-                    </div>
-                </div>
+                
             </CardHeader>
-            <CardBody className="overflow-scroll px-0">
+            <CardBody>
                 <table className=" w-full min-w-max table-auto text-left">
                     <thead>
                         <tr>
@@ -132,7 +120,7 @@ export default function ShopCategory() {
                 </table>
             </CardBody>
             <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-                <Typography variant="small" color="blue-gray" className="font-normal" > Page 1 of 999999 </Typography>
+                <div></div>
                 <div className="flex gap-2">
                     <Button variant="outlined" size="sm">
                         Previous

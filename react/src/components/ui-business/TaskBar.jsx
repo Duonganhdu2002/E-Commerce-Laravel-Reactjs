@@ -124,7 +124,7 @@ const TaskBar = () => {
                         Dashboard
                     </ListItem>
                 </Link>
-                <Link to="inbox">
+                {/* <Link to="inbox">
 
                     <ListItem>
                         <ListItemPrefix>
@@ -135,7 +135,7 @@ const TaskBar = () => {
                             <Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
                         </ListItemSuffix>
                     </ListItem>
-                </Link>
+                </Link> */}
                 <Link to="profile">
 
                     <ListItem>
