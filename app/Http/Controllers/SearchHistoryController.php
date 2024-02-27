@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\User;
 use App\Models\search_history as SearchHistory;
 use Illuminate\Support\Facades\DB;
 
@@ -215,4 +216,33 @@ class SearchHistoryController extends Controller
             'data' => $products,
         ], 200);
     }
+
+    public function searchOrdersByUsername(Request $request)
+{
+    $request->validate([
+        'username' => 'required|string',
+        'shop_id' => 'required|numeric',
+    ]);
+
+    $username = $request->input('username');
+    $shopId = $request->input('shop_id');
+
+    $user = User::where('username', $username)->first();
+
+    if (!$user) {
+        return response()->json([
+            'status' => 404,
+            'message' => 'not found.',
+            'data' => null,
+        ], 404);
+    }
+
+    $orders = $user->orders()->where('shop_id', $shopId)->paginate(8);
+
+    return response()->json([
+        'status' => 200,
+        'message' => 'các đơn hàng của ' . $username .'mua trong shop có id là ' . $shopId ,
+        'data' => $orders,
+    ]);
+}
 }

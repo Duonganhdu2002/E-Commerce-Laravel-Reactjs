@@ -93,6 +93,7 @@ Route::prefix('public')->group(function () {
         //hiển thị danh sách sản phẩm theo sắp xếp
         // Route::get('/sort-products/{sortBy}/{user_id}', [ProductController::class, 'sortUserProducts']);
 
+        
     });
 
     Route::prefix('field')->group(function () {
@@ -124,7 +125,10 @@ Route::prefix('public')->group(function () {
         Route::post('make', [OrderController::class, 'checkout']);
         Route::get('/details/{order_id}', [OrderController::class, 'getOrderDetails']);
         //show các đơn hàng được đặt của seller
-        Route::get('{user_id}', [OrderController::class, 'getSellerOrders']);
+        // Route::get('{user_id}', [OrderController::class, 'getSellerOrders']);
+        //show don hang duoc tim kiem theo username cua 1 shop
+        Route::get('/search', [SearchHistoryController::class, 'searchOrdersByUsername']);
+
     });
 
     Route::prefix('location')->group(function () {
