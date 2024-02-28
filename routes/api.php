@@ -18,7 +18,6 @@ use App\Http\Controllers\ProductReviewController;
 
 Route::prefix('user')->group(function () {
 
-    // Quyền admin
     Route::post('createAdmin', [UserController::class, 'createAdmin'])->name('createAdmin');
     Route::post('createBusiness', [UserController::class, 'createBusiness'])->name('createBusiness');
     Route::post('register', [UserController::class, 'createUser'])->name('register');
