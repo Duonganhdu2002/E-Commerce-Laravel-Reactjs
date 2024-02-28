@@ -33,9 +33,9 @@ class OrderController extends Controller
     {
         try {
             $Orders = Order::where('shop_id', $shopId)
-                ->where('order_status_id', 4) 
+                ->where('order_status_id', 4)
                 ->get();
-    
+
             if ($Orders->isEmpty()) {
                 return response()->json([
                     'status' => false,
@@ -43,13 +43,13 @@ class OrderController extends Controller
                     'data' => null,
                 ], 404);
             }
-    
+
             $arr = [
                 'status' => true,
                 'message' => 'Danh sách các đơn hàng đã bị hủy cho cửa hàng có ID ' . $shopId,
                 'data' => $Orders,
             ];
-    
+
             return response()->json($arr, 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -275,8 +275,37 @@ class OrderController extends Controller
             ], 404);
         }
     }
+    public function getSellerOrders($sellerId)
+    {
+        try {
+            $orders = Order::select(
+                'order.order_id',
+                'users.username as buyer_username',
+                'order.total',
+                'order_status.order_status_name as order_status',
+                'order.created_at',
+                'shipping_method.shipping_method_name as shipping_method'
+            )
+                ->join('order_status', 'order.order_status_id', '=', 'order_status.order_status_id')
+                ->join('shipping_method', 'order.shipping_method_id', '=', 'shipping_method.shipping_method_id')
+                ->join('users', 'order.user_id', '=', 'users.user_id')
+                ->where('order.shop_id', $sellerId)
+                ->paginate(7);
 
-<<<<<<< HEAD
+            return response()->json([
+                'status' => 200,
+                'message' => 'List of orders for seller with ID ' . $sellerId,
+                'data' => $orders
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Internal Server Error',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function showShippingOrdersByUserId($userId)
     {
         // Lấy tất cả các đơn hàng của shop (user) có user_id và có order_status_id = 2
@@ -302,39 +331,4 @@ class OrderController extends Controller
         ], 200);
     }
 
-
-
 }
-=======
-    public function getSellerOrders($sellerId)
-    {
-        try {
-            $orders = Order::select(
-                'order.order_id',
-                'users.username as buyer_username',
-                'order.total',
-                'order_status.order_status_name as order_status',
-                'order.created_at',
-                'shipping_method.shipping_method_name as shipping_method'
-            )
-                ->join('order_status', 'order.order_status_id', '=', 'order_status.order_status_id')
-                ->join('shipping_method', 'order.shipping_method_id', '=', 'shipping_method.shipping_method_id')
-                ->join('users', 'order.user_id', '=', 'users.user_id')
-                ->where('order.shop_id', $sellerId)
-                ->paginate(7); 
-            
-            return response()->json([
-                'status' => 200,
-                'message' => 'List of orders for seller with ID ' . $sellerId,
-                'data' => $orders
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 500,
-                'message' => 'Internal Server Error',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-}
->>>>>>> 3c4adc6acd7a3abb1fcd6dab9086b0ef066b4560

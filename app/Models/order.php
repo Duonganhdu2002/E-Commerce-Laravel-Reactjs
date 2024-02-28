@@ -36,17 +36,9 @@ class order extends Model
         return $this->hasMany(order_items::class, 'order_id', 'order_id');
     }
 
-<<<<<<< HEAD
     // Định nghĩa mối quan hệ với người dùng (users)
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
-
-=======
-    public function user()
-    {
-    return $this->belongsTo(User::class, 'user_id', 'user_id');
-    }
->>>>>>> 3c4adc6acd7a3abb1fcd6dab9086b0ef066b4560
 }
