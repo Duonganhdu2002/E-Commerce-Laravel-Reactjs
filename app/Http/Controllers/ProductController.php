@@ -24,7 +24,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $product = Product::all();
+        $product = Product::paginate(10);
 
         $arr = [
             'status' => true,
