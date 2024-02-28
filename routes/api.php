@@ -23,6 +23,9 @@ Route::prefix('user')->group(function () {
     Route::post('register', [UserController::class, 'createUser'])->name('register');
     // xóa user
     Route::delete('/{id}', [UserController::class, 'delete']);
+    // sửa user
+    Route::put('/{id}', [UserController::class, 'update']);
+
 
     Route::post('login', [UserController::class, 'login'])->name('login');
     Route::post('loginBusiness', [UserController::class, 'loginBusiness'])->name('loginBusiness');
