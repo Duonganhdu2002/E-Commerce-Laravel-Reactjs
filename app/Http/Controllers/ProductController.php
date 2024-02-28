@@ -101,7 +101,7 @@ class ProductController extends Controller
     public function indexByUser(string $userId)
     {
         try {
-            $creator = User::findOrFail($userId);
+            
             $products = Product::with(['images', 'productSizes', 'productColors', 'productBrand', 'productCategory'])
                 ->where('created_by_user_id', $userId)
                 ->get();
@@ -145,7 +145,7 @@ class ProductController extends Controller
                     'image_urls' => $imageUrls,
                     'sizes' => $sizes,
                     'colors' => $colors,
-                    'reviews' => $reviews, // Bạn có thể giữ nguyên reviews nếu muốn truy cập đến các thông tin khác
+                    'reviews' => $reviews, 
                     'average_rating' => $averageRating,
                     'total_reviews' => $totalReviews,
                 ];
@@ -154,17 +154,7 @@ class ProductController extends Controller
             $arr = [
                 'status' => true,
                 'message' => 'Thông tin sản phẩm của người dùng',
-                'data' => [
-                    'user_id' => $creator->user_id,
-                    'username' => $creator->username,
-                    'full_name' => $creator->full_name,
-                    'shop_name' => $creator->shop_name,
-                    'shop_username' => $creator->shop_username,
-                    'shop_avt' => $creator->shop_avt,
-                    'shop_background' => $creator->shop_background,
-                    'shop_introduce' => $creator->shop_introduce,
-                    'products' => $formattedProducts,
-                ],
+                'data' => $formattedProducts
             ];
 
             return response()->json($arr, 200);
@@ -183,28 +173,80 @@ class ProductController extends Controller
 
 
     public function store(Request $request)
-    {
-        $input = $request->all();
+{
+    $input = $request->all();
 
-        $validator = Validator::make($input, [
-            'name' => 'required',
-        ]);
-        if ($validator->fails()) {
-            $arr = [
-                'success' => false,
-                'message' => 'Lỗi kiểm tra dữ liệu',
-                'data' => $validator->errors()
-            ];
-            return response()->json($arr, 200);
-        }
-        $product = Product::create($input);
+    $validator = Validator::make($input, [
+        'name' => 'required',
+        'description' => 'required',
+        'created_by_user_id' => 'required',
+        'product_brand_id' => 'required',
+        'product_category_id' => 'required',
+        'price' => 'required',
+        'stock' => 'required',
+        'discount_id' => 'nullable',
+        'image_url.*' => 'required',
+    ]);
+
+    if ($validator->fails()) {
         $arr = [
-            'status' => true,
-            'message' => "Sản phẩm đã lưu thành công",
-            'data' => new ProductResource($product)
+            'status' => false,
+            'message' => 'Lỗi kiểm tra dữ liệu',
+            'data' => $validator->errors()
         ];
-        return response()->json($arr, 201);
+
+        return response()->json($arr, 200);
     }
+
+    
+    $product = Product::create($input);
+
+    $productId = $product->id;
+
+    
+    if ($request->hasFile('image_url')) {
+        $productImageController = new ProductImageController();
+        
+        foreach ($request->file('image_url') as $image) {
+            $imageData = ['image_url' => $productImageController->upload($request, $productId)];
+            $product->images()->create($imageData);
+        }
+    } else {
+        $arr = [
+            'status' => false,
+            'message' => 'Bạn cần phải thêm ít nhất một ảnh để tạo sản phẩm',
+            'data' => [],
+        ];
+        return response()->json($arr, 400);
+    }
+
+    
+    if ($request->has('sizes')) {
+        $productSizeController = new ProductSizeController();
+        
+        foreach ($request->input('sizes') as $size) {
+            $sizeData = ['size' => $size];
+            $product->productSizes()->create($sizeData);
+        }
+    }
+
+    if ($request->has('colors')) {
+        $productColorController = new ProductColorController();
+        
+        foreach ($request->input('colors') as $color) {
+            $colorData = ['color' => $color];
+            $product->productColors()->create($colorData);
+        }
+    }
+
+    $arr = [
+        'status' => true,
+        'message' => 'Sản phẩm và thông tin liên quan đã được lưu thành công',
+        'data' => new ProductResource($product),
+    ];
+
+    return response()->json($arr, 201);
+}
 
     // Hàm xử lý hiển thị thông tin sản phẩm và danh sách ảnh
     public function show(string $id)
@@ -663,106 +705,84 @@ class ProductController extends Controller
     {
         $categoryIds = $request->input('category_ids');
         $brandIds = $request->input('brand_ids');
-        $userId = $request->input('user_id'); // Thêm tham số user_id từ request
-        $sortBy = $request->input('sortBy');
+        $userId = $request->input('user_id');
+        $sortBy = $request->input('type_sort');
 
-        $query = Product::query();
+        $query = Product::query()->select(
+            'product.product_id',
+            'product.name',
+            'product.description',
+            'product.price',
+            'product.stock',
+            DB::raw('SUM(order_items.quantity) as total_sales'),
+            DB::raw('IFNULL(AVG(product_review.rating), 0) as average_rating')
+        )
+            ->leftJoin('order_items', 'product.product_id', '=', 'order_items.product_id')
+            ->leftJoin('product_review', 'product.product_id', '=', 'product_review.product_id')
+            ->where('product.created_by_user_id', $userId)
+            ->groupBy(
+                'product.product_id',
+                'product.name',
+                'product.description',
+                'product.price',
+                'product.stock'
+            );
 
         if (!empty($categoryIds)) {
-            $query->whereIn('product_id', function ($subquery) use ($categoryIds, $userId) {
-                $subquery->select('product_id')
+            $query->whereIn('product.product_id', function ($subquery) use ($categoryIds, $userId) {
+                $subquery->select('product.product_id')
                     ->from('product')
                     ->join('product_category', 'product.product_category_id', '=', 'product_category.product_category_id')
-                    ->where('product.created_by_user_id', '=', $userId) // Thêm điều kiện lọc theo người tạo sản phẩm (cửa hàng)
+                    ->where('product.created_by_user_id', '=', $userId)
                     ->whereIn('product_category.product_category_id', $categoryIds);
             });
         }
 
         if (!empty($brandIds)) {
-            $query->whereIn('product_id', function ($subquery) use ($brandIds, $userId) {
-                $subquery->select('product_id')
+            $query->whereIn('product.product_id', function ($subquery) use ($brandIds, $userId) {
+                $subquery->select('product.product_id')
                     ->from('product')
                     ->join('product_brand', 'product.product_brand_id', '=', 'product_brand.product_brand_id')
-                    ->where('product.created_by_user_id', '=', $userId) // Thêm điều kiện lọc theo người tạo sản phẩm (cửa hàng)
+                    ->where('product.created_by_user_id', '=', $userId)
                     ->whereIn('product_brand.product_brand_id', $brandIds);
             });
         }
 
-        // $products = $query->get();
-
-        // if ($products->isEmpty()) {
-        //     return response()->json([
-        //         'status' => false,
-        //         'message' => 'Không có sản phẩm nào được tìm thấy dựa trên các điều kiện lọc',
-        //         'data' => null,
-        //     ], 404);
-        // }
-
         $perPage = 9;
 
         switch ($sortBy) {
-            // case 'sell':
-            //     $query->orderBy('total_sell', 'desc')
-            //         ->paginate($perPage);
-            //     break;
-
             case 'newest':
-                $query->orderBy('created_at', 'desc')
-                    ->paginate($perPage);
+                $query->orderBy('product.created_at', 'desc');
                 break;
 
             case 'price_high_to_low':
-                $query->orderBy('price', 'desc')
-                    ->paginate($perPage);
+                $query->orderBy('product.price', 'desc');
                 break;
 
             case 'price_low_to_high':
-                $query->orderBy('price', 'asc')
-                    ->paginate($perPage);
-                break;
-
-            default:
-                // Không sắp xếp
-                $query->paginate($perPage);
+                $query->orderBy('product.price', 'asc');
                 break;
         }
 
-        $products = $query->get();
+        $products = $query->paginate($perPage);
 
-        $formattedProducts = $products->map(function ($product) {
-            $reviews = ProductReview::with('user')
-                ->where('product_id', $product->product_id)
-                ->get();
+        foreach ($products as &$product) {
+            $productImages = ProductImage::where('product_id', $product->product_id)->pluck('image_url');
+            $product->images = $productImages;
+        }
 
-            $averageRating = $reviews->avg('rating');
-            $totalReviews = $reviews->count();
-
-            // Lấy danh sách các URL hình ảnh của sản phẩm
-            $imageUrls = $product->images->pluck('image_url');
-
-            return [
-                'product_id' => $product->product_id,
-                'name' => $product->name,
-                'description' => $product->description,
-                'created_by_user_id' => $product->created_by_user_id,
-                'product_brand_id' => $product->product_brand_id,
-                'product_category_id' => $product->product_category_id,
-                'price' => $product->price,
-                'stock' => $product->stock,
-                'discount_id' => $product->discount_id,
-                'created_at' => $product->created_at,
-                'updated_at' => $product->updated_at,
-                'deleted_at' => $product->deleted_at,
-                'image_urls' => $imageUrls,
-                'average_rating' => $averageRating,
-                'total_reviews' => $totalReviews,
-            ];
-        });
+        if ($products->isEmpty()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Không có sản phẩm nào được tìm thấy dựa trên các điều kiện lọc',
+                'data' => null,
+            ], 404);
+        }
 
         return response()->json([
             'status' => true,
             'message' => 'Danh sách sản phẩm được lọc theo category và brand',
-            'data' => $formattedProducts,
+            'data' => $products,
         ], 200);
     }
 
@@ -1018,5 +1038,4 @@ class ProductController extends Controller
             'data' => $products,
         ], 200);
     }
-
 }

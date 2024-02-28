@@ -1,74 +1,97 @@
-import { ArchiveBoxIcon, ChevronUpDownIcon, MagnifyingGlassIcon, } from "@heroicons/react/24/outline";
-import { PencilIcon } from "@heroicons/react/24/solid";
-import { Avatar, Button, Card, CardBody, CardFooter, CardHeader, Chip, IconButton, Input, Option, Select, Tab, Tabs, TabsHeader, Tooltip, Typography, } from "@material-tailwind/react";
+import {
+    MagnifyingGlassIcon,
+    ChevronUpDownIcon,
+} from "@heroicons/react/24/outline";
+import { EyeIcon, PlusIcon } from "@heroicons/react/24/solid";
+import {
+    Card,
+    CardHeader,
+    Input,
+    Typography,
+    Button,
+    CardBody,
+    CardFooter,
+    Avatar,
+    IconButton,
+    Tooltip,
+} from "@material-tailwind/react";
 
-
-const TABLE_HEAD = [
-    "Name list",
-    "Product",
-    "On/Off",
-    "Action",
-];
+const TABLE_HEAD = ["Field Name", "ID", ""];
 
 const TABLE_ROWS = [
     {
         img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
         name: "John Michael",
-        product: "ABC",
-        status: true,
+        id: "1",
     },
     {
         img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg",
         name: "Alexa Liras",
-        product: "ABC",
-        status: false,
+        id: "2",
     },
     {
         img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
         name: "Laurent Perrier",
-        product: "ABC",
-        status: false,
+        id: "3",
     },
     {
         img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-4.jpg",
         name: "Michael Levi",
-        product: "ABC",
-        status: true,
+        id: "4",
     },
     {
         img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg",
         name: "Richard Gran",
-        product: "ABC",
-        status: false,
+        id: "5",
     },
 ];
 
-export default function ShopCategory() {
+export default function FieldList() {
     return (
-        <Card className="h-fit w-full">
+        <Card className="w-full">
             <CardHeader floated={false} shadow={false} className="rounded-none">
                 <div className="mb-8 flex items-center justify-between gap-8">
                     <div>
-                        <Typography variant="h5" color="blue-gray"> Category list </Typography>
-                        <Typography color="gray" className="mt-1 font-normal"> See information about all category </Typography>
+                        <Typography variant="h5" color="blue-gray">
+                            Field list
+                        </Typography>
+                        <Typography color="gray" className="mt-1 font-normal">
+                            See information about all field
+                        </Typography>
                     </div>
                     <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-                        <Button variant="outlined" size="sm"> Preview </Button>
-                        <Button className="flex items-center gap-3" size="sm">
-                            <ArchiveBoxIcon strokeWidth={2} className="h-4 w-4" />
-                            Add categories
+                        <Button variant="outlined" size="sm">
+                            view all
                         </Button>
+                        <Button className="flex items-center gap-3" size="sm">
+                            <PlusIcon strokeWidth={2} className="h-4 w-4" /> Add field
+                        </Button>
+                    </div>
+                </div>
+                <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+                    <div className="w-full md:w-72">
+                        <Input
+                            label="Search"
+                            icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                        />
                     </div>
                 </div>
             </CardHeader>
             <CardBody className="overflow-scroll px-0">
-                <table className=" w-full min-w-max table-auto text-left">
+                <table className="mt-4 w-full min-w-max table-auto text-left">
                     <thead>
                         <tr>
                             {TABLE_HEAD.map((head, index) => (
-                                <th key={head} className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50" >
-                                    <Typography variant="small" color="blue-gray" className="flex items-center justify-between gap-2 font-normal leading-none opacity-70" >
-                                        {head}
+                                <th
+                                    key={head}
+                                    className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
+                                >
+                                    <Typography
+                                        variant="small"
+                                        color="blue-gray"
+                                        className="flex items-center justify-between gap-2 font-normal leading-none opacity-70"
+                                    >
+                                        {head}{" "}
                                         {index !== TABLE_HEAD.length - 1 && (
                                             <ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
                                         )}
@@ -79,7 +102,7 @@ export default function ShopCategory() {
                     </thead>
                     <tbody>
                         {TABLE_ROWS.map(
-                            ({ img, name, product, status }, index) => {
+                            ({ img, name, id }, index) => {
                                 const isLast = index === TABLE_ROWS.length - 1;
                                 const classes = isLast
                                     ? "p-4"
@@ -89,50 +112,47 @@ export default function ShopCategory() {
                                     <tr key={name}>
                                         <td className={classes}>
                                             <div className="flex items-center gap-3">
-                                                <Avatar src={img} alt={name} size="sm" variant="rounded" />
+                                                <Avatar src={img} alt={name} size="sm" />
                                                 <div className="flex flex-col">
-                                                    <Typography variant="small" color="blue-gray" className="font-normal" > {name} </Typography>
+                                                    <Typography
+                                                        variant="small"
+                                                        color="blue-gray"
+                                                        className="font-normal"
+                                                    >
+                                                        {name}
+                                                    </Typography>
                                                 </div>
                                             </div>
                                         </td>
                                         <td className={classes}>
                                             <div className="flex flex-col">
-                                                <Typography variant="small" color="blue-gray" className="font-normal" > {product} </Typography>
+                                                <Typography
+                                                    variant="small"
+                                                    color="blue-gray"
+                                                    className="font-normal"
+                                                >
+                                                    {id}
+                                                </Typography>
                                             </div>
                                         </td>
                                         <td className={classes}>
-                                            <div className="w-max">
-                                                <Chip variant="ghost" size="sm"
-                                                    value={
-                                                        status
-                                                            ? "ON"
-                                                            : "OFF"
-                                                    }
-                                                    color={
-                                                        status
-                                                            ? "green"
-                                                            : "blue-gray"
-                                                    }
-                                                />
-                                            </div>
-                                        </td>
-
-                                        <td className={classes}>
-                                            <Tooltip content="Edit User">
+                                            <Tooltip content="Details">
                                                 <IconButton variant="text">
-                                                    <PencilIcon className="h-4 w-4" />
+                                                    <EyeIcon className="h-4 w-4" />
                                                 </IconButton>
                                             </Tooltip>
                                         </td>
                                     </tr>
                                 );
-                            }
+                            },
                         )}
                     </tbody>
                 </table>
             </CardBody>
             <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-                <Typography variant="small" color="blue-gray" className="font-normal" > Page 1 of 999999 </Typography>
+                <Typography variant="small" color="blue-gray" className="font-normal">
+                    Page 1 of 10
+                </Typography>
                 <div className="flex gap-2">
                     <Button variant="outlined" size="sm">
                         Previous

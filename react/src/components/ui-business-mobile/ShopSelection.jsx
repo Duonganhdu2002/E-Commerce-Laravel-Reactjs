@@ -5,7 +5,7 @@ import Image from "../../assets/icon/cancle.svg";
 
 const ShopSelection = () => {
     const shopData = [
-        { id: 1, icon: Image, status: 'My Product', link: "/bussiness/products"},
+        { id: 1, icon: Image, status: 'My Product', link: "/business/products"},
         { id: 2, icon: Image, status: 'Completed' },
         { id: 3, icon: Image, status: 'Waiting for delivery' },
         { id: 4, icon: Image, status: 'In progress' },

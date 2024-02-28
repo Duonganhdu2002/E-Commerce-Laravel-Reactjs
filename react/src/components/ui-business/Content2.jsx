@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 const Content2 = () => {
     return (
         <div>
-            {/* Content for /bussiness/product */}
+            {/* Content for /business/product */}
             <h1>Product Content</h1>
             <Outlet />
         </div>

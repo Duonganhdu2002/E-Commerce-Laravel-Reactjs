@@ -19,52 +19,52 @@ class UserController extends Controller
 
 
     public function info(Request $request, int $user_id)
-{
-    try {
-        // Find the user by user_id
-        $user = User::find($user_id);
+    {
+        try {
+            // Find the user by user_id
+            $user = User::find($user_id);
 
-        if (!$user) {
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User not found',
+                    'data' => null
+                ], 404);
+            }
+
+            // Get user address
+            $userAddress = UserAddress::where('user_id', $user_id)->first();
+
+            // Merge user and user_address data
+            $userDataWithAddress = array_merge($user->toArray(), $userAddress ? $userAddress->toArray() : []);
+
+            // Get the total rating and count of all products belonging to the user
+            $productReviews = ProductReview::whereHas('product', function ($query) use ($user_id) {
+                $query->where('created_by_user_id', $user_id);
+            })->get();
+
+            $totalRating = $productReviews->sum('rating');
+            $totalReviews = $productReviews->count();
+
+            // Calculate the average rating
+            $averageRating = $totalReviews > 0 ? $totalRating / $totalReviews : 0;
+
+            // Add the total and average ratings to the user data
+            $userDataWithAddress['average_rating'] = $averageRating;
+
+            return response()->json([
+                'status' => true,
+                'message' => 'User information retrieved successfully',
+                'data' => $userDataWithAddress,
+            ], 200);
+        } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
-                'message' => 'User not found',
+                'message' => $th->getMessage(),
                 'data' => null
-            ], 404);
+            ], 500);
         }
-
-        // Get user address
-        $userAddress = UserAddress::where('user_id', $user_id)->first();
-
-        // Merge user and user_address data
-        $userDataWithAddress = array_merge($user->toArray(), $userAddress ? $userAddress->toArray() : []);
-
-        // Get the total rating and count of all products belonging to the user
-        $productReviews = ProductReview::whereHas('product', function ($query) use ($user_id) {
-            $query->where('created_by_user_id', $user_id);
-        })->get();
-
-        $totalRating = $productReviews->sum('rating');
-        $totalReviews = $productReviews->count();
-
-        // Calculate the average rating
-        $averageRating = $totalReviews > 0 ? $totalRating / $totalReviews : 0;
-
-        // Add the total and average ratings to the user data
-        $userDataWithAddress['average_rating'] = $averageRating;
-
-        return response()->json([
-            'status' => true,
-            'message' => 'User information retrieved successfully',
-            'data' => $userDataWithAddress,
-        ], 200);
-    } catch (\Throwable $th) {
-        return response()->json([
-            'status' => false,
-            'message' => $th->getMessage(),
-            'data' => null
-        ], 500);
     }
-}
 
 
 
@@ -320,17 +320,19 @@ class UserController extends Controller
 
     public function userList()
     {
-        $this->middleware('auth:sanctum');
-        $user = User::all();
+        $users = User::where('type_account_id', 2)
+            ->orWhere('type_account_id', 3)
+            ->paginate(7);
 
         $arr = [
             'status' => true,
             'message' => 'Danh sách tài khoản',
-            'data' => UserResource::collection($user)
+            'data' => $users
         ];
 
         return response()->json($arr, 200);
     }
+
 
     public function show(string $id)
     {

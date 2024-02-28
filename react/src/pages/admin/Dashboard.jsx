@@ -3,7 +3,7 @@ import InformationCard from "../../components/ui-admin/InformationCard";
 import Graph1 from "../../components/ui-admin/Graph1";
 import Graph2 from "../../components/ui-admin/Graph2";
 import TodayOrderSold from "../../components/ui-admin/TodayOrderSold";
-import MemberList from "../../components/ui-bussiness/MemberList";
+import MemberList from "../../components/ui-business/MemberList";
 
 export default function Dashboard() {
     return (

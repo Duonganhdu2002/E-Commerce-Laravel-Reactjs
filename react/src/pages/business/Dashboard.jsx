@@ -1,9 +1,9 @@
 import React from "react";
-import InformationCard from "../../components/ui-bussiness/InformationCard";
-import Graph1 from "../../components/ui-bussiness/Graph1";
-import Graph2 from "../../components/ui-bussiness/Graph2";
-import TodayOrderSold from "../../components/ui-bussiness/TodayOrderSold";
-import MemberList from "../../components/ui-bussiness/MemberList";
+import InformationCard from "../../components/ui-business/InformationCard";
+import Graph1 from "../../components/ui-business/Graph1";
+import Graph2 from "../../components/ui-business/Graph2";
+import TodayOrderSold from "../../components/ui-business/TodayOrderSold";
+import MemberList from "../../components/ui-business/MemberList";
 
 export default function Dashboard() {
     return (

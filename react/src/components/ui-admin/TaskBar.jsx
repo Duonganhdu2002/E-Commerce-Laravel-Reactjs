@@ -28,43 +28,77 @@ const accordionData = [
     {
         id: 1,
         icon: <PresentationChartBarIcon className="h-5 w-5" />,
-        title: "Shipment",
+        title: "User",
         links: [
-            { path: "/admin/my-shipment", label: "My shipment" },
-            { path: "/admin/mass-ship", label: "Mass ship" },
-            { path: "/admin/shipping-setting", label: "Shipping setting" },
+            { path: "/admin/user-list", label: "User list" },
         ],
     },
     {
         id: 2,
         icon: <DocumentTextIcon className="h-5 w-5" />,
-        title: "Order",
+        title: "Field",
         links: [
-            { path: "/admin/my-oders", label: "My orders" },
-            { path: "/admin/cancelation", label: "Cancellation" },
-            { path: "/admin/return-refun", label: "Return/Refund" },
+            { path: "/admin/field-list", label: "Field list" },
         ],
     },
     {
         id: 3,
         icon: <ArchiveBoxIcon className="h-5 w-5" />,
-        title: "Product",
+        title: "Category",
         links: [
-            { path: "/admin/my-products", label: "My products" },
-            { path: "/admin/add-new-product", label: "Add new product" },
-            { path: "/admin/product-violations", label: "Product violations" },
-            { path: "/admin/product-setting", label: "Product setting" },
+            { path: "/admin/category-list", label: "Category list" },
         ],
     },
     {
         id: 4,
         icon: <ShoppingBagIcon className="h-5 w-5" />,
-        title: "Shop",
+        title: "Brand",
         links: [
-            { path: "/admin/shop-rating", label: "Shop rating" },
-            { path: "/admin/shop-information", label: "Shop information" },
-            { path: "/admin/shop-category", label: "Shop category" },
-            { path: "/admin/my-report", label: "My report" },
+            { path: "/admin/brand-list", label: "Brand list" },
+        ],
+    },
+    {
+        id: 5,
+        icon: <ShoppingBagIcon className="h-5 w-5" />,
+        title: "Order",
+        links: [
+            { path: "/admin/order-list", label: "Order list" },
+            { path: "/admin/order-user", label: "Order user" },
+        ],
+    },
+    {
+        id: 6,
+        icon: <ShoppingBagIcon className="h-5 w-5" />,
+        title: "Order status",
+        links: [
+            { path: "/admin/order-status-list", label: "Order status list" },
+        ],
+    },
+    {
+        id: 7,
+        icon: <ShoppingBagIcon className="h-5 w-5" />,
+        title: "Product",
+        links: [
+            { path: "/admin/product-list", label: "Product list" },
+            { path: "/admin/product-user-list", label: "Product user list" },
+        ],
+    },
+    {
+        id: 8,
+        icon: <ShoppingBagIcon className="h-5 w-5" />,
+        title: "Review",
+        links: [
+            { path: "/admin/review-list", label: "Review list" },
+            { path: "/admin/review-user-list", label: "Review user list" },
+        ],
+    },
+
+    {
+        id: 9,
+        icon: <ShoppingBagIcon className="h-5 w-5" />,
+        title: "Shopping method",
+        links: [
+            { path: "/admin/shopping-method-list", label: "Shopping method list" },
         ],
     },
 ];
@@ -78,7 +112,7 @@ const TaskBarAdmin = () => {
     };
 
     return (
-        <Card className=" fixed h-[94vh] w-full max-w-[20rem] p-4 shadow-md shadow-blue-gray-900/30 z-10">
+        <Card className=" fixed w-full max-w-[20rem] p-4 shadow-md shadow-blue-gray-900/30 z-10">
             <div className="mb-2 p-4">
                 <Typography variant="h5" color="blue-gray">
                     Sidebar
@@ -130,18 +164,7 @@ const TaskBarAdmin = () => {
                         Dashboard
                     </ListItem>
                 </Link>
-                <Link to="inbox">
 
-                    <ListItem>
-                        <ListItemPrefix>
-                            <InboxIcon className="h-5 w-5" />
-                        </ListItemPrefix>
-                        Inbox
-                        <ListItemSuffix>
-                            <Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
-                        </ListItemSuffix>
-                    </ListItem>
-                </Link>
                 <Link to="profile">
 
                     <ListItem>

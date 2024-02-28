@@ -1,5 +1,5 @@
 import React from 'react';
-import ShopAccount from '../../components/ui-bussiness-mobile/ShopAccount';
+import ShopAccount from '../../components/ui-business-mobile/ShopAccount';
 
 const ProductMobile = () => {
     return (

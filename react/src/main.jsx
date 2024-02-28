@@ -1,23 +1,23 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route, Outlet, Navigate} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
 import "./index.css";
 import PopupChat from "./components/ui/PopupChat";
 import { UserProvider } from "./context/UserContext";
 import SubFooter from "./components/ui/Subfooter";
 import { Provider } from "react-redux";
 import { store } from "./redux/Store";
-import MenuBarBussiness from "./components/ui-bussiness/MenuBar";
-import LoginBussiness from "./components/ui-bussiness/Login";
-import RegisterBussiness from "./components/ui-bussiness/Register";
-import ProfileBussiness from "./components/ui-bussiness/Profile";
-import InboxBussiness from "./components/ui-bussiness/Inbox";
-import MyProductsBussiness from "./pages/bussiness/MyProducts";
-import DashboardBussiness from "./pages/bussiness/Dashboard";
-import AddProductsBussiness from "./components/ui-bussiness/AddProducts";
-import { MyOrdersBussiness } from "./components/ui-bussiness/MyOrders";
-import { CancellationBusiness } from "./components/ui-bussiness/Cancellation";
-import TaskBar from "./components/ui-bussiness/TaskBar";
+import MenuBarBusiness from "./components/ui-business/MenuBar";
+import LoginBusiness from "./components/ui-business/Login";
+import RegisterBusiness from "./components/ui-business/Register";
+import ProfileBusiness from "./components/ui-business/Profile";
+import InboxBusiness from "./components/ui-business/Inbox";
+import MyProductsBusiness from "./pages/business/MyProducts";
+import DashboardBusiness from "./pages/business/Dashboard";
+import AddProductsBusiness from "./components/ui-business/AddProducts";
+import { MyOrdersBusiness } from "./components/ui-business/MyOrders";
+import { CancellationBusiness } from "./components/ui-business/Cancellation";
+import TaskBar from "./components/ui-business/TaskBar";
 import MenuBarAdmin from "./components/ui-admin/MenuBar";
 import LoginAdmin from "./components/ui-admin/Login";
 import RegisterAdmin from "./components/ui-admin/Register";
@@ -43,11 +43,16 @@ import SubFooter2 from "./components/ui/SubFooter2";
 import SearchLayout from "./components/ui/SearchLayout";
 import Error404 from "./components/ui/error404";
 import { useSelector } from 'react-redux'
-import { ShopRating } from "./components/ui-bussiness/ShopRating";
-import { ShopInformation } from "./components/ui-bussiness/ShopInformation";
-import  ShopCategory from "./components/ui-bussiness/ShopCategory";
+import { ShopRating } from "./components/ui-business/ShopRating";
+import { ShopInformation } from "./components/ui-business/ShopInformation";
+import MyShipment from "./components/ui-business/MyShipment";
+import ShopCategory from "./components/ui-business/ShopCategory";
 import Success from "./components/ui/Success";
-
+import { UserList } from "./components/ui-admin/UserList";
+import FieldList from "./components/ui-admin/FieldList";
+import CategoryList from "./components/ui-admin/CategoryList";
+import BrandList from "./components/ui-admin/BrandList";
+import OrderList from "./components/ui-admin/OrderList";
 
 const Customer = () => {
     return (
@@ -62,12 +67,12 @@ const Customer = () => {
     );
 }
 
-const Bussiness = () => {
+const Business = () => {
     return (
         <div className="flex flex-col h-screen relative ">
             <div className="fixed bg-gray-100 w-full h-full -z-10"></div>
             <div className=" top-0 z-10 mt-1">
-                <MenuBarBussiness />
+                <MenuBarBusiness />
             </div>
 
             <div className="flex flex-grow md:flex-row mt-24 px-2">
@@ -111,7 +116,7 @@ const PrivateBusinessRoute = ({ element }) => {
         return <Navigate to="/business/login" />;
     }
 
-    if (seller.type_account_id === 2 ) {
+    if (seller.type_account_id === 2) {
         return element;
     } else {
         return <Navigate to="/business/login" />;
@@ -133,9 +138,23 @@ const PrivateCustomerRoute = ({ element }) => {
     }
 };
 
+const PrivateAdminRoute = ({ element }) => {
+
+    const admin = useSelector((state) => state.admin.admin);
+
+    if (!admin) {
+        return <Navigate to="/admin/login" />;
+    }
+
+    if (admin.type_account_id === 1) {
+        return element;
+    } else {
+        return <Navigate to="/admin/login" />;
+    }
+};
+
 
 const App = () => {
-    const user = useSelector((state) => state.user.user);
     return (
         <div>
             <BrowserRouter>
@@ -152,63 +171,61 @@ const App = () => {
                                 <Route index element={<Home />} />
                                 <Route path="login" element={<Login />} />
                                 <Route path="register" element={<Register />} />
-                                <Route path="cart" element={<PrivateCustomerRoute element={<Cart/>} />} />
+                                <Route path="cart" element={<PrivateCustomerRoute element={<Cart />} />} />
                                 <Route path="fields/:fieldId" element={<Field />} />
                                 <Route path="brand/:brandId" element={<BrandPage />} />
                                 <Route path="category/:categoryId" element={<CategoryPage />} />
                                 <Route path="product/:productId" element={<ProductDetails />} />
                                 <Route path="shop/:user_id" element={<Shop />} />
-                                <Route path="profile" element={<PrivateCustomerRoute element={<Profile/>} />} />
-                                <Route path="checkout" element={<PrivateCustomerRoute element={<Checkout/>} />} />
+                                <Route path="profile" element={<PrivateCustomerRoute element={<Profile />} />} />
+                                <Route path="checkout" element={<PrivateCustomerRoute element={<Checkout />} />} />
                                 <Route path="search/:searchKey" element={<SearchLayout />} />
-                                <Route path="orderstatus" element={<PrivateCustomerRoute element={<OrderStatus/>} />} />
-                                <Route path="success" element={<PrivateCustomerRoute element={<Success/>} />} />
+                                <Route path="orderstatus" element={<PrivateCustomerRoute element={<OrderStatus />} />} />
+                                <Route path="success" element={<PrivateCustomerRoute element={<Success />} />} />
                             </Route>
 
-                            {/* Bussiness */}
+                            {/* Business */}
 
-                            <Route path="/business" element={<Bussiness />}>
-                                <Route index element={<PrivateBusinessRoute element={<DashboardBussiness />} />} />
-                                <Route path="login" element={<LoginBussiness />} />
-                                <Route path="register" element={<RegisterBussiness />} />
-                                <Route path="my-shipment" element={<PrivateBusinessRoute element={<div>My shipment</div>} />} />
-                                <Route path="my-oders" element={<PrivateBusinessRoute element={<MyOrdersBussiness />} />} />
+                            <Route path="/business" element={<Business />}>
+                                <Route index element={<PrivateBusinessRoute element={<DashboardBusiness />} />} />
+                                <Route path="login" element={<LoginBusiness />} />
+                                <Route path="register" element={<RegisterBusiness />} />
+                                <Route path="my-shipment" element={<PrivateBusinessRoute element={<MyShipment />} />} />
+                                <Route path="my-oders" element={<PrivateBusinessRoute element={<MyOrdersBusiness />} />} />
                                 <Route path="cancelation" element={<PrivateBusinessRoute element={<CancellationBusiness />} />} />
-                                <Route path="my-products" element={<PrivateBusinessRoute element={<MyProductsBussiness />} />} />
-                                <Route path="add-new-product" element={<PrivateBusinessRoute element={<AddProductsBussiness />} />} />
+                                <Route path="my-products" element={<PrivateBusinessRoute element={<MyProductsBusiness />} />} />
+                                <Route path="add-new-product" element={<PrivateBusinessRoute element={<AddProductsBusiness />} />} />
                                 <Route path="shop-rating" element={<PrivateBusinessRoute element={<ShopRating />} />} />
                                 <Route path="shop-information" element={<PrivateBusinessRoute element={<ShopInformation />} />} />
-                                <Route path="shop-category" element={<PrivateBusinessRoute element={<ShopCategory/>}/>} />
-                                <Route path="dashboard" element={<PrivateBusinessRoute element={<div>Dashboard Content</div>} />} />
-                                <Route path="inbox" element={<PrivateBusinessRoute element={<InboxBussiness />} />} />
-                                <Route path="profile" element={<PrivateBusinessRoute element={<ProfileBussiness />} />} />
+                                <Route path="shop-category" element={<PrivateBusinessRoute element={<ShopCategory />} />} />
+                                <Route path="dashboard" element={<PrivateBusinessRoute element={<Business />} />} />
+                                <Route path="inbox" element={<PrivateBusinessRoute element={<InboxBusiness />} />} />
+                                <Route path="profile" element={<PrivateBusinessRoute element={<ProfileBusiness />} />} />
                             </Route>
 
                             {/* Admin */}
 
                             <Route path="/admin" element={<Admin />}>
-                                <Route index element={<DashboardAdmin />} />
+                                <Route index element={<PrivateAdminRoute element={<DashboardAdmin />} />} />
                                 <Route path="login" element={<LoginAdmin />} />
                                 <Route path="register" element={<RegisterAdmin />} />
-                                <Route path="my-shipment" element={<div>My shipment</div>} />
-                                <Route path="mass-ship" element={<div>Mass ship</div>} />
-                                <Route path="shipping-setting" element={<div>Shipping setting</div>} />
-                                <Route path="my-oders" element={<div>My oders</div>} />
-                                <Route path="return-refun" element={<div>Return/Refun</div>} />
-                                <Route path="cancelation" element={<div>Cancelation</div>} />
-                                <Route path="my-products" element={<MyProductsAdmin />} />
-                                <Route path="add-new-product" element={<div>Add New Product</div>} />
-                                <Route path="product-violations" element={<div>Product Violations</div>} />
-                                <Route path="product-setting" element={<div>Product Settings</div>} />
-                                <Route path="shop-rating" element={<div>Shop Rating</div>} />
-                                <Route path="shop-information" element={<div>Shop Information</div>} />
-                                <Route path="shop-category" element={<div>Shop Category</div>} />
-                                <Route path="my-report" element={<div>My Report</div>} />
-                                <Route path="dashboard" element={<div>Dashboard Content</div>} />
-                                <Route path="inbox" element={<InboxAdmin />} />
-                                <Route path="profile" element={<ProfileAdmin />} />
-                                <Route path="settings" element={<div>Settings Content</div>} />
-                                <Route path="logout" element={<div>Logout Content</div>} />
+                                <Route path="user-list" element={<PrivateAdminRoute element={<UserList />} />} />
+                                <Route path="field-list" element={<PrivateAdminRoute element={<FieldList />} />} />
+                                <Route path="category-list" element={<PrivateAdminRoute element={<CategoryList />} />} />
+                                <Route path="brand-list" element={<PrivateAdminRoute element={<BrandList />} />} />
+                                <Route path="order-list" element={<PrivateAdminRoute element={<OrderList />} />} />
+                                <Route path="order-user" element={<PrivateAdminRoute element={<div>Cancelation</div>} />} />
+                                <Route path="my-products" element={<PrivateAdminRoute element={<MyProductsAdmin />} />} />
+                                <Route path="order-status-list" element={<PrivateAdminRoute element={<div>Add New Product</div>} />} />
+                                <Route path="product-list" element={<PrivateAdminRoute element={<div>Cancelation</div>} />} />
+                                <Route path="product-user-list" element={<PrivateAdminRoute element={<div>Cancelation</div>} />} />
+                                <Route path="review-list" element={<PrivateAdminRoute element={<div>Cancelation</div>} />} />
+                                <Route path="review-user-list" element={<PrivateAdminRoute element={<div>Cancelation</div>} />} />
+                                <Route path="shopping-method-list" element={<PrivateAdminRoute element={<div>Cancelation</div>} />} />
+                                <Route path="dashboard" element={<PrivateAdminRoute element={<DashboardAdmin />} />} />
+                                <Route path="profile" element={<PrivateAdminRoute element={<ProfileAdmin />} />} />
+                                <Route path="settings" element={<PrivateAdminRoute element={<div>Cancelation</div>} />} />
+                                <Route path="logout" element={<PrivateAdminRoute element={<div>Cancelation</div>} />} />
                             </Route>
 
                         </Routes>

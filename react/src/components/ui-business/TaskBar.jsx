@@ -116,7 +116,7 @@ const TaskBar = () => {
                     </Accordion>
                 ))}
                 <hr className="my-2 border-blue-gray-50" />
-                <Link to="/bussiness">
+                <Link to="/business">
                     <ListItem>
                         <ListItemPrefix>
                             <InboxIcon className="h-5 w-5" />
@@ -124,7 +124,7 @@ const TaskBar = () => {
                         Dashboard
                     </ListItem>
                 </Link>
-                <Link to="inbox">
+                {/* <Link to="inbox">
 
                     <ListItem>
                         <ListItemPrefix>
@@ -135,7 +135,7 @@ const TaskBar = () => {
                             <Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
                         </ListItemSuffix>
                     </ListItem>
-                </Link>
+                </Link> */}
                 <Link to="profile">
 
                     <ListItem>

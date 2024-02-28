@@ -9,7 +9,12 @@ import {
     AccordionBody,
     Checkbox,
     Button, IconButton,
+    Select, Option
 } from "@material-tailwind/react";
+
+import Star0 from "../../assets/icon/star-svgrepo-com.svg";
+import Star1 from "../../assets/icon/star-outline.svg";
+import Cart from "../../assets/icon/add-to-cart.svg";
 
 import { } from "@material-tailwind/react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
@@ -17,41 +22,9 @@ import { Fragment, useEffect, useState } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon, PresentationChartBarIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
 import { fetchAllCategoryByUser } from '../../services/categoryService'
-import { productSortUser } from "../../services/productService";
+import { productFilter } from "../../services/productService";
 import { Link } from "react-router-dom"
 
-const sortOptions = [
-    { name: 'Best Rating', href: '#', current: false },
-    { name: 'Newest', href: '#', current: false },
-    { name: 'Price: Low to High', href: '#', current: false },
-    { name: 'Price: High to Low', href: '#', current: false },
-]
-
-const filters = [
-    {
-        id: 'category',
-        name: 'Category',
-        options: [
-            { value: 'new-arrivals', label: 'New Arrivals', checked: false },
-            { value: 'sale', label: 'Sale', checked: false },
-            { value: 'travel', label: 'Travel', checked: true },
-            { value: 'organization', label: 'Organization', checked: false },
-            { value: 'accessories', label: 'Accessories', checked: false },
-        ],
-    },
-    {
-        id: 'brand',
-        name: 'Brand',
-        options: [
-            { value: '2l', label: '2L', checked: false },
-            { value: '6l', label: '6L', checked: false },
-            { value: '12l', label: '12L', checked: false },
-            { value: '18l', label: '18L', checked: false },
-            { value: '20l', label: '20L', checked: false },
-            { value: '40l', label: '40L', checked: true },
-        ],
-    },
-]
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -60,13 +33,24 @@ function classNames(...classes) {
 export default function CategoryBar({ data, user_id }) {
 
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-
     const [categoryList, setCategoryList] = useState([]);
     const [dataProduct, setDataProduct] = useState([]);
-    const sortType = 'newest';
-    const page = 1;
+    const [dataFull, setDataFull] = useState([])
+    const [dataFilter, setDataFilter] = useState([]);
+    const [page, setPage] = useState(1);
+    const [category_ids, setCategory_ids] = useState([]);
+    const [brand_ids, setBrand_ids] = useState([]);
+    const type_sort = ['newest', 'price_high_to_low', 'price_low_to_high'];
+    const [typeSelect, setTypeSelect] = useState(type_sort[0])
 
+    const defaultProduct = {
+        "category_ids": category_ids,
+        "brand_ids": brand_ids,
+        "user_id": user_id,
+        "type_sort": typeSelect
+    }
 
+    // API show tất cả category của shop
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -80,26 +64,114 @@ export default function CategoryBar({ data, user_id }) {
         fetchData();
     }, [user_id]);
 
-    // console.log(categoryList)
+    // API gửi đi dữ liệu đến hàm filter
+    const fetchDataABC = async () => {
+        try {
+            let res = await productFilter(defaultProduct, page);
+            setDataFilter(res.data.data);
+            setDataFull(res.data);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
 
+    // useffect xử lí đợi defaultProduct có sự thay đổi và gọi lại hàm 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await productSortUser(sortType, user_id, page);
-                setDataProduct(res.data);
+                await fetchDataABC(defaultProduct, page, typeSelect);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
         };
 
         fetchData();
-    }, [user_id, sortType, page]);
 
-    // console.log(dataProduct)
+        fetchDataABC(defaultProduct, page, category_ids).then((res) => {
+        });
+    }, [page, category_ids, typeSelect]);
+
+    // onchange giá trị mảng category_ids
+    const handleCheckboxChange = (categoryId) => {
+        if (page !== 1) {
+            setPage(1)
+        }
+        setCategory_ids((prevIds) => {
+            if (prevIds.includes(categoryId)) {
+                return prevIds.filter((id) => id !== categoryId);
+            } else {
+                return [...prevIds, categoryId];
+            }
+        });
+    };
 
     const [open, setOpen] = useState(0);
     const handleOpen = (value) => {
         setOpen(open === value ? 0 : value);
+    };
+
+    // Start pagination
+
+    const [active, setActive] = useState(1);
+    const [visiblePages, setVisiblePages] = useState([]);
+
+    const getItemProps = (index) => ({
+        variant: active === index ? 'filled' : 'text',
+        color: 'gray',
+        onClick: () => {
+            setPage(index);
+            setActive(index);
+        },
+    });
+
+    const next = () => {
+        if (active === dataFull.last_page) return;
+
+        setActive(active + 1);
+        setPage(active + 1);
+    };
+
+    const prev = () => {
+        if (active === dataFull.from) return;
+
+        setActive(active - 1);
+        setPage(active - 1);
+    };
+
+    useEffect(() => {
+        const calculateVisiblePages = async () => {
+            const totalVisiblePages = 3;
+            const totalPageCount = dataFull.last_page;
+
+            let startPage, endPage;
+            if (totalPageCount <= totalVisiblePages) {
+                startPage = 1;
+                endPage = totalPageCount;
+            } else {
+                const middlePage = Math.floor(totalVisiblePages / 2);
+                if (active <= middlePage + 1) {
+                    startPage = 1;
+                    endPage = totalVisiblePages;
+                } else if (active >= totalPageCount - middlePage) {
+                    startPage = totalPageCount - totalVisiblePages + 1;
+                    endPage = totalPageCount;
+                } else {
+                    startPage = active - middlePage;
+                    endPage = active + middlePage;
+                }
+            }
+
+            const visiblePagesArray = Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index);
+            setVisiblePages(visiblePagesArray);
+        };
+
+        calculateVisiblePages();
+    }, [active, dataFull.last_page]);
+
+    // End pagination
+
+    const handleSortChange = (selectedValue) => {
+        setTypeSelect(selectedValue);
     };
 
     return (
@@ -109,61 +181,13 @@ export default function CategoryBar({ data, user_id }) {
                     <h1 className="text-xl md:text-2xl lg:text-4xl font-bold tracking-tight text-gray-900">New Arrivals</h1>
 
                     <div className="flex items-center">
-                        <Menu as="div" className="relative inline-block text-left">
-                            <div>
-                                <Menu.Button className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
-                                    Sort
-                                    <ChevronDownIcon
-                                        className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                                        aria-hidden="true"
-                                    />
-                                </Menu.Button>
-                            </div>
-
-                            <Transition
-                                as={Fragment}
-                                enter="transition ease-out duration-100"
-                                enterFrom="transform opacity-0 scale-95"
-                                enterTo="transform opacity-100 scale-100"
-                                leave="transition ease-in duration-75"
-                                leaveFrom="transform opacity-100 scale-100"
-                                leaveTo="transform opacity-0 scale-95"
-                            >
-                                <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                    <div className="py-1">
-                                        {sortOptions.map((option) => (
-                                            <Menu.Item key={option.name}>
-                                                {({ active }) => (
-                                                    <a
-                                                        href={option.href}
-                                                        className={classNames(
-                                                            option.current ? 'font-medium text-gray-900' : 'text-gray-500',
-                                                            active ? 'bg-gray-100' : '',
-                                                            'block px-4 py-2 text-sm'
-                                                        )}
-                                                    >
-                                                        {option.name}
-                                                    </a>
-                                                )}
-                                            </Menu.Item>
-                                        ))}
-                                    </div>
-                                </Menu.Items>
-                            </Transition>
-                        </Menu>
-
-                        <button type="button" className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7">
-                            <span className="sr-only">View grid</span>
-                            <Squares2X2Icon className="h-5 w-5" aria-hidden="true" />
-                        </button>
-                        <button
-                            type="button"
-                            className="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
-                            onClick={() => setMobileFiltersOpen(true)}
-                        >
-                            <span className="sr-only">Filters</span>
-                            <FunnelIcon className="h-5 w-5" aria-hidden="true" />
-                        </button>
+                        <div className=" max-w-24 mr-24">
+                            <Select variant="standard" label="Sort" value={typeSelect} onChange={handleSortChange}>
+                                <Option value={type_sort[0]}>Newest</Option>
+                                <Option value={type_sort[2]}>Low to High</Option>
+                                <Option value={type_sort[1]}>High to Low</Option>
+                            </Select>
+                        </div>
                     </div>
                 </div>
 
@@ -203,8 +227,9 @@ export default function CategoryBar({ data, user_id }) {
                                     </ListItem>
                                     <AccordionBody className="py-1">
                                         <List>
-                                            {
-                                                categoryList && categoryList.length > 0 && categoryList.map((categoryName) => (
+                                            {categoryList &&
+                                                categoryList.length > 0 &&
+                                                categoryList.map((categoryName) => (
                                                     <div key={categoryName.product_category_id}>
                                                         <ListItem className="p-0">
                                                             <label
@@ -219,6 +244,8 @@ export default function CategoryBar({ data, user_id }) {
                                                                         containerProps={{
                                                                             className: "p-0",
                                                                         }}
+                                                                        checked={category_ids.includes(categoryName.product_category_id)}
+                                                                        onChange={() => handleCheckboxChange(categoryName.product_category_id)}
                                                                     />
                                                                 </ListItemPrefix>
                                                                 <Typography color="blue-gray" className="font-medium">
@@ -227,10 +254,7 @@ export default function CategoryBar({ data, user_id }) {
                                                             </label>
                                                         </ListItem>
                                                     </div>
-                                                ))
-                                            }
-
-
+                                                ))}
                                         </List>
                                     </AccordionBody>
                                 </Accordion>
@@ -240,30 +264,72 @@ export default function CategoryBar({ data, user_id }) {
                         {/* Product grid */}
                         <div className="lg:col-span-3">
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {Array.from({ length: 9 }).map((_, index) => (
-                                    <Link key={index} to={`/product`}>
-                                        <div className="w-fit mx-auto h-[300px] md:h-[330px] lg:h-[400px] xl:h-[460px]  bg-white shadow-md shadow-gray-300 rounded-xl duration-500 hover:scale-105 hover:shadow-2xl">
-                                            <img
-                                                className=" h-[200px] w-[200px] md:h-[220px] md:w-[220px] lg:h-[280px] lg:w-[280px] xl:h-[320px] xl:w-[320px] object-cover rounded-t-xl"
-                                                src="../../../src/assets/image/Bedroom1.1.jpg"
-                                                alt="Product"
-                                            />
-
-                                            <div className="px-4 py-3 h-[20%] w-full">
-                                                <p className="text-md lg:text-lg xl:text-xl font-bold text-black truncate block capitalize">bda</p>
-                                                <div className="flex items-center">
-                                                    <p className="text-md lg:text-lg xl:text-xl font-semibold text-black cursor-auto my-1">$76247</p>
-                                                    <del>
-                                                        <p className="text-sm text-gray-600 cursor-auto ml-2">$7364782</p>
-                                                    </del>
+                                {
+                                    dataFilter && dataFilter.length > 0 && dataFilter.map((products, index) => (
+                                        <Link key={index} to={`/product/${products.product_id}`}>
+                                            <div className="w-full h-[350px] md:h-[380px] lg:h-[450px] xl:h-[510px]  bg-white shadow-md shadow-gray-300 rounded-xl duration-500 hover:scale-105 hover:shadow-2xl">
+                                                <img
+                                                    className=" h-[200px] w-[200px] md:h-[220px] md:w-[220px] lg:h-[280px] lg:w-[280px] xl:h-[320px] xl:w-[320px] object-cover rounded-t-xl"
+                                                    src={`../../../src/assets/image/${products.images[0]}`}
+                                                    alt="Product"
+                                                />
+                                                <div className="px-4  mt-6 py-3 h-[20%] w-full">
+                                                    <p className="text-md lg:text-lg xl:text-xl font-bold text-black truncate block capitalize">{products.name}</p>
+                                                    <div className="space-x-1 flex justify-center mt-2 md:mt-4 lg:mt-6 xl:mt-8">
+                                                        {Array.from({ length: Math.round(products.average_rating) }, (_, index) => (
+                                                            <img className="w-5" key={index} src={Star0} alt="" />
+                                                        ))}
+                                                        {Array.from({ length: 5 - Math.round(products.average_rating) }, (_, index) => (
+                                                            <img className="w-5" key={index} src={Star1} alt="" />
+                                                        ))}
+                                                    </div>
+                                                    <div className="flex items-center mt-4">
+                                                        <p className="text-md lg:text-lg xl:text-xl font-semibold text-black cursor-auto my-1">${products.price}</p>
+                                                        <div className="ml-auto">
+                                                            <img src={Cart} alt="" />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </Link>
-                                ))}
+                                        </Link>
+                                    ))
+                                }
                             </div>
                             <div className=" flex justify-center mt-12">
-                                <SimplePagination />
+                                <div className=" flex justify-center">
+                                    <div className="flex items-center my-6 mt-12">
+                                        <Button
+                                            variant="text"
+                                            className="flex items-center gap-2"
+                                            onClick={prev}
+                                            disabled={active === dataFull.from}
+                                        >
+                                            <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Pre
+                                        </Button>
+
+                                        <div className="flex items-center gap-2">
+                                            {visiblePages.map((pageNumber) => (
+                                                <IconButton
+                                                    key={pageNumber}
+                                                    {...getItemProps(pageNumber)}
+                                                >
+                                                    {pageNumber}
+                                                </IconButton>
+                                            ))}
+                                        </div>
+
+
+                                        <Button
+                                            variant="text"
+                                            className="flex items-center gap-2"
+                                            onClick={next}
+                                            disabled={active === dataFull.last_page}
+                                        >
+                                            Nex
+                                            <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
+                                        </Button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -273,44 +339,3 @@ export default function CategoryBar({ data, user_id }) {
     )
 }
 
-
-export function SimplePagination() {
-    const [active, setActive] = useState(1);
-
-    const next = () => {
-        if (active === 10) return;
-
-        setActive(active + 1);
-    };
-
-    const prev = () => {
-        if (active === 1) return;
-
-        setActive(active - 1);
-    };
-
-    return (
-        <div className="flex items-center gap-8">
-            <IconButton
-                size="sm"
-                variant="outlined"
-                onClick={prev}
-                disabled={active === 1}
-            >
-                <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" />
-            </IconButton>
-            <Typography color="gray" className="font-normal">
-                Page <strong className="text-gray-900">{active}</strong> of{" "}
-                <strong className="text-gray-900">10</strong>
-            </Typography>
-            <IconButton
-                size="sm"
-                variant="outlined"
-                onClick={next}
-                disabled={active === 10}
-            >
-                <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
-            </IconButton>
-        </div>
-    );
-}

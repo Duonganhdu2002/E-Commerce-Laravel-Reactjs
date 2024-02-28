@@ -29,13 +29,12 @@ Route::prefix('user')->group(function () {
 
     Route::get('info/{user_id}', [UserController::class, 'info'])->name('info');
     Route::get('auth-total', [UserController::class, 'getTotalUsers'])->name('getTotalUsers');
-    Route::get('auth-list', [UserController::class, 'userList'])->name('userList')->name('userList');
-    Route::get('auth', [UserController::class, 'userPagination'])->name('userPagination');
+    Route::get('auth-list', [UserController::class, 'userList'])->name('userList');
 });
 
 Route::prefix('public')->group(function () {
     Route::prefix('product')->group(function () {
-
+        Route::get('all', [ProductController::class, 'index']);
         Route::get('show/{id}', [ProductController::class, 'show']);
         Route::post('add', [ProductController::class, 'store']);
 
@@ -91,11 +90,12 @@ Route::prefix('public')->group(function () {
         });
 
         //hiển thị danh sách sản phẩm theo sắp xếp
-        Route::get('/sort-products/{sortBy}', [ProductController::class, 'sortProducts']);
+        // Route::get('/sort-products/{sortBy}', [ProductController::class, 'sortProducts']);
 
         //hiển thị danh sách sản phẩm theo sắp xếp
-        Route::get('/sort-products/{sortBy}/{user_id}', [ProductController::class, 'sortUserProducts']);
+        // Route::get('/sort-products/{sortBy}/{user_id}', [ProductController::class, 'sortUserProducts']);
 
+        
     });
 
     Route::prefix('field')->group(function () {
@@ -113,6 +113,9 @@ Route::prefix('public')->group(function () {
         Route::get('id={categoryId}', [ProductCategoryController::class, 'showById']);
         //show category theo user
         Route::get('{user_id}', [ProductCategoryController::class, 'showUserCategories']);
+        //show category theo user có phân trang
+        Route::get('paging/{user_id}', [ProductCategoryController::class, 'showUserCategorieswithP']);
+
     });
 
     Route::prefix('cart')->group(function () {
@@ -126,9 +129,20 @@ Route::prefix('public')->group(function () {
         Route::get('list', [OrderController::class, 'index']);
         Route::post('make', [OrderController::class, 'checkout']);
         Route::get('/details/{order_id}', [OrderController::class, 'getOrderDetails']);
+<<<<<<< HEAD
 
         // Hiển thị các đơn hàng đang được vận chuyển 
         Route::get('/shipped-orders/{user_id}', [OrderController::class, 'showShippingOrdersByUserId']);
+        
+=======
+        //show các đơn hàng được đặt của seller
+        // Route::get('{user_id}', [OrderController::class, 'getSellerOrders']);
+        //show don hang duoc tim kiem theo username cua 1 shop
+        Route::get('/search', [SearchHistoryController::class, 'searchOrdersByUsername']);
+        //show cac don hang bị huy
+        Route::get('/disable/{user_id}', [OrderController::class, 'getDisableOrdersForShop']);
+
+>>>>>>> 3c4adc6acd7a3abb1fcd6dab9086b0ef066b4560
 
     });
 
@@ -149,7 +163,6 @@ Route::prefix('pageAdmin')->group(function () { // truy vấn dữ liệu ra tra
 
 Route::prefix('admin')->middleware(['auth:sanctum', 'check.role:1'])->group(function () {
 });
-
 
 Route::prefix('seller')->middleware(['auth:sanctum', 'check.role:2'])->group(function () {
 });

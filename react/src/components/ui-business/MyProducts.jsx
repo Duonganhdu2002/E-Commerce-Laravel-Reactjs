@@ -1,7 +1,7 @@
 import {
     MagnifyingGlassIcon,
     ChevronUpDownIcon,
-    ArrowRightIcon, 
+    ArrowRightIcon,
     ArrowLeftIcon
 } from "@heroicons/react/24/outline";
 import { PencilIcon } from "@heroicons/react/24/solid";
@@ -96,7 +96,7 @@ const TABLE_ROWS = [
     },
 ];
 
-export function MyProductsBussiness() {
+export function MyProductsBusiness() {
     const [active, setActive] = useState(1);
 
     const next = () => {
