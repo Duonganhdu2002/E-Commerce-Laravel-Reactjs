@@ -79,18 +79,15 @@ export default function OrderList() {
                 <div className="mb-8 flex items-center justify-between gap-8">
                     <div>
                         <Typography variant="h5" color="blue-gray">
-                            Brand list
+                            Order list
                         </Typography>
                         <Typography color="gray" className="mt-1 font-normal">
-                            See all brand
+                            See all order
                         </Typography>
                     </div>
                     <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
                         <Button variant="outlined" size="sm">
                             view all
-                        </Button>
-                        <Button className="flex items-center gap-3" size="sm">
-                            <PlusIcon strokeWidth={2} className="h-4 w-4" /> Add brand
                         </Button>
                     </div>
                 </div>
@@ -173,12 +170,14 @@ export default function OrderList() {
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <Chip
-                                                variant="ghost"
-                                                size="sm"
-                                                value={online === true ? "delivered" : (online === false ? "pending" : "in-transit")}
-                                                color={online === true ? "green" : (online === false ? "blue-gray" : "yellow")}
-                                            />
+                                            <div className="w-max">
+                                                <Chip
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    value={online === true ? "delivered" : (online === false ? "pending" : "in-transit")}
+                                                    color={online === true ? "green" : (online === false ? "blue-gray" : "yellow")}
+                                                />
+                                            </div>
                                         </td>
                                         <td className={classes}>
                                             <div className="w-max">
