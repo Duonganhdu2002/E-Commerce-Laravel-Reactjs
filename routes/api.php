@@ -31,7 +31,7 @@ Route::prefix('user')->group(function () {
 
 Route::prefix('public')->group(function () {
     Route::prefix('product')->group(function () {
-
+        Route::get('all', [ProductController::class, 'index']);
         Route::get('show/{id}', [ProductController::class, 'show']);
         Route::post('add', [ProductController::class, 'store']);
 
