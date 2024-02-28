@@ -29,6 +29,37 @@ class OrderController extends Controller
         return response()->json($arr, 200);
     }
 
+    public function getDisableOrdersForShop($shopId)
+    {
+        try {
+            $Orders = Order::where('shop_id', $shopId)
+                ->where('order_status_id', 4) 
+                ->get();
+    
+            if ($Orders->isEmpty()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Không có đơn hàng nào bị hủy cho cửa hàng có ID ' . $shopId,
+                    'data' => null,
+                ], 404);
+            }
+    
+            $arr = [
+                'status' => true,
+                'message' => 'Danh sách các đơn hàng đã bị hủy cho cửa hàng có ID ' . $shopId,
+                'data' => $Orders,
+            ];
+    
+            return response()->json($arr, 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Lỗi khi truy vấn cơ sở dữ liệu.',
+                'data' => null,
+            ], 500);
+        }
+    }
+
     public function showByUser($userId) // danh sach don mua cua nguoi dung
     {
         try {

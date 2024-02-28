@@ -130,6 +130,9 @@ Route::prefix('public')->group(function () {
         // Route::get('{user_id}', [OrderController::class, 'getSellerOrders']);
         //show don hang duoc tim kiem theo username cua 1 shop
         Route::get('/search', [SearchHistoryController::class, 'searchOrdersByUsername']);
+        //show cac don hang bị huy
+        Route::get('/disable/{user_id}', [OrderController::class, 'getDisableOrdersForShop']);
+
 
     });
 
@@ -150,7 +153,6 @@ Route::prefix('pageAdmin')->group(function () { // truy vấn dữ liệu ra tra
 
 Route::prefix('admin')->middleware(['auth:sanctum', 'check.role:1'])->group(function () {
 });
-
 
 Route::prefix('seller')->middleware(['auth:sanctum', 'check.role:2'])->group(function () {
 });
