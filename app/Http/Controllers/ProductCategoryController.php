@@ -87,4 +87,37 @@ class ProductCategoryController extends Controller
             ], 500);
         }
     }
+
+    public function showUserCategorieswithP($userId)
+    {
+        try {
+            $user = User::findOrFail($userId);
+
+            $userCategories = $user->products()->pluck('product_category_id')->unique();
+
+            $categories = Category::whereIn('product_category_id', $userCategories)->paginate(8);
+
+            if ($categories->isEmpty()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Người dùng không có category nào.',
+                    'data' => null,
+                ], 404);
+            }
+
+            $arr = [
+                'status' => true,
+                'message' => 'Danh sách các category của người dùng có user_id ' . $userId,
+                'data' => ProductCategoryResource::collection($categories),
+            ];
+
+            return response()->json($arr, 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Lỗi khi truy vấn cơ sở dữ liệu.',
+                'data' => null,
+            ], 500);
+        }
+    }
 }

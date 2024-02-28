@@ -237,7 +237,7 @@ class SearchHistoryController extends Controller
         ], 404);
     }
 
-    $orders = $user->orders()->where('shop_id', $shopId)->paginate(8);
+    $orders = $user->orders()->where('shop_id', $shopId)->paginate(7);
 
     return response()->json([
         'status' => 200,
