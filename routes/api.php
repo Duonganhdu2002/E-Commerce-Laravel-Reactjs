@@ -16,9 +16,12 @@ use App\Http\Controllers\ProvincesController;
 
 Route::prefix('user')->group(function () {
 
+    // Quyền admin
     Route::post('createAdmin', [UserController::class, 'createAdmin'])->name('createAdmin');
     Route::post('createBusiness', [UserController::class, 'createBusiness'])->name('createBusiness');
     Route::post('register', [UserController::class, 'createUser'])->name('register');
+    // xóa user
+    Route::delete('/{id}', [UserController::class, 'delete']);
 
     Route::post('login', [UserController::class, 'login'])->name('login');
     Route::post('loginBusiness', [UserController::class, 'loginBusiness'])->name('loginBusiness');
@@ -123,6 +126,10 @@ Route::prefix('public')->group(function () {
         Route::get('list', [OrderController::class, 'index']);
         Route::post('make', [OrderController::class, 'checkout']);
         Route::get('/details/{order_id}', [OrderController::class, 'getOrderDetails']);
+
+        // Hiển thị các đơn hàng đang được vận chuyển 
+        Route::get('/shipped-orders/{user_id}', [OrderController::class, 'showShippingOrdersByUserId']);
+
     });
 
     Route::prefix('location')->group(function () {

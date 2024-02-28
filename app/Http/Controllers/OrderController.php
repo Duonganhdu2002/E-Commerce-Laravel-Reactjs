@@ -162,7 +162,7 @@ class OrderController extends Controller
         }
 
         $user_id = $input['user_id'];
-    
+
         try {
             $order = Order::create([
                 'user_id' => $input['user_id'],
@@ -244,4 +244,32 @@ class OrderController extends Controller
             ], 404);
         }
     }
+
+    public function showShippingOrdersByUserId($userId)
+    {
+        // Lấy tất cả các đơn hàng của shop (user) có user_id và có order_status_id = 2
+        $shippingOrders = Order::select('order_id', 'order_status_id', 'shipping_method_id', 'order_address', 'order_phone', 'order_note', 'order_name', 'total', 'created_at', 'updated_at')
+            ->where('user_id', $userId)
+            ->where('order_status_id', 2)
+            ->get();
+
+        // Kiểm tra nếu không có đơn hàng nào thỏa mãn điều kiện
+        if ($shippingOrders->isEmpty()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Không có đơn hàng nào đang được vận chuyển cho shop có user_id ' . $userId,
+                'data' => null,
+            ], 404);
+        }
+
+        // Trả về dữ liệu đã được format
+        return response()->json([
+            'status' => true,
+            'message' => 'Danh sách đơn hàng đang được vận chuyển của shop có user_id ' . $userId,
+            'data' => $shippingOrders,
+        ], 200);
+    }
+
+
+
 }
