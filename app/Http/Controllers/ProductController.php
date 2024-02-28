@@ -101,7 +101,7 @@ class ProductController extends Controller
     public function indexByUser(string $userId)
     {
         try {
-            
+
             $products = Product::with(['images', 'productSizes', 'productColors', 'productBrand', 'productCategory'])
                 ->where('created_by_user_id', $userId)
                 ->get();
@@ -145,7 +145,7 @@ class ProductController extends Controller
                     'image_urls' => $imageUrls,
                     'sizes' => $sizes,
                     'colors' => $colors,
-                    'reviews' => $reviews, 
+                    'reviews' => $reviews,
                     'average_rating' => $averageRating,
                     'total_reviews' => $totalReviews,
                 ];
@@ -171,82 +171,148 @@ class ProductController extends Controller
 
 
 
-
     public function store(Request $request)
-{
-    $input = $request->all();
+    {
+        $input = $request->all();
 
-    $validator = Validator::make($input, [
-        'name' => 'required',
-        'description' => 'required',
-        'created_by_user_id' => 'required',
-        'product_brand_id' => 'required',
-        'product_category_id' => 'required',
-        'price' => 'required',
-        'stock' => 'required',
-        'discount_id' => 'nullable',
-        'image_url.*' => 'required',
-    ]);
+        // Validate the product information
+        $validator = Validator::make($input, [
+            'name' => 'required',
+            'description' => 'required',
+            'created_by_user_id' => 'required',
+            'product_brand_id' => 'required',
+            'product_category_id' => 'required',
+            'price' => 'required',
+            'stock' => 'required',
+            'discount_id' => 'nullable',
+            'image_urls' => 'required|array',
+            'image_urls.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'colors' => 'required|array',
+            'colors.*' => 'required',
+            'sizes' => 'required|array',
+            'sizes.*' => 'required',
+        ]);
 
-    if ($validator->fails()) {
+        if ($validator->fails()) {
+            $arr = [
+                'status' => false,
+                'message' => 'Lỗi kiểm tra dữ liệu',
+                'data' => $validator->errors()
+            ];
+
+            return response()->json($arr, 200);
+        }
+
+        // Create the product
+        $product = Product::create($request->all());
+
+        // if ($product) {
+        //     // Log or handle the error
+        //     return response()->json(['error' => $product], 500);
+        // }
+
+        $productId = $product->product_id;
+
+        // Upload array of images
+        if ($request->hasFile('image_urls')) {
+            $imageUrls = $this->uploadMultipleImages($request, $productId);
+        }
+
+        // Add array of sizes
+        if ($request->has('sizes')) {
+            $sizes = $this->addArraySizes($request, $productId);
+        }
+
+        // Add array of colors
+        if ($request->has('colors')) {
+            $colors = $this->addArrayColors($request, $productId);
+        }
+
         $arr = [
-            'status' => false,
-            'message' => 'Lỗi kiểm tra dữ liệu',
-            'data' => $validator->errors()
+            'status' => true,
+            'message' => 'Sản phẩm và thông tin liên quan đã được lưu thành công',
+            'data' => new ProductResource($product),
+            'image_urls' => $imageUrls ?? null, // Include image URLs if available
+            'sizes' => $sizes ?? null, // Include sizes if available
+            'colors' => $colors ?? null, // Include colors if available
         ];
 
-        return response()->json($arr, 200);
+        return response()->json($arr, 201);
     }
 
-    
-    $product = Product::create($input);
+    protected function uploadMultipleImages(Request $request, $productId)
+    {
+        // Validation for array of images
+        $request->validate([
+            'image_urls' => 'required|array',
+            'image_urls.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
 
-    $productId = $product->id;
+        $imageUrls = [];
 
-    
-    if ($request->hasFile('image_url')) {
-        $productImageController = new ProductImageController();
-        
-        foreach ($request->file('image_url') as $image) {
-            $imageData = ['image_url' => $productImageController->upload($request, $productId)];
-            $product->images()->create($imageData);
+        foreach ($request->file('image_urls') as $key => $image) {
+            $imageName = time() . '_' . $key . '.' . $image->extension();
+            $destinationPath = base_path('react/src/assets/image');
+            $image->move($destinationPath, $imageName);
+
+            $imageUrls[] = $imageName;
+
+            // Create ProductImage within the transaction
+            $pi = new ProductImage([
+                'product_id' => $productId,
+                'image_url' => $imageName,
+            ]);
+            $pi->save();
         }
-    } else {
-        $arr = [
-            'status' => false,
-            'message' => 'Bạn cần phải thêm ít nhất một ảnh để tạo sản phẩm',
-            'data' => [],
-        ];
-        return response()->json($arr, 400);
+
+        return $imageUrls;
     }
 
-    
-    if ($request->has('sizes')) {
-        $productSizeController = new ProductSizeController();
-        
-        foreach ($request->input('sizes') as $size) {
-            $sizeData = ['size' => $size];
-            $product->productSizes()->create($sizeData);
+    protected function addArraySizes(Request $request, $productId)
+    {
+        $request->validate([
+            'sizes' => 'required|array',
+            'sizes.*' => 'required',
+        ]);
+
+        $sizes = [];
+
+        foreach ($request->input('sizes') as $sizeName) {
+            $size = new ProductSize([
+                'product_id' => $productId,
+                'size_name' => $sizeName,
+            ]);
+
+            $size->save();
+
+            $sizes[] = $size;
         }
+
+        return $sizes;
     }
 
-    if ($request->has('colors')) {
-        $productColorController = new ProductColorController();
-        
-        foreach ($request->input('colors') as $color) {
-            $colorData = ['color' => $color];
-            $product->productColors()->create($colorData);
+    protected function addArrayColors(Request $request, $productId)
+    {
+        $request->validate([
+            'colors' => 'required|array',
+            'colors.*' => 'required',
+        ]);
+
+        $colors = [];
+
+        foreach ($request->input('colors') as $colorName) {
+            $color = new ProductColor([
+                'product_id' => $productId,
+                'color_name' => $colorName,
+            ]);
+
+            $color->save();
+
+            $colors[] = $color;
         }
+
+        return $colors;
     }
-
-    $arr = [
-        'status' => true,
-        'message' => 'Sản phẩm và thông tin liên quan đã được lưu thành công',
-        'data' => new ProductResource($product),
-    ];
-
-    return response()->json($arr, 201);
-}
 
     // Hàm xử lý hiển thị thông tin sản phẩm và danh sách ảnh
     public function show(string $id)
