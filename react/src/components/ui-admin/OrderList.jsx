@@ -23,7 +23,7 @@ const TABLE_ROWS = [
     {
         id: "1",
         online: true,
-        shippingmethod: true,
+        shippingmethod: undefined,
         shopid: "10",
         address: "Cong Hoa, Tân Định, Quận 3, Thành phố Hồ Chí Minh",
         date: "23/04/18",
@@ -53,7 +53,7 @@ const TABLE_ROWS = [
     {
         id: "4",
         online: undefined,
-        shippingmethod: true,
+        shippingmethod: false,
         shopid: "1",
         address: "Cong Hoa, Tân Định, Quận 3, Thành phố Hồ Chí Minh",
         date: "23/04/18",
