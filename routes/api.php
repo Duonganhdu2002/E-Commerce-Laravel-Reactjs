@@ -103,10 +103,16 @@ Route::prefix('public')->group(function () {
 
     Route::prefix('field')->group(function () {
         Route::get('list', [FieldController::class, 'index']);
+        Route::get('/{id}', [FieldController::class, 'show']);
+        Route::put('/{id}', [FieldController::class, 'update']);
+        Route::delete('/{id}', [FieldController::class, 'delete']);
+        Route::post('/addField', [FieldController::class, 'addField']);
+
     });
 
     Route::prefix('brand')->group(function () {
         Route::get('list', [BrandController::class, 'index']);
+        //Danh sách các brand có field_id
         Route::get('id={fieldId}', [BrandController::class, 'showByld']);
     });
 
