@@ -120,4 +120,130 @@ class ProductCategoryController extends Controller
             ], 500);
         }
     }
+
+    public function show(string $id)
+    {
+        $category = Category::find($id);
+
+        if (empty($category)) {
+            $arr = [
+                'status' => false,
+                'message' => 'Không có danh mục này',
+                'data' => null
+            ];
+            return response()->json($arr, 404);
+        }
+
+        $arr = [
+            'status' => true,
+            'message' => "Thông tin danh mục",
+            'data' => $category,
+        ];
+        return response()->json($arr, 200);
+    }
+
+    public function update(Request $request, string $id)
+    {
+        $category = Category::find($id);
+
+        if (empty($category)) {
+            $arr = [
+                'status' => false,
+                'message' => 'Không có danh mục này',
+                'data' => null
+            ];
+            return response()->json($arr, 404);
+        }
+
+        $input = $request->all();
+
+        $validator = Validator::make($input, [
+            'product_category_name' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $arr = [
+                'success' => false,
+                'message' => 'Lỗi kiểm tra dữ liệu',
+                'data' => $validator->errors()
+            ];
+            return response()->json($arr, 200);
+        }
+
+        $category->update($input);
+
+        $arr = [
+            'status' => true,
+            'message' => 'Thông tin danh mục đã được cập nhật thành công',
+            'data' => new ProductCategoryResource($category)
+        ];
+
+        return response()->json($arr, 200);
+    }
+
+
+    public function delete(string $id)
+    {
+        try {
+            $category = Category::findOrFail($id);
+            $category->delete();
+
+            $arr = [
+                'status' => true,
+                'message' => 'Danh mục đã được xóa thành công',
+                'data' => null
+            ];
+
+            return response()->json($arr, 200);
+        } catch (ModelNotFoundException $e) {
+            $arr = [
+                'success' => false,
+                'message' => 'Danh mục dùng không tồn tại',
+                'data' => null
+            ];
+
+            return response()->json($arr, 404);
+        }
+    }
+
+    public function addCategory(Request $request)
+    {
+        try {
+            $input = $request->all();
+
+            $validator = Validator::make($input, [
+                'field_id' => 'required',
+                'product_category_name' => 'required',
+                'description' => 'required',
+                'icon' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 400,
+                    'message' => 'Validation error',
+                    'errors' => $validator->errors()
+                ], 400);
+            }
+
+            $category = category::create([
+                'field_id' => $input['field_id'],
+                'product_category_name' => $input['product_category_name'],
+                'description' => $input['description'],
+                'icon' => $input['icon'],
+            ]);
+
+            return response()->json([
+                'status' => 201,
+                'message' => 'Category Created Successfully',
+                'data' => $category,
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Error creating Category',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

@@ -130,6 +130,11 @@ Route::prefix('public')->group(function () {
         //show category theo user có phân trang
         Route::get('paging/{user_id}', [ProductCategoryController::class, 'showUserCategorieswithP']);
 
+        Route::get('show/{id}', [ProductCategoryController::class, 'show']);
+        Route::put('update/{id}', [ProductCategoryController::class, 'update']);
+        Route::delete('delete/{id}', [ProductCategoryController::class, 'delete']);
+        Route::post('/addCategory', [ProductCategoryController::class, 'addCategory']);
+
     });
 
     Route::prefix('cart')->group(function () {
