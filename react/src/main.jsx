@@ -59,6 +59,7 @@ import ProductUserList from "./components/ui-admin/ProductUser";
 import ReviewList from "./components/ui-admin/ReviewList";
 import ReviewUserList from "./components/ui-admin/ReviewUser";
 import ShoppingMethodList from "./components/ui-admin/ShoppingMethod";
+import Setting from "./components/ui-admin/Setting";
 
 
 const Customer = () => {
@@ -230,7 +231,7 @@ const App = () => {
                                 <Route path="shopping-method-list" element={<PrivateAdminRoute element={<ShoppingMethodList />} />} />
                                 <Route path="dashboard" element={<PrivateAdminRoute element={<DashboardAdmin />} />} />
                                 <Route path="profile" element={<PrivateAdminRoute element={<ProfileAdmin />} />} />
-                                <Route path="settings" element={<PrivateAdminRoute element={<div>Cancelation</div>} />} />
+                                <Route path="settings" element={<PrivateAdminRoute element={<Setting />} />} />
                                 <Route path="logout" element={<PrivateAdminRoute element={<div>Cancelation</div>} />} />
                             </Route>
 
