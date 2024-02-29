@@ -33,7 +33,7 @@ class FieldController extends Controller
         if (empty($field)) {
             $arr = [
                 'status' => false,
-                'message' => 'Không có người dùng này',
+                'message' => 'Không có lĩnh vực này',
                 'data' => null
             ];
             return response()->json($arr, 404);
@@ -41,7 +41,7 @@ class FieldController extends Controller
 
         $arr = [
             'status' => true,
-            'message' => "Thông tin",
+            'message' => "Thông tin lĩnh vực",
             'data' => $field,
         ];
         return response()->json($arr, 200);
