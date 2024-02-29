@@ -2,9 +2,22 @@ import {
     MagnifyingGlassIcon,
     ChevronUpDownIcon,
     ArrowRightIcon,
-    ArrowLeftIcon
+    ArrowLeftIcon,
 } from "@heroicons/react/24/outline";
-import { PencilIcon } from "@heroicons/react/24/solid";
+
+import {
+    EyeIcon,
+    Bars4Icon,
+    GlobeAmericasIcon,
+    NewspaperIcon,
+    PhoneIcon,
+    RectangleGroupIcon,
+    SquaresPlusIcon,
+    SunIcon,
+    TagIcon,
+    UserGroupIcon,
+} from "@heroicons/react/24/solid"
+
 import {
     Card,
     CardHeader,
@@ -12,16 +25,22 @@ import {
     Typography,
     CardBody,
     Chip,
-    CardFooter,
     Avatar,
     IconButton,
-    Tooltip,
     Button,
+    Collapse,
+    ListItem,
+    Menu,
+    MenuHandler,
+    MenuList,
+    MenuItem,
 } from "@material-tailwind/react";
 
 import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux'
 import { listOrder } from "../../services/orderService";
+import React from "react";
+import { Link } from "react-router-dom";
 
 const TABLE_HEAD = [
     "Username",
@@ -32,67 +51,120 @@ const TABLE_HEAD = [
     "Detail",
 ];
 
-const TABLE_ROWS = [
+const navListMenuItems = [
     {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
-        name: "John Michael",
-        total: 1,
-        status: true,
-        date: "23/04/18",
-        sc: "Viettel Express",
+        title: "Products",
+        description: "Find the perfect solution for your needs.",
+        icon: SquaresPlusIcon,
     },
     {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg",
-        name: "Alexa Liras",
-        total: 3,
-        status: false,
-        date: "23/04/18",
-        sc: "Viettel Express",
+        title: "About Us",
+        description: "Meet and learn about our dedication",
+        icon: UserGroupIcon,
     },
     {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
-        name: "Laurent Perrier",
-        total: 10,
-        org: "Projects",
-        status: false,
-        date: "19/09/17",
-        sc: "Viettel Express",
+        title: "Blog",
+        description: "Find the perfect solution for your needs.",
+        icon: Bars4Icon,
     },
     {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-4.jpg",
-        name: "Michael Levi",
-        total: 1,
-        status: true,
-        date: "24/12/08",
-        sc: "Viettel Express",
+        title: "Services",
+        description: "Learn how we can help you achieve your goals.",
+        icon: SunIcon,
     },
     {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg",
-        name: "Richard Gran",
-        total: 8,
-        status: false,
-        date: "04/10/21",
-        sc: "Viettel Express",
+        title: "Support",
+        description: "Reach out to us for assistance or inquiries",
+        icon: GlobeAmericasIcon,
     },
     {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg",
-        name: "Richard Gran",
-        total: 8,
-        status: false,
-        date: "04/10/21",
-        sc: "Viettel Express",
+        title: "Contact",
+        description: "Find the perfect solution for your needs.",
+        icon: PhoneIcon,
     },
     {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg",
-        name: "Richard Gran",
-        total: 8,
-        status: false,
-        date: "04/10/21",
-        sc: "Viettel Express",
+        title: "News",
+        description: "Read insightful articles, tips, and expert opinions.",
+        icon: NewspaperIcon,
+    },
+    {
+        title: "Products",
+        description: "Find the perfect solution for your needs.",
+        icon: RectangleGroupIcon,
+    },
+    {
+        title: "Special Offers",
+        description: "Explore limited-time deals and bundles",
+        icon: TagIcon,
     },
 ];
 
+function NavListMenu({ order_id }) {
+    const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+    const renderItems = navListMenuItems.map(
+        ({ icon, title, description }, key) => (
+            <Link to="#" key={key}>
+                <MenuItem className="flex items-center gap-3 rounded-lg">
+                    <div className="flex items-center justify-center rounded-lg !bg-blue-gray-50 p-2 ">
+                        {" "}
+                        {React.createElement(icon, {
+                            strokeWidth: 2,
+                            className: "h-6 text-gray-900 w-6",
+                        })}
+                    </div>
+                    <div>
+                        <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="flex items-center text-sm font-bold"
+                        >
+                            {title}
+                        </Typography>
+                        <Typography
+                            variant="paragraph"
+                            className="text-xs !font-medium text-blue-gray-500"
+                        >
+                            {description}
+                        </Typography>
+                    </div>
+                </MenuItem>
+            </Link>
+        ),
+    );
 
+    return (
+        <React.Fragment>
+            <Menu
+                open={isMenuOpen}
+                handler={setIsMenuOpen}
+                offset={{ mainAxis: 20 }}
+                placement="left"
+                allowHover={true}
+            >
+                <MenuHandler>
+                    <Typography as="div" variant="small" className="font-medium">
+                        <ListItem
+                            className="flex items-center gap-2 py-2 pr-4 font-medium text-gray-900"
+                            selected={isMenuOpen || isMobileMenuOpen}
+                            onClick={() => setIsMobileMenuOpen((cur) => !cur)}
+                        >
+                            <EyeIcon className="h-4 w-4" />
+                        </ListItem>
+                    </Typography>
+                </MenuHandler>
+                <MenuList className="hidden max-w-screen-xl rounded-xl lg:block">
+                    <ul className="grid grid-cols-3 gap-y-2 outline-none outline-0">
+                        {renderItems}
+                    </ul>
+                </MenuList>
+            </Menu>
+            <div className="block lg:hidden">
+                <Collapse open={isMobileMenuOpen}>{renderItems}</Collapse>
+            </div>
+        </React.Fragment>
+    );
+}
 
 export function MyOrdersBusiness() {
 
@@ -287,11 +359,9 @@ export function MyOrdersBusiness() {
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <Tooltip content="Edit User">
-                                                <IconButton variant="text">
-                                                    <PencilIcon className="h-4 w-4" />
-                                                </IconButton>
-                                            </Tooltip>
+                                            <IconButton variant="text">
+                                                <NavListMenu order_id={data.order_id} />
+                                            </IconButton>
                                         </td>
                                     </tr>
                                 );

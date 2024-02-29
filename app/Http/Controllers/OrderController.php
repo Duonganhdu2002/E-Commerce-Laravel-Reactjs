@@ -34,7 +34,7 @@ class OrderController extends Controller
         try {
             $Orders = Order::where('shop_id', $shopId)
                 ->where('order_status_id', 4)
-                ->get();
+                ->paginate(7);
 
             if ($Orders->isEmpty()) {
                 return response()->json([
@@ -312,7 +312,7 @@ class OrderController extends Controller
         $shippingOrders = Order::select('order_id', 'order_status_id', 'shipping_method_id', 'order_address', 'order_phone', 'order_note', 'order_name', 'total', 'created_at', 'updated_at')
             ->where('user_id', $userId)
             ->where('order_status_id', 2)
-            ->get();
+            ->paginate(7);
 
         // Kiểm tra nếu không có đơn hàng nào thỏa mãn điều kiện
         if ($shippingOrders->isEmpty()) {

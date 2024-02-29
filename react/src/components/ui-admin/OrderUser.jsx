@@ -17,15 +17,15 @@ import {
     Chip,
 } from "@material-tailwind/react";
 
-const TABLE_HEAD = ["ID", "Shop ID", "Address", "Phone Number", "Order Status", "Shipping Method", "Total", "Create at", "Details"];
+const TABLE_HEAD = ["ID", "Name User", "Order Name", "Phone Number", "Order Status", "Shipping Method", "Total", "Create at", "Details"];
 
 const TABLE_ROWS = [
     {
         id: "1",
         online: true,
         shippingmethod: undefined,
-        shopid: "10",
-        address: "Cong Hoa, Tân Định, Quận 3, Thành phố Hồ Chí Minh",
+        name: "Bui Van Du",
+        ordername: "TEN MOT AI DO",
         date: "23/04/18",
         phone: "+84896899384",
         total: "3722.97",
@@ -34,8 +34,8 @@ const TABLE_ROWS = [
         id: "2",
         online: true,
         shippingmethod: true,
-        shopid: "20",
-        address: "Cong Hoa, Tân Định, Quận 3, Thành phố Hồ Chí Minh",
+        name: "Nguyen Tan Dung",
+        ordername: "TEN MOT AI DO",
         date: "23/04/18",
         phone: "+84896899384",
         total: "3722.97",
@@ -44,8 +44,8 @@ const TABLE_ROWS = [
         id: "3",
         online: true,
         shippingmethod: true,
-        shopid: "15",
-        address: "Cong Hoa, Tân Định, Quận 3, Thành phố Hồ Chí Minh",
+        name: "Qui",
+        ordername: "TEN MOT AI DO",
         date: "23/04/18",
         phone: "+84896899384",
         total: "3722.97",
@@ -54,8 +54,8 @@ const TABLE_ROWS = [
         id: "4",
         online: undefined,
         shippingmethod: false,
-        shopid: "1",
-        address: "Cong Hoa, Tân Định, Quận 3, Thành phố Hồ Chí Minh",
+        name: "Nhat Anh",
+        ordername: "TEN MOT AI DO",
         date: "23/04/18",
         phone: "+84896899384",
         total: "3722.97",
@@ -64,25 +64,25 @@ const TABLE_ROWS = [
         id: "5",
         online: false,
         shippingmethod: true,
-        shopid: "5",
-        address: "Cong Hoa, Tân Định, Quận 3, Thành phố Hồ Chí Minh",
+        name: "Mot Ai do",
+        ordername: "TEN MOT AI DO",
         date: "23/04/18",
         phone: "+84896899384",
         total: "3722.97",
     },
 ];
 
-export default function OrderList() {
+export default function OrderUser() {
     return (
         <Card className="w-full">
             <CardHeader floated={false} shadow={false} className="rounded-none">
                 <div className="mb-8 flex items-center justify-between gap-8">
                     <div>
                         <Typography variant="h5" color="blue-gray">
-                            Order list
+                            Order user list
                         </Typography>
                         <Typography color="gray" className="mt-1 font-normal">
-                            See all order
+                            See all order user
                         </Typography>
                     </div>
                     <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
@@ -125,7 +125,7 @@ export default function OrderList() {
                     </thead>
                     <tbody>
                         {TABLE_ROWS.map(
-                            ({ id, online, shippingmethod, shopid, address, date, phone, total }, index) => {
+                            ({ id, online, shippingmethod, name, ordername, date, phone, total }, index) => {
                                 const isLast = index === TABLE_ROWS.length - 1;
                                 const classes = isLast
                                     ? "p-4"
@@ -148,7 +148,7 @@ export default function OrderList() {
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                {shopid}
+                                                {name}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
@@ -157,7 +157,7 @@ export default function OrderList() {
                                                 color="blue-gray"
                                                 className="font-normal w-52"
                                             >
-                                                {address}
+                                                {ordername}
                                             </Typography>
                                         </td>
                                         <td className={classes}>

@@ -13,10 +13,11 @@ use App\Http\Controllers\ShoppingCartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SearchHistoryController;
 use App\Http\Controllers\ProvincesController;
+use App\Http\Controllers\OderItemsController;
+use App\Http\Controllers\ProductReviewController;
 
 Route::prefix('user')->group(function () {
 
-    // Quyền admin
     Route::post('createAdmin', [UserController::class, 'createAdmin'])->name('createAdmin');
     Route::post('createBusiness', [UserController::class, 'createBusiness'])->name('createBusiness');
     Route::post('register', [UserController::class, 'createUser'])->name('register');
@@ -88,7 +89,7 @@ Route::prefix('public')->group(function () {
 
         Route::prefix('img')->group(function () {
             Route::get('display/{productId}', [ProductImageController::class, 'displayByProductId']);
-            Route::post('upload/{productId}', [ProductImageController::class, 'upload']);
+            Route::post('upload', [ProductImageController::class, 'upload']);
             Route::resource('/', ProductImageController::class);
         });
 
@@ -97,6 +98,8 @@ Route::prefix('public')->group(function () {
 
         //hiển thị danh sách sản phẩm theo sắp xếp
         // Route::get('/sort-products/{sortBy}/{user_id}', [ProductController::class, 'sortUserProducts']);
+
+        Route::get('allReview/{user_id}', [ProductReviewController::class,'shopReviews']);
 
 
     });
@@ -139,7 +142,7 @@ Route::prefix('public')->group(function () {
         Route::post('make', [OrderController::class, 'checkout']);
         Route::get('/details/{order_id}', [OrderController::class, 'getOrderDetails']);
         //show các đơn hàng được đặt của seller
-        // Route::get('{user_id}', [OrderController::class, 'getSellerOrders']);
+        Route::get('{user_id}', [OrderController::class, 'getSellerOrders']);
         //show don hang duoc tim kiem theo username cua 1 shop
         Route::get('/search', [SearchHistoryController::class, 'searchOrdersByUsername']);
         //show cac don hang bị huy
@@ -156,6 +159,11 @@ Route::prefix('public')->group(function () {
         Route::get('province={provinceId}', [ProvincesController::class, 'getDistricts']);
         Route::get('district={districtId}', [ProvincesController::class, 'getWards']);
     });
+
+    Route::prefix('order-items')->group(function () {
+        Route::get('/aaa', [OderItemsController::class, 'getOrderItems']);
+    });
+
 });
 
 Route::prefix('shopping-method')->group(function () {
@@ -170,6 +178,7 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'check.role:1'])->group(func
 });
 
 Route::prefix('seller')->middleware(['auth:sanctum', 'check.role:2'])->group(function () {
+    
 });
 
 Route::prefix('customer')->middleware(['auth:sanctum', 'check.role:3'])->group(function () {
