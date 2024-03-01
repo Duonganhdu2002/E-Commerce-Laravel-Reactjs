@@ -53,24 +53,6 @@ const TABLE_HEAD = [
     "Detail",
 ];
 
-const navListMenuItems = [
-    {
-        title: "Products",
-        description: "Find the perfect solution for your needs.",
-        icon: SquaresPlusIcon,
-    },
-    {
-        title: "About Us",
-        description: "Meet and learn about our dedication",
-        icon: UserGroupIcon,
-    },
-    {
-        title: "Blog",
-        description: "Find the perfect solution for your needs.",
-        icon: Bars4Icon,
-    },
-];
-
 const convertToExcel = (data) => {
     const worksheet = XLSX.utils.json_to_sheet(data);
     const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
@@ -171,7 +153,7 @@ export function MyOrdersBusiness() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await listOrder(seller_id);
+                let res = await listOrder(seller_id, page);
                 setDataFull(res.data);
                 setData(res.data.data)
             } catch (error) {
@@ -179,7 +161,7 @@ export function MyOrdersBusiness() {
             }
         }
         fetchData()
-    }, [seller_id]);
+    }, [seller_id, page]);
 
     const [active, setActive] = useState(1);
     const [visiblePages, setVisiblePages] = useState([]);

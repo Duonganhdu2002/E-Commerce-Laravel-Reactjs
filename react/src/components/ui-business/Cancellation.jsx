@@ -61,24 +61,6 @@ const TABLE_HEAD = [
     "Detail",
 ];
 
-const navListMenuItems = [
-    {
-        title: "Products",
-        description: "Find the perfect solution for your needs.",
-        icon: SquaresPlusIcon,
-    },
-    {
-        title: "About Us",
-        description: "Meet and learn about our dedication",
-        icon: UserGroupIcon,
-    },
-    {
-        title: "Blog",
-        description: "Find the perfect solution for your needs.",
-        icon: Bars4Icon,
-    },
-];
-
 function NavListMenu({ order_id }) {
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -171,7 +153,7 @@ export function CancellationBusiness() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await listOrderCancled(seller_id);
+                let res = await listOrderCancled(seller_id, page);
                 setDataFull(res.data);
                 setData(res.data.data)
             } catch (error) {
@@ -179,7 +161,7 @@ export function CancellationBusiness() {
             }
         }
         fetchData()
-    }, [seller_id]);
+    }, [seller_id, page]);
 
     const [active, setActive] = useState(1);
     const [visiblePages, setVisiblePages] = useState([]);

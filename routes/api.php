@@ -64,6 +64,7 @@ Route::prefix('public')->group(function () {
 
         // xuất ra những sản phẩm của user tạo ra( chủ shop)
         Route::get('user/{id}', [ProductController::class, 'indexByUser']);
+        Route::get('shop/{id}', [ProductController::class, 'createByShop']);
 
         // chức năng tìm kiếm sản phẩm theo tên của sản phẩm, brand, category
         Route::get('/search-products', [SearchHistoryController::class, 'search']);

@@ -1104,4 +1104,41 @@ class ProductController extends Controller
             'data' => $products,
         ], 200);
     }
+    public function createByShop(string $userId)
+    {
+        try {
+
+            $products = Product::where('created_by_user_id', $userId)
+                ->join('product_category', 'product.product_category_id', '=', 'product_category.product_category_id')
+                ->join('product_brand', 'product.product_brand_id', '=', 'product_brand.product_brand_id')
+                ->select('product.*', 'product_category.product_category_name', 'product_brand.product_brand_name')
+                ->paginate(7);
+
+            if ($products->isEmpty()) {
+                $arr = [
+                    'status' => false,
+                    'message' => 'Người dùng chưa tạo sản phẩm nào',
+                    'data' => null,
+                ];
+
+                return response()->json($arr, 404);
+            }
+
+            $arr = [
+                'status' => true,
+                'message' => 'Thông tin sản phẩm của người dùng',
+                'data' => $products
+            ];
+
+            return response()->json($arr, 200);
+        } catch (ModelNotFoundException $e) {
+            $arr = [
+                'status' => false,
+                'message' => 'Không tìm thấy người dùng',
+                'data' => null,
+            ];
+
+            return response()->json($arr, 404);
+        }
+    }
 }

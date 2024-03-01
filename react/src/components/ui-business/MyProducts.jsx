@@ -2,124 +2,152 @@ import {
     MagnifyingGlassIcon,
     ChevronUpDownIcon,
     ArrowRightIcon,
-    ArrowLeftIcon
+    ArrowLeftIcon,
 } from "@heroicons/react/24/outline";
-import { PencilIcon } from "@heroicons/react/24/solid";
+
+import {
+    EyeIcon,
+    PencilIcon,
+    TrashIcon
+} from "@heroicons/react/24/solid"
+
 import {
     Card,
     CardHeader,
     Input,
     Typography,
     CardBody,
-    CardFooter,
     IconButton,
-    Tooltip,
+    Button,
+    CardFooter,
 } from "@material-tailwind/react";
-import { useState } from "react";
 
+import { useEffect, useState } from "react";
+import { useSelector } from 'react-redux'
+import { listOrder, orderItems } from "../../services/orderService";
+import React from "react";
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+import { productListShop } from "../../services/productService";
 
 const TABLE_HEAD = [
-    "Products Name",
-    "SKU",
-    "Classification of goods",
+    "ID",
+    "Product name",
     "Price",
-    "Warehouse",
-    "Revenue",
-    "Advertising",
-    "Action",
+    "Category",
+    "Brand",
+    "Stock",
+    "Detail",
+    "Edit",
+    "Detele",
 ];
 
-const TABLE_ROWS = [
-    {
-        name: "John Michael",
-        sku: 1,
-        cog: "SmartPhone",
-        price: "$40",
-        sc: "Viettel Express",
-        revenue: "$40",
-        adv: "None",
-    },
-    {
-        name: "Alexa Liras",
-        sku: 3,
-        cog: "SmartPhone",
-        price: "$990",
-        sc: "Viettel Express",
-        revenue: "$40",
-        adv: "None",
-    },
-    {
-        name: "Laurent Perrier",
-        sku: 10,
-        org: "Projects",
-        cog: "SmartPhone",
-        price: "$450",
-        sc: "Viettel Express",
-        revenue: "$40",
-        adv: "None",
-    },
-    {
-        name: "Michael Levi",
-        sku: 1,
-        cog: "SmartPhone",
-        price: "$120",
-        sc: "Viettel Express",
-        revenue: "$40",
-        adv: "None",
-    },
-    {
-        name: "Richard Gran",
-        sku: 8,
-        cog: "SmartPhone",
-        price: "$4990",
-        sc: "Viettel Express",
-        revenue: "$40",
-        adv: "None",
-    },
-    {
-        name: "Richard Gran",
-        sku: 8,
-        cog: "SmartPhone",
-        price: "$4990",
-        sc: "Viettel Express",
-        revenue: "$40",
-        adv: "None",
-    },
-    {
-        name: "Richard Gran",
-        sku: 8,
-        cog: "SmartPhone",
-        price: "$4990",
-        sc: "Viettel Express",
-        revenue: "$40",
-        adv: "None",
-    },
-];
+const convertToExcel = (data) => {
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const dataExcel = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+    FileSaver.saveAs(dataExcel, 'data.xlsx');
+}
 
 export function MyProductsBusiness() {
+
+    const seller_id = useSelector((state) => state.seller.seller.user_id);
+    const [data, setData] = useState([]);
+    const [dataFull, setDataFull] = useState([]);
+    const [page, setPage] = useState(1);
+
+    const handleExportExcel = () => {
+        convertToExcel(data);
+    }
+
+    // Call API list order by user
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await productListShop(seller_id, page);
+                setDataFull(res.data);
+                setData(res.data.data)
+            } catch (error) {
+                console.error("Error fetching fields:", error);
+            }
+        }
+        fetchData()
+    }, [seller_id, page]);
+
     const [active, setActive] = useState(1);
+    const [visiblePages, setVisiblePages] = useState([]);
+
+    const getItemProps = (index) => ({
+        variant: active === index ? 'filled' : 'text',
+        color: 'gray',
+        onClick: () => {
+            setPage(index);
+            setActive(index);
+        },
+    });
 
     const next = () => {
-        if (active === 10) return;
+        if (active === dataFull.last_page) return;
 
         setActive(active + 1);
+        setPage(active + 1);
     };
 
     const prev = () => {
-        if (active === 1) return;
+        if (active === dataFull.from) return;
 
         setActive(active - 1);
+        setPage(active - 1);
     };
 
+    useEffect(() => {
+        const calculateVisiblePages = async () => {
+
+            const totalVisiblePages = 3;
+            const totalPageCount = dataFull.last_page;
+
+            let startPage, endPage;
+            if (totalPageCount <= totalVisiblePages) {
+                startPage = 1;
+                endPage = totalPageCount;
+            } else {
+                const middlePage = Math.floor(totalVisiblePages / 2);
+                if (active <= middlePage + 1) {
+                    startPage = 1;
+                    endPage = totalVisiblePages;
+                } else if (active >= totalPageCount - middlePage) {
+                    startPage = totalPageCount - totalVisiblePages + 1;
+                    endPage = totalPageCount;
+                } else {
+                    startPage = active - middlePage;
+                    endPage = active + middlePage;
+                }
+            }
+
+            const visiblePagesArray = Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index);
+            setVisiblePages(visiblePagesArray);
+        };
+
+        calculateVisiblePages();
+    }, [active, dataFull.last_page]);
+
     return (
-        <Card className=" h-[89vh] w-full p-4">
+        <Card className=" h-[98%] w-full p-4">
             <CardHeader floated={false} shadow={false} className="rounded-none">
                 <div className="flex flex-col sm:flex-row w-full justify-center items-center">
-                    <div className="w-full">
-                        <Input
-                            label="Search"
-                            icon={<MagnifyingGlassIcon className="h-5 w-5" />}
-                        />
+                    <div className="w-full justify-between flex">
+                        <div className=" w-fit">
+                            <Input
+                                label="Find order ID"
+                                icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                            />
+                        </div>
+
+                        <div className=" w-fit">
+                            <Button size="sm" color="gray" variant="outlined" onClick={handleExportExcel}>Export to Excel</Button>
+                        </div>
+
                     </div>
                 </div>
             </CardHeader>
@@ -150,26 +178,26 @@ export function MyProductsBusiness() {
                         </tr>
                     </thead>
                     <tbody>
-                        {TABLE_ROWS.map(
-                            ({ name, sku, cog, price, sc, revenue, adv }, index) => {
-                                const isLast = index === TABLE_ROWS.length - 1;
+                        {data && data.length > 0 && data.map(
+                            (data, index) => {
+                                const key = `${index}`;
+                                const isLast = index === data.length - 1;
                                 const classes = isLast
                                     ? "p-4"
                                     : "p-4 border-b border-blue-gray-50";
 
                                 return (
-                                    <tr key={name}>
+                                    <tr key={key}>
                                         <td className={classes}>
                                             <div className="flex items-center gap-3">
-                                                <div className="flex flex-col">
-                                                    <Typography
-                                                        variant="small"
-                                                        color="blue-gray"
-                                                        className="font-normal"
-                                                    >
-                                                        {name}
-                                                    </Typography>
-                                                </div>
+                                                <Typography
+                                                    variant="small"
+                                                    color="blue-gray"
+                                                    className="font-normal"
+                                                >
+                                                    {data.product_id}
+                                                </Typography>
+
                                             </div>
                                         </td>
                                         <td className={classes}>
@@ -179,64 +207,63 @@ export function MyProductsBusiness() {
                                                     color="blue-gray"
                                                     className="font-normal"
                                                 >
-                                                    {sku}
+                                                    {data.name}
                                                 </Typography>
                                             </div>
                                         </td>
                                         <td className={classes}>
-                                            <div className="w-max">
+                                            <div className="flex flex-col">
                                                 <Typography
                                                     variant="small"
                                                     color="blue-gray"
                                                     className="font-normal"
                                                 >
-                                                    {cog}
+                                                    {data.price}
                                                 </Typography>
                                             </div>
                                         </td>
+
                                         <td className={classes}>
                                             <Typography
                                                 variant="small"
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                {price}
+                                                {data.product_category_name}
                                             </Typography>
                                         </td>
+
                                         <td className={classes}>
                                             <Typography
                                                 variant="small"
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                {sc}
+                                                {data.product_brand_name}
                                             </Typography>
                                         </td>
+
                                         <td className={classes}>
                                             <Typography
                                                 variant="small"
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                {revenue}
+                                                {data.stock}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {adv}
-                                            </Typography>
+                                            <EyeIcon className=" w-4 h-4" />
                                         </td>
+
                                         <td className={classes}>
-                                            <Tooltip content="Edit User">
-                                                <IconButton variant="text">
-                                                    <PencilIcon className="h-4 w-4" />
-                                                </IconButton>
-                                            </Tooltip>
+                                            <PencilIcon className=" w-4 h-4" />
                                         </td>
+
+                                        <td className={classes}>
+                                            <TrashIcon className=" w-4 h-4" />
+                                        </td>
+
                                     </tr>
                                 );
                             }
@@ -244,28 +271,37 @@ export function MyProductsBusiness() {
                     </tbody>
                 </table>
             </CardBody>
-            <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-                <div className="flex items-center absolute gap-8 mt-24 right-0 mr-4">
-                    <IconButton
-                        size="sm"
-                        variant="outlined"
+            <CardFooter>
+                <div className="flex justify-end  my-6 mt-12 absolute bottom-4 right-10">
+                    <Button
+                        variant="text"
+                        className="flex items-center gap-2"
                         onClick={prev}
-                        disabled={active === 1}
+                        disabled={active === dataFull.from}
                     >
-                        <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" />
-                    </IconButton>
-                    <Typography color="gray" className="font-normal">
-                        Page <strong className="text-gray-900">{active}</strong> of{" "}
-                        <strong className="text-gray-900">10</strong>
-                    </Typography>
-                    <IconButton
-                        size="sm"
-                        variant="outlined"
+                        <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
+                    </Button>
+
+                    <div className="flex items-center gap-2">
+                        {visiblePages.map((pageNumber) => (
+                            <IconButton
+                                key={pageNumber}
+                                {...getItemProps(pageNumber)}
+                            >
+                                {pageNumber}
+                            </IconButton>
+                        ))}
+                    </div>
+
+                    <Button
+                        variant="text"
+                        className="flex items-center gap-2"
                         onClick={next}
-                        disabled={active === 10}
+                        disabled={active === dataFull.last_page}
                     >
+                        Next
                         <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
-                    </IconButton>
+                    </Button>
                 </div>
             </CardFooter>
         </Card>
