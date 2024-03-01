@@ -34,6 +34,7 @@ import {
     MenuHandler,
     MenuList,
     MenuItem,
+    CardFooter,
 } from "@material-tailwind/react";
 
 import { useEffect, useState } from "react";
@@ -89,7 +90,7 @@ function NavListMenu({ order_id }) {
     }, [])
 
     const renderItems = data.map(
-        ({product_name, quantity, image }, index) => (
+        ({ product_name, quantity, image }, index) => (
             <MenuItem key={index} className="flex items-center gap-3 rounded-lg">
                 <div className="flex items-center justify-center rounded-lg !bg-blue-gray-50 p-1 ">
                     <img className=" w-6 h-6 object-cover" src={`../../../src/assets/image/${image}`} alt="" />
@@ -224,7 +225,7 @@ export function CancellationBusiness() {
     }, [active, dataFull.last_page]);
 
     return (
-        <Card className="h-full w-full p-4">
+        <Card className="h-[98%] w-full p-4">
             <CardHeader floated={false} shadow={false} className="rounded-none">
                 <div className="flex flex-col sm:flex-row w-full justify-center items-center">
                     <div className="w-full">
@@ -349,37 +350,39 @@ export function CancellationBusiness() {
                     </tbody>
                 </table>
             </CardBody>
-            <div className="flex justify-end  my-6 mt-12">
-                <Button
-                    variant="text"
-                    className="flex items-center gap-2"
-                    onClick={prev}
-                    disabled={active === dataFull.from}
-                >
-                    <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
-                </Button>
+            <CardFooter>
+                <div className="flex justify-end  my-6 mt-12 absolute bottom-4 right-10">
+                    <Button
+                        variant="text"
+                        className="flex items-center gap-2"
+                        onClick={prev}
+                        disabled={active === dataFull.from}
+                    >
+                        <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
+                    </Button>
 
-                <div className="flex items-center gap-2">
-                    {visiblePages.map((pageNumber) => (
-                        <IconButton
-                            key={pageNumber}
-                            {...getItemProps(pageNumber)}
-                        >
-                            {pageNumber}
-                        </IconButton>
-                    ))}
+                    <div className="flex items-center gap-2">
+                        {visiblePages.map((pageNumber) => (
+                            <IconButton
+                                key={pageNumber}
+                                {...getItemProps(pageNumber)}
+                            >
+                                {pageNumber}
+                            </IconButton>
+                        ))}
+                    </div>
+
+                    <Button
+                        variant="text"
+                        className="flex items-center gap-2"
+                        onClick={next}
+                        disabled={active === dataFull.last_page}
+                    >
+                        Next
+                        <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
+                    </Button>
                 </div>
-
-                <Button
-                    variant="text"
-                    className="flex items-center gap-2"
-                    onClick={next}
-                    disabled={active === dataFull.last_page}
-                >
-                    Next
-                    <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
-                </Button>
-            </div>
+            </CardFooter>
         </Card>
     );
 }
