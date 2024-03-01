@@ -41,7 +41,8 @@ import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux'
 import { listOrder, orderItems } from "../../services/orderService";
 import React from "react";
-import { Link } from "react-router-dom";
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
 
 const TABLE_HEAD = [
     "Username",
@@ -69,6 +70,14 @@ const navListMenuItems = [
         icon: Bars4Icon,
     },
 ];
+
+const convertToExcel = (data) => {
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const dataExcel = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+    FileSaver.saveAs(dataExcel, 'data.xlsx');
+}
 
 function NavListMenu({ order_id }) {
 
@@ -154,6 +163,10 @@ export function MyOrdersBusiness() {
     const [dataFull, setDataFull] = useState([]);
     const [page, setPage] = useState(1);
 
+    const handleExportExcel = () => {
+        convertToExcel(data);
+    }
+
     // Call API list order by user
     useEffect(() => {
         const fetchData = async () => {
@@ -229,11 +242,18 @@ export function MyOrdersBusiness() {
         <Card className=" h-[98%] w-full p-4">
             <CardHeader floated={false} shadow={false} className="rounded-none">
                 <div className="flex flex-col sm:flex-row w-full justify-center items-center">
-                    <div className="w-full">
-                        <Input
-                            label="Find order ID"
-                            icon={<MagnifyingGlassIcon className="h-5 w-5" />}
-                        />
+                    <div className="w-full justify-between flex">
+                        <div className=" w-fit">
+                            <Input
+                                label="Find order ID"
+                                icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                            />
+                        </div>
+
+                        <div className=" w-fit">
+                            <Button size="sm" color="gray" variant="outlined" onClick={handleExportExcel}>Export to Excel</Button>
+                        </div>
+
                     </div>
                 </div>
             </CardHeader>
