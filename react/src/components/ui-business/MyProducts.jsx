@@ -50,6 +50,30 @@ const convertToExcel = (data) => {
     FileSaver.saveAs(dataExcel, 'data.xlsx');
 }
 
+const DeleteProduct = () => {
+    return (
+        <div>
+            <TrashIcon className=" w-4 h-4" />
+        </div>
+    )
+}
+
+const EditProduct = () => {
+    return (
+        <div>
+            <PencilIcon className=" w-4 h-4" />
+        </div>
+    )
+}
+
+const SeeProduct = () => {
+    return (
+        <div>
+            <EyeIcon className=" w-4 h-4" />
+        </div>
+    )
+}
+
 export function MyProductsBusiness() {
 
     const seller_id = useSelector((state) => state.seller.seller.user_id);
@@ -253,15 +277,15 @@ export function MyProductsBusiness() {
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <EyeIcon className=" w-4 h-4" />
+                                            <SeeProduct />
                                         </td>
 
                                         <td className={classes}>
-                                            <PencilIcon className=" w-4 h-4" />
+                                            <EditProduct />
                                         </td>
 
                                         <td className={classes}>
-                                            <TrashIcon className=" w-4 h-4" />
+                                            <DeleteProduct />
                                         </td>
 
                                     </tr>
