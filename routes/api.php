@@ -154,11 +154,8 @@ Route::prefix('public')->group(function () {
         Route::get('/search', [SearchHistoryController::class, 'searchOrdersByUsername']);
         //show cac don hang bị huy
         Route::get('/disable/{user_id}', [OrderController::class, 'getDisableOrdersForShop']);
-
         // Hiển thị các đơn hàng đang được vận chuyển 
         Route::get('/shipped-orders/{user_id}', [OrderController::class, 'showShippingOrdersByUserId']);
-
-
     });
 
     Route::prefix('location')->group(function () {

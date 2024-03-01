@@ -145,7 +145,7 @@ function NavListMenu({ order_id }) {
                 <MenuHandler>
                     <Typography as="div" variant="small" className="font-medium">
                         <ListItem
-                            className="flex items-center gap-2 py-2 pr-4 font-medium text-gray-900"
+                            className="flex justify-center items-center gap-2 py-2 pr-4 font-medium text-gray-900"
                             selected={isMenuOpen || isMobileMenuOpen}
                             onClick={() => setIsMobileMenuOpen((cur) => !cur)}
                         >
@@ -359,10 +359,9 @@ export function MyOrdersBusiness() {
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <IconButton variant="text">
-                                                <NavListMenu order_id={data.order_id} />
-                                            </IconButton>
+                                            <NavListMenu order_id={data.order_id} />
                                         </td>
+
                                     </tr>
                                 );
                             }
