@@ -147,15 +147,15 @@ Route::prefix('public')->group(function () {
     Route::prefix('order')->group(function () {
         Route::get('list', [OrderController::class, 'index']);
         Route::post('make', [OrderController::class, 'checkout']);
-        Route::get('/details/{order_id}', [OrderController::class, 'getOrderDetails']);
+        Route::get('details/{order_id}', [OrderController::class, 'getOrderDetails']);
         //show các đơn hàng được đặt của seller
         Route::get('{user_id}', [OrderController::class, 'getSellerOrders']);
         //show don hang duoc tim kiem theo username cua 1 shop
-        Route::get('/search', [SearchHistoryController::class, 'searchOrdersByUsername']);
+        Route::get('search', [SearchHistoryController::class, 'searchOrdersByUsername']);
         //show cac don hang bị huy
-        Route::get('/disable/{user_id}', [OrderController::class, 'getDisableOrdersForShop']);
+        Route::get('disable/{user_id}', [OrderController::class, 'getDisableOrdersForShop']);
         // Hiển thị các đơn hàng đang được vận chuyển 
-        Route::get('/shipped-orders/{user_id}', [OrderController::class, 'showShippingOrdersByUserId']);
+        Route::get('shipped-orders/{user_id}', [OrderController::class, 'showShippingOrdersByUserId']);
     });
 
     Route::prefix('location')->group(function () {

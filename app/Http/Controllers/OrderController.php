@@ -312,26 +312,33 @@ class OrderController extends Controller
 
     public function showShippingOrdersByUserId($userId)
     {
-        // Lấy tất cả các đơn hàng của shop (user) có user_id và có order_status_id = 2
-        $shippingOrders = Order::select('order_id', 'order_status_id', 'shipping_method_id', 'order_address', 'order_phone', 'order_note', 'order_name', 'total', 'created_at', 'updated_at')
-            ->where('user_id', $userId)
-            ->where('order_status_id', 2)
-            ->paginate(7);
+        try {
+            $orders = Order::select(
+                'order.order_id',
+                'users.username as buyer_username',
+                'order.total',
+                'order_status.order_status_name as order_status',
+                'order.created_at',
+                'shipping_method.shipping_method_name as shipping_method'
+            )
+                ->join('order_status', 'order.order_status_id', '=', 'order_status.order_status_id')
+                ->join('shipping_method', 'order.shipping_method_id', '=', 'shipping_method.shipping_method_id')
+                ->join('users', 'order.user_id', '=', 'users.user_id')
+                ->where('order.shop_id', $userId)
+                ->where('order.order_status_id', 2)
+                ->paginate(7);
 
-        // Kiểm tra nếu không có đơn hàng nào thỏa mãn điều kiện
-        if ($shippingOrders->isEmpty()) {
             return response()->json([
-                'status' => false,
-                'message' => 'Không có đơn hàng nào đang được vận chuyển cho shop có user_id ' . $userId,
-                'data' => null,
-            ], 404);
+                'status' => 200,
+                'message' => 'List of orders for seller with ID ' . $userId,
+                'data' => $orders
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Internal Server Error',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        // Trả về dữ liệu đã được format
-        return response()->json([
-            'status' => true,
-            'message' => 'Danh sách đơn hàng đang được vận chuyển của shop có user_id ' . $userId,
-            'data' => $shippingOrders,
-        ], 200);
     }
 }

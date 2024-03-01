@@ -16,4 +16,9 @@ const orderItems = (order_id) => {
     return axios.get(`/public/order/details/${order_id}`);
 }
 
-export { orderItems, listOrderCancled, handleOrder, listOrder };
+const orderShipped = (order_id) => {
+    return axios.get(`/public/order/shipped-orders/${order_id}`);
+}
+
+
+export { orderShipped, orderItems, listOrderCancled, handleOrder, listOrder };
