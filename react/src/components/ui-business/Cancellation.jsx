@@ -1,149 +1,260 @@
-import { ArchiveBoxIcon, ChevronUpDownIcon, MagnifyingGlassIcon, EyeIcon } from "@heroicons/react/24/outline";
-import { Avatar, Button, Card, CardBody, CardFooter, CardHeader, Chip, IconButton, Input, Option, Select, Tab, Tabs, TabsHeader, Tooltip, Typography, } from "@material-tailwind/react";
+import {
+    MagnifyingGlassIcon,
+    ChevronUpDownIcon,
+    ArrowRightIcon,
+    ArrowLeftIcon,
+} from "@heroicons/react/24/outline";
 
-const TABS = [
-    {
-        label: "All",
-        value: "all",
-    },
-    {
-        label: "WFC",
-        value: "Wait for confirmation",
-    },
-    {
-        label: "WFG",
-        value: "Waiting for Goods",
-    },
-    {
-        label: "Delivering",
-        value: "Delivering",
-    },
-    {
-        label: "Delivered",
-        value: "Delivered",
-    },
-    {
-        label: "CF",
-        value: "Cancellation form",
-    },
-    {
-        label: "Returns/Refunds",
-        value: "Returns/Refunds",
-    },
-    {
-        label: "DF",
-        value: "Delivery failed",
-    },
-];
+import {
+    EyeIcon,
+    Bars4Icon,
+    GlobeAmericasIcon,
+    NewspaperIcon,
+    PhoneIcon,
+    RectangleGroupIcon,
+    SquaresPlusIcon,
+    SunIcon,
+    TagIcon,
+    UserGroupIcon,
+} from "@heroicons/react/24/solid"
+
+import {
+    Card,
+    CardHeader,
+    Input,
+    Typography,
+    CardBody,
+    Chip,
+    Avatar,
+    IconButton,
+    Button,
+    Collapse,
+    ListItem,
+    Menu,
+    MenuHandler,
+    MenuList,
+    MenuItem,
+} from "@material-tailwind/react";
+
+import { useEffect, useState } from "react";
+import { useSelector } from 'react-redux'
+import { listOrderCancled, orderItems } from "../../services/orderService";
+import React from "react";
+import { Link } from "react-router-dom";
 
 const TABLE_HEAD = [
-    "Products",
+    "Username",
     "Total order",
     "Status",
     "Countdown",
     "All SC",
-    "Action",
+    "Detail",
 ];
 
-const TABLE_ROWS = [
+const navListMenuItems = [
     {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
-        name: "John Michael",
-        total: 1,
-        status: true,
-        date: "23/04/18",
-        sc: "Viettel Express",
+        title: "Products",
+        description: "Find the perfect solution for your needs.",
+        icon: SquaresPlusIcon,
     },
     {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg",
-        name: "Alexa Liras",
-        total: 3,
-        status: false,
-        date: "23/04/18",
-        sc: "Viettel Express",
+        title: "About Us",
+        description: "Meet and learn about our dedication",
+        icon: UserGroupIcon,
     },
     {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
-        name: "Laurent Perrier",
-        total: 10,
-        org: "Projects",
-        status: false,
-        date: "19/09/17",
-        sc: "Viettel Express",
-    },
-    {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-4.jpg",
-        name: "Michael Levi",
-        total: 1,
-        status: true,
-        date: "24/12/08",
-        sc: "Viettel Express",
-    },
-    {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg",
-        name: "Richard Gran",
-        total: 8,
-        status: false,
-        date: "04/10/21",
-        sc: "Viettel Express",
+        title: "Blog",
+        description: "Find the perfect solution for your needs.",
+        icon: Bars4Icon,
     },
 ];
+
+function NavListMenu({ order_id }) {
+
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await orderItems(order_id);
+                setData(res.data.items)
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        fetchData()
+    }, [])
+
+    const renderItems = data.map(
+        ({product_name, quantity, image }, index) => (
+            <MenuItem key={index} className="flex items-center gap-3 rounded-lg">
+                <div className="flex items-center justify-center rounded-lg !bg-blue-gray-50 p-1 ">
+                    <img className=" w-6 h-6 object-cover" src={`../../../src/assets/image/${image}`} alt="" />
+                </div>
+                <div>
+                    <Typography
+                        variant="h6"
+                        color="blue-gray"
+                        className="flex items-center text-sm font-bold"
+                    >
+                        {product_name}
+                    </Typography>
+                    <Typography
+                        variant="paragraph"
+                        className="text-xs !font-medium text-blue-gray-500"
+                    >
+                        x {quantity}
+                    </Typography>
+                </div>
+            </MenuItem>
+        ),
+    );
+
+    return (
+        <React.Fragment>
+            <Menu
+                open={isMenuOpen}
+                handler={setIsMenuOpen}
+                offset={{ mainAxis: 20 }}
+                placement="left"
+                allowHover={true}
+            >
+                <MenuHandler>
+                    <Typography as="div" variant="small" className="font-medium">
+                        <ListItem
+                            className="flex justify-center items-center gap-2 py-2 pr-4 font-medium text-gray-900"
+                            selected={isMenuOpen || isMobileMenuOpen}
+                            onClick={() => setIsMobileMenuOpen((cur) => !cur)}
+                        >
+                            <EyeIcon className="h-4 w-4" />
+                        </ListItem>
+                    </Typography>
+                </MenuHandler>
+                <MenuList className="hidden max-w-screen-xl rounded-xl lg:block">
+                    <ul className="grid grid-cols-1 gap-y-2 outline-none outline-0">
+                        {renderItems}
+                    </ul>
+                </MenuList>
+            </Menu>
+            <div className="block lg:hidden">
+                <Collapse open={isMobileMenuOpen}>{renderItems}</Collapse>
+            </div>
+        </React.Fragment>
+    );
+}
 
 export function CancellationBusiness() {
+
+    const seller_id = useSelector((state) => state.seller.seller.user_id);
+    const [data, setData] = useState([]);
+    const [dataFull, setDataFull] = useState([]);
+    const [page, setPage] = useState(1);
+
+    // Call API list order by user
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await listOrderCancled(seller_id);
+                setDataFull(res.data);
+                setData(res.data.data)
+            } catch (error) {
+                console.error("Error fetching fields:", error);
+            }
+        }
+        fetchData()
+    }, [seller_id]);
+
+    const [active, setActive] = useState(1);
+    const [visiblePages, setVisiblePages] = useState([]);
+
+    const getItemProps = (index) => ({
+        variant: active === index ? 'filled' : 'text',
+        color: 'gray',
+        onClick: () => {
+            setPage(index);
+            setActive(index);
+        },
+    });
+
+    const next = () => {
+        if (active === dataFull.last_page) return;
+
+        setActive(active + 1);
+        setPage(active + 1);
+    };
+
+    const prev = () => {
+        if (active === dataFull.from) return;
+
+        setActive(active - 1);
+        setPage(active - 1);
+    };
+
+    useEffect(() => {
+        const calculateVisiblePages = async () => {
+            const totalVisiblePages = 3;
+            const totalPageCount = dataFull.last_page;
+
+            let startPage, endPage;
+            if (totalPageCount <= totalVisiblePages) {
+                startPage = 1;
+                endPage = totalPageCount;
+            } else {
+                const middlePage = Math.floor(totalVisiblePages / 2);
+                if (active <= middlePage + 1) {
+                    startPage = 1;
+                    endPage = totalVisiblePages;
+                } else if (active >= totalPageCount - middlePage) {
+                    startPage = totalPageCount - totalVisiblePages + 1;
+                    endPage = totalPageCount;
+                } else {
+                    startPage = active - middlePage;
+                    endPage = active + middlePage;
+                }
+            }
+
+            const visiblePagesArray = Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index);
+            setVisiblePages(visiblePagesArray);
+        };
+
+        calculateVisiblePages();
+    }, [active, dataFull.last_page]);
+
     return (
-        <Card className="h-fit w-full">
+        <Card className="h-full w-full p-4">
             <CardHeader floated={false} shadow={false} className="rounded-none">
-                <div className="mb-8 flex items-center justify-between gap-8">
-                    <div>
-                        <Typography variant="h5" color="blue-gray"> Orders list </Typography>
-                        <Typography color="gray" className="mt-1 font-normal"> See information about all orders </Typography>
-                    </div>
-                    <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-                        <Button variant="outlined" size="sm"> view all </Button>
-                        <Button className="flex items-center gap-3" size="sm">
-                            <ArchiveBoxIcon strokeWidth={2} className="h-4 w-4" />
-                            Cancel all orders
-                        </Button>
-                    </div>
-                </div>
-                <div className=" flex mb-4 bg-blue-gray-100/40 rounded-lg p-2">
-                    <Tabs value="Cancellation form" className="w-full overflow-auto z-0">
-                        <TabsHeader className=" bg-white/1">
-                            {TABS.map(({ label, value }) => (
-                                <Tab key={value} value={value}>
-                                    {label}
-                                </Tab>
-                            ))}
-                        </TabsHeader>
-                    </Tabs>
-                </div>
                 <div className="flex flex-col sm:flex-row w-full justify-center items-center">
-                    <div className="sm:w-[50%] w-full mb-4 sm:mb-0">
-                        <Select label="Select Version">
-                            <Option>Order ID</Option>
-                            <Option>Material Tailwind Vue</Option>
-                            <Option>Material Tailwind Angular</Option>
-                            <Option>Material Tailwind Svelte</Option>
-                        </Select>
-                    </div>
-                    <div className="sm:w-[80%] w-full">
+                    <div className="w-full">
                         <Input
-                            label="Search"
+                            label="Find order ID"
                             icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                         />
                     </div>
                 </div>
             </CardHeader>
-            <CardBody className="overflow-scroll px-0">
+            <CardBody className="px-4">
                 <table className=" w-full min-w-max table-auto text-left">
                     <thead>
                         <tr>
                             {TABLE_HEAD.map((head, index) => (
-                                <th key={head} className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50" >
-                                    <Typography variant="small" color="blue-gray" className="flex items-center justify-between gap-2 font-normal leading-none opacity-70" >
-                                        {head}
+                                <th
+                                    key={head}
+                                    className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
+                                >
+                                    <Typography
+                                        variant="small"
+                                        color="blue-gray"
+                                        className="flex items-center justify-between gap-2 font-normal leading-none opacity-70"
+                                    >
+                                        {head}{" "}
                                         {index !== TABLE_HEAD.length - 1 && (
-                                            <ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
+                                            <ChevronUpDownIcon
+                                                strokeWidth={2}
+                                                className="h-4 w-4"
+                                            />
                                         )}
                                     </Typography>
                                 </th>
@@ -151,57 +262,86 @@ export function CancellationBusiness() {
                         </tr>
                     </thead>
                     <tbody>
-                        {TABLE_ROWS.map(
-                            ({ img, name, total, status, date, sc }, index) => {
-                                const isLast = index === TABLE_ROWS.length - 1;
+                        {data && data.length > 0 && data.map(
+                            (data, index) => {
+                                const key = `${index}`;
+                                const isLast = index === data.length - 1;
                                 const classes = isLast
                                     ? "p-4"
                                     : "p-4 border-b border-blue-gray-50";
 
                                 return (
-                                    <tr key={name}>
+                                    <tr key={key}>
                                         <td className={classes}>
                                             <div className="flex items-center gap-3">
-                                                <Avatar src={img} alt={name} size="sm" variant="rounded" />
+                                                <Avatar
+                                                    src="../../../src/assets/shop/shop_avt.jpg"
+                                                    alt={data.buyer_username}
+                                                    size="sm"
+                                                    variant="rounded"
+                                                />
                                                 <div className="flex flex-col">
-                                                    <Typography variant="small" color="blue-gray" className="font-normal" > {name} </Typography>
+                                                    <Typography
+                                                        variant="small"
+                                                        color="blue-gray"
+                                                        className="font-normal"
+                                                    >
+                                                        {data.buyer_username}
+                                                    </Typography>
                                                 </div>
                                             </div>
                                         </td>
                                         <td className={classes}>
                                             <div className="flex flex-col">
-                                                <Typography variant="small" color="blue-gray" className="font-normal" > {total} </Typography>
+                                                <Typography
+                                                    variant="small"
+                                                    color="blue-gray"
+                                                    className="font-normal"
+                                                >
+                                                    {data.total}
+                                                </Typography>
                                             </div>
                                         </td>
                                         <td className={classes}>
                                             <div className="w-max">
-                                                <Chip variant="ghost" size="sm"
-                                                    value={
-                                                        status
-                                                            ? "Order canceled"
-                                                            : "Canceling order"
-                                                    }
+                                                <Chip
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    value={data.order_status}
                                                     color={
-                                                        status
-                                                            ? "green"
-                                                            : "blue-gray"
+                                                        data.order_status === "Processing"
+                                                            ? "blue-gray"
+                                                            : data.order_status === "Shipped" || data.order_status === "Delivered"
+                                                                ? "green"
+                                                                : "red"
                                                     }
                                                 />
                                             </div>
                                         </td>
                                         <td className={classes}>
-                                            <Typography variant="small" color="blue-gray" className="font-normal" > {date} </Typography>
+                                            <Typography
+                                                variant="small"
+                                                color="blue-gray"
+                                                className="font-normal"
+                                            >
+                                                {
+                                                    new Date(data.created_at).toLocaleDateString()
+                                                }
+                                            </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <Typography variant="small" color="blue-gray" className="font-normal" > {sc} </Typography>
+                                            <Typography
+                                                variant="small"
+                                                color="blue-gray"
+                                                className="font-normal"
+                                            >
+                                                {data.shipping_method}
+                                            </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <Tooltip content="User Details">
-                                                <IconButton variant="text">
-                                                    <EyeIcon className="h-4 w-4" />
-                                                </IconButton>
-                                            </Tooltip>
+                                            <NavListMenu order_id={data.order_id} />
                                         </td>
+
                                     </tr>
                                 );
                             }
@@ -209,17 +349,37 @@ export function CancellationBusiness() {
                     </tbody>
                 </table>
             </CardBody>
-            <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-                <Typography variant="small" color="blue-gray" className="font-normal" > Page 1 of 999999 </Typography>
-                <div className="flex gap-2">
-                    <Button variant="outlined" size="sm">
-                        Previous
-                    </Button>
-                    <Button variant="outlined" size="sm">
-                        Next
-                    </Button>
+            <div className="flex justify-end  my-6 mt-12">
+                <Button
+                    variant="text"
+                    className="flex items-center gap-2"
+                    onClick={prev}
+                    disabled={active === dataFull.from}
+                >
+                    <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
+                </Button>
+
+                <div className="flex items-center gap-2">
+                    {visiblePages.map((pageNumber) => (
+                        <IconButton
+                            key={pageNumber}
+                            {...getItemProps(pageNumber)}
+                        >
+                            {pageNumber}
+                        </IconButton>
+                    ))}
                 </div>
-            </CardFooter>
+
+                <Button
+                    variant="text"
+                    className="flex items-center gap-2"
+                    onClick={next}
+                    disabled={active === dataFull.last_page}
+                >
+                    Next
+                    <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
+                </Button>
+            </div>
         </Card>
     );
 }

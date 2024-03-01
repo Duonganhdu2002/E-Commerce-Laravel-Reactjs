@@ -38,7 +38,7 @@ import {
 
 import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux'
-import { listOrder } from "../../services/orderService";
+import { listOrder, orderItems } from "../../services/orderService";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -67,69 +67,49 @@ const navListMenuItems = [
         description: "Find the perfect solution for your needs.",
         icon: Bars4Icon,
     },
-    {
-        title: "Services",
-        description: "Learn how we can help you achieve your goals.",
-        icon: SunIcon,
-    },
-    {
-        title: "Support",
-        description: "Reach out to us for assistance or inquiries",
-        icon: GlobeAmericasIcon,
-    },
-    {
-        title: "Contact",
-        description: "Find the perfect solution for your needs.",
-        icon: PhoneIcon,
-    },
-    {
-        title: "News",
-        description: "Read insightful articles, tips, and expert opinions.",
-        icon: NewspaperIcon,
-    },
-    {
-        title: "Products",
-        description: "Find the perfect solution for your needs.",
-        icon: RectangleGroupIcon,
-    },
-    {
-        title: "Special Offers",
-        description: "Explore limited-time deals and bundles",
-        icon: TagIcon,
-    },
 ];
 
 function NavListMenu({ order_id }) {
+
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
-    const renderItems = navListMenuItems.map(
-        ({ icon, title, description }, key) => (
-            <Link to="#" key={key}>
-                <MenuItem className="flex items-center gap-3 rounded-lg">
-                    <div className="flex items-center justify-center rounded-lg !bg-blue-gray-50 p-2 ">
-                        {" "}
-                        {React.createElement(icon, {
-                            strokeWidth: 2,
-                            className: "h-6 text-gray-900 w-6",
-                        })}
-                    </div>
-                    <div>
-                        <Typography
-                            variant="h6"
-                            color="blue-gray"
-                            className="flex items-center text-sm font-bold"
-                        >
-                            {title}
-                        </Typography>
-                        <Typography
-                            variant="paragraph"
-                            className="text-xs !font-medium text-blue-gray-500"
-                        >
-                            {description}
-                        </Typography>
-                    </div>
-                </MenuItem>
-            </Link>
+
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await orderItems(order_id);
+                setData(res.data.items)
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        fetchData()
+    }, [])
+
+    const renderItems = data.map(
+        ({product_name, quantity, image }, index) => (
+            <MenuItem key={index} className="flex items-center gap-3 rounded-lg">
+                <div className="flex items-center justify-center rounded-lg !bg-blue-gray-50 p-1 ">
+                    <img className=" w-6 h-6 object-cover" src={`../../../src/assets/image/${image}`} alt="" />
+                </div>
+                <div>
+                    <Typography
+                        variant="h6"
+                        color="blue-gray"
+                        className="flex items-center text-sm font-bold"
+                    >
+                        {product_name}
+                    </Typography>
+                    <Typography
+                        variant="paragraph"
+                        className="text-xs !font-medium text-blue-gray-500"
+                    >
+                        x {quantity}
+                    </Typography>
+                </div>
+            </MenuItem>
         ),
     );
 
@@ -154,7 +134,7 @@ function NavListMenu({ order_id }) {
                     </Typography>
                 </MenuHandler>
                 <MenuList className="hidden max-w-screen-xl rounded-xl lg:block">
-                    <ul className="grid grid-cols-3 gap-y-2 outline-none outline-0">
+                    <ul className="grid grid-cols-1 gap-y-2 outline-none outline-0">
                         {renderItems}
                     </ul>
                 </MenuList>
@@ -215,6 +195,7 @@ export function MyOrdersBusiness() {
 
     useEffect(() => {
         const calculateVisiblePages = async () => {
+
             const totalVisiblePages = 3;
             const totalPageCount = dataFull.last_page;
 
@@ -333,7 +314,7 @@ export function MyOrdersBusiness() {
                                                             ? "blue-gray"
                                                             : data.order_status === "Shipped" || data.order_status === "Delivered"
                                                                 ? "green"
-                                                                : "defaultColor"
+                                                                : "red"
                                                     }
                                                 />
                                             </div>

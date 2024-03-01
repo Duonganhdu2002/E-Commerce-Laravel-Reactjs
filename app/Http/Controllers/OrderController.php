@@ -29,33 +29,34 @@ class OrderController extends Controller
         return response()->json($arr, 200);
     }
 
-    public function getDisableOrdersForShop($shopId)
+    public function getDisableOrdersForShop($sellerId)
     {
         try {
-            $Orders = Order::where('shop_id', $shopId)
-                ->where('order_status_id', 4)
+            $orders = Order::select(
+                'order.order_id',
+                'users.username as buyer_username',
+                'order.total',
+                'order_status.order_status_name as order_status',
+                'order.created_at',
+                'shipping_method.shipping_method_name as shipping_method'
+            )
+                ->join('order_status', 'order.order_status_id', '=', 'order_status.order_status_id')
+                ->join('shipping_method', 'order.shipping_method_id', '=', 'shipping_method.shipping_method_id')
+                ->join('users', 'order.user_id', '=', 'users.user_id')
+                ->where('order.shop_id', $sellerId)
+                ->where('order.order_status_id', 4)
                 ->paginate(7);
 
-            if ($Orders->isEmpty()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Không có đơn hàng nào bị hủy cho cửa hàng có ID ' . $shopId,
-                    'data' => null,
-                ], 404);
-            }
-
-            $arr = [
-                'status' => true,
-                'message' => 'Danh sách các đơn hàng đã bị hủy cho cửa hàng có ID ' . $shopId,
-                'data' => $Orders,
-            ];
-
-            return response()->json($arr, 200);
+            return response()->json([
+                'status' => 200,
+                'message' => 'List of orders for seller with ID ' . $sellerId,
+                'data' => $orders
+            ]);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => false,
-                'message' => 'Lỗi khi truy vấn cơ sở dữ liệu.',
-                'data' => null,
+                'status' => 500,
+                'message' => 'Internal Server Error',
+                'error' => $e->getMessage()
             ], 500);
         }
     }
@@ -239,14 +240,17 @@ class OrderController extends Controller
     {
         try {
 
-            $order = Order::with(['items.product'])->findOrFail($orderId);
-
+            $order = Order::with(['items.product.images'])->findOrFail($orderId);
 
             $items = $order->items->map(function ($item) {
+                $product = $item->product;
+                $images = $product->images->pluck('image_url')->toArray();
+
                 return [
-                    'product_id' => $item->product->product_id,
-                    'product_name' => $item->product->name,
+                    'product_id' => $product->product_id,
+                    'product_name' => $product->name,
                     'quantity' => $item->quantity,
+                    'image' => $images[0],
                 ];
             });
 
@@ -330,5 +334,4 @@ class OrderController extends Controller
             'data' => $shippingOrders,
         ], 200);
     }
-
 }
