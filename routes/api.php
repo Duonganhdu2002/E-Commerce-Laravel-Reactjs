@@ -13,6 +13,7 @@ use App\Http\Controllers\ShoppingCartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SearchHistoryController;
 use App\Http\Controllers\ProvincesController;
+use App\Http\Controllers\RevenueController;
 
 Route::prefix('user')->group(function () {
 
@@ -97,6 +98,9 @@ Route::prefix('public')->group(function () {
 
         //hiển thị danh sách sản phẩm theo sắp xếp
         // Route::get('/sort-products/{sortBy}/{user_id}', [ProductController::class, 'sortUserProducts']);
+
+
+        Route::get('{shop_id}/{type}/{date}', [RevenueController::class, 'calculateShopRevenue']);
 
 
     });
