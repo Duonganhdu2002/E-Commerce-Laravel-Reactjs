@@ -48,6 +48,7 @@ import UpdateOrder from "./components/ui/user/UpdateOrder";
 import Promotion from "./components/ui/user/Promotion";
 import UpdateCompany from "./components/ui/user/UpdateCompany";
 import UpdateWallet from "./components/ui/user/UpdateWallet";
+import VoucherWallet from "./components/ui/user/VoucherWallet";
 import Error404 from "./components/ui/error404";
 import { useSelector } from 'react-redux'
 import { ShopRating } from "./components/ui-business/ShopRating";
@@ -204,10 +205,10 @@ const App = () => {
                                     <Route path="password" element={<PrivateCustomerRoute element={<ChangePassword />} />} />
                                     <Route path="purchase" element={<PrivateCustomerRoute element={<Purchase />} />} />
                                     <Route path="order" element={<PrivateCustomerRoute element={<UpdateOrder />} />} />
-                                    <Route path="promotion" element={<PrivateCustomerRoute element={<Promotion/>} />} />
-                                    <Route path="wallet" element={<PrivateCustomerRoute element={<UpdateWallet/>} />} />
-                                    <Route path="company" element={<PrivateCustomerRoute element={<UpdateCompany/>} />} />
-                                    <Route path="voucher-wallet" element={<PrivateCustomerRoute element={<div>Đang xây dựng, bạn chờ chút nhé ^^ ...</div>} />} />
+                                    <Route path="promotion" element={<PrivateCustomerRoute element={<Promotion />} />} />
+                                    <Route path="wallet" element={<PrivateCustomerRoute element={<UpdateWallet />} />} />
+                                    <Route path="company" element={<PrivateCustomerRoute element={<UpdateCompany />} />} />
+                                    <Route path="voucher-wallet" element={<PrivateCustomerRoute element={<VoucherWallet />} />} />
                                 </Route>
                                 <Route path="orderstatus" element={<PrivateCustomerRoute element={<OrderStatus />} />} />
                             </Route>
