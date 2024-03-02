@@ -207,8 +207,8 @@ export function MyProductsBusiness() {
                                 const key = `${index}`;
                                 const isLast = index === data.length - 1;
                                 const classes = isLast
-                                    ? "p-4"
-                                    : "p-4 border-b border-blue-gray-50";
+                                    ? "p-7"
+                                    : "p-7 border-b border-blue-gray-50";
 
                                 return (
                                     <tr key={key}>
@@ -296,7 +296,7 @@ export function MyProductsBusiness() {
                 </table>
             </CardBody>
             <CardFooter>
-                <div className="flex justify-end  my-6 mt-12 absolute bottom-4 right-10">
+                <div className="flex justify-end  my-6 absolute bottom-4 right-10">
                     <Button
                         variant="text"
                         className="flex items-center gap-2"
