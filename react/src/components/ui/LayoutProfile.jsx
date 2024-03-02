@@ -20,8 +20,7 @@ import Instagram from "../../assets/icon/instagram-1-svgrepo-com.svg";
 
 export default function LayoutProfile() {
     return (
-        <div className=" flex justify-center my-16">
-            <div className="xl:flex xl:justify-between justify-center 2xl:w-[80%] xl:w-[95%] w-[90%]">
+            <div className="xl:flex xl:justify-between justify-center">
                 <div className="flex xl:justify-start justify-center xl:w-[33%] h-fit">
                     <Card className="w-96">
                         <CardHeader floated={false} className="h-80">
@@ -118,24 +117,24 @@ export default function LayoutProfile() {
                             </Typography>
                         </CardHeader>
                         <CardBody className=" px-8 w-full">
-                            <div className=" md:flex">
-                                <div className="w-full mb-6 mr-8">
+                            <div className=" lg:flex gap-x-2">
+                                <div className="w-full mb-6">
                                     <Input label="Username" />
                                 </div>
                                 <div className="w-full mb-6">
                                     <Input label="Full Name" />
                                 </div>
                             </div>
-                            <div className=" md:flex">
-                                <div className="w-full mb-6 mr-8">
+                            <div className=" lg:flex gap-x-2">
+                                <div className="w-full mb-6 ">
                                     <Input label="Email" />
                                 </div>
                                 <div className="w-full mb-6">
                                     <Input label="Phone Number" />
                                 </div>
                             </div>
-                            <div className=" md:flex">
-                                <div className="w-full mb-6 mr-8">
+                            <div className=" lg:flex gap-x-2">
+                                <div className="w-full mb-6 ">
                                     <Select label="Select Gender" required>
                                         <Option>Male</Option>
                                         <Option>Female</Option>
@@ -144,6 +143,11 @@ export default function LayoutProfile() {
                                 </div>
                                 <div className="w-full mb-6">
                                     <Input label="Birthday" type="date" />
+                                </div>
+                            </div>
+                            <div className=" lg:flex">
+                                <div className="w-full mb-6">
+                                    <Input label="Address" />
                                 </div>
                             </div>
                         </CardBody>
@@ -162,24 +166,24 @@ export default function LayoutProfile() {
                         </CardHeader>
 
                         <CardBody className=" px-8 w-full">
-                            <div className=" md:flex">
-                                <div className="w-full mb-6 mr-8">
+                            <div className=" lg:flex gap-x-2">
+                                <div className="w-full mb-6 ">
                                     <Input label="Username" />
                                 </div>
                                 <div className="w-full mb-6">
                                     <Input label="Full Name" />
                                 </div>
                             </div>
-                            <div className=" md:flex">
-                                <div className="w-full mb-6 mr-8">
+                            <div className=" lg:flex gap-x-2">
+                                <div className="w-full mb-6 ">
                                     <Input label="Email" />
                                 </div>
                                 <div className="w-full mb-6">
                                     <Input label="Phone Number" />
                                 </div>
                             </div>
-                            <div className=" md:flex">
-                                <div className="w-full mb-6 mr-8">
+                            <div className=" lg:flex gap-x-2">
+                                <div className="w-full mb-6 ">
                                     <Select label="Select Gender" required>
                                         <Option>Male</Option>
                                         <Option>Female</Option>
@@ -191,13 +195,13 @@ export default function LayoutProfile() {
                                 </div>
                             </div>
 
-                            <div className=" md:flex">
+                            <div className=" lg:flex">
                                 <div className="w-full mb-6">
                                     <Input label="Address" />
                                 </div>
                             </div>
 
-                            <div className="md:flex justify-end">
+                            <div className="lg:flex justify-end">
                                 <Button
                                     variant="gradient"
                                     color="red"
@@ -214,6 +218,5 @@ export default function LayoutProfile() {
                     </Card>
                 </div>
             </div>
-        </div>
     );
 }

@@ -5,6 +5,7 @@ import "./index.css";
 import PopupChat from "./components/ui/PopupChat";
 import { UserProvider } from "./context/UserContext";
 import SubFooter from "./components/ui/Subfooter";
+import User from "./pages/User";
 import { Provider } from "react-redux";
 import { store } from "./redux/Store";
 import MenuBarBusiness from "./components/ui-business/MenuBar";
@@ -22,7 +23,6 @@ import MenuBarAdmin from "./components/ui-admin/MenuBar";
 import LoginAdmin from "./components/ui-admin/Login";
 import RegisterAdmin from "./components/ui-admin/Register";
 import ProfileAdmin from "./components/ui-admin/Profile";
-import InboxAdmin from "./components/ui-admin/Inbox";
 import DashboardAdmin from "./pages/admin/Dashboard";
 import TaskBarAdmin from "./components/ui-admin/TaskBar";
 import Home from "./pages/Home";
@@ -36,6 +36,9 @@ import ProductDetails from "./pages/ProductDetails";
 import Shop from "./pages/Shop";
 import Profile from "./pages/Profile";
 import OrderStatus from "./pages/OrderStatus";
+import Banking from "./components/ui/user/Banking";
+import Address from "./components/ui/user/Address";
+import ChangePassword from "./components/ui/user/ChangePassword";
 import MenuBar from "./components/ui/MenuBar";
 import Checkout from "./components/ui/Checkout";
 import SubFooter2 from "./components/ui/SubFooter2";
@@ -64,7 +67,7 @@ import Setting from "./components/ui-admin/Setting";
 
 const Customer = () => {
     return (
-        <div>
+        <div className=" bg-gray-100">
             <div className="flex h-20 md:h-24"></div>
             <MenuBar />
             <Outlet />
@@ -185,11 +188,23 @@ const App = () => {
                                 <Route path="category/:categoryId" element={<CategoryPage />} />
                                 <Route path="product/:productId" element={<ProductDetails />} />
                                 <Route path="shop/:user_id" element={<Shop />} />
-                                <Route path="profile" element={<PrivateCustomerRoute element={<Profile />} />} />
                                 <Route path="checkout" element={<PrivateCustomerRoute element={<Checkout />} />} />
                                 <Route path="search/:searchKey" element={<SearchLayout />} />
                                 <Route path="orderstatus" element={<PrivateCustomerRoute element={<OrderStatus />} />} />
                                 <Route path="success" element={<PrivateCustomerRoute element={<Success />} />} />
+                                {/* {User} */}
+                                <Route path="/user" element={<User />}>
+                                    <Route path="profile" element={<PrivateCustomerRoute element={<Profile />} />} />
+                                    <Route path="banking" element={<PrivateCustomerRoute element={<Banking />} />} />
+                                    <Route path="address" element={<PrivateCustomerRoute element={<Address />} />} />
+                                    <Route path="password" element={<PrivateCustomerRoute element={<ChangePassword />} />} />
+                                    <Route path="purchase" element={<PrivateCustomerRoute element=<div>Đang xây dựng, bạn chờ chút nhé ^^ ...</div> />} />
+                                    <Route path="order" element={<PrivateCustomerRoute element=<div>Đang xây dựng, bạn chờ chút nhé ^^ ...</div> />} />
+                                    <Route path="promotion" element={<PrivateCustomerRoute element=<div>Đang xây dựng, bạn chờ chút nhé ^^ ...</div> />} />
+                                    <Route path="wallet" element={<PrivateCustomerRoute element=<div>Đang xây dựng, bạn chờ chút nhé ^^ ...</div> />} />
+                                    <Route path="company" element={<PrivateCustomerRoute element=<div>Đang xây dựng, bạn chờ chút nhé ^^ ...</div> />} />
+                                    <Route path="voucher-wallet" element={<PrivateCustomerRoute element=<div>Đang xây dựng, bạn chờ chút nhé ^^ ...</div> />} />
+                                </Route>
                             </Route>
 
                             {/* Business */}
