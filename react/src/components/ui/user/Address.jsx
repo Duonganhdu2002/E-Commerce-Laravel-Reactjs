@@ -91,7 +91,7 @@ export default function Address() {
                     </div>
                 </div>
             </CardHeader>
-            <CardBody className="overflow-scroll px-0">
+            <CardBody className="px-0">
                 <table className="w-full min-w-max table-auto text-left">
                     <thead>
                         <tr>
