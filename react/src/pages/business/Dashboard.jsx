@@ -2,13 +2,11 @@ import React from "react";
 import InformationCard from "../../components/ui-business/InformationCard";
 import Graph1 from "../../components/ui-business/Graph1";
 import Graph2 from "../../components/ui-business/Graph2";
-import TodayOrderSold from "../../components/ui-business/TodayOrderSold";
-import MemberList from "../../components/ui-business/MemberList";
 
 export default function Dashboard() {
     return (
         <div>
-            <TodayOrderSold />
+            {/* <TodayOrderSold /> */}
             <InformationCard />
             <div className=" xl:flex justify-between w-full">
                 <div className=" xl:w-[66%] w-full xl:mr-8 mb-8">
@@ -18,7 +16,6 @@ export default function Dashboard() {
                     <Graph2 />
                 </div>
             </div>
-            <MemberList />
-        </div>
+\        </div>
     );
 }
