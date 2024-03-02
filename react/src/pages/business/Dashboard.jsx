@@ -2,14 +2,14 @@ import React from "react";
 import InformationCard from "../../components/ui-business/InformationCard";
 import Graph1 from "../../components/ui-business/Graph1";
 import Graph2 from "../../components/ui-business/Graph2";
-import TodayOrderSold from "../../components/ui-business/TodayOrderSold";
-import MemberList from "../../components/ui-business/MemberList";
+import Graph3 from "../../components/ui-business/Graph3";
+import Graph4 from "../../components/ui-business/Graph4";
 
 export default function Dashboard() {
     return (
         <div>
-            <TodayOrderSold />
-            <InformationCard />
+            {/* <TodayOrderSold /> */}
+            <InformationCard/>
             <div className=" xl:flex justify-between w-full">
                 <div className=" xl:w-[66%] w-full xl:mr-8 mb-8">
                     <Graph1 />
@@ -18,7 +18,14 @@ export default function Dashboard() {
                     <Graph2 />
                 </div>
             </div>
-            <MemberList />
+            <div className=" xl:flex justify-between w-full">
+                <div className=" xl:w-[32%] w-full xl:mr-8">
+                    <Graph3 />
+                </div>
+                <div className=" xl:w-[66%] w-full">
+                    <Graph4 />
+                </div>
+            </div>
         </div>
     );
 }

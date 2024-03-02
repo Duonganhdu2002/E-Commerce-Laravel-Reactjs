@@ -470,7 +470,10 @@ export default function MenuBar() {
                     {user ? (
                         <div className=" items-center flex">
                             <Typography>Hello </Typography>
+                            <Link to="/user/profile">
                             <Typography className=" mx-3 font-semibold">{user.username}</Typography>
+                            </Link>
+
                             <Button variant="gradient" size="sm" fullWidth onClick={handleLogOut}>
                                 Log out
                             </Button>

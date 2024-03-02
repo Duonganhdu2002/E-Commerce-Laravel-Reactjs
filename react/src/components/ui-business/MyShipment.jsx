@@ -1,126 +1,263 @@
 import {
     MagnifyingGlassIcon,
     ChevronUpDownIcon,
+    ArrowRightIcon,
+    ArrowLeftIcon,
 } from "@heroicons/react/24/outline";
-import { PencilIcon, ArrowDownTrayIcon } from "@heroicons/react/24/solid";
+
+import {
+    EyeIcon,
+    Bars4Icon,
+    GlobeAmericasIcon,
+    NewspaperIcon,
+    PhoneIcon,
+    RectangleGroupIcon,
+    SquaresPlusIcon,
+    SunIcon,
+    TagIcon,
+    UserGroupIcon,
+} from "@heroicons/react/24/solid"
+
 import {
     Card,
     CardHeader,
     Input,
     Typography,
-    Button,
     CardBody,
     Chip,
-    CardFooter,
-    Tabs,
-    TabsHeader,
-    Tab,
     Avatar,
     IconButton,
-    Tooltip,
+    Button,
+    Collapse,
+    ListItem,
+    Menu,
+    MenuHandler,
+    MenuList,
+    MenuItem,
+    CardFooter,
 } from "@material-tailwind/react";
 
-const TABS = [
+import { useEffect, useState } from "react";
+import { useSelector } from 'react-redux'
+import { listOrderCancled, orderItems, orderShipped } from "../../services/orderService";
+import React from "react";
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+
+const convertToExcel = (data) => {
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const dataExcel = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+    FileSaver.saveAs(dataExcel, 'data.xlsx');
+}
+
+const TABLE_HEAD = [
+    "Username",
+    "Total order",
+    "Status",
+    "Countdown",
+    "All SC",
+    "Detail",
+];
+
+const navListMenuItems = [
     {
-        label: "All",
-        value: "all",
+        title: "Products",
+        description: "Find the perfect solution for your needs.",
+        icon: SquaresPlusIcon,
     },
     {
-        label: "Delivered",
-        value: "Delivered",
+        title: "About Us",
+        description: "Meet and learn about our dedication",
+        icon: UserGroupIcon,
     },
     {
-        label: "Pending",
-        value: "Pending",
-    },
-    {
-        label: "In-Transit",
-        value: "In-Transit",
+        title: "Blog",
+        description: "Find the perfect solution for your needs.",
+        icon: Bars4Icon,
     },
 ];
 
-const TABLE_HEAD = ["Products", "Status", "Time", "Download"];
+function NavListMenu({ order_id }) {
 
-const TABLE_ROWS = [
-    {
-        img: "https://lzd-img-global.slatic.net/g/p/3155709012daf005299359ec6a1dfd62.jpg_200x200q80.jpg_.webp",
-        name: "Jean",
-        sku: "#12333959",
-        online: true,
-        date: "23/04/18",
-    },
-    {
-        img: "https://lzd-img-global.slatic.net/g/p/3155709012daf005299359ec6a1dfd62.jpg_200x200q80.jpg_.webp",
-        name: "Jean",
-        sku: "#12333959",
-        online: false,
-        date: "23/04/18",
-    },
-    {
-        img: "https://lzd-img-global.slatic.net/g/p/3155709012daf005299359ec6a1dfd62.jpg_200x200q80.jpg_.webp",
-        name: "Jean",
-        sku: "#12333959",
-        online: false,
-        date: "19/09/17",
-    },
-    {
-        img: "https://lzd-img-global.slatic.net/g/p/3155709012daf005299359ec6a1dfd62.jpg_200x200q80.jpg_.webp",
-        name: "Jean",
-        sku: "#12333959",
-        online: undefined,
-        date: "24/12/08",
-    },
-    {
-        img: "https://lzd-img-global.slatic.net/g/p/3155709012daf005299359ec6a1dfd62.jpg_200x200q80.jpg_.webp",
-        name: "Jean",
-        sku: "#12333959",
-        online: true,
-        date: "04/10/21",
-    },
-];
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await orderItems(order_id);
+                setData(res.data.items)
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        fetchData()
+    }, [])
+
+    const renderItems = data.map(
+        ({ product_name, quantity, image }, index) => (
+            <MenuItem key={index} className="flex items-center gap-3 rounded-lg">
+                <div className="flex items-center justify-center rounded-lg !bg-blue-gray-50 p-1 ">
+                    <img className=" w-6 h-6 object-cover" src={`../../../src/assets/image/${image}`} alt="" />
+                </div>
+                <div>
+                    <Typography
+                        variant="h6"
+                        color="blue-gray"
+                        className="flex items-center text-sm font-bold"
+                    >
+                        {product_name}
+                    </Typography>
+                    <Typography
+                        variant="paragraph"
+                        className="text-xs !font-medium text-blue-gray-500"
+                    >
+                        x {quantity}
+                    </Typography>
+                </div>
+            </MenuItem>
+        ),
+    );
+
+    return (
+        <React.Fragment>
+            <Menu
+                open={isMenuOpen}
+                handler={setIsMenuOpen}
+                offset={{ mainAxis: 20 }}
+                placement="left"
+                allowHover={true}
+            >
+                <MenuHandler>
+                    <Typography as="div" variant="small" className="font-medium">
+                        <ListItem
+                            className="flex justify-center items-center gap-2 py-2 pr-4 font-medium text-gray-900"
+                            selected={isMenuOpen || isMobileMenuOpen}
+                            onClick={() => setIsMobileMenuOpen((cur) => !cur)}
+                        >
+                            <EyeIcon className="h-4 w-4" />
+                        </ListItem>
+                    </Typography>
+                </MenuHandler>
+                <MenuList className="hidden max-w-screen-xl rounded-xl lg:block">
+                    <ul className="grid grid-cols-1 gap-y-2 outline-none outline-0">
+                        {renderItems}
+                    </ul>
+                </MenuList>
+            </Menu>
+            <div className="block lg:hidden">
+                <Collapse open={isMobileMenuOpen}>{renderItems}</Collapse>
+            </div>
+        </React.Fragment>
+    );
+}
 
 export default function MyShipment() {
+
+    const seller_id = useSelector((state) => state.seller.seller.user_id);
+    const [data, setData] = useState([]);
+    const [dataFull, setDataFull] = useState([]);
+    const [page, setPage] = useState(1);
+
+    const handleExportExcel = () => {
+        convertToExcel(data);
+    }
+
+    // Call API list order by user
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await orderShipped(seller_id, page);
+                setDataFull(res.data);
+                setData(res.data.data)
+            } catch (error) {
+                console.error("Error fetching fields:", error);
+            }
+        }
+        fetchData()
+    }, [seller_id, page]);
+
+    const [active, setActive] = useState(1);
+    const [visiblePages, setVisiblePages] = useState([]);
+
+    const getItemProps = (index) => ({
+        variant: active === index ? 'filled' : 'text',
+        color: 'gray',
+        onClick: () => {
+            setPage(index);
+            setActive(index);
+        },
+    });
+
+    const next = () => {
+        if (active === dataFull.last_page) return;
+
+        setActive(active + 1);
+        setPage(active + 1);
+    };
+
+    const prev = () => {
+        if (active === dataFull.from) return;
+
+        setActive(active - 1);
+        setPage(active - 1);
+    };
+
+    useEffect(() => {
+        const calculateVisiblePages = async () => {
+            const totalVisiblePages = 3;
+            const totalPageCount = dataFull.last_page;
+
+            let startPage, endPage;
+            if (totalPageCount <= totalVisiblePages) {
+                startPage = 1;
+                endPage = totalPageCount;
+            } else {
+                const middlePage = Math.floor(totalVisiblePages / 2);
+                if (active <= middlePage + 1) {
+                    startPage = 1;
+                    endPage = totalVisiblePages;
+                } else if (active >= totalPageCount - middlePage) {
+                    startPage = totalPageCount - totalVisiblePages + 1;
+                    endPage = totalPageCount;
+                } else {
+                    startPage = active - middlePage;
+                    endPage = active + middlePage;
+                }
+            }
+
+            const visiblePagesArray = Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index);
+            setVisiblePages(visiblePagesArray);
+        };
+
+        calculateVisiblePages();
+    }, [active, dataFull.last_page]);
+
     return (
-        <Card className="h-full w-full">
+        <Card className="h-[98%] w-full p-4">
             <CardHeader floated={false} shadow={false} className="rounded-none">
-                <div className="mb-8 flex items-center justify-between gap-8">
-                    <div>
-                        <Typography variant="h5" color="blue-gray">
-                            Shipment list
-                        </Typography>
-                        <Typography color="gray" className="mt-1 font-normal">
-                            See information about all members
-                        </Typography>
-                    </div>
-                    <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-                        <Button variant="outlined" size="sm">
-                            view all
-                        </Button>
-                        <Button className="flex items-center gap-3" size="sm">
-                            <ArrowDownTrayIcon strokeWidth={2} className="h-4 w-4" /> download all labels
-                        </Button>
-                    </div>
-                </div>
-                <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-                    <Tabs value="all" className="w-full">
-                        <TabsHeader>
-                            {TABS.map(({ label, value }) => (
-                                <Tab key={value} value={value}>
-                                    &nbsp;&nbsp;{label}&nbsp;&nbsp;
-                                </Tab>
-                            ))}
-                        </TabsHeader>
-                    </Tabs>
-                    <div className="w-full md:w-72">
-                        <Input
-                            label="Search"
-                            icon={<MagnifyingGlassIcon className="h-5 w-5" />}
-                        />
+                <div className="flex flex-col sm:flex-row w-full justify-center items-center">
+                    <div className="w-full justify-between flex">
+                        <div className=" w-fit">
+                            <Input
+                                label="Find order ID"
+                                icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                            />
+                        </div>
+
+                        <div className=" w-fit">
+                            <Button size="sm" color="gray" variant="outlined" onClick={handleExportExcel}>Export to Excel</Button>
+                        </div>
+
                     </div>
                 </div>
             </CardHeader>
-            <CardBody className="overflow-scroll px-0">
-                <table className="mt-4 w-full min-w-max table-auto text-left">
+            <CardBody className="px-4">
+                <table className=" w-full min-w-max table-auto text-left">
                     <thead>
                         <tr>
                             {TABLE_HEAD.map((head, index) => (
@@ -135,7 +272,10 @@ export default function MyShipment() {
                                     >
                                         {head}{" "}
                                         {index !== TABLE_HEAD.length - 1 && (
-                                            <ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
+                                            <ChevronUpDownIcon
+                                                strokeWidth={2}
+                                                className="h-4 w-4"
+                                            />
                                         )}
                                     </Typography>
                                 </th>
@@ -143,34 +283,44 @@ export default function MyShipment() {
                         </tr>
                     </thead>
                     <tbody>
-                        {TABLE_ROWS.map(
-                            ({ img, name, sku, online, date }, index) => {
-                                const isLast = index === TABLE_ROWS.length - 1;
+                        {data && data.length > 0 && data.map(
+                            (data, index) => {
+                                const key = `${index}`;
+                                const isLast = index === data.length - 1;
                                 const classes = isLast
                                     ? "p-4"
                                     : "p-4 border-b border-blue-gray-50";
 
                                 return (
-                                    <tr key={name}>
+                                    <tr key={key}>
                                         <td className={classes}>
                                             <div className="flex items-center gap-3">
-                                                <Avatar src={img} alt={name} size="sm" />
+                                                <Avatar
+                                                    src="../../../src/assets/shop/shop_avt.jpg"
+                                                    alt={data.buyer_username}
+                                                    size="sm"
+                                                    variant="rounded"
+                                                />
                                                 <div className="flex flex-col">
                                                     <Typography
                                                         variant="small"
                                                         color="blue-gray"
                                                         className="font-normal"
                                                     >
-                                                        {name}
-                                                    </Typography>
-                                                    <Typography
-                                                        variant="small"
-                                                        color="blue-gray"
-                                                        className="font-normal opacity-70"
-                                                    >
-                                                        SKU: {sku}
+                                                        {data.buyer_username}
                                                     </Typography>
                                                 </div>
+                                            </div>
+                                        </td>
+                                        <td className={classes}>
+                                            <div className="flex flex-col">
+                                                <Typography
+                                                    variant="small"
+                                                    color="blue-gray"
+                                                    className="font-normal"
+                                                >
+                                                    {data.total}
+                                                </Typography>
                                             </div>
                                         </td>
                                         <td className={classes}>
@@ -178,8 +328,14 @@ export default function MyShipment() {
                                                 <Chip
                                                     variant="ghost"
                                                     size="sm"
-                                                    value={online === true ? "delivered" : (online === false ? "pending" : "in-transit")}
-                                                    color={online === true ? "green" : (online === false ? "blue-gray" : "yellow")}
+                                                    value={data.order_status}
+                                                    color={
+                                                        data.order_status === "Processing"
+                                                            ? "blue-gray"
+                                                            : data.order_status === "Shipped" || data.order_status === "Delivered"
+                                                                ? "green"
+                                                                : "red"
+                                                    }
                                                 />
                                             </div>
                                         </td>
@@ -189,36 +345,64 @@ export default function MyShipment() {
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                {date}
+                                                {
+                                                    new Date(data.created_at).toLocaleDateString()
+                                                }
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <Tooltip content="Dowwnload labels">
-                                                <IconButton variant="text">
-                                                    <ArrowDownTrayIcon className="h-4 w-4" />
-                                                </IconButton>
-                                            </Tooltip>
+                                            <Typography
+                                                variant="small"
+                                                color="blue-gray"
+                                                className="font-normal"
+                                            >
+                                                {data.shipping_method}
+                                            </Typography>
                                         </td>
+                                        <td className={classes}>
+                                            <NavListMenu order_id={data.order_id} />
+                                        </td>
+
                                     </tr>
                                 );
-                            },
+                            }
                         )}
                     </tbody>
                 </table>
             </CardBody>
-            <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-                <Typography variant="small" color="blue-gray" className="font-normal">
-                    Page 1 of 10
-                </Typography>
-                <div className="flex gap-2">
-                    <Button variant="outlined" size="sm">
-                        Previous
+            <CardFooter>
+                <div className="flex justify-end  my-6 mt-12 absolute bottom-4 right-10">
+                    <Button
+                        variant="text"
+                        className="flex items-center gap-2"
+                        onClick={prev}
+                        disabled={active === dataFull.from}
+                    >
+                        <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
                     </Button>
-                    <Button variant="outlined" size="sm">
+
+                    <div className="flex items-center gap-2">
+                        {visiblePages.map((pageNumber) => (
+                            <IconButton
+                                key={pageNumber}
+                                {...getItemProps(pageNumber)}
+                            >
+                                {pageNumber}
+                            </IconButton>
+                        ))}
+                    </div>
+
+                    <Button
+                        variant="text"
+                        className="flex items-center gap-2"
+                        onClick={next}
+                        disabled={active === dataFull.last_page}
+                    >
                         Next
+                        <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
                     </Button>
                 </div>
             </CardFooter>
         </Card>
-    )
+    );
 }

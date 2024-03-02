@@ -40,4 +40,12 @@ const productFilter = (data, page) => {
     return axios.post(`/public/product/filterByCategoriesAndBrands?page=${page}`, data)
 }
 
-export {productFilter, bestSellerUser, productSort, productWithBrand, fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession, fetchRandomFourCategoryAndGetFourProduct, searchProduct };
+const productListShop = (data, page) => {
+    return axios.get(`/public/product/shop/${data}?page=${page}`)
+}
+
+const deleteProduct = (product_id) => {
+    return axios.delete(`/public/product/delete/${product_id}`)
+}
+
+export { deleteProduct, productListShop, productFilter, bestSellerUser, productSort, productWithBrand, fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession, fetchRandomFourCategoryAndGetFourProduct, searchProduct };

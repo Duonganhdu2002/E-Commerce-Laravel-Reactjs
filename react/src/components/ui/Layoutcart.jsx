@@ -49,9 +49,6 @@ const Layoutcart = () => {
         productsByUser[userId].products.push(carts);
     });
 
-    console.log(productsByUser);
-    console.log(data)
-
 
     // Call API cart
     useEffect(() => {
@@ -75,10 +72,7 @@ const Layoutcart = () => {
             }
         };
         getFetchBrandsByFieldId();
-        const intervalId = setInterval(() => {
-            getFetchBrandsByFieldId();
-        }, 7000);
-        return () => clearInterval(intervalId);
+        
     }, [user_id]);
 
     // API shipping method

@@ -34,13 +34,15 @@ import {
     MenuHandler,
     MenuList,
     MenuItem,
+    CardFooter,
 } from "@material-tailwind/react";
 
 import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux'
-import { listOrder } from "../../services/orderService";
+import { listOrder, orderItems } from "../../services/orderService";
 import React from "react";
-import { Link } from "react-router-dom";
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
 
 const TABLE_HEAD = [
     "Username",
@@ -51,85 +53,55 @@ const TABLE_HEAD = [
     "Detail",
 ];
 
-const navListMenuItems = [
-    {
-        title: "Products",
-        description: "Find the perfect solution for your needs.",
-        icon: SquaresPlusIcon,
-    },
-    {
-        title: "About Us",
-        description: "Meet and learn about our dedication",
-        icon: UserGroupIcon,
-    },
-    {
-        title: "Blog",
-        description: "Find the perfect solution for your needs.",
-        icon: Bars4Icon,
-    },
-    {
-        title: "Services",
-        description: "Learn how we can help you achieve your goals.",
-        icon: SunIcon,
-    },
-    {
-        title: "Support",
-        description: "Reach out to us for assistance or inquiries",
-        icon: GlobeAmericasIcon,
-    },
-    {
-        title: "Contact",
-        description: "Find the perfect solution for your needs.",
-        icon: PhoneIcon,
-    },
-    {
-        title: "News",
-        description: "Read insightful articles, tips, and expert opinions.",
-        icon: NewspaperIcon,
-    },
-    {
-        title: "Products",
-        description: "Find the perfect solution for your needs.",
-        icon: RectangleGroupIcon,
-    },
-    {
-        title: "Special Offers",
-        description: "Explore limited-time deals and bundles",
-        icon: TagIcon,
-    },
-];
+const convertToExcel = (data) => {
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const dataExcel = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+    FileSaver.saveAs(dataExcel, 'data.xlsx');
+}
 
 function NavListMenu({ order_id }) {
+
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
-    const renderItems = navListMenuItems.map(
-        ({ icon, title, description }, key) => (
-            <Link to="#" key={key}>
-                <MenuItem className="flex items-center gap-3 rounded-lg">
-                    <div className="flex items-center justify-center rounded-lg !bg-blue-gray-50 p-2 ">
-                        {" "}
-                        {React.createElement(icon, {
-                            strokeWidth: 2,
-                            className: "h-6 text-gray-900 w-6",
-                        })}
-                    </div>
-                    <div>
-                        <Typography
-                            variant="h6"
-                            color="blue-gray"
-                            className="flex items-center text-sm font-bold"
-                        >
-                            {title}
-                        </Typography>
-                        <Typography
-                            variant="paragraph"
-                            className="text-xs !font-medium text-blue-gray-500"
-                        >
-                            {description}
-                        </Typography>
-                    </div>
-                </MenuItem>
-            </Link>
+
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await orderItems(order_id);
+                setData(res.data.items)
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        fetchData()
+    }, [])
+
+    const renderItems = data.map(
+        ({ product_name, quantity, image }, index) => (
+            <MenuItem key={index} className="flex items-center gap-3 rounded-lg">
+                <div className="flex items-center justify-center rounded-lg !bg-blue-gray-50 p-1 ">
+                    <img className=" w-6 h-6 object-cover" src={`../../../src/assets/image/${image}`} alt="" />
+                </div>
+                <div>
+                    <Typography
+                        variant="h6"
+                        color="blue-gray"
+                        className="flex items-center text-sm font-bold"
+                    >
+                        {product_name}
+                    </Typography>
+                    <Typography
+                        variant="paragraph"
+                        className="text-xs !font-medium text-blue-gray-500"
+                    >
+                        x {quantity}
+                    </Typography>
+                </div>
+            </MenuItem>
         ),
     );
 
@@ -145,7 +117,7 @@ function NavListMenu({ order_id }) {
                 <MenuHandler>
                     <Typography as="div" variant="small" className="font-medium">
                         <ListItem
-                            className="flex items-center gap-2 py-2 pr-4 font-medium text-gray-900"
+                            className="flex justify-center items-center gap-2 py-2 pr-4 font-medium text-gray-900"
                             selected={isMenuOpen || isMobileMenuOpen}
                             onClick={() => setIsMobileMenuOpen((cur) => !cur)}
                         >
@@ -154,7 +126,7 @@ function NavListMenu({ order_id }) {
                     </Typography>
                 </MenuHandler>
                 <MenuList className="hidden max-w-screen-xl rounded-xl lg:block">
-                    <ul className="grid grid-cols-3 gap-y-2 outline-none outline-0">
+                    <ul className="grid grid-cols-1 gap-y-2 outline-none outline-0">
                         {renderItems}
                     </ul>
                 </MenuList>
@@ -173,11 +145,15 @@ export function MyOrdersBusiness() {
     const [dataFull, setDataFull] = useState([]);
     const [page, setPage] = useState(1);
 
+    const handleExportExcel = () => {
+        convertToExcel(data);
+    }
+
     // Call API list order by user
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await listOrder(seller_id);
+                let res = await listOrder(seller_id, page);
                 setDataFull(res.data);
                 setData(res.data.data)
             } catch (error) {
@@ -185,7 +161,7 @@ export function MyOrdersBusiness() {
             }
         }
         fetchData()
-    }, [seller_id]);
+    }, [seller_id, page]);
 
     const [active, setActive] = useState(1);
     const [visiblePages, setVisiblePages] = useState([]);
@@ -215,6 +191,7 @@ export function MyOrdersBusiness() {
 
     useEffect(() => {
         const calculateVisiblePages = async () => {
+
             const totalVisiblePages = 3;
             const totalPageCount = dataFull.last_page;
 
@@ -244,14 +221,21 @@ export function MyOrdersBusiness() {
     }, [active, dataFull.last_page]);
 
     return (
-        <Card className="h-full w-full p-4">
+        <Card className=" h-[98%] w-full p-4">
             <CardHeader floated={false} shadow={false} className="rounded-none">
                 <div className="flex flex-col sm:flex-row w-full justify-center items-center">
-                    <div className="w-full">
-                        <Input
-                            label="Find order ID"
-                            icon={<MagnifyingGlassIcon className="h-5 w-5" />}
-                        />
+                    <div className="w-full justify-between flex">
+                        <div className=" w-fit">
+                            <Input
+                                label="Find order ID"
+                                icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                            />
+                        </div>
+
+                        <div className=" w-fit">
+                            <Button size="sm" color="gray" variant="outlined" onClick={handleExportExcel}>Export to Excel</Button>
+                        </div>
+
                     </div>
                 </div>
             </CardHeader>
@@ -333,7 +317,7 @@ export function MyOrdersBusiness() {
                                                             ? "blue-gray"
                                                             : data.order_status === "Shipped" || data.order_status === "Delivered"
                                                                 ? "green"
-                                                                : "defaultColor"
+                                                                : "red"
                                                     }
                                                 />
                                             </div>
@@ -359,10 +343,9 @@ export function MyOrdersBusiness() {
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <IconButton variant="text">
-                                                <NavListMenu order_id={data.order_id} />
-                                            </IconButton>
+                                            <NavListMenu order_id={data.order_id} />
                                         </td>
+
                                     </tr>
                                 );
                             }
@@ -370,37 +353,39 @@ export function MyOrdersBusiness() {
                     </tbody>
                 </table>
             </CardBody>
-            <div className="flex justify-end  my-6 mt-12">
-                <Button
-                    variant="text"
-                    className="flex items-center gap-2"
-                    onClick={prev}
-                    disabled={active === dataFull.from}
-                >
-                    <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
-                </Button>
+            <CardFooter>
+                <div className="flex justify-end  my-6 mt-12 absolute bottom-4 right-10">
+                    <Button
+                        variant="text"
+                        className="flex items-center gap-2"
+                        onClick={prev}
+                        disabled={active === dataFull.from}
+                    >
+                        <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
+                    </Button>
 
-                <div className="flex items-center gap-2">
-                    {visiblePages.map((pageNumber) => (
-                        <IconButton
-                            key={pageNumber}
-                            {...getItemProps(pageNumber)}
-                        >
-                            {pageNumber}
-                        </IconButton>
-                    ))}
+                    <div className="flex items-center gap-2">
+                        {visiblePages.map((pageNumber) => (
+                            <IconButton
+                                key={pageNumber}
+                                {...getItemProps(pageNumber)}
+                            >
+                                {pageNumber}
+                            </IconButton>
+                        ))}
+                    </div>
+
+                    <Button
+                        variant="text"
+                        className="flex items-center gap-2"
+                        onClick={next}
+                        disabled={active === dataFull.last_page}
+                    >
+                        Next
+                        <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
+                    </Button>
                 </div>
-
-                <Button
-                    variant="text"
-                    className="flex items-center gap-2"
-                    onClick={next}
-                    disabled={active === dataFull.last_page}
-                >
-                    Next
-                    <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
-                </Button>
-            </div>
+            </CardFooter>
         </Card>
     );
 }
