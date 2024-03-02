@@ -43,6 +43,12 @@ import MenuBar from "./components/ui/MenuBar";
 import Checkout from "./components/ui/Checkout";
 import SubFooter2 from "./components/ui/SubFooter2";
 import SearchLayout from "./components/ui/SearchLayout";
+import Purchase from "./components/ui/user/Purchase";
+import UpdateOrder from "./components/ui/user/UpdateOrder";
+import Promotion from "./components/ui/user/Promotion";
+import UpdateCompany from "./components/ui/user/UpdateCompany";
+import UpdateWallet from "./components/ui/user/UpdateWallet";
+import VoucherWallet from "./components/ui/user/VoucherWallet";
 import Error404 from "./components/ui/error404";
 import { useSelector } from 'react-redux'
 import { ShopRating } from "./components/ui-business/ShopRating";
@@ -67,7 +73,7 @@ import Setting from "./components/ui-admin/Setting";
 
 const Customer = () => {
     return (
-        <div className=" bg-gray-100">
+        <div>
             <div className="flex h-20 md:h-24"></div>
             <MenuBar />
             <Outlet />
@@ -190,7 +196,6 @@ const App = () => {
                                 <Route path="shop/:user_id" element={<Shop />} />
                                 <Route path="checkout" element={<PrivateCustomerRoute element={<Checkout />} />} />
                                 <Route path="search/:searchKey" element={<SearchLayout />} />
-                                <Route path="orderstatus" element={<PrivateCustomerRoute element={<OrderStatus />} />} />
                                 <Route path="success" element={<PrivateCustomerRoute element={<Success />} />} />
                                 {/* {User} */}
                                 <Route path="/user" element={<User />}>
@@ -198,14 +203,16 @@ const App = () => {
                                     <Route path="banking" element={<PrivateCustomerRoute element={<Banking />} />} />
                                     <Route path="address" element={<PrivateCustomerRoute element={<Address />} />} />
                                     <Route path="password" element={<PrivateCustomerRoute element={<ChangePassword />} />} />
-                                    <Route path="purchase" element={<PrivateCustomerRoute element=<div>Đang xây dựng, bạn chờ chút nhé ^^ ...</div> />} />
-                                    <Route path="order" element={<PrivateCustomerRoute element=<div>Đang xây dựng, bạn chờ chút nhé ^^ ...</div> />} />
-                                    <Route path="promotion" element={<PrivateCustomerRoute element=<div>Đang xây dựng, bạn chờ chút nhé ^^ ...</div> />} />
-                                    <Route path="wallet" element={<PrivateCustomerRoute element=<div>Đang xây dựng, bạn chờ chút nhé ^^ ...</div> />} />
-                                    <Route path="company" element={<PrivateCustomerRoute element=<div>Đang xây dựng, bạn chờ chút nhé ^^ ...</div> />} />
-                                    <Route path="voucher-wallet" element={<PrivateCustomerRoute element=<div>Đang xây dựng, bạn chờ chút nhé ^^ ...</div> />} />
+                                    <Route path="purchase" element={<PrivateCustomerRoute element={<Purchase />} />} />
+                                    <Route path="order" element={<PrivateCustomerRoute element={<UpdateOrder />} />} />
+                                    <Route path="promotion" element={<PrivateCustomerRoute element={<Promotion />} />} />
+                                    <Route path="wallet" element={<PrivateCustomerRoute element={<UpdateWallet />} />} />
+                                    <Route path="company" element={<PrivateCustomerRoute element={<UpdateCompany />} />} />
+                                    <Route path="voucher-wallet" element={<PrivateCustomerRoute element={<VoucherWallet />} />} />
                                 </Route>
+                                <Route path="orderstatus" element={<PrivateCustomerRoute element={<OrderStatus />} />} />
                             </Route>
+
 
                             {/* Business */}
 

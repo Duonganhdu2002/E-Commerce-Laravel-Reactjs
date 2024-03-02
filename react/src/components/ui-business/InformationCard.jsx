@@ -42,7 +42,7 @@ const InformationCard = () => {
     }, []);
     return (
         <div>
-            <div className="grid gap-8 xl:grid-cols-2 py-8">
+            <div className="grid gap-8 xl:grid-cols-4 mb-4">
                 {/* Revenue */}
                 <div className="sm:flex justify-between relative p-6 rounded-2xl bg-white shadow">
                     <div className="flex flex-col justify-center space-y-2">
@@ -70,11 +70,11 @@ const InformationCard = () => {
                         </div>
                     </div>
                     <div className="flex justify-center items-center 2xl:my-0 my-6 mx-6">
-                        <div className="w-16 h-16 rounded-full bg-blue-gray-50 absolute"></div>
+                        <div className="w-16 h-16 rounded-full bg-blue-gray-50/60 absolute"></div>
                         <img
                             src={Views}
                             alt=""
-                            className="mt-3 2xl:mt-0 flex justify-cente w-7 relative"
+                            className="mt-3 2xl:mt-0 flex justify-center w-5 relative"
                         />
                     </div>
                 </div>
@@ -105,16 +105,16 @@ const InformationCard = () => {
                         </div>
                     </div>
                     <div className="flex justify-center items-center 2xl:my-0 my-6 mx-6">
-                        <div className="w-16 h-16 rounded-full bg-blue-gray-50 absolute"></div>
+                        <div className="w-16 h-16 rounded-full bg-blue-gray-50/60 absolute"></div>
                         <img
                             src={Carts}
                             alt=""
-                            className="mt-3 2xl:mt-0 flex justify-cente w-7 relative"
+                            className="mt-3 2xl:mt-0 flex justify-center w-5 relative"
                         />
                     </div>
                 </div>
 
-        
+
                 <div className="sm:flex justify-between relative p-6 rounded-2xl bg-white shadow">
                     <div className="flex flex-col justify-center space-y-2">
                         <div className="flex justify-center sm:justify-start items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-gray-500 dark:text-gray-200">
@@ -141,11 +141,11 @@ const InformationCard = () => {
                         </div>
                     </div>
                     <div className="flex justify-center items-center 2xl:my-0 my-6 mx-6">
-                        <div className="w-16 h-16 rounded-full bg-blue-gray-50 absolute"></div>
+                        <div className="w-16 h-16 rounded-full bg-blue-gray-50/60 absolute"></div>
                         <img
                             src={Products}
                             alt=""
-                            className="mt-3 2xl:mt-0 flex justify-cente w-7 relative"
+                            className="mt-3 2xl:mt-0 flex justify-center w-5 relative"
                         />
                     </div>
                 </div>
@@ -177,11 +177,11 @@ const InformationCard = () => {
                         </div>
                     </div>
                     <div className="flex justify-center items-center 2xl:my-0 my-6 mx-6">
-                        <div className="w-16 h-16 rounded-full bg-blue-gray-50 absolute"></div>
+                        <div className="w-16 h-16 rounded-full bg-blue-gray-50/60 absolute"></div>
                         <img
                             src={Users}
                             alt=""
-                            className="mt-3 2xl:mt-0 flex justify-cente w-7 relative"
+                            className="mt-3 2xl:mt-0 flex justify-center w-5 relative"
                         />
                     </div>
                 </div>

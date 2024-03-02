@@ -28,7 +28,7 @@ export default function TaskBar() {
         setOpen(open === value ? 0 : value);
     };
     return (
-        <Card className=" w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/1">
+        <Card className=" w-full max-w-[20rem] p-4 shadow-md shadow-blue-gray-600/10">
             <div className="mb-2 p-4">
                 <Typography variant="h5" color="blue-gray">
                     Sidebar

@@ -38,11 +38,19 @@ export default function CategoryProduct() {
                         data.map((product, index) => (
                             <Link key={index} to={`/product/${product.product_id}`}>
                                 <div className="w-full h-[350px] md:h-[380px] lg:h-[450px] xl:h-[510px]  bg-white shadow-md shadow-gray-300 rounded-xl duration-500 hover:scale-105 hover:shadow-2xl">
-                                    <img
+                                    {product.images[0] ? (
+                                        <img
                                         className=" h-[200px] w-[200px] md:h-[220px] md:w-[220px] lg:h-[280px] lg:w-[280px] xl:h-[320px] xl:w-[320px] object-cover rounded-t-xl"
                                         src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${product.images[0]}?raw=true`}
                                         alt="Product"
                                     />
+                                    ) : (
+                                        <img
+                                                className=" h-[200px] w-[200px] md:h-[220px] md:w-[220px] lg:h-[280px] lg:w-[280px] xl:h-[320px] xl:w-[320px] object-cover rounded-t-xl"
+                                                src={`https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png`}
+                                                alt="Product"
+                                            />
+                                    )}
                                     <div className="px-4 py-3 h-[20%] w-full">
                                         <span className="text-gray-400 mr-3 uppercase text-[12px] lg:text-[14px]">Brand</span>
                                         <p className="text-md lg:text-lg xl:text-xl font-bold text-black truncate block capitalize">{product.name}</p>

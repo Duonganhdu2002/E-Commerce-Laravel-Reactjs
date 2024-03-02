@@ -47,11 +47,19 @@ const ShopProduct = ({ data, user_id }) => {
                         dataBestSeller && dataBestSeller.length > 0 && dataBestSeller.map((products, index) => (
                             <Link key={index} to={`/product/${products.product_id}`}>
                                 <div className="w-full h-[350px] md:h-[380px] lg:h-[450px] xl:h-[510px]  bg-white shadow-md shadow-gray-300 rounded-xl duration-500 hover:scale-105 hover:shadow-2xl">
-                                    <img
-                                        className=" h-[200px] w-[200px] md:h-[220px] md:w-[220px] lg:h-[280px] lg:w-[280px] xl:h-[320px] xl:w-[320px] object-cover rounded-t-xl"
-                                        src={`../../../src/assets/image/${products.images[0]}`}
-                                        alt="Product"
-                                    />
+                                    {products.images?.[0] ? (
+                                        <img
+                                            className=" h-[200px] w-[200px] md:h-[220px] md:w-[220px] lg:h-[280px] lg:w-[280px] xl:h-[320px] xl:w-[320px] object-cover rounded-t-xl"
+                                            src={`../../../src/assets/image/${products.images[0]}`}
+                                            alt="Product"
+                                        />
+                                    ) : (
+                                        <img
+                                            className=" h-[200px] w-[200px] md:h-[220px] md:w-[220px] lg:h-[280px] lg:w-[280px] xl:h-[320px] xl:w-[320px] object-cover rounded-t-xl"
+                                            src={`https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png`}
+                                            alt="Placeholder Image"
+                                        />
+                                    )}
                                     <div className="px-4  mt-6 py-3 h-[20%] w-full">
                                         <p className="text-md lg:text-lg xl:text-xl font-bold text-black truncate block capitalize">{products.name}</p>
                                         <div className="space-x-1 flex justify-center mt-2 md:mt-4 lg:mt-6 xl:mt-8">
