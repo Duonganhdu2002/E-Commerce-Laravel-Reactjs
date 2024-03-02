@@ -96,6 +96,15 @@ export default function AddProducts() {
                                 </Select>
                             </div>
                         </div>
+
+                        <div className=" flex mt-16">
+                            <div className=" w-[20%]">
+
+                            </div>
+                            <div className=" w-[80%]">
+                                <Button className=" w-fit">Add New Products</Button>
+                            </div>
+                        </div>
                     </div>
                     <div className="w-[50%]">
                         <div className=" flex mt-8">
@@ -132,7 +141,7 @@ export default function AddProducts() {
                 </div>
 
 
-                <Button className=" w-fit">Add New Products</Button>
+
             </CardBody>
         </Card>
     );
