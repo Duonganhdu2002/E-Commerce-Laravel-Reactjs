@@ -39,7 +39,9 @@ Route::prefix('public')->group(function () {
     Route::prefix('product')->group(function () {
         Route::get('all', [ProductController::class, 'index']);
         Route::get('show/{id}', [ProductController::class, 'show']);
+        Route::delete('delete/{id}', [ProductController::class, 'destroy']);
         Route::post('add', [ProductController::class, 'store']);
+        Route::put('update/{id}', [ProductController::class, 'update']);
 
         //xuất ra 6 sản phẩm mới nhất
         Route::get('latest-products/{categoryId}', [ProductController::class, 'getLatestProductsInCategory'])->name('latest-products');

@@ -405,22 +405,6 @@ class ProductController extends Controller
     {
         $input = $request->all();
 
-        $validator = Validator::make($input, [
-            'name' => 'required',
-            'price' => 'required',
-
-
-        ]);
-
-        if ($validator->fails()) {
-            $arr = [
-                'status' => false,
-                'message' => 'Lỗi kiểm tra dữ liệu',
-                'data' => $validator->errors()
-            ];
-            return response()->json($arr, 200);
-        }
-
         $product = Product::find($product);
 
         if (!$product) {

@@ -28,6 +28,9 @@ import {
     MenuList,
     MenuItem,
     CardFooter,
+    Popover,
+    PopoverHandler,
+    PopoverContent,
 } from "@material-tailwind/react";
 
 import { useEffect, useState } from "react";
@@ -36,7 +39,10 @@ import { listOrder, orderItems } from "../../services/orderService";
 import React from "react";
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
-import { productInformation, productListShop } from "../../services/productService";
+import { deleteProduct, productInformation, productListShop } from "../../services/productService";
+import starBlackImg from "../../assets/icon/star-black.svg"
+import starWhiteImg from "../../assets/icon/star-white.svg"
+
 
 const TABLE_HEAD = [
     "ID",
@@ -60,17 +66,73 @@ const convertToExcel = (data) => {
 
 const DeleteProduct = ({ product_id }) => {
 
+    const handleDelete = async () => {
+        try {
+            let res = await deleteProduct(product_id);
+            console.log(res);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
-        <div>
-            <TrashIcon className=" w-4 h-4" />
+        <div onClick={handleDelete} className="cursor-pointer flex justify-center hover:bg-blue-gray-50 py-2 rounded-lg " >
+            <TrashIcon className="w-4 h-4 " />
         </div>
     )
 }
 
 const EditProduct = ({ product_id }) => {
+
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        const fectData = async () => {
+
+            try {
+                let res = await productInformation(product_id);
+                setData(res.data)
+            } catch (error) {
+                console.error(error)
+            }
+        }
+        setData();
+    }, [])
+
     return (
-        <div>
-            <PencilIcon className=" w-4 h-4" />
+        <div className="cursor-pointer flex justify-center hover:bg-blue-gray-50 py-2 rounded-lg " >
+            <Popover placement="left">
+                <PopoverHandler>
+                    <div className=" w-full flex justify-center">
+                        <PencilIcon className=" w-4 h-4" />
+                    </div>
+                </PopoverHandler>
+                <PopoverContent className="w-96">
+                    <Typography variant="h6" color="blue-gray" className="mb-6">
+                        Update form
+                    </Typography>
+                    <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="mb-1 font-bold"
+                    >
+                        Your Name
+                    </Typography>
+                    <div className="flex gap-2">
+                        <Input
+                            size="lg"
+                            placeholder="name@mail.com"
+                            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                            labelProps={{
+                                className: "before:content-none after:content-none",
+                            }}
+                        />
+                        <Button variant="gradient" className="flex-shrink-0">
+                            Subscribe
+                        </Button>
+                    </div>
+                </PopoverContent>
+            </Popover>
         </div>
     )
 }
@@ -80,91 +142,149 @@ const SeeProduct = ({ product_id }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-    const [data, setData] = useState([]);
+    const [data, setData] = useState({
+        sizes: [],
+        colors: [],
+        average_rating: 0,
+        average_rating_by_creator: 0,
+        image_urls: [],
+        name: "",
+        total_reviews: 0,
+        description: "",
+    });
+
+    const sizes = data.sizes || [];
+    const colors = data.colors || [];
+
+    const starBlack = Number(data.average_rating).toFixed(0);
+    const starWhite = 5 - starBlack;
+
+    const starBlack1 = Number(data.average_rating_by_creator).toFixed(0);
+    const starWhite1 = 5 - starBlack1;
+
+    const imageUrls = data.image_urls || [];
+    const limitedImageUrls = imageUrls.slice(0, 3);
+    const [currentImage, setCurrentImage] = useState(imageUrls[0]);
+
+    const handleThumbnailClick = (imageUrl) => {
+        setCurrentImage(imageUrl);
+    };
+
 
     useEffect(() => {
+
         const fetchData = async () => {
             try {
                 let res = await productInformation(product_id);
-                setData(res.data)
+                if (res && res.data) {
+                    setData(res.data);
+
+                    if (res.data.image_urls && res.data.image_urls.length > 0) {
+                        setCurrentImage(res.data.image_urls[0]);
+                    }
+                }
             } catch (error) {
-                console.error(error);
+                console.error("Error fetching fields:", error);
             }
-        }
-        fetchData()
-    }, [])
+        };
+
+        fetchData();
+    }, []);
 
     const renderItems =
-        <div className="2xl:container 2xl:mx-auto lg:py-16 lg:px-20 md:py-12 md:px-6 py-9 px-4 ">
-            <div className="flex justify-center items-center lg:flex-row flex-col gap-8">
-                <div className="  w-full sm:w-96 md:w-8/12 lg:w-6/12 items-center">
-                    <h2 className="font-semibold lg:text-4xl text-3xl lg:leading-9 leading-7 text-gray-800 mt-4">{data.name}</h2>
+        <div className="flex justify-center items-center lg:flex-row flex-col gap-8 p-8">
+            <div className="  w-full sm:w-96 md:w-8/12 lg:w-6/12 items-center">
+                <h2 className="font-semibold lg:text-4xl text-3xl lg:leading-9 leading-7 text-gray-800 mt-4">{data.name}</h2>
 
-                    <div className=" flex flex-row justify-between  mt-5">
-                        <div className=" flex flex-row space-x-3">
-                            <svg className=" cursor-pointer" width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M15.5598 20C15.3998 20.0006 15.2421 19.9629 15.0998 19.89L9.99976 17.22L4.89976 19.89C4.73416 19.977 4.54744 20.0159 4.36084 20.0022C4.17424 19.9884 3.99524 19.9226 3.84419 19.8122C3.69314 19.7017 3.5761 19.5511 3.50638 19.3775C3.43665 19.2039 3.41704 19.0142 3.44976 18.83L4.44976 13.2L0.329763 9.19996C0.20122 9.07168 0.110034 8.91083 0.0659903 8.73465C0.0219465 8.55848 0.0267076 8.37363 0.0797626 8.19996C0.137723 8.02223 0.244339 7.86431 0.387513 7.74412C0.530687 7.62392 0.704685 7.54627 0.889763 7.51996L6.58976 6.68996L9.09976 1.55996C9.18165 1.39089 9.3095 1.2483 9.46867 1.14853C9.62785 1.04876 9.81191 0.99585 9.99976 0.99585C10.1876 0.99585 10.3717 1.04876 10.5309 1.14853C10.69 1.2483 10.8179 1.39089 10.8998 1.55996L13.4398 6.67996L19.1398 7.50996C19.3248 7.53627 19.4988 7.61392 19.642 7.73412C19.7852 7.85431 19.8918 8.01223 19.9498 8.18996C20.0028 8.36363 20.0076 8.54848 19.9635 8.72465C19.9195 8.90083 19.8283 9.06168 19.6998 9.18996L15.5798 13.19L16.5798 18.82C16.6155 19.0074 16.5968 19.2012 16.5259 19.3784C16.455 19.5556 16.3349 19.7088 16.1798 19.82C15.9987 19.9469 15.7806 20.0102 15.5598 20Z"
-                                    fill="#1F2937"
-                                />
-                            </svg>
-                            <svg className=" cursor-pointer" width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M15.5598 20C15.3998 20.0006 15.2421 19.9629 15.0998 19.89L9.99976 17.22L4.89976 19.89C4.73416 19.977 4.54744 20.0159 4.36084 20.0022C4.17424 19.9884 3.99524 19.9226 3.84419 19.8122C3.69314 19.7017 3.5761 19.5511 3.50638 19.3775C3.43665 19.2039 3.41704 19.0142 3.44976 18.83L4.44976 13.2L0.329763 9.19996C0.20122 9.07168 0.110034 8.91083 0.0659903 8.73465C0.0219465 8.55848 0.0267076 8.37363 0.0797626 8.19996C0.137723 8.02223 0.244339 7.86431 0.387513 7.74412C0.530687 7.62392 0.704685 7.54627 0.889763 7.51996L6.58976 6.68996L9.09976 1.55996C9.18165 1.39089 9.3095 1.2483 9.46867 1.14853C9.62785 1.04876 9.81191 0.99585 9.99976 0.99585C10.1876 0.99585 10.3717 1.04876 10.5309 1.14853C10.69 1.2483 10.8179 1.39089 10.8998 1.55996L13.4398 6.67996L19.1398 7.50996C19.3248 7.53627 19.4988 7.61392 19.642 7.73412C19.7852 7.85431 19.8918 8.01223 19.9498 8.18996C20.0028 8.36363 20.0076 8.54848 19.9635 8.72465C19.9195 8.90083 19.8283 9.06168 19.6998 9.18996L15.5798 13.19L16.5798 18.82C16.6155 19.0074 16.5968 19.2012 16.5259 19.3784C16.455 19.5556 16.3349 19.7088 16.1798 19.82C15.9987 19.9469 15.7806 20.0102 15.5598 20Z"
-                                    fill="#1F2937"
-                                />
-                            </svg>
-                            <svg className=" cursor-pointer" width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M15.5598 20C15.3998 20.0006 15.2421 19.9629 15.0998 19.89L9.99976 17.22L4.89976 19.89C4.73416 19.977 4.54744 20.0159 4.36084 20.0022C4.17424 19.9884 3.99524 19.9226 3.84419 19.8122C3.69314 19.7017 3.5761 19.5511 3.50638 19.3775C3.43665 19.2039 3.41704 19.0142 3.44976 18.83L4.44976 13.2L0.329763 9.19996C0.20122 9.07168 0.110034 8.91083 0.0659903 8.73465C0.0219465 8.55848 0.0267076 8.37363 0.0797626 8.19996C0.137723 8.02223 0.244339 7.86431 0.387513 7.74412C0.530687 7.62392 0.704685 7.54627 0.889763 7.51996L6.58976 6.68996L9.09976 1.55996C9.18165 1.39089 9.3095 1.2483 9.46867 1.14853C9.62785 1.04876 9.81191 0.99585 9.99976 0.99585C10.1876 0.99585 10.3717 1.04876 10.5309 1.14853C10.69 1.2483 10.8179 1.39089 10.8998 1.55996L13.4398 6.67996L19.1398 7.50996C19.3248 7.53627 19.4988 7.61392 19.642 7.73412C19.7852 7.85431 19.8918 8.01223 19.9498 8.18996C20.0028 8.36363 20.0076 8.54848 19.9635 8.72465C19.9195 8.90083 19.8283 9.06168 19.6998 9.18996L15.5798 13.19L16.5798 18.82C16.6155 19.0074 16.5968 19.2012 16.5259 19.3784C16.455 19.5556 16.3349 19.7088 16.1798 19.82C15.9987 19.9469 15.7806 20.0102 15.5598 20Z"
-                                    fill="#1F2937"
-                                />
-                            </svg>
-                            <svg className=" cursor-pointer" width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M15.5598 20C15.3998 20.0006 15.2421 19.9629 15.0998 19.89L9.99976 17.22L4.89976 19.89C4.73416 19.977 4.54744 20.0159 4.36084 20.0022C4.17424 19.9884 3.99524 19.9226 3.84419 19.8122C3.69314 19.7017 3.5761 19.5511 3.50638 19.3775C3.43665 19.2039 3.41704 19.0142 3.44976 18.83L4.44976 13.2L0.329763 9.19996C0.20122 9.07168 0.110034 8.91083 0.0659903 8.73465C0.0219465 8.55848 0.0267076 8.37363 0.0797626 8.19996C0.137723 8.02223 0.244339 7.86431 0.387513 7.74412C0.530687 7.62392 0.704685 7.54627 0.889763 7.51996L6.58976 6.68996L9.09976 1.55996C9.18165 1.39089 9.3095 1.2483 9.46867 1.14853C9.62785 1.04876 9.81191 0.99585 9.99976 0.99585C10.1876 0.99585 10.3717 1.04876 10.5309 1.14853C10.69 1.2483 10.8179 1.39089 10.8998 1.55996L13.4398 6.67996L19.1398 7.50996C19.3248 7.53627 19.4988 7.61392 19.642 7.73412C19.7852 7.85431 19.8918 8.01223 19.9498 8.18996C20.0028 8.36363 20.0076 8.54848 19.9635 8.72465C19.9195 8.90083 19.8283 9.06168 19.6998 9.18996L15.5798 13.19L16.5798 18.82C16.6155 19.0074 16.5968 19.2012 16.5259 19.3784C16.455 19.5556 16.3349 19.7088 16.1798 19.82C15.9987 19.9469 15.7806 20.0102 15.5598 20Z"
-                                    fill="#1F2937"
-                                />
-                            </svg>
-                            <svg className=" cursor-pointer" width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M15.5598 20C15.3998 20.0006 15.2421 19.9629 15.0998 19.89L9.99976 17.22L4.89976 19.89C4.73416 19.977 4.54744 20.0159 4.36084 20.0022C4.17424 19.9884 3.99524 19.9226 3.84419 19.8122C3.69314 19.7017 3.5761 19.5511 3.50638 19.3775C3.43665 19.2039 3.41704 19.0142 3.44976 18.83L4.44976 13.2L0.329763 9.19996C0.20122 9.07168 0.110034 8.91083 0.0659903 8.73465C0.0219465 8.55848 0.0267076 8.37363 0.0797626 8.19996C0.137723 8.02223 0.244339 7.86431 0.387513 7.74412C0.530687 7.62392 0.704685 7.54627 0.889763 7.51996L6.58976 6.68996L9.09976 1.55996C9.18165 1.39089 9.3095 1.2483 9.46867 1.14853C9.62785 1.04876 9.81191 0.99585 9.99976 0.99585C10.1876 0.99585 10.3717 1.04876 10.5309 1.14853C10.69 1.2483 10.8179 1.39089 10.8998 1.55996L13.4398 6.67996L19.1398 7.50996C19.3248 7.53627 19.4988 7.61392 19.642 7.73412C19.7852 7.85431 19.8918 8.01223 19.9498 8.18996C20.0028 8.36363 20.0076 8.54848 19.9635 8.72465C19.9195 8.90083 19.8283 9.06168 19.6998 9.18996L15.5798 13.19L16.5798 18.82C16.6155 19.0074 16.5968 19.2012 16.5259 19.3784C16.455 19.5556 16.3349 19.7088 16.1798 19.82C15.9987 19.9469 15.7806 20.0102 15.5598 20ZM9.99976 15.1C10.1601 15.0959 10.3186 15.1338 10.4598 15.21L14.2298 17.21L13.5098 13C13.4818 12.8392 13.4936 12.6741 13.5442 12.5189C13.5947 12.3638 13.6825 12.2234 13.7998 12.11L16.7998 9.17996L12.5998 8.55996C12.4457 8.52895 12.3012 8.46209 12.1778 8.3648C12.0545 8.2675 11.9558 8.14251 11.8898 7.99996L9.99976 4.24996L8.10976 7.99996C8.03741 8.14366 7.93145 8.26779 7.80089 8.3618C7.67032 8.45581 7.51899 8.51692 7.35976 8.53996L3.15976 9.15996L6.15976 12.09C6.27704 12.2034 6.36478 12.3438 6.41533 12.4989C6.46588 12.6541 6.4777 12.8192 6.44976 12.98L5.72976 17.14L9.49976 15.14C9.65951 15.0806 9.83261 15.0667 9.99976 15.1Z"
-                                    fill="#1F2937"
-                                />
-                            </svg>
-                        </div>
-                        <p className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 font-normal text-base leading-4 text-gray-700 hover:underline hover:text-gray-800 duration-100 cursor-pointer">{data.total_reviews} reviews</p>
+                <div className=" flex flex-row justify-between  mt-5">
+                    <div className="flex flex-row space-x-3">
+                        {Array.from({ length: starBlack }, (_, index) => (
+                            <img key={index} src={starBlackImg} alt="" />
+                        ))}
+                        {Array.from({ length: starWhite }, (_, index) => (
+                            <img key={index} src={starWhiteImg} alt="" />
+                        ))}
                     </div>
-
-                    <p className=" font-normal text-base leading-6 text-gray-600 mt-7">{data.description}</p>
-
-                    <div className="lg:mt-11 mt-10">
-                        <hr className=" bg-gray-200 w-full mt-4" />
-                    </div>
-
-                    <button className="focus:outline-none focus:ring-2 hover:bg-black focus:ring-offset-2 focus:ring-gray-800 font-medium text-base leading-4 text-white bg-gray-800 w-full py-5 lg:mt-12 mt-6">Add to shopping bag</button>
-                </div>
-
-                {/* <!-- Preview Images Div For larger Screen--> */}
-
-                <div className=" w-full sm:w-96 md:w-8/12  lg:w-6/12 flex lg:flex-row flex-col lg:gap-8 sm:gap-6 gap-4">
-                    <div className=" w-full lg:w-8/12 bg-gray-100 flex justify-center items-center">
-                        <img src="https://i.ibb.co/bRg2CJj/sam-moqadam-kvmds-Tr-GOBM-unsplash-removebg-preview-1.png" alt="Wooden Chair Previw" />
-                    </div>
-                    <div className=" w-full lg:w-4/12 grid lg:grid-cols-1 sm:grid-cols-4 grid-cols-2 gap-6">
-                        <div className="bg-gray-100 flex justify-center items-center py-4">
-                            <img src="https://i.ibb.co/0jX1zmR/sam-moqadam-kvmds-Tr-GOBM-unsplash-removebg-preview-1-1.png" alt="Wooden chair - preview 1" />
-                        </div>
-                        <div className="bg-gray-100 flex justify-center items-center py-4">
-                            <img src="https://i.ibb.co/7zv1N5Q/sam-moqadam-kvmds-Tr-GOBM-unsplash-removebg-preview-2.png" alt="Wooden chair - preview 2" />
-                        </div>
-                        <div className="bg-gray-100 flex justify-center items-center py-4">
-                            <img src="https://i.ibb.co/0jX1zmR/sam-moqadam-kvmds-Tr-GOBM-unsplash-removebg-preview-1-1.png" alt="Wooden chair- preview 3" />
-                        </div>
+                    <div>
+                        {data.total_reviews} reviews - {Number(data.average_rating).toFixed(2)}/5
                     </div>
                 </div>
+
+                <p className=" font-normal text-base leading-6 text-gray-600 mt-7">{data.description}</p>
+
+                <hr className=" bg-gray-200 w-full my-2" />
+
+                <div className="lg:mt-11 mt-10 w-[70%] flex justify-between ">
+                    <div className=" mr-12">
+                        <p className=" font-medium text-xl leading-6 text-gray-600 my-7">Size</p>
+                        {
+                            sizes.map((size, index) => (
+                                <p className=" font-normal text-base leading-6 text-gray-600 mt-2" key={index}>{size}</p>
+                            ))
+                        }
+                    </div>
+                    <div>
+                        <p className=" font-medium text-xl leading-6 text-gray-600 my-7">Color</p>
+                        {
+                            colors.map((color, index) => (
+                                <p className=" font-normal text-base leading-6 text-gray-600 mt-2" key={index}>{color}</p>
+                            ))
+                        }
+                    </div>
+                </div>
+
+
             </div>
 
+            <div className="w-full sm:w-96 md:w-8/12 lg:w-6/12 flex lg:flex-row flex-col lg:gap-8 sm:gap-6 gap-4">
+                <div className="w-full lg:w-8/12 flex justify-center items-center">
+                    {imageUrls.length > 0 && currentImage ? (
+                        <img
+                            className="h-[420px] w-[460px] object-cover"
+                            src={`../../../src/assets/image/${currentImage}`}
+                            alt={data.name}
+                        />
+                    ) : (
+                        <img
+                            className="h-[420px] w-[460px] object-cover"
+                            src={`https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png`}
+                            alt="Placeholder Image"
+                        />
+                    )}
+                </div>
+
+                <div className="w-full lg:w-4/12 grid lg:grid-cols-1 sm:grid-cols-3 grid-cols-2 gap-6">
+                    {limitedImageUrls.length > 0 ? (
+                        limitedImageUrls.map((imageUrl, index) => (
+                            <div
+                                key={index}
+                                className="flex justify-center items-center cursor-pointer"
+                                onMouseOver={() => handleThumbnailClick(imageUrl)}
+                            >
+                                <img
+                                    className="h-[200px] w-[180px] object-cover"
+                                    src={`../../../src/assets/image/${imageUrl}`}
+                                    alt={`${data.name} - preview ${index + 1}`}
+                                />
+                            </div>
+                        ))
+                    ) : (
+                        <div className=" py-4">
+                            <img
+                                className="h-[200px] w-[180px] object-cover mb-5"
+                                src={`https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png`}
+                                alt="Placeholder Image"
+                            />
+                            <img
+                                className="h-[200px] w-[180px] object-cover"
+                                src={`https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png`}
+                                alt="Placeholder Image"
+                            />
+                        </div>
+                    )}
+
+                </div>
+            </div>
         </div>
 
     return (
@@ -187,7 +307,7 @@ const SeeProduct = ({ product_id }) => {
                         </ListItem>
                     </Typography>
                 </MenuHandler>
-                <MenuList className="hidden w-1/2 h-fit rounded-xl lg:block">
+                <MenuList className="hidden w-[60%] h-fit rounded-xl lg:block">
                     <ul className=" gap-y-2 outline-none outline-0">
                         {renderItems}
                     </ul>
@@ -211,19 +331,18 @@ export function MyProductsBusiness() {
         convertToExcel(data);
     }
 
-    // Call API list order by user
     useEffect(() => {
         const fetchData = async () => {
             try {
                 let res = await productListShop(seller_id, page);
                 setDataFull(res.data);
-                setData(res.data.data)
+                setData(res.data.data);
             } catch (error) {
                 console.error("Error fetching fields:", error);
             }
         }
-        fetchData()
-    }, [seller_id, page]);
+        fetchData();
+    }, [page]);
 
     const [active, setActive] = useState(1);
     const [visiblePages, setVisiblePages] = useState([]);
@@ -333,8 +452,8 @@ export function MyProductsBusiness() {
                                 const key = `${index}`;
                                 const isLast = index === data.length - 1;
                                 const classes = isLast
-                                    ? "p-5"
-                                    : "p-5 border-b border-blue-gray-50";
+                                    ? "py-5 p-2"
+                                    : "py-5 p-2 border-b border-blue-gray-50";
 
                                 return (
                                     <tr key={key}>

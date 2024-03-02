@@ -44,4 +44,8 @@ const productListShop = (data, page) => {
     return axios.get(`/public/product/shop/${data}?page=${page}`)
 }
 
-export { productListShop, productFilter, bestSellerUser, productSort, productWithBrand, fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession, fetchRandomFourCategoryAndGetFourProduct, searchProduct };
+const deleteProduct = (product_id) => {
+    return axios.delete(`/public/product/delete/${product_id}`)
+}
+
+export { deleteProduct, productListShop, productFilter, bestSellerUser, productSort, productWithBrand, fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession, fetchRandomFourCategoryAndGetFourProduct, searchProduct };

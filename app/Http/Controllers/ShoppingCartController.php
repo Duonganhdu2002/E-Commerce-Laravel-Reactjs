@@ -178,4 +178,19 @@ class ShoppingCartController extends Controller
 
         return response()->json($arr, 200);
     }
+
+    public function destroy($id)
+    {
+        try {
+            // Tìm sản phẩm trong giỏ hàng theo ID
+            $cartItem = ShoppingCart::findOrFail($id);
+
+            // Xóa sản phẩm
+            $cartItem->delete();
+
+            return response()->json(['message' => 'Sản phẩm đã được xóa khỏi giỏ hàng.']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Đã xảy ra lỗi khi xóa sản phẩm khỏi giỏ hàng.'], 500);
+        }
+    }
 }
