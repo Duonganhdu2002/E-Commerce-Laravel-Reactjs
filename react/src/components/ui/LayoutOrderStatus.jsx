@@ -4,7 +4,7 @@ import Image1 from "../../assets/image/iphone-15-pro-blue-2.jpg";
 
 export default function OrderStatus() {
     return (
-        <div className="bg-white flex flex-col justify-center items-center px-4 py-8 lg:px-20 2xl:px-48">
+        <div className=" flex flex-col justify-center items-center px-4 py-8 lg:px-20 2xl:px-48">
             <div className="flex w-full flex-col items-stretch mt-4 mb-4 md:w-full">
                 <div className="justify-between items-stretch flex gap-4 px-2.5 md:w-full md:flex-wrap">
                     <span className="justify-center items-stretch flex grow basis-[0%] flex-col md:w-full">
