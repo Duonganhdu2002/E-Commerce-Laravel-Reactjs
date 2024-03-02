@@ -72,7 +72,7 @@ import Setting from "./components/ui-admin/Setting";
 
 const Customer = () => {
     return (
-        <div className=" bg-gray-100">
+        <div>
             <div className="flex h-20 md:h-24"></div>
             <MenuBar />
             <Outlet />
