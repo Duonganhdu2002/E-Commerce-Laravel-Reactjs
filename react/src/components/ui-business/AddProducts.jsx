@@ -7,7 +7,8 @@ import {
     Input,
     Select,
     Option,
-    Textarea
+    Textarea,
+    Button,
 } from "@material-tailwind/react";
 
 export default function AddProducts() {
@@ -29,7 +30,7 @@ export default function AddProducts() {
     };
 
     return (
-        <Card className="w-full h-full p-4 bg-white rounded-xl">
+        <Card className="w-full p-4 bg-white rounded-xl">
             <CardBody>
                 <div className="flex">
                     <div className="w-[15%]">Product Images</div>
@@ -46,7 +47,7 @@ export default function AddProducts() {
                                             data-index={index}
                                         />
                                         <img
-                                            className="w-24 h-24 cursor-pointer"
+                                            className="w-24 h-24 object-cover cursor-pointer"
                                             src={imageSrc}
                                             alt={`Image ${index + 1}`}
                                             onClick={() => document.querySelector(`input[type="file"][data-index="${index}"]`).click()}
@@ -57,72 +58,81 @@ export default function AddProducts() {
                         </div>
                     </div>
                 </div>
-                <div className=" flex mt-8">
-                    <div className=" w-[15%]">
-                        Product name
+                <div className="flex gap-x-20 py-24">
+                    <div className="w-[50%]">
+                        <div className=" flex mt-8">
+                            <div className=" w-[20%]">
+                                Product name
+                            </div>
+                            <div className=" w-[80%]">
+                                <Input label="Input" />
+                            </div>
+                        </div>
+                        <div className=" flex mt-8">
+                            <div className=" w-[20%]">
+                                Field
+                            </div>
+                            <div className=" w-[80%]">
+                                <Select label="Select Version">
+                                    <Option>Material Tailwind HTML</Option>
+                                    <Option>Material Tailwind React</Option>
+                                    <Option>Material Tailwind Vue</Option>
+                                    <Option>Material Tailwind Angular</Option>
+                                    <Option>Material Tailwind Svelte</Option>
+                                </Select>
+                            </div>
+                        </div>
+                        <div className=" flex mt-8">
+                            <div className=" w-[20%]">
+                                Category
+                            </div>
+                            <div className=" w-[80%]">
+                                <Select label="Select Version">
+                                    <Option>Material Tailwind HTML</Option>
+                                    <Option>Material Tailwind React</Option>
+                                    <Option>Material Tailwind Vue</Option>
+                                    <Option>Material Tailwind Angular</Option>
+                                    <Option>Material Tailwind Svelte</Option>
+                                </Select>
+                            </div>
+                        </div>
                     </div>
-                    <div className=" w-[85%]">
-                        <Input label="Input" />
+                    <div className="w-[50%]">
+                        <div className=" flex mt-8">
+                            <div className=" w-[20%]">
+                                Brand
+                            </div>
+                            <div className=" w-[80%]">
+                                <Select label="Select Version">
+                                    <Option>Material Tailwind HTML</Option>
+                                    <Option>Material Tailwind React</Option>
+                                    <Option>Material Tailwind Vue</Option>
+                                    <Option>Material Tailwind Angular</Option>
+                                    <Option>Material Tailwind Svelte</Option>
+                                </Select>
+                            </div>
+                        </div>
+                        <div className=" flex mt-8">
+                            <div className=" w-[20%]">
+                                Stock
+                            </div>
+                            <div className=" w-[80%]">
+                                <Input label="Input" />
+                            </div>
+                        </div>
+                        <div className=" flex mt-8">
+                            <div className=" w-[20%]">
+                                Description
+                            </div>
+                            <div className=" w-[80%]">
+                                <Textarea color="gray" label="Textarea Gray" />
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className=" flex mt-8">
-                    <div className=" w-[15%]">
-                        Field
-                    </div>
-                    <div className=" w-[85%]">
-                        <Select label="Select Version">
-                            <Option>Material Tailwind HTML</Option>
-                            <Option>Material Tailwind React</Option>
-                            <Option>Material Tailwind Vue</Option>
-                            <Option>Material Tailwind Angular</Option>
-                            <Option>Material Tailwind Svelte</Option>
-                        </Select>
-                    </div>
-                </div>
-                <div className=" flex mt-8">
-                    <div className=" w-[15%]">
-                        Category
-                    </div>
-                    <div className=" w-[85%]">
-                        <Select label="Select Version">
-                            <Option>Material Tailwind HTML</Option>
-                            <Option>Material Tailwind React</Option>
-                            <Option>Material Tailwind Vue</Option>
-                            <Option>Material Tailwind Angular</Option>
-                            <Option>Material Tailwind Svelte</Option>
-                        </Select>
-                    </div>
-                </div>
-                <div className=" flex mt-8">
-                    <div className=" w-[15%]">
-                        Brand
-                    </div>
-                    <div className=" w-[85%]">
-                        <Select label="Select Version">
-                            <Option>Material Tailwind HTML</Option>
-                            <Option>Material Tailwind React</Option>
-                            <Option>Material Tailwind Vue</Option>
-                            <Option>Material Tailwind Angular</Option>
-                            <Option>Material Tailwind Svelte</Option>
-                        </Select>
-                    </div>
-                </div>
-                <div className=" flex mt-8">
-                    <div className=" w-[15%]">
-                        Stock
-                    </div>
-                    <div className=" w-[85%]">
-                        <Input label="Input" />
-                    </div>
-                </div>
-                <div className=" flex mt-8">
-                    <div className=" w-[15%]">
-                        Description
-                    </div>
-                    <div className=" w-[85%]">
-                        <Textarea color="gray" label="Textarea Gray" />
-                    </div>
-                </div>
+
+
+                <Button className=" w-fit">Add New Products</Button>
             </CardBody>
         </Card>
     );
