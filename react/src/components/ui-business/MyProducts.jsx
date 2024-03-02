@@ -157,7 +157,7 @@ export function MyProductsBusiness() {
     }, [active, dataFull.last_page]);
 
     return (
-        <Card className=" h-[98%] w-full p-4">
+        <Card className=" h-[88vh] w-full p-4">
             <CardHeader floated={false} shadow={false} className="rounded-none">
                 <div className="flex flex-col sm:flex-row w-full justify-center items-center">
                     <div className="w-full justify-between flex">
