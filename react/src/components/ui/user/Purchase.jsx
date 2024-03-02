@@ -191,7 +191,7 @@ export default function Purchase() {
                                     : "p-4 border-b border-blue-gray-50";
 
                                 return (
-                                    <tr key={total}>
+                                    <tr key={quantity}>
                                         <td className={classes}>
                                             <div className="flex items-center gap-3">
                                                 <Avatar src={img} alt={name} size="lg" variant="rounded"/>
