@@ -90,18 +90,27 @@ const DeleteProduct = ({ product_id }) => {
 const EditProduct = ({ product_id }) => {
 
     const [data, setData] = useState([]);
+    console.log(data)
+
+    const [colors, setColors] = useState([]);
+    const [sizes, setSizes] = useState([]);
+    const [images, setImages] = useState([]);
+    const imageLength = images.length;
+    const leftImageLength = 3 - imageLength;
 
     useEffect(() => {
         const fectData = async () => {
-
             try {
                 let res = await productInformation(product_id);
+                setColors(res.data.colors)
+                setSizes(res.data.sizes)
+                setImages(res.data.image_urls)
                 setData(res.data)
             } catch (error) {
                 console.error(error)
             }
         }
-        setData();
+        fectData();
     }, [])
 
     const [imageList, setImageList] = useState([AddImageIcon, AddImageIcon, AddImageIcon]);
@@ -133,26 +142,67 @@ const EditProduct = ({ product_id }) => {
                         <div className="w-[15%]">Product Images</div>
                         <div className="w-[85%]">
                             <p>Image (You can upload max 3 images)</p>
-                            <div className=" flex">
-                                {imageList.map((imageSrc, index) => (
-                                    <div key={index} className="p-6 px-8  mr-4 border-2 hover:bg-gray-200 border-dashed border-gray-400 w-fit h-fit mt-5 rounded-md hover:border-gray-600 transition-colors duration-300">
-                                        <div className="mb-4">
-                                            <input
-                                                type="file"
-                                                className="hidden"
-                                                onChange={(event) => handleImageChange(event, index)}
-                                                data-index={index}
-                                            />
-                                            <img
-                                                className="w-24 h-24 object-cover cursor-pointer"
-                                                src={imageSrc}
-                                                alt={`Image ${index + 1}`}
-                                                onClick={() => document.querySelector(`input[type="file"][data-index="${index}"]`).click()}
-                                            />
+                            <div className="flex">
+                                {imageLength === 3 ? (
+                                    images.map((imageSrc, index) => (
+                                        <div key={index} className="p-6 px-8  mr-4 border-2 hover:bg-gray-200 border-dashed border-gray-400 w-fit h-fit mt-5 rounded-md hover:border-gray-600 transition-colors duration-300">
+                                            <div className="mb-4">
+                                                <input
+                                                    type="file"
+                                                    className="hidden"
+                                                    onChange={(event) => handleImageChange(event, index)}
+                                                    data-index={index}
+                                                />
+                                                <img
+                                                    className="w-24 h-24 object-cover cursor-pointer"
+                                                    src={`../../../src/assets/image/${imageSrc}`}
+                                                    alt={`Image ${index + 1}`}
+                                                    onClick={() => document.querySelector(`input[type="file"][data-index="${index}"]`).click()}
+                                                />
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
-                            </div>
+                                    ))
+                                ) : (
+                                    <>
+                                        {images.map((imageSrc, index) => (
+                                            <div key={index} className="p-6 px-8  mr-4 border-2 hover:bg-gray-200 border-dashed border-gray-400 w-fit h-fit mt-5 rounded-md hover:border-gray-600 transition-colors duration-300">
+                                                <div className="mb-4">
+                                                    <input
+                                                        type="file"
+                                                        className="hidden"
+                                                        onChange={(event) => handleImageChange(event, index)}
+                                                        data-index={index}
+                                                    />
+                                                    <img
+                                                        className="w-24 h-24 object-cover cursor-pointer"
+                                                        src={`../../../src/assets/image/${imageSrc}`}
+                                                        alt={`Image ${index + 1}`}
+                                                        onClick={() => document.querySelector(`input[type="file"][data-index="${index}"]`).click()}
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+                                        {imageList.slice(0, leftImageLength).map((imageSrc, index) => (
+                                            <div key={index} className="p-6 px-8  mr-4 border-2 hover:bg-gray-200 border-dashed border-gray-400 w-fit h-fit mt-5 rounded-md hover:border-gray-600 transition-colors duration-300">
+                                                <div className="mb-4">
+                                                    <input
+                                                        type="file"
+                                                        className="hidden"
+                                                        onChange={(event) => handleImageChange(event, index)}
+                                                        data-index={index}
+                                                    />
+                                                    <img
+                                                        className="w-24 h-24 object-cover cursor-pointer"
+                                                        src={imageSrc}
+                                                        alt={`Image ${index + 1}`}
+                                                        onClick={() => document.querySelector(`input[type="file"][data-index="${index}"]`).click()}
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </>
+                                )}
+                            </div>;
                         </div>
                     </div>
                     <div className=" flex mt-8">
@@ -160,49 +210,16 @@ const EditProduct = ({ product_id }) => {
                             Product name
                         </div>
                         <div className=" w-[85%]">
-                            <Input label="Input" />
+                            <Input value={data.name} label="Input" />
                         </div>
                     </div>
+
                     <div className=" flex mt-8">
                         <div className=" w-[15%]">
-                            Field
+                            Price
                         </div>
                         <div className=" w-[85%]">
-                            <Select label="Select Version">
-                                <Option>Material Tailwind HTML</Option>
-                                <Option>Material Tailwind React</Option>
-                                <Option>Material Tailwind Vue</Option>
-                                <Option>Material Tailwind Angular</Option>
-                                <Option>Material Tailwind Svelte</Option>
-                            </Select>
-                        </div>
-                    </div>
-                    <div className=" flex mt-8">
-                        <div className=" w-[15%]">
-                            Category
-                        </div>
-                        <div className=" w-[85%]">
-                            <Select label="Select Version">
-                                <Option>Material Tailwind HTML</Option>
-                                <Option>Material Tailwind React</Option>
-                                <Option>Material Tailwind Vue</Option>
-                                <Option>Material Tailwind Angular</Option>
-                                <Option>Material Tailwind Svelte</Option>
-                            </Select>
-                        </div>
-                    </div>
-                    <div className=" flex mt-8">
-                        <div className=" w-[15%]">
-                            Brand
-                        </div>
-                        <div className=" w-[85%]">
-                            <Select label="Select Version">
-                                <Option>Material Tailwind HTML</Option>
-                                <Option>Material Tailwind React</Option>
-                                <Option>Material Tailwind Vue</Option>
-                                <Option>Material Tailwind Angular</Option>
-                                <Option>Material Tailwind Svelte</Option>
-                            </Select>
+                            <Input value={data.price} label="Input" />
                         </div>
                     </div>
                     <div className=" flex mt-8">
@@ -210,7 +227,7 @@ const EditProduct = ({ product_id }) => {
                             Stock
                         </div>
                         <div className=" w-[85%]">
-                            <Input label="Input" />
+                            <Input value={data.stock} label="Input" />
                         </div>
                     </div>
                     <div className=" flex my-8">
@@ -218,7 +235,7 @@ const EditProduct = ({ product_id }) => {
                             Description
                         </div>
                         <div className=" w-[85%]">
-                            <Textarea color="gray" label="Textarea Gray" />
+                            <Textarea value={data.description} color="gray" label="Textarea Gray" />
                         </div>
                     </div>
                     <div className=" flex my-8">
