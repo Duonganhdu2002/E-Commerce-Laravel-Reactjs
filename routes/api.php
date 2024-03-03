@@ -14,6 +14,8 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SearchHistoryController;
 use App\Http\Controllers\ProvincesController;
 use App\Http\Controllers\RevenueController;
+use App\Http\Controllers\ProductReviewController;
+
 
 Route::prefix('user')->group(function () {
 
@@ -104,6 +106,9 @@ Route::prefix('public')->group(function () {
 
 
         Route::get('{shop_id}/{type}/{date}', [RevenueController::class, 'calculateShopRevenue']);
+
+        Route::get('{shop_id}/{rating?}', [ProductReviewController::class, 'shopReviews']);
+
 
 
     });
