@@ -44,7 +44,7 @@ import { listOrder, orderItems } from "../../services/orderService";
 import React from "react";
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
-import { deleteProduct, productInformation, productListShop } from "../../services/productService";
+import { deleteProduct, productInformation, productListShop, updateProduct } from "../../services/productService";
 import starBlackImg from "../../assets/icon/star-black.svg"
 import starWhiteImg from "../../assets/icon/star-white.svg"
 
@@ -90,7 +90,6 @@ const DeleteProduct = ({ product_id }) => {
 const EditProduct = ({ product_id }) => {
 
     const [data, setData] = useState([]);
-    console.log(data)
 
     const [colors, setColors] = useState([]);
     const [sizes, setSizes] = useState([]);
@@ -98,20 +97,53 @@ const EditProduct = ({ product_id }) => {
     const imageLength = images.length;
     const leftImageLength = 3 - imageLength;
 
-    useEffect(() => {
-        const fectData = async () => {
-            try {
-                let res = await productInformation(product_id);
-                setColors(res.data.colors)
-                setSizes(res.data.sizes)
-                setImages(res.data.image_urls)
-                setData(res.data)
-            } catch (error) {
-                console.error(error)
-            }
+    const [productName, setProductName] = useState('');
+    const [productPrice, setProductPrice] = useState('');
+    const [productStock, setProductStock] = useState('');
+    const [productDescription, setProductDescription] = useState('');
+
+    const handleInputChange = (event, setterFunction) => {
+        setterFunction(event.target.value);
+    };
+
+    const dataUpdate = {
+        'name': productName,
+        'description': productDescription,
+        'price': productPrice,
+        'stock': productStock
+    }
+
+    const handleUpdate = () => {
+
+        try {
+            updateProduct(product_id, dataUpdate);
+            alert("Thanh cong")
+        } catch (error) {
+            alert(error)
         }
-        fectData();
-    }, [])
+        
+    };
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await productInformation(product_id);
+                setProductName(res.data.name || '');
+                setProductPrice(res.data.price || '');
+                setProductStock(res.data.stock || '');
+                setProductDescription(res.data.description || '');
+                setColors(res.data.colors);
+                setSizes(res.data.sizes);
+                setImages(res.data.image_urls);
+                setData(res.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchData();
+    }, [product_id]);
 
     const [imageList, setImageList] = useState([AddImageIcon, AddImageIcon, AddImageIcon]);
 
@@ -210,7 +242,11 @@ const EditProduct = ({ product_id }) => {
                             Product name
                         </div>
                         <div className=" w-[85%]">
-                            <Input value={data.name} label="Input" />
+                            <Input
+                                value={productName}
+                                label="Input"
+                                onChange={(event) => handleInputChange(event, setProductName)}
+                            />
                         </div>
                     </div>
 
@@ -219,30 +255,46 @@ const EditProduct = ({ product_id }) => {
                             Price
                         </div>
                         <div className=" w-[85%]">
-                            <Input value={data.price} label="Input" />
+                            <Input
+                                value={productPrice}
+                                label="Input"
+                                onChange={(event) => handleInputChange(event, setProductPrice)}
+                            />
                         </div>
                     </div>
+
                     <div className=" flex mt-8">
                         <div className=" w-[15%]">
                             Stock
                         </div>
                         <div className=" w-[85%]">
-                            <Input value={data.stock} label="Input" />
+                            <Input
+                                value={productStock}
+                                label="Input"
+                                onChange={(event) => handleInputChange(event, setProductStock)}
+                            />
                         </div>
                     </div>
+
                     <div className=" flex my-8">
                         <div className=" w-[15%]">
                             Description
                         </div>
                         <div className=" w-[85%]">
-                            <Textarea value={data.description} color="gray" label="Textarea Gray" />
+                            <Textarea
+                                value={productDescription}
+                                color="gray"
+                                label="Textarea Gray"
+                                onChange={(event) => handleInputChange(event, setProductDescription)}
+                            />
                         </div>
                     </div>
+
                     <div className=" flex my-8">
                         <div className=" w-[15%]">
                         </div>
                         <div className=" w-[85%]">
-                            <Button >Update</Button>
+                            <Button onClick={handleUpdate}>Update</Button>
                         </div>
                     </div>
                 </PopoverContent>
