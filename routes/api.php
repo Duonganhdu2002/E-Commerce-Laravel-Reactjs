@@ -105,11 +105,8 @@ Route::prefix('public')->group(function () {
         // Route::get('/sort-products/{sortBy}/{user_id}', [ProductController::class, 'sortUserProducts']);
 
 
-        Route::get('{shop_id}/{type}/{date}', [RevenueController::class, 'calculateShopRevenue']);
-
-        Route::get('{shop_id}/{rating?}', [ProductReviewController::class, 'shopReviews']);
-
-
+        Route::get('revenue/{shop_id}/{type}/{date}', [RevenueController::class, 'calculateShopRevenue']);
+        Route::get('rating/{shop_id}/{rating?}', [ProductReviewController::class, 'shopReviews']);
 
     });
 
