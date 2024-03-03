@@ -104,12 +104,8 @@ Route::prefix('public')->group(function () {
         //hiển thị danh sách sản phẩm theo sắp xếp
         // Route::get('/sort-products/{sortBy}/{user_id}', [ProductController::class, 'sortUserProducts']);
 
-
         Route::get('revenue/{shop_id}/{type}/{date}', [RevenueController::class, 'calculateShopRevenue']);
         Route::get('rating/{shop_id}/{rating?}', [ProductReviewController::class, 'shopReviews']);
-
-
-
     });
 
 
