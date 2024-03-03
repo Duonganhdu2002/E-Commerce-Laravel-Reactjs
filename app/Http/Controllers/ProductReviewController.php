@@ -10,18 +10,27 @@ use App\Models\product;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 
 class ProductReviewController extends Controller
 {
-    public function shopReviews($shopId)
+    public function shopReviews($shopId, $ratingFilter = null)
 {
     try {
         $products = Product::where('created_by_user_id', $shopId)->get();
 
-        $reviewsData = [];
+        $allReviewsData = [];
 
         foreach ($products as $product) {
-            $reviews = $product->productReviews;
+            $reviews = $product->productReviews();
+
+            $reviews = $reviews->latest();
+
+            if ($ratingFilter !== null) {
+                $reviews = $reviews->where('rating', $ratingFilter);
+            }
+
+            $reviews = $reviews->get();
 
             foreach ($reviews as $review) {
                 $firstImage = $product->images->first();
@@ -33,33 +42,19 @@ class ProductReviewController extends Controller
                     'username' => $review->user->username,
                 ];
 
-                $reviewsData[] = $reviewData;
+                $allReviewsData[] = $reviewData;
             }
         }
 
-       
-        $page = request('page', 1);
-        $perPage = 10; 
-        $total = count($reviewsData);
-
-        $paginator = new LengthAwarePaginator(
-            array_slice($reviewsData, ($page - 1) * $perPage, $perPage),
-            $total,
-            $perPage,
-            $page,
-            ['path' => request()->url(), 'query' => request()->query()]
-        );
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = 10;
+        $currentReviewsData = array_slice($allReviewsData, ($currentPage - 1) * $perPage, $perPage);
+        $reviewsData = new LengthAwarePaginator($currentReviewsData, count($allReviewsData), $perPage, $currentPage);
 
         $arr = [
             'status' => true,
             'message' => 'Danh sách đánh giá của tất cả sản phẩm của shop có id ' . $shopId,
-            'data' => $paginator->items(),
-            'pagination' => [
-                'total' => $total,
-                'per_page' => $perPage,
-                'current_page' => $page,
-                'last_page' => ceil($total / $perPage),
-            ],
+            'data' => $reviewsData,
         ];
 
         return response()->json($arr, 200);
@@ -71,6 +66,8 @@ class ProductReviewController extends Controller
         ], 404);
     }
 }
+    
+
     public function store(Request $request)
     {
         $input = $request->all();
