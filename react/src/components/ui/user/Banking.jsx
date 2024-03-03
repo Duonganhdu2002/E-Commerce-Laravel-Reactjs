@@ -99,7 +99,7 @@ export default function Banking() {
                         </div>
                     </div>
                 </CardHeader>
-                <CardBody className="overflow-scroll px-0">
+                <CardBody className="px-0">
                     <table className="w-full min-w-max table-auto text-left">
                         <thead>
                             <tr>
@@ -255,7 +255,7 @@ export default function Banking() {
                         </div>
                     </div>
                 </CardHeader>
-                <CardBody className="overflow-scroll px-0">
+                <CardBody className=" px-0">
                     <table className="w-full min-w-max table-auto text-left">
                         <thead>
                             <tr>

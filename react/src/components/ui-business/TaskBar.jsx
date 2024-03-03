@@ -58,7 +58,6 @@ const accordionData = [
         links: [
             { path: "/business/shop-rating", label: "Shop rating" },
             { path: "/business/shop-information", label: "Shop information" },
-            { path: "/business/shop-category", label: "Shop category" },
         ],
     },
 ];

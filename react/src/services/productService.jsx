@@ -48,4 +48,8 @@ const deleteProduct = (product_id) => {
     return axios.delete(`/public/product/delete/${product_id}`)
 }
 
-export { deleteProduct, productListShop, productFilter, bestSellerUser, productSort, productWithBrand, fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession, fetchRandomFourCategoryAndGetFourProduct, searchProduct };
+const updateProduct = (product_id, dataUpdate) => {
+    return axios.put(`/public/product/update/${product_id}`, dataUpdate)
+}
+
+export { updateProduct, deleteProduct, productListShop, productFilter, bestSellerUser, productSort, productWithBrand, fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession, fetchRandomFourCategoryAndGetFourProduct, searchProduct };
