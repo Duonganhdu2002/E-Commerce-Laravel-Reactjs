@@ -108,6 +108,13 @@ Route::prefix('public')->group(function () {
         Route::get('revenue/{shop_id}/{type}/{date}', [RevenueController::class, 'calculateShopRevenue']);
         Route::get('rating/{shop_id}/{rating?}', [ProductReviewController::class, 'shopReviews']);
 
+
+
+    });
+
+
+    Route::prefix('revenue')->group(function () {
+        Route::get('/total/{shopId}', [RevenueController::class, 'calculateRevenue']);
     });
 
     Route::prefix('field')->group(function () {
