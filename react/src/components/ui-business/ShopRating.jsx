@@ -34,8 +34,6 @@ const AllRating = ({ seller_id, rating }) => {
     const [dataFull, setDataFull] = useState([]);
     const [page, setPage] = useState(1);
 
-    console.log(data)
-
     useEffect(() => {
         const fetchData = async () => {
             try {
