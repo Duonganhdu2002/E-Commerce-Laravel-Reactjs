@@ -31,7 +31,12 @@ import {
     Popover,
     PopoverHandler,
     PopoverContent,
+    Select,
+    Option,
+    Textarea,
 } from "@material-tailwind/react";
+
+import AddImageIcon from "../../assets/icon/image (1).png";
 
 import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux'
@@ -85,51 +90,160 @@ const DeleteProduct = ({ product_id }) => {
 const EditProduct = ({ product_id }) => {
 
     const [data, setData] = useState([]);
+    console.log(data)
+
+    const [colors, setColors] = useState([]);
+    const [sizes, setSizes] = useState([]);
+    const [images, setImages] = useState([]);
+    const imageLength = images.length;
+    const leftImageLength = 3 - imageLength;
 
     useEffect(() => {
         const fectData = async () => {
-
             try {
                 let res = await productInformation(product_id);
+                setColors(res.data.colors)
+                setSizes(res.data.sizes)
+                setImages(res.data.image_urls)
                 setData(res.data)
             } catch (error) {
                 console.error(error)
             }
         }
-        setData();
+        fectData();
     }, [])
 
+    const [imageList, setImageList] = useState([AddImageIcon, AddImageIcon, AddImageIcon]);
+
+    const handleImageChange = (event, index) => {
+        const file = event.target.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const newImageList = [...imageList];
+                newImageList[index] = reader.result;
+                setImageList(newImageList);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     return (
-        <div className="cursor-pointer flex justify-center hover:bg-blue-gray-50 py-2 rounded-lg " >
+        <div className="cursor-pointer flex justify-center hover:bg-blue-gray-50 py-2 rounded-lg" >
             <Popover placement="left">
                 <PopoverHandler>
                     <div className=" w-full flex justify-center">
                         <PencilIcon className=" w-4 h-4" />
                     </div>
                 </PopoverHandler>
-                <PopoverContent className="w-96">
-                    <Typography variant="h6" color="blue-gray" className="mb-6">
-                        Update form
-                    </Typography>
-                    <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="mb-1 font-bold"
-                    >
-                        Your Name
-                    </Typography>
-                    <div className="flex gap-2">
-                        <Input
-                            size="lg"
-                            placeholder="name@mail.com"
-                            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-                            labelProps={{
-                                className: "before:content-none after:content-none",
-                            }}
-                        />
-                        <Button variant="gradient" className="flex-shrink-0">
-                            Subscribe
-                        </Button>
+                <PopoverContent className=" z-10 p-8">
+                    <div className="flex">
+                        <div className="w-[15%]">Product Images</div>
+                        <div className="w-[85%]">
+                            <p>Image (You can upload max 3 images)</p>
+                            <div className="flex">
+                                {imageLength === 3 ? (
+                                    images.map((imageSrc, index) => (
+                                        <div key={index} className="p-6 px-8  mr-4 border-2 hover:bg-gray-200 border-dashed border-gray-400 w-fit h-fit mt-5 rounded-md hover:border-gray-600 transition-colors duration-300">
+                                            <div className="mb-4">
+                                                <input
+                                                    type="file"
+                                                    className="hidden"
+                                                    onChange={(event) => handleImageChange(event, index)}
+                                                    data-index={index}
+                                                />
+                                                <img
+                                                    className="w-24 h-24 object-cover cursor-pointer"
+                                                    src={`../../../src/assets/image/${imageSrc}`}
+                                                    alt={`Image ${index + 1}`}
+                                                    onClick={() => document.querySelector(`input[type="file"][data-index="${index}"]`).click()}
+                                                />
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <>
+                                        {images.map((imageSrc, index) => (
+                                            <div key={index} className="p-6 px-8  mr-4 border-2 hover:bg-gray-200 border-dashed border-gray-400 w-fit h-fit mt-5 rounded-md hover:border-gray-600 transition-colors duration-300">
+                                                <div className="mb-4">
+                                                    <input
+                                                        type="file"
+                                                        className="hidden"
+                                                        onChange={(event) => handleImageChange(event, index)}
+                                                        data-index={index}
+                                                    />
+                                                    <img
+                                                        className="w-24 h-24 object-cover cursor-pointer"
+                                                        src={`../../../src/assets/image/${imageSrc}`}
+                                                        alt={`Image ${index + 1}`}
+                                                        onClick={() => document.querySelector(`input[type="file"][data-index="${index}"]`).click()}
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+                                        {imageList.slice(0, leftImageLength).map((imageSrc, index) => (
+                                            <div key={index} className="p-6 px-8  mr-4 border-2 hover:bg-gray-200 border-dashed border-gray-400 w-fit h-fit mt-5 rounded-md hover:border-gray-600 transition-colors duration-300">
+                                                <div className="mb-4">
+                                                    <input
+                                                        type="file"
+                                                        className="hidden"
+                                                        onChange={(event) => handleImageChange(event, index)}
+                                                        data-index={index}
+                                                    />
+                                                    <img
+                                                        className="w-24 h-24 object-cover cursor-pointer"
+                                                        src={imageSrc}
+                                                        alt={`Image ${index + 1}`}
+                                                        onClick={() => document.querySelector(`input[type="file"][data-index="${index}"]`).click()}
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </>
+                                )}
+                            </div>;
+                        </div>
+                    </div>
+                    <div className=" flex mt-8">
+                        <div className=" w-[15%]">
+                            Product name
+                        </div>
+                        <div className=" w-[85%]">
+                            <Input value={data.name} label="Input" />
+                        </div>
+                    </div>
+
+                    <div className=" flex mt-8">
+                        <div className=" w-[15%]">
+                            Price
+                        </div>
+                        <div className=" w-[85%]">
+                            <Input value={data.price} label="Input" />
+                        </div>
+                    </div>
+                    <div className=" flex mt-8">
+                        <div className=" w-[15%]">
+                            Stock
+                        </div>
+                        <div className=" w-[85%]">
+                            <Input value={data.stock} label="Input" />
+                        </div>
+                    </div>
+                    <div className=" flex my-8">
+                        <div className=" w-[15%]">
+                            Description
+                        </div>
+                        <div className=" w-[85%]">
+                            <Textarea value={data.description} color="gray" label="Textarea Gray" />
+                        </div>
+                    </div>
+                    <div className=" flex my-8">
+                        <div className=" w-[15%]">
+                        </div>
+                        <div className=" w-[85%]">
+                            <Button >Update</Button>
+                        </div>
                     </div>
                 </PopoverContent>
             </Popover>

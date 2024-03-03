@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
     Navbar,
     Collapse,
@@ -267,7 +267,7 @@ export default function MenuBarAdmin() {
                 </Link>
                 <div className="hidden lg:block">
                     <NavList />
-                </div>                
+                </div>
                 <IconButton
                     size="sm"
                     color="blue-gray"

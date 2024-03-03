@@ -54,7 +54,6 @@ import { useSelector } from 'react-redux'
 import { ShopRating } from "./components/ui-business/ShopRating";
 import { ShopInformation } from "./components/ui-business/ShopInformation";
 import MyShipment from "./components/ui-business/MyShipment";
-import ShopCategory from "./components/ui-business/ShopCategory";
 import Success from "./components/ui/Success";
 import { UserList } from "./components/ui-admin/UserList";
 import FieldList from "./components/ui-admin/FieldList";
@@ -227,7 +226,6 @@ const App = () => {
                                 <Route path="add-new-product" element={<PrivateBusinessRoute element={<AddProductsBusiness />} />} />
                                 <Route path="shop-rating" element={<PrivateBusinessRoute element={<ShopRating />} />} />
                                 <Route path="shop-information" element={<PrivateBusinessRoute element={<ShopInformation />} />} />
-                                <Route path="shop-category" element={<PrivateBusinessRoute element={<ShopCategory />} />} />
                                 <Route path="dashboard" element={<PrivateBusinessRoute element={<Business />} />} />
                                 <Route path="inbox" element={<PrivateBusinessRoute element={<InboxBusiness />} />} />
                                 <Route path="profile" element={<PrivateBusinessRoute element={<ProfileBusiness />} />} />
