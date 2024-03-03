@@ -103,9 +103,14 @@ Route::prefix('public')->group(function () {
         // Route::get('/sort-products/{sortBy}/{user_id}', [ProductController::class, 'sortUserProducts']);
 
 
-        Route::get('{shop_id}/{type}/{date}', [RevenueController::class, 'calculateShopRevenue']);
+        // Route::get('{shop_id}/{type}/{date}', [RevenueController::class, 'calculateShopRevenue']);
 
 
+    });
+
+
+    Route::prefix('revenue')->group(function () {
+        Route::get('/total/{shopId}', [RevenueController::class, 'calculateRevenue']);
     });
 
     Route::prefix('field')->group(function () {
