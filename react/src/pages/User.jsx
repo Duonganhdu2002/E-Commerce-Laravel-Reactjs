@@ -26,7 +26,7 @@ export default function User() {
     return (
         <div className='flex justify-center'>
             <div className="md:flex py-4 2xl:w-[80%] lg:w-[90%] w-[98%]">
-                <div className='block md:hidden'>
+                <div className='block lg:hidden'>
                     <IconButton variant="text" size="lg" onClick={() => setIsDrawerOpen(!isDrawerOpen)}>
                         {isDrawerOpen ? (
                             <XMarkIcon className="h-8 w-8 stroke-2" />
@@ -38,7 +38,7 @@ export default function User() {
                         <TaskBar />
                     </Drawer>
                 </div>
-                <div className='hidden md:block'>
+                <div className='hidden lg:block'>
                     <div className=" md:w-auto static left-0 bottom-0">
                         <TaskBar />
                     </div>

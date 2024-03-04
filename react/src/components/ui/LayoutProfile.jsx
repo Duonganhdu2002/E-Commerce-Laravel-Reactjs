@@ -1,222 +1,81 @@
-import React from "react";
 import {
     Card,
     CardHeader,
     CardBody,
-    CardFooter,
     Typography,
-    Tooltip,
-    Input,
-    Select,
-    Option,
     Button,
 } from "@material-tailwind/react";
 
-import { CameraIcon } from "@heroicons/react/24/solid";
-
-import Facebook from "../../assets/icon/facebook-svgrepo-com.svg";
-import Twitter from "../../assets/icon/icons8-twitter.svg";
-import Instagram from "../../assets/icon/instagram-1-svgrepo-com.svg";
+import Background from '../../assets/sale/sale7.png';
+import Avatar from '../../assets/public/profile/thaicong.jpg'
 
 export default function LayoutProfile() {
     return (
-            <div className="xl:flex xl:justify-between justify-center">
-                <div className="flex xl:justify-start justify-center xl:w-[33%] h-fit">
-                    <Card className="w-96">
-                        <CardHeader floated={false} className="h-80">
-                                <img
-                                    src="https://docs.material-tailwind.com/img/team-3.jpg"
-                                    alt="profile-picture"
-                                    className=" w-full h-full object-cover"
-                                />
-                        </CardHeader>
-                        <CardBody className="flex flex-col justify-center items-center text-center">
-                            <Typography
-                                variant="h4"
-                                color="blue-gray"
-                                className="mb-2"
-                            >
-                                Natalie Paisley
-                            </Typography>
-                            <Typography
-                                color="blue-gray"
-                                className="font-medium"
-                                textGradient
-                            >
-                                CEO / Co-Founder
-                            </Typography>
-                            <Button
-                                    variant="outlined"
-                                    className="flex justify-center mt-6 w-[40%]"
-                                >
-                                    <CameraIcon className=" w-8" />
-                                </Button>
-                        </CardBody>
-                        <CardFooter className="flex justify-center gap-7 pt-2">
-                            <Tooltip content="Like">
-                                <Typography
-                                    as="a"
-                                    href="#facebook"
-                                    variant="lead"
-                                    color="blue"
-                                    textGradient
-                                >
-                                    <img
-                                        src={Facebook}
-                                        alt=""
-                                        className=" w-8"
-                                    />
-                                </Typography>
-                            </Tooltip>
-                            <Tooltip content="Follow">
-                                <Typography
-                                    as="a"
-                                    href="#twitter"
-                                    variant="lead"
-                                    color="light-blue"
-                                    textGradient
-                                >
-                                    <img
-                                        src={Twitter}
-                                        alt=""
-                                        className=" w-8"
-                                    />
-                                </Typography>
-                            </Tooltip>
-                            <Tooltip content="Follow">
-                                <Typography
-                                    as="a"
-                                    href="#instagram"
-                                    variant="lead"
-                                    color="purple"
-                                    textGradient
-                                >
-                                    <img
-                                        src={Instagram}
-                                        alt=""
-                                        className=" w-8"
-                                    />
-                                </Typography>
-                            </Tooltip>
-                        </CardFooter>
-                    </Card>
+        <Card className="mt-6 w-full">
+            <CardHeader color="blue-gray" className="relative h-60">
+                <div className=" absolute right-4 top-4"><Button>Upload Cover</Button></div>
+                <div className="w-full h-full">
+                    <img
+                        src={Background}
+                        alt="card-image"
+                        className="flex w-full h-full object-cover"
+                    />
                 </div>
-
-                <div className="flex xl:justify-center w-[100%] xl:w-[63%] mt-10 xl:mt-0">
-                    <Card className=" w-full px-8">
-                        <CardHeader
-                            floated={false}
-                            className=" -ml-0 px-8 w-full bg-gray-800"
-                        >
-                            <Typography
-                                variant="h4"
-                                color="blue-gray"
-                                className=" my-2 text-white"
-                            >
-                                Profile
-                            </Typography>
-                        </CardHeader>
-                        <CardBody className=" px-8 w-full">
-                            <div className=" lg:flex gap-x-2">
-                                <div className="w-full mb-6">
-                                    <Input label="Username" />
-                                </div>
-                                <div className="w-full mb-6">
-                                    <Input label="Full Name" />
-                                </div>
-                            </div>
-                            <div className=" lg:flex gap-x-2">
-                                <div className="w-full mb-6 ">
-                                    <Input label="Email" />
-                                </div>
-                                <div className="w-full mb-6">
-                                    <Input label="Phone Number" />
-                                </div>
-                            </div>
-                            <div className=" lg:flex gap-x-2">
-                                <div className="w-full mb-6 ">
-                                    <Select label="Select Gender" required>
-                                        <Option>Male</Option>
-                                        <Option>Female</Option>
-                                        <Option>Other</Option>
-                                    </Select>
-                                </div>
-                                <div className="w-full mb-6">
-                                    <Input label="Birthday" type="date" />
-                                </div>
-                            </div>
-                            <div className=" lg:flex">
-                                <div className="w-full mb-6">
-                                    <Input label="Address" />
-                                </div>
-                            </div>
-                        </CardBody>
-
-                        <CardHeader
-                            floated={false}
-                            className=" -ml-0 mt-0 px-8 w-full bg-gray-800"
-                        >
-                            <Typography
-                                variant="h4"
-                                color="blue-gray"
-                                className=" my-2 text-white"
-                            >
-                                Select Delivery Information
-                            </Typography>
-                        </CardHeader>
-
-                        <CardBody className=" px-8 w-full">
-                            <div className=" lg:flex gap-x-2">
-                                <div className="w-full mb-6 ">
-                                    <Input label="Username" />
-                                </div>
-                                <div className="w-full mb-6">
-                                    <Input label="Full Name" />
-                                </div>
-                            </div>
-                            <div className=" lg:flex gap-x-2">
-                                <div className="w-full mb-6 ">
-                                    <Input label="Email" />
-                                </div>
-                                <div className="w-full mb-6">
-                                    <Input label="Phone Number" />
-                                </div>
-                            </div>
-                            <div className=" lg:flex gap-x-2">
-                                <div className="w-full mb-6 ">
-                                    <Select label="Select Gender" required>
-                                        <Option>Male</Option>
-                                        <Option>Female</Option>
-                                        <Option>Other</Option>
-                                    </Select>
-                                </div>
-                                <div className="w-full mb-6">
-                                    <Input label="Birthday" type="date" />
-                                </div>
-                            </div>
-
-                            <div className=" lg:flex">
-                                <div className="w-full mb-6">
-                                    <Input label="Address" />
-                                </div>
-                            </div>
-
-                            <div className="lg:flex justify-end">
-                                <Button
-                                    variant="gradient"
-                                    color="red"
-                                    className=" mr-4"
-                                >
-                                    delete
-                                </Button>
-
-                                <Button variant="gradient" color="blue">
-                                    save
-                                </Button>
-                            </div>
-                        </CardBody>
-                    </Card>
+            </CardHeader>
+            <Card className="absolute rounded-3xl mt-40 sm:mt-40 sm:ml-14 shadow-none flex items-center sm:items-start w-full bg-white/0">
+                <img src={Avatar} alt="" className="w-[140px] rounded-3xl" />
+                <div className=" mt-2 ml-0 sm:ml-3 flex items-center gap-x-3 cursor-pointer">
+                    <p>Change</p>
+                    <p>Delete</p>
+                </div>
+            </Card>
+            <div className="sm:ml-60 sm:mt-2 mt-32 flex justify-center sm:justify-start">
+                <div>
+                    <Typography variant="h2" color="blue-gray">Jonh Wich</Typography>
+                    <Typography>UI/UX Neflf@namail.com</Typography>
                 </div>
             </div>
-    );
+            <CardBody className=" sm:mt-6">
+                <div>
+                    <div className="flex px-6 py-2 border-b-2 items-center">
+                        <div className=" flex items-center gap-x-4 sm:w-[15%]">
+                            <p className=" font-semibold text-xl">My Profile:</p>
+                        </div>
+                        <div className="flex items-center ml-2 gap-x-4 sm:w-[70%]">
+                            <p>NTD29112004</p>
+                        </div>
+                        <Button className=" hidden sm:block sm:w-[15%]" variant="text">Edit</Button>
+                    </div>
+                    <div className="flex px-6 py-2 border-b-2 items-center">
+                        <div className=" flex items-center gap-x-4 sm:w-[15%]">
+                            <p className=" font-semibold text-xl">Phone:</p>
+                        </div>
+                        <div className="flex items-center ml-2 gap-x-4 sm:w-[70%]">
+                            <p>*******120</p>
+                        </div>
+                        <Button className=" hidden sm:block sm:w-[15%]" variant="text">Edit</Button>
+                    </div>
+                    <div className="flex px-6 py-2 border-b-2 items-center">
+                        <div className=" flex items-center gap-x-4 sm:w-[15%]">
+                            <p className=" font-semibold text-xl">Email:</p>
+                        </div>
+                        <div className="flex items-center ml-2 gap-x-4 sm:w-[70%]">
+                            <p>du******@gmail.com</p>
+                        </div>
+                        <Button className=" hidden sm:block sm:w-[15%]" variant="text">Edit</Button>
+                    </div>
+                    <div className="flex px-6 py-2 border-b-2 items-center">
+                        <div className=" flex items-center gap-x-4 sm:w-[15%]">
+                            <p className=" font-semibold text-xl">Password:</p>
+                        </div>
+                        <div className="flex items-center ml-2 gap-x-4 sm:w-[70%]">
+                            <p>Remember, you should regularly change your password to avoid security problems</p>
+                        </div>
+                        <Button className=" hidden sm:block sm:w-[15%]" variant="text">Edit</Button>
+                    </div>
+                    <Button className="w-full block sm:hidden" variant="outlined">Edit</Button>
+                </div>
+            </CardBody>
+        </Card>
+    )
 }

@@ -1,134 +1,82 @@
-import { Avatar, Typography, Button } from "@material-tailwind/react";
 import {
-    MapPinIcon,
-    BriefcaseIcon,
-    BuildingLibraryIcon,
-} from "@heroicons/react/24/solid";
+    Card,
+    CardHeader,
+    CardBody,
+    Typography,
+    Button,
+} from "@material-tailwind/react";
+
+import Background from '../../assets/sale/sale7.png';
+import Avatar from '../../assets/public/profile/thaicong.jpg'
 
 export function Profile() {
     return (
-        <div>
-            <section className="relative block h-[50vh]">
-                <div className="bg-profile-background absolute top-0 h-full w-full bg-[url('/img/background-3.png')] bg-cover bg-center scale-105" />
-                <div className="absolute top-0 h-full w-full bg-black/70 bg-cover bg-center"><img src="/src/assets/sale/sale7.png" alt="" className="w-full h-full object-cover"/></div>
-            </section>
-            <section className="relative bg-white">
-                <div className="relative mb-6 -mt-40 flex w-full px-4 min-w-0 flex-col break-words bg-white">
-                    <div className="container mx-auto">
-                        <div className="flex flex-col lg:flex-row justify-between">
-                            <div className="relative flex gap-6 items-start">
-                                <div className="-mt-20 w-40">
-                                    <Avatar
-                                        src="/src/assets/public/profile/thaicong.jpg"
-                                        alt="Profile picture"
-                                        variant="circular"
-                                        className="h-full w-full"
-                                    />
-                                </div>
-                                <div className="flex flex-col mt-2">
-                                    <Typography variant="h4" color="blue-gray">
-                                        Jenna Stones
-                                    </Typography>
-                                    <Typography
-                                        variant="paragraph"
-                                        color="gray"
-                                        className="!mt-0 font-normal"
-                                    >
-                                        jena@mail.com
-                                    </Typography>
-                                </div>
-                            </div>
-
-                            <div className="mt-10 mb-10 flex lg:flex-col justify-between items-center lg:justify-end lg:mb-0 lg:px-4 flex-wrap lg:-mt-5">
-                                <Button className="bg-gray-900 w-fit lg:ml-auto">
-                                    Conntect
-                                </Button>
-                                <div className="flex justify-start py-4 pt-8 lg:pt-4">
-                                    <div className="mr-4 p-3 text-center">
-                                        <Typography
-                                            variant="lead"
-                                            color="blue-gray"
-                                            className="font-bold uppercase"
-                                        >
-                                            22
-                                        </Typography>
-                                        <Typography
-                                            variant="small"
-                                            className="font-normal text-blue-gray-500"
-                                        >
-                                            Friends
-                                        </Typography>
-                                    </div>
-                                    <div className="mr-4 p-3 text-center">
-                                        <Typography
-                                            variant="lead"
-                                            color="blue-gray"
-                                            className="font-bold uppercase"
-                                        >
-                                            10
-                                        </Typography>
-                                        <Typography
-                                            variant="small"
-                                            className="font-normal text-blue-gray-500"
-                                        >
-                                            Photos
-                                        </Typography>
-                                    </div>
-                                    <div className="p-3 text-center lg:mr-4">
-                                        <Typography
-                                            variant="lead"
-                                            color="blue-gray"
-                                            className="font-bold uppercase"
-                                        >
-                                            89
-                                        </Typography>
-                                        <Typography
-                                            variant="small"
-                                            className="font-normal text-blue-gray-500"
-                                        >
-                                            Comments
-                                        </Typography>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="-mt-4 container space-y-2">
-                            <div className="flex items-center gap-2">
-                                <MapPinIcon className="-mt-px h-4 w-4 text-blue-gray-500" />
-                                <Typography className="font-medium text-blue-gray-500">
-                                    Los Angeles, California
-                                </Typography>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <BriefcaseIcon className="-mt-px h-4 w-4 text-blue-gray-500" />
-                                <Typography className="font-medium text-blue-gray-500">
-                                    Solution Manager - Creative Tim Officer
-                                </Typography>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <BuildingLibraryIcon className="-mt-px h-4 w-4 text-blue-gray-500" />
-                                <Typography className="font-medium text-blue-gray-500">
-                                    University of Computer Science
-                                </Typography>
-                            </div>
-                        </div>
-                        <div className="mb-10 py-6">
-                            <div className="flex w-full flex-col items-start lg:w-1/2">
-                                <Typography className="mb-6 font-normal text-blue-gray-500">
-                                    An artist of considerable range, Jenna the
-                                    name taken by Melbourne-raised,
-                                    Brooklyn-based Nick Murphy writes, performs
-                                    and records all of his own music, giving it
-                                    a warm, intimate feel with a solid groove
-                                    structure. An artist of considerable range.
-                                </Typography>
-                                <Button variant="text">Show more</Button>
-                            </div>
-                        </div>
-                    </div>
+        <Card className="mt-6 w-full">
+            <CardHeader color="blue-gray" className="relative h-60">
+                <div className=" absolute right-4 top-4"><Button>Upload Cover</Button></div>
+                <div className="w-full h-full">
+                    <img
+                        src={Background}
+                        alt="card-image"
+                        className="flex w-full h-full object-cover"
+                    />
                 </div>
-            </section>
-        </div>
+            </CardHeader>
+            <Card className="absolute rounded-3xl mt-40 sm:mt-40 sm:ml-14 shadow-none flex items-center sm:items-start w-full bg-white/0">
+                <img src={Avatar} alt="" className="w-[140px] rounded-3xl" />
+                <div className=" mt-2 ml-0 sm:ml-3 flex items-center gap-x-3 cursor-pointer">
+                    <p>Change</p>
+                    <p>Delete</p>
+                </div>
+            </Card>
+            <div className="sm:ml-60 sm:mt-2 mt-32 flex justify-center sm:justify-start">
+                <div>
+                    <Typography variant="h2" color="blue-gray">Jonh Wich</Typography>
+                    <Typography>UI/UX Neflf@namail.com</Typography>
+                </div>
+            </div>
+            <CardBody className=" sm:mt-6">
+                <div>
+                    <div className="flex px-6 py-2 border-b-2 items-center">
+                        <div className=" flex items-center gap-x-4 sm:w-[15%]">
+                            <p className=" font-semibold text-xl">My Profile:</p>
+                        </div>
+                        <div className="flex items-center ml-2 gap-x-4 sm:w-[70%]">
+                            <p>NTD29112004</p>
+                        </div>
+                        <Button className=" hidden sm:block sm:w-[15%]" variant="text">Edit</Button>
+                    </div>
+                    <div className="flex px-6 py-2 border-b-2 items-center">
+                        <div className=" flex items-center gap-x-4 sm:w-[15%]">
+                            <p className=" font-semibold text-xl">Phone:</p>
+                        </div>
+                        <div className="flex items-center ml-2 gap-x-4 sm:w-[70%]">
+                            <p>*******120</p>
+                        </div>
+                        <Button className=" hidden sm:block sm:w-[15%]" variant="text">Edit</Button>
+                    </div>
+                    <div className="flex px-6 py-2 border-b-2 items-center">
+                        <div className=" flex items-center gap-x-4 sm:w-[15%]">
+                            <p className=" font-semibold text-xl">Email:</p>
+                        </div>
+                        <div className="flex items-center ml-2 gap-x-4 sm:w-[70%]">
+                            <p>du******@gmail.com</p>
+                        </div>
+                        <Button className=" hidden sm:block sm:w-[15%]" variant="text">Edit</Button>
+                    </div>
+                    <div className="flex px-6 py-2 border-b-2 items-center">
+                        <div className=" flex items-center gap-x-4 sm:w-[15%]">
+                            <p className=" font-semibold text-xl">Password:</p>
+                        </div>
+                        <div className="flex items-center ml-2 gap-x-4 sm:w-[70%]">
+                            <p>Remember, you should regularly change your password to avoid security problems</p>
+                        </div>
+                        <Button className=" hidden sm:block sm:w-[15%]" variant="text">Edit</Button>
+                    </div>
+                    <Button className="w-full block sm:hidden" variant="outlined">Edit</Button>
+                </div>
+            </CardBody>
+        </Card>
     );
 }
 
