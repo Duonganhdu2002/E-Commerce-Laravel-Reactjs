@@ -36,13 +36,13 @@ export default function Checkout() {
     const [selectedDistrict, setSelectedDistrict] = useState(null);
     const [selectedWard, setSelectedWard] = useState(null);
 
-    // Dữ liệu nhập từ form thông tin 
+    // Dữ liệu nhập từ form thông tin
     const [name, setName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [streetAndNumber, setStreetAndNumber] = useState("");
     const [note, setNote] = useState("");
 
-    // Tính tổng tất cả các mặt hàng 
+    // Tính tổng tất cả các mặt hàng
     const subtotal = selectedItems.reduce((total, item) => {
         const itemTotal = parseFloat(item.Price) * item.newQuantity;
         return total + itemTotal;
@@ -106,6 +106,7 @@ export default function Checkout() {
         if (selectedDistrictInfo) {
             setSelectedDistrict(selectedDistrictInfo.name);
         }
+        console.log(selectedDistrictId);
     };
 
     const handlechangeWard = (e) => {

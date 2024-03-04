@@ -51,5 +51,8 @@ const deleteProduct = (product_id) => {
 const updateProduct = (product_id, dataUpdate) => {
     return axios.put(`/public/product/update/${product_id}`, dataUpdate)
 }
+const addProduct = (data) => {
+    return axios.post(`/public/product/add` , data )
+}
 
-export { updateProduct, deleteProduct, productListShop, productFilter, bestSellerUser, productSort, productWithBrand, fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession, fetchRandomFourCategoryAndGetFourProduct, searchProduct };
+export { updateProduct, deleteProduct, productListShop, productFilter, bestSellerUser, productSort, productWithBrand, fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession, fetchRandomFourCategoryAndGetFourProduct, searchProduct, addProduct };

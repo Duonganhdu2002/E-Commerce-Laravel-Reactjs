@@ -8,6 +8,7 @@ const fetchAllCategoryByFieldId = (fieldId) => {
     return axios.get(`/public/category/id=${fieldId}`);
 }
 
+
 const fetchAllCategoryByUser = (user_id) => {
     return axios.get(`/public/category/${user_id}`);
 }
