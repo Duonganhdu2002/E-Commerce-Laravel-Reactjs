@@ -1,7 +1,7 @@
 import axios from "./axiosCustom";
 
-const fetchAllUser = (page) => {
-    return axios.get(`/user/auth-list?page=${page}`);
+const fetchAllUser = (type_id, page) => {
+    return axios.get(`/user/auth-list/${type_id}?page=${page}`);
 }
 
 const fetchUserPagination = (pageNumber) => {

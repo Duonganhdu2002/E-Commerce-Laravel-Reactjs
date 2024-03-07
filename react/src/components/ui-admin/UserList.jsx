@@ -38,85 +38,16 @@ const TABLE_HEAD = [
     "Action",
 ];
 
-const TABLE_ROWS = [
-    {
-        name: "John Michael",
-        sku: 1,
-        cog: "SmartPhone",
-        price: "$40",
-        sc: "Viettel Express",
-        revenue: "$40",
-        adv: "None",
-    },
-    {
-        name: "Alexa Liras",
-        sku: 3,
-        cog: "SmartPhone",
-        price: "$990",
-        sc: "Viettel Express",
-        revenue: "$40",
-        adv: "None",
-    },
-    {
-        name: "Laurent Perrier",
-        sku: 10,
-        org: "Projects",
-        cog: "SmartPhone",
-        price: "$450",
-        sc: "Viettel Express",
-        revenue: "$40",
-        adv: "None",
-    },
-    {
-        name: "Michael Levi",
-        sku: 1,
-        cog: "SmartPhone",
-        price: "$120",
-        sc: "Viettel Express",
-        revenue: "$40",
-        adv: "None",
-    },
-    {
-        name: "Richard Gran",
-        sku: 8,
-        cog: "SmartPhone",
-        price: "$4990",
-        sc: "Viettel Express",
-        revenue: "$40",
-        adv: "None",
-    },
-    {
-        name: "Richard Gran",
-        sku: 8,
-        cog: "SmartPhone",
-        price: "$4990",
-        sc: "Viettel Express",
-        revenue: "$40",
-        adv: "None",
-    },
-    {
-        name: "Richard Gran",
-        sku: 8,
-        cog: "SmartPhone",
-        price: "$4990",
-        sc: "Viettel Express",
-        revenue: "$40",
-        adv: "None",
-    },
-];
-
-const Customer = () => {
+const FetchAllUser = ({type_id}) => {
 
     const [data, setData] = useState([]);
     const [dataFull, setDataFull] = useState([]);
     const [page, setPage] = useState(1);
 
-    console.log(data)
-
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await fetchAllUser(page);
+                let res = await fetchAllUser(type_id, page);
                 setData(res.data.data);
                 setDataFull(res.data);
             } catch (error) {
@@ -213,7 +144,7 @@ const Customer = () => {
                     <tbody>
                         {data.map(
                             (users, index) => {
-                                const isLast = index === TABLE_ROWS.length - 1;
+                                const isLast = index === data.length - 1;
                                 const classes = isLast
                                     ? "p-4"
                                     : "p-4 border-b border-blue-gray-50";
@@ -343,17 +274,16 @@ const Customer = () => {
 
 const DataTab = [
     {
-        label: "Dashboard",
+        label: "Customer",
         value: "dashboard",
         icon: Square3Stack3DIcon,
-        desc: <Customer />
+        desc: <FetchAllUser type_id={3} />
     },
     {
-        label: "Profile",
+        label: "Seller",
         value: "profile",
         icon: UserCircleIcon,
-        desc: `Because it's about motivating the doers. Because I'm here
-      to follow my dreams and inspire other people to follow their dreams, too.`,
+        desc: <FetchAllUser type_id={2}/>
     },
 ];
 

@@ -35,7 +35,7 @@ Route::prefix('user')->group(function () {
 
     Route::get('info/{user_id}', [UserController::class, 'info'])->name('info');
     Route::get('auth-total', [UserController::class, 'getTotalUsers'])->name('getTotalUsers');
-    Route::get('auth-list', [UserController::class, 'userList'])->name('userList');
+    Route::get('auth-list/{type_id}', [UserController::class, 'userList'])->name('userList');
 });
 
 Route::prefix('public')->group(function () {
@@ -157,7 +157,7 @@ Route::prefix('public')->group(function () {
     });
 
     Route::prefix('order')->group(function () {
-        Route::get('list', [OrderController::class, 'index']);
+        Route::get('list', [OrderController::class, 'getAllOrder']);
         Route::post('make', [OrderController::class, 'checkout']);
         Route::get('details/{order_id}', [OrderController::class, 'getOrderDetails']);
         //show các đơn hàng được đặt của seller
