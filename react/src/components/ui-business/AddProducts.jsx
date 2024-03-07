@@ -167,17 +167,43 @@ export default function AddProducts() {
                     <div className="w-[85%]">
                         <p>Image (You can upload max 3 images)</p>
                         <div className=" flex">
-                            <div>
+                        <div>
                                 <input type="file" onChange={handleChange1} />
-                                {file1 && <img className=" w-24" src={URL.createObjectURL(file1)} alt="Selected File" />}
+                                {file1 ? (
+                                    <img className="w-40 mt-3 rounded-xl" src={URL.createObjectURL(file1)} alt="Selected File" />
+                                ) : (
+                                    <img
+                                        className="w-40 mt-3 rounded-xl"
+                                        src={`https://cdn.pixabay.com/photo/2017/11/10/05/24/add-2935429_960_720.png`}
+                                        alt="Placeholder Image"
+                                    />
+                                )}
                             </div>
+
                             <div>
                                 <input type="file" onChange={handleChange2} />
-                                {file2 && <img className=" w-24" src={URL.createObjectURL(file2)} alt="Selected File" />}
+                                {file2 ? (
+                                    <img className="w-40 mt-3 rounded-xl" src={URL.createObjectURL(file2)} alt="Selected File" />
+                                ) : (
+                                    <img
+                                        className="w-40 mt-3 rounded-xl"
+                                        src={`https://cdn.pixabay.com/photo/2017/11/10/05/24/add-2935429_960_720.png`}
+                                        alt="Placeholder Image"
+                                    />
+                                )}
                             </div>
+
                             <div>
                                 <input type="file" onChange={handleChange3} />
-                                {file3 && <img className=" w-24" src={URL.createObjectURL(file3)} alt="Selected File" />}
+                                {file3 ? (
+                                    <img className="w-40 mt-3 rounded-xl" src={URL.createObjectURL(file3)} alt="Selected File" />
+                                ) : (
+                                    <img
+                                        className="w-40 mt-3 rounded-xl"
+                                        src={`https://cdn.pixabay.com/photo/2017/11/10/05/24/add-2935429_960_720.png`}
+                                        alt="Placeholder Image"
+                                    />
+                                )}
                             </div>
                         </div>
                     </div>
