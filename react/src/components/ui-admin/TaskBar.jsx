@@ -20,6 +20,8 @@ import {
     PowerIcon,
     ArchiveBoxIcon,
     DocumentTextIcon,
+    StarIcon,
+    CreditCardIcon
 } from "@heroicons/react/24/solid";
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
@@ -36,46 +38,25 @@ const accordionData = [
     {
         id: 2,
         icon: <DocumentTextIcon className="h-5 w-5" />,
-        title: "Field",
+        title: "Classification List",
         links: [
             { path: "/admin/field-list", label: "Field list" },
-        ],
-    },
-    {
-        id: 3,
-        icon: <ArchiveBoxIcon className="h-5 w-5" />,
-        title: "Category",
-        links: [
             { path: "/admin/category-list", label: "Category list" },
-        ],
-    },
-    {
-        id: 4,
-        icon: <ShoppingBagIcon className="h-5 w-5" />,
-        title: "Brand",
-        links: [
             { path: "/admin/brand-list", label: "Brand list" },
         ],
     },
     {
-        id: 5,
+        id: 3,
         icon: <ShoppingBagIcon className="h-5 w-5" />,
         title: "Order",
         links: [
             { path: "/admin/order-list", label: "Order list" },
-        ],
-    },
-    {
-        id: 6,
-        icon: <ShoppingBagIcon className="h-5 w-5" />,
-        title: "Order status",
-        links: [
             { path: "/admin/order-status-list", label: "Order status list" },
         ],
     },
     {
-        id: 7,
-        icon: <ShoppingBagIcon className="h-5 w-5" />,
+        id: 4,
+        icon: <ArchiveBoxIcon className="h-5 w-5" />,
         title: "Product",
         links: [
             { path: "/admin/product-list", label: "Product list" },
@@ -83,8 +64,8 @@ const accordionData = [
         ],
     },
     {
-        id: 8,
-        icon: <ShoppingBagIcon className="h-5 w-5" />,
+        id: 5,
+        icon: <StarIcon className="h-5 w-5" />,
         title: "Review",
         links: [
             { path: "/admin/review-list", label: "Review list" },
@@ -93,8 +74,8 @@ const accordionData = [
     },
 
     {
-        id: 9,
-        icon: <ShoppingBagIcon className="h-5 w-5" />,
+        id: 6,
+        icon: <CreditCardIcon className="h-5 w-5" />,
         title: "Shopping method",
         links: [
             { path: "/admin/shopping-method-list", label: "Shopping method list" },
