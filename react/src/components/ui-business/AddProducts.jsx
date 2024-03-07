@@ -169,15 +169,15 @@ export default function AddProducts() {
                         <div className=" flex">
                             <div>
                                 <input type="file" onChange={handleChange1} />
-                                {file1 && <img src={URL.createObjectURL(file1)} alt="Selected File" />}
+                                {file1 && <img className=" w-24" src={URL.createObjectURL(file1)} alt="Selected File" />}
                             </div>
                             <div>
                                 <input type="file" onChange={handleChange2} />
-                                {file2 && <img src={URL.createObjectURL(file2)} alt="Selected File" />}
+                                {file2 && <img className=" w-24" src={URL.createObjectURL(file2)} alt="Selected File" />}
                             </div>
                             <div>
                                 <input type="file" onChange={handleChange3} />
-                                {file3 && <img src={URL.createObjectURL(file3)} alt="Selected File" />}
+                                {file3 && <img className=" w-24" src={URL.createObjectURL(file3)} alt="Selected File" />}
                             </div>
                         </div>
                     </div>
