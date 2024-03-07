@@ -7,6 +7,7 @@ import {
     Square3Stack3DIcon,
     UserCircleIcon,
     Cog6ToothIcon,
+    MagnifyingGlassIcon
 } from "@heroicons/react/24/outline";
 import { PencilIcon } from "@heroicons/react/24/solid";
 import {
@@ -21,7 +22,8 @@ import {
     TabsBody,
     Tab,
     TabPanel,
-    Button
+    Button,
+    Input,
 } from "@material-tailwind/react";
 
 import { useEffect, useState } from "react";
@@ -38,7 +40,7 @@ const TABLE_HEAD = [
     "Action",
 ];
 
-const FetchAllUser = ({type_id}) => {
+const FetchAllUser = ({ type_id }) => {
 
     const [data, setData] = useState([]);
     const [dataFull, setDataFull] = useState([]);
@@ -154,18 +156,18 @@ const FetchAllUser = ({type_id}) => {
                                         <td className={classes}>
                                             <div className="flex items-center gap-3">
                                                 <div className="flex flex-col">
-                                                    <img className=" w-10 h-10 rounded-full object-cover" src={ `../../../src/assets/shop/${users.avt_image}`} alt="" />
+                                                    <img className=" w-10 h-10 rounded-full object-cover" src={`../../../src/assets/shop/${users.avt_image}`} alt="" />
                                                 </div>
                                             </div>
                                         </td>
                                         <td className={classes}>
                                             <div className="flex flex-col">
-                                                  <Typography
+                                                <Typography
                                                     variant="small"
                                                     color="blue-gray"
                                                     className="font-normal"
                                                 >
-                                                    {users.user_id}
+                                                    {users.user_id || ''}
                                                 </Typography>
                                             </div>
                                         </td>
@@ -176,7 +178,7 @@ const FetchAllUser = ({type_id}) => {
                                                     color="blue-gray"
                                                     className="font-normal"
                                                 >
-                                                    {users.username}
+                                                    {users.username || ''}
                                                 </Typography>
                                             </div>
                                         </td>
@@ -186,7 +188,7 @@ const FetchAllUser = ({type_id}) => {
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                {users.email}
+                                                {users.email || ''}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
@@ -195,7 +197,7 @@ const FetchAllUser = ({type_id}) => {
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                {users.full_name}
+                                                {users.full_name || ''}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
@@ -204,7 +206,7 @@ const FetchAllUser = ({type_id}) => {
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                {users.telephone}
+                                                {users.telephone || ''}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
@@ -213,7 +215,7 @@ const FetchAllUser = ({type_id}) => {
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                {users.telephone}
+                                                {users.telephone || ''}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
@@ -234,7 +236,7 @@ const FetchAllUser = ({type_id}) => {
                 <div>
 
                 </div>
-                <div className="flex items-center mt-2">
+                <div className="flex items-center mt-2 ">
                     <Button
                         variant="text"
                         className="flex items-center gap-2"
@@ -283,14 +285,14 @@ const DataTab = [
         label: "Seller",
         value: "profile",
         icon: UserCircleIcon,
-        desc: <FetchAllUser type_id={2}/>
+        desc: <FetchAllUser type_id={2} />
     },
 ];
 
 export function UserList() {
 
     return (
-        <Card className=" h-fit w-full p-4">
+        <Card className=" h-[98%] w-full p-4">
             <Tabs value="dashboard">
                 <TabsHeader>
                     {DataTab.map(({ label, value, icon }) => (
@@ -302,7 +304,13 @@ export function UserList() {
                         </Tab>
                     ))}
                 </TabsHeader>
-                <TabsBody>
+                <div className=" mt-2">
+                    <Input
+                        label="Search"
+                        icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                    />
+                </div>
+                <TabsBody className="">
                     {DataTab.map(({ value, desc }) => (
                         <TabPanel key={value} value={value}>
                             {desc}
@@ -310,7 +318,6 @@ export function UserList() {
                     ))}
                 </TabsBody>
             </Tabs>
-
         </Card>
     );
 }
