@@ -13,4 +13,8 @@ const fetchAllCategoryByUser = (user_id) => {
     return axios.get(`/public/category/${user_id}`);
 }
 
-export { fetchAllCategory, fetchAllCategoryByFieldId, fetchAllCategoryByUser };
+const fetchAllCategoryByAdmin = (page) => {
+    return axios.get(`/public/category/list?page=${page}`);
+}
+
+export { fetchAllCategoryByAdmin, fetchAllCategory, fetchAllCategoryByFieldId, fetchAllCategoryByUser };

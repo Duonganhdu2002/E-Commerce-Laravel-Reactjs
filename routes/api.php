@@ -115,6 +115,7 @@ Route::prefix('public')->group(function () {
 
     Route::prefix('field')->group(function () {
         Route::get('list', [FieldController::class, 'index']);
+        Route::get('listAdmin', [FieldController::class, 'admin']);
         Route::get('/{id}', [FieldController::class, 'show']);
         Route::put('/{id}', [FieldController::class, 'update']);
         Route::delete('/{id}', [FieldController::class, 'delete']);

@@ -8,4 +8,8 @@ const fetchBrandsByFieldId = (fieldId) => {
     return axios.get(`/public/brand/id=${fieldId}`);
 }
 
-export { fetchAllBrand, fetchBrandsByFieldId };
+const fetchBrandsByAdmin = (page) => {
+    return axios.get(`/public/brand/list?page=${page}`);
+}
+
+export { fetchBrandsByAdmin, fetchAllBrand, fetchBrandsByFieldId };

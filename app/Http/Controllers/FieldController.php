@@ -26,6 +26,20 @@ class FieldController extends Controller
         return response()->json($arr, 200);
     }
 
+    public function admin()
+    {
+
+        $f = Field::paginate(7);
+
+        $arr = [
+            'status' => true,
+            'message' => 'Danh sách field',
+            'data' => $f
+        ];
+
+        return response()->json($arr, 200);
+    }
+
     public function show(string $id)
     {
         $field = Field::find($id);

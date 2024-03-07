@@ -1,84 +1,169 @@
 import {
     MagnifyingGlassIcon,
     ChevronUpDownIcon,
+    ArrowRightIcon,
+    ArrowLeftIcon,
 } from "@heroicons/react/24/outline";
-import { EyeIcon, PlusIcon } from "@heroicons/react/24/solid";
+
+import {
+    EyeIcon,
+    Bars4Icon,
+    GlobeAmericasIcon,
+    NewspaperIcon,
+    PhoneIcon,
+    RectangleGroupIcon,
+    SquaresPlusIcon,
+    SunIcon,
+    TagIcon,
+    UserGroupIcon,
+} from "@heroicons/react/24/solid"
+
 import {
     Card,
     CardHeader,
     Input,
     Typography,
-    Button,
     CardBody,
-    CardFooter,
+    Chip,
     Avatar,
     IconButton,
-    Tooltip,
+    Button,
+    Collapse,
+    ListItem,
+    Menu,
+    MenuHandler,
+    MenuList,
+    MenuItem,
+    CardFooter,
 } from "@material-tailwind/react";
 
-const TABLE_HEAD = ["Field Name", "ID", ""];
+import { useEffect, useState } from "react";
+import { listOrder, orderItems } from "../../services/orderService";
+import { useSelector } from 'react-redux'
 
-const TABLE_ROWS = [
-    {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
-        name: "John Michael",
-        id: "1",
-    },
-    {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg",
-        name: "Alexa Liras",
-        id: "2",
-    },
-    {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
-        name: "Laurent Perrier",
-        id: "3",
-    },
-    {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-4.jpg",
-        name: "Michael Levi",
-        id: "4",
-    },
-    {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg",
-        name: "Richard Gran",
-        id: "5",
-    },
+import React from "react";
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+import { fetchAllFieldAdmin } from "../../services/fieldService";
+
+const TABLE_HEAD = [
+    "Icon",
+    "ID",
+    "Field name ",
+    "Edit"
 ];
 
+const convertToExcel = (data) => {
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const dataExcel = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+    FileSaver.saveAs(dataExcel, 'data.xlsx');
+}
+
+
 export default function FieldList() {
+
+    const [data, setData] = useState([]);
+    const [dataFull, setDataFull] = useState([]);
+    const [page, setPage] = useState(1);
+
+    const handleExportExcel = () => {
+        convertToExcel(data);
+    }
+
+    // Call API list order by user
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await fetchAllFieldAdmin(page);
+                setDataFull(res.data);
+                setData(res.data.data)
+            } catch (error) {
+                console.error("Error fetching fields:", error);
+            }
+        }
+        fetchData()
+    }, [page]);
+
+    const [active, setActive] = useState(1);
+    const [visiblePages, setVisiblePages] = useState([]);
+
+    const getItemProps = (index) => ({
+        variant: active === index ? 'filled' : 'text',
+        color: 'gray',
+        onClick: () => {
+            setPage(index);
+            setActive(index);
+        },
+    });
+
+    const next = () => {
+        if (active === dataFull.last_page) return;
+
+        setActive(active + 1);
+        setPage(active + 1);
+    };
+
+    const prev = () => {
+        if (active === dataFull.from) return;
+
+        setActive(active - 1);
+        setPage(active - 1);
+    };
+
+    useEffect(() => {
+        const calculateVisiblePages = async () => {
+
+            const totalVisiblePages = 3;
+            const totalPageCount = dataFull.last_page;
+
+            let startPage, endPage;
+            if (totalPageCount <= totalVisiblePages) {
+                startPage = 1;
+                endPage = totalPageCount;
+            } else {
+                const middlePage = Math.floor(totalVisiblePages / 2);
+                if (active <= middlePage + 1) {
+                    startPage = 1;
+                    endPage = totalVisiblePages;
+                } else if (active >= totalPageCount - middlePage) {
+                    startPage = totalPageCount - totalVisiblePages + 1;
+                    endPage = totalPageCount;
+                } else {
+                    startPage = active - middlePage;
+                    endPage = active + middlePage;
+                }
+            }
+
+            const visiblePagesArray = Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index);
+            setVisiblePages(visiblePagesArray);
+        };
+
+        calculateVisiblePages();
+    }, [active, dataFull.last_page]);
+
     return (
-        <Card className="w-full">
+        <Card className=" h-[98%] w-full p-4">
             <CardHeader floated={false} shadow={false} className="rounded-none">
-                <div className="mb-8 flex items-center justify-between gap-8">
-                    <div>
-                        <Typography variant="h5" color="blue-gray">
-                            Field list
-                        </Typography>
-                        <Typography color="gray" className="mt-1 font-normal">
-                            See information about all field
-                        </Typography>
-                    </div>
-                    <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-                        <Button variant="outlined" size="sm">
-                            view all
-                        </Button>
-                        <Button className="flex items-center gap-3" size="sm">
-                            <PlusIcon strokeWidth={2} className="h-4 w-4" /> Add field
-                        </Button>
-                    </div>
-                </div>
-                <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-                    <div className="w-full md:w-72">
-                        <Input
-                            label="Search"
-                            icon={<MagnifyingGlassIcon className="h-5 w-5" />}
-                        />
+                <div className="flex flex-col sm:flex-row w-full justify-center items-center">
+                    <div className="w-full justify-between flex">
+                        <div className=" w-fit">
+                            <Input
+                                label="Find order ID"
+                                icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                            />
+                        </div>
+
+                        <div className=" w-fit">
+                            <Button size="sm" color="gray" variant="outlined" onClick={handleExportExcel}>Export to Excel</Button>
+                        </div>
+
                     </div>
                 </div>
             </CardHeader>
-            <CardBody className="overflow-scroll px-0">
-                <table className="mt-4 w-full min-w-max table-auto text-left">
+            <CardBody className="px-4">
+                <table className=" w-full min-w-max table-auto text-left">
                     <thead>
                         <tr>
                             {TABLE_HEAD.map((head, index) => (
@@ -93,7 +178,10 @@ export default function FieldList() {
                                     >
                                         {head}{" "}
                                         {index !== TABLE_HEAD.length - 1 && (
-                                            <ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
+                                            <ChevronUpDownIcon
+                                                strokeWidth={2}
+                                                className="h-4 w-4"
+                                            />
                                         )}
                                     </Typography>
                                 </th>
@@ -101,67 +189,91 @@ export default function FieldList() {
                         </tr>
                     </thead>
                     <tbody>
-                        {TABLE_ROWS.map(
-                            ({ img, name, id }, index) => {
-                                const isLast = index === TABLE_ROWS.length - 1;
+                        {data && data.length > 0 && data.map(
+                            (data, index) => {
+                                const key = `${index}`;
+                                const isLast = index === data.length - 1;
                                 const classes = isLast
-                                    ? "p-4"
-                                    : "p-4 border-b border-blue-gray-50";
+                                    ? "p-6"
+                                    : "p-6 border-b border-blue-gray-50";
 
                                 return (
-                                    <tr key={name}>
+                                    <tr key={key}>
                                         <td className={classes}>
-                                            <div className="flex items-center gap-3">
-                                                <Avatar src={img} alt={name} size="sm" />
-                                                <div className="flex flex-col">
-                                                    <Typography
-                                                        variant="small"
-                                                        color="blue-gray"
-                                                        className="font-normal"
-                                                    >
-                                                        {name}
-                                                    </Typography>
-                                                </div>
-                                            </div>
+                                            <img
+                                                src={`../../../src/assets/icon_field/${data.icon_field}`}
+                                                alt={data.icon_field}
+                                                className=" w-6 h-6 object-cover"
+                                            />
+                                        </td>
+
+                                        <td className={classes}>
+                                            <Typography
+                                                variant="small"
+                                                color="blue-gray"
+                                                className="font-normal"
+                                            >
+                                                {data.field_id}
+                                            </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <div className="flex flex-col">
-                                                <Typography
-                                                    variant="small"
-                                                    color="blue-gray"
-                                                    className="font-normal"
-                                                >
-                                                    {id}
-                                                </Typography>
-                                            </div>
+                                            <Typography
+                                                variant="small"
+                                                color="blue-gray"
+                                                className="font-normal"
+                                            >
+                                                {data.field_name}
+                                            </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <Tooltip content="Details">
-                                                <IconButton variant="text">
-                                                    <EyeIcon className="h-4 w-4" />
-                                                </IconButton>
-                                            </Tooltip>
+                                            <Typography
+                                                variant="small"
+                                                color="blue-gray"
+                                                className="font-normal"
+                                            >
+                                                {data.field_name}
+                                            </Typography>
                                         </td>
                                     </tr>
                                 );
-                            },
+                            }
                         )}
                     </tbody>
                 </table>
             </CardBody>
-            <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-                <Typography variant="small" color="blue-gray" className="font-normal">
-                    Page 1 of 10
-                </Typography>
-                <div className="flex gap-2">
-                    <Button variant="outlined" size="sm">
-                        Previous
+            <CardFooter>
+                <div className="flex justify-end  my-6 mt-12 absolute bottom-4 right-10">
+                    <Button
+                        variant="text"
+                        className="flex items-center gap-2"
+                        onClick={prev}
+                        disabled={active === dataFull.from}
+                    >
+                        <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
                     </Button>
-                    <Button variant="outlined" size="sm">
+
+                    <div className="flex items-center gap-2">
+                        {visiblePages.map((pageNumber) => (
+                            <IconButton
+                                key={pageNumber}
+                                {...getItemProps(pageNumber)}
+                            >
+                                {pageNumber}
+                            </IconButton>
+                        ))}
+                    </div>
+
+                    <Button
+                        variant="text"
+                        className="flex items-center gap-2"
+                        onClick={next}
+                        disabled={active === dataFull.last_page}
+                    >
                         Next
+                        <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
                     </Button>
                 </div>
             </CardFooter>
         </Card>
-    )
+    );
 }
