@@ -18,6 +18,7 @@ import { fetchBrandsByFieldId } from "../../services/brandService";
 import { addProduct } from "../../services/productService";
 import { useSelector } from 'react-redux'
 
+import Image from '../../../src/assets/image/Bedroom1.jpg'
 
 export default function AddProducts() {
 
@@ -33,7 +34,10 @@ export default function AddProducts() {
     const [selectedCategoryId, setSelectedCategoryId] = useState(null);
     const [selectedBrandId, setSelectedBrandId] = useState(null);
 
-    const [imageList, setImageList] = useState([AddImageIcon, AddImageIcon, AddImageIcon]);
+    const [file1, setFile1] = useState(null);
+    const [file2, setFile2] = useState(null);
+    const [file3, setFile3] = useState(null);
+
     const [dataField, setDataField] = useState([]);
     const [dataCategory, setDataCategory] = useState([]);
     const [dataBrand, setDataBrand] = useState([]);
@@ -76,18 +80,17 @@ export default function AddProducts() {
         fetchData();
     }, [selectedFieldId])
 
-    const handleImageChange = (event, index) => {
-        const file = event.target.files[0];
-
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                const newImageList = [...imageList];
-                newImageList[index] = reader.result;
-                setImageList(newImageList);
-            };
-            reader.readAsDataURL(file);
-        }
+    const handleChange1 = (e) => {
+        const selectedFile = e.target.files[0];
+        setFile1(selectedFile);
+    };
+    const handleChange2 = (e) => {
+        const selectedFile = e.target.files[0];
+        setFile2(selectedFile);
+    };
+    const handleChange3 = (e) => {
+        const selectedFile = e.target.files[0];
+        setFile3(selectedFile);
     };
 
     //hàm xử lý field
@@ -124,22 +127,27 @@ export default function AddProducts() {
                 return;
             }
 
-            // Tạo object chứa dữ liệu từ các state
-            const productData = {
-                "name": productName,
-                "description": productDescription,
-                "stock": productStock,
-                "product_category_id": selectedCategoryId,
-                "product_brand_id": selectedBrandId,
-                "image_urls": imageList,
-                "created_by_user_id": seller_id,
-                "price": productPrice,
-                "colors": productColor,
-                "sizes": productSize,
-            };
+            const formData = new FormData();
 
-            console.log(productData)
-            await addProduct(productData);
+            formData.append("image_urls[]", file1);
+            formData.append("image_urls[]", file2);
+            formData.append("image_urls[]", file3);
+            formData.append("name", productName);
+            formData.append("description", productDescription);
+            formData.append("stock", 3224);
+            formData.append("product_category_id", selectedCategoryId);
+            formData.append("product_brand_id", selectedBrandId);
+            formData.append("created_by_user_id", seller_id);
+            formData.append("price", productPrice);
+            formData.append("colors[]", "a");
+            formData.append("colors[]", "h");
+            formData.append("sizes[]", "s");
+            formData.append("sizes[]", "as");
+
+            console.log("Product Data:", formData);
+
+            let res = await addProduct(formData);
+            console.log("Response:", res);
             // Xử lý kết quả từ API (nếu cần)
             setProductName("");
             setProductDescription("");
@@ -151,7 +159,6 @@ export default function AddProducts() {
         }
     };
 
-
     return (
         <Card className="w-full p-4 bg-white rounded-xl">
             <CardBody>
@@ -160,24 +167,18 @@ export default function AddProducts() {
                     <div className="w-[85%]">
                         <p>Image (You can upload max 3 images)</p>
                         <div className=" flex">
-                            {imageList.map((imageSrc, index) => (
-                                <div key={index} className="p-6 px-8  mr-4 border-2 hover:bg-gray-200 border-dashed border-gray-400 w-fit h-fit mt-5 rounded-md hover:border-gray-600 transition-colors duration-300">
-                                    <div className="mb-4">
-                                        <input
-                                            type="file"
-                                            className="hidden"
-                                            onChange={(event) => handleImageChange(event, index)}
-                                            data-index={index}
-                                        />
-                                        <img
-                                            className="w-24 h-24 object-cover cursor-pointer"
-                                            src={imageSrc}
-                                            alt={`Image ${index + 1}`}
-                                            onClick={() => document.querySelector(`input[type="file"][data-index="${index}"]`).click()}
-                                        />
-                                    </div>
-                                </div>
-                            ))}
+                            <div>
+                                <input type="file" onChange={handleChange1} />
+                                {file1 && <img src={URL.createObjectURL(file1)} alt="Selected File" />}
+                            </div>
+                            <div>
+                                <input type="file" onChange={handleChange2} />
+                                {file2 && <img src={URL.createObjectURL(file2)} alt="Selected File" />}
+                            </div>
+                            <div>
+                                <input type="file" onChange={handleChange3} />
+                                {file3 && <img src={URL.createObjectURL(file3)} alt="Selected File" />}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -282,3 +283,5 @@ export default function AddProducts() {
         </Card>
     );
 }
+
+
