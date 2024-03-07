@@ -52,7 +52,11 @@ const updateProduct = (product_id, dataUpdate) => {
     return axios.put(`/public/product/update/${product_id}`, dataUpdate)
 }
 const addProduct = (data) => {
-    return axios.post(`/public/product/add` , data )
+    return axios.post(`/public/product/add`, data)
 }
 
-export { updateProduct, deleteProduct, productListShop, productFilter, bestSellerUser, productSort, productWithBrand, fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession, fetchRandomFourCategoryAndGetFourProduct, searchProduct, addProduct };
+const productAll = (page) => {
+    return axios.get(`/public/product/all?page=${page}`)
+}
+
+export { productAll, updateProduct, deleteProduct, productListShop, productFilter, bestSellerUser, productSort, productWithBrand, fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession, fetchRandomFourCategoryAndGetFourProduct, searchProduct, addProduct };
