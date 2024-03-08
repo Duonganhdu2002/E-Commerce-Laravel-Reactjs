@@ -60,7 +60,6 @@ const accordionData = [
         title: "Product",
         links: [
             { path: "/admin/product-list", label: "Product list" },
-            { path: "/admin/product-user-list", label: "Product user list" },
         ],
     },
     {

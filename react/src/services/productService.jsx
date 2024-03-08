@@ -12,6 +12,7 @@ const productInformation = (id) => {
     return axios.get(`/public/product/show/${id}`)
 }
 
+
 const productSugession = (userId) => {
     return axios.get(`/public/product/recommend/${userId}`)
 }
@@ -59,4 +60,4 @@ const productAll = (page) => {
     return axios.get(`/public/product/all?page=${page}`)
 }
 
-export { productAll, updateProduct, deleteProduct, productListShop, productFilter, bestSellerUser, productSort, productWithBrand, fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession, fetchRandomFourCategoryAndGetFourProduct, searchProduct, addProduct };
+export { productAll, updateProduct, deleteProduct, productListShop, productFilter, bestSellerUser, productSort, productWithBrand, fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession, fetchRandomFourCategoryAndGetFourProduct, searchProduct, addProduct, };

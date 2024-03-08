@@ -62,7 +62,6 @@ import BrandList from "./components/ui-admin/BrandList";
 import OrderList from "./components/ui-admin/OrderList";
 import OrderStatusList from "./components/ui-admin/OrderStatus";
 import ProductList from "./components/ui-admin/ProductList";
-import ProductUserList from "./components/ui-admin/ProductUser";
 import ReviewList from "./components/ui-admin/ReviewList";
 import ReviewUserList from "./components/ui-admin/ReviewUser";
 import ShoppingMethodList from "./components/ui-admin/ShoppingMethod";
@@ -243,7 +242,6 @@ const App = () => {
                                 <Route path="order-list" element={<PrivateAdminRoute element={<OrderList />} />} />
                                 <Route path="order-status-list" element={<PrivateAdminRoute element={<OrderStatusList />} />} />
                                 <Route path="product-list" element={<PrivateAdminRoute element={<ProductList />} />} />
-                                <Route path="product-user-list" element={<PrivateAdminRoute element={<ProductUserList />} />} />
                                 <Route path="review-list" element={<PrivateAdminRoute element={<ReviewList />} />} />
                                 <Route path="review-user-list" element={<PrivateAdminRoute element={<ReviewUserList />} />} />
                                 <Route path="shopping-method-list" element={<PrivateAdminRoute element={<ShoppingMethodList />} />} />

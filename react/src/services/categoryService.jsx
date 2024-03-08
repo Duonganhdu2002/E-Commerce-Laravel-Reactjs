@@ -17,4 +17,15 @@ const fetchAllCategoryByAdmin = (page) => {
     return axios.get(`/public/category/list?page=${page}`);
 }
 
-export { fetchAllCategoryByAdmin, fetchAllCategory, fetchAllCategoryByFieldId, fetchAllCategoryByUser };
+const deleteCategory = (product_category_id) => {
+    return axios.delete(`/public/category/${product_category_id}`);
+}
+
+const updateCategory = (product_category_id) => {
+    return axios.put(`/public/category/${product_category_id}`);
+}
+const categoryInformation = (product_category_id) => {
+    return axios.get(`/public/category/show/${product_category_id}`);
+}
+
+export { fetchAllCategoryByAdmin, fetchAllCategory, fetchAllCategoryByFieldId, fetchAllCategoryByUser, deleteCategory, updateCategory, categoryInformation };

@@ -11,6 +11,9 @@ import {
     Option,
     Textarea,
     Button,
+    Popover,
+    PopoverHandler,
+    PopoverContent,
 } from "@material-tailwind/react";
 import { fetchAllField } from "../../services/fieldService";
 import { fetchAllCategoryByFieldId } from "../../services/categoryService";
@@ -18,7 +21,181 @@ import { fetchBrandsByFieldId } from "../../services/brandService";
 import { addProduct } from "../../services/productService";
 import { useSelector } from 'react-redux'
 
-import Image from '../../../src/assets/image/Bedroom1.jpg'
+
+const DeleteCategory = ({ product_category_id }) => {
+    const handleDelete = async () => {
+        try {
+            let res = await deleteCategory(product_category_id);
+            console.log(res);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    return (
+        <div onClick={handleDelete} className="cursor-pointer flex justify-center hover:bg-blue-gray-50 py-2 rounded-lg " >
+            <TrashIcon className="w-4 h-4 " />
+        </div>
+    )
+}
+
+const EditCategory = ({ product_category_id }) => {
+
+
+    const [data, setData] = useState([]);
+    const [images, setImages] = useState([]);
+    const imageLength = images.length;
+
+    const [categoryName, setCategoryName] = useState('');
+    const [categoryDescription, setCategoryDescription] = useState('');
+
+    const handleInputChange = (event, setterFunction) => {
+        setterFunction(event.target.value);
+    };
+
+    const dataUpdate = {
+        'product_category_name': categoryName,
+        'description': categoryDescription,
+    }
+
+    const handleUpdate = () => {
+        try {
+            updateCategory(product_category_id, dataUpdate);
+            alert("Thanh cong")
+        } catch (error) {
+            alert(error)
+        }
+    };
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await categoryInformation(product_category_id);
+                setCategoryName(res.data.product_category_name || '');
+                setCategoryDescription(res.data.description || '');
+                // Kiểm tra xem res.data.icon_category trả về một giá trị đơn lẻ hay một mảng
+                const iconCategory = Array.isArray(res.data.icon) ? res.data.icon : [res.data.icon];
+                setImages(iconCategory);
+                setData(res.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData();
+    }, [product_category_id]);
+
+
+    const [imageList, setImageList] = useState([AddImageIcon,]);
+
+    const handleImageChange = (event, index) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const newImageList = [...imageList];
+                newImageList[index] = reader.result;
+                setImageList(newImageList);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+
+
+    return (
+        <div className="cursor-pointer flex justify-center hover:bg-blue-gray-50 py-2 rounded-lg" >
+            <Popover placement="left">
+                <PopoverHandler>
+                    <div className=" w-full flex justify-center">
+                        <PencilIcon className=" w-4 h-4" />
+                    </div>
+                </PopoverHandler>
+                <PopoverContent className=" z-10 p-8">
+                    <div className="flex">
+                        <div className="">Category Images</div>
+                        <div className="w-[85%]">
+                            <p>Image</p>
+                            <div className="flex">
+                                {imageLength === 1 ? (
+                                    <div className="p-6 px-8  mr-4 border-2 hover:bg-gray-200 border-dashed border-gray-400 w-fit h-fit mt-5 rounded-md hover:border-gray-600 transition-colors duration-300">
+                                        <div className="mb-4">
+                                            <input
+                                                type="file"
+                                                className="hidden"
+                                                onChange={(event) => handleImageChange(event, 0)} // chỉ truyền index là 0
+                                                data-index={0}
+                                            />
+                                            <img
+                                                className="w-24 h-24 object-cover cursor-pointer"
+                                                src={`../../../src/assets/icon_category/${images[0]}`} // chỉ truy cập ảnh đầu tiên trong images
+                                                alt={`Image 1`}
+                                                onClick={() => document.querySelector(`input[type="file"][data-index="0"]`).click()} // chỉ trigger input với index là 0
+                                            />
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <>
+                                        {images.map((imageSrc, index) => (
+                                            <div key={index} className="p-6 px-8  mr-4 border-2 hover:bg-gray-200 border-dashed border-gray-400 w-fit h-fit mt-5 rounded-md hover:border-gray-600 transition-colors duration-300">
+                                                <div className="mb-4">
+                                                    <input
+                                                        type="file"
+                                                        className="hidden"
+                                                        onChange={(event) => handleImageChange(event, index)}
+                                                        data-index={index}
+                                                    />
+                                                    <img
+                                                        className="w-24 h-24 object-cover cursor-pointer"
+                                                        src={`../../../src/assets/image/${imageSrc}`}
+                                                        alt={`Image ${index + 1}`}
+                                                        onClick={() => document.querySelector(`input[type="file"][data-index="${index}"]`).click()}
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    <div className=" flex mt-8">
+                        <div className=" ">
+                            Category name
+                        </div>
+                        <div className=" w-[85%]">
+                            <Input
+                                value={categoryName}
+                                label="Input"
+                                onChange={(event) => handleInputChange(event, setCategoryName)}
+                            />
+                        </div>
+                    </div>
+
+                    <div className=" flex mt-8">
+                        <div className=" ">
+                            Description
+                        </div>
+                        <div className=" w-[85%]">
+                            <Textarea
+                                value={categoryDescription}
+                                label="Input"
+                                onChange={(event) => handleInputChange(event, setCategoryName)}
+                            />
+                        </div>
+                    </div>
+
+
+                    <div className=" flex my-8">
+                        <div className=" w-[15%]">
+                        </div>
+                        <div className=" w-[85%]">
+                            <Button onClick={handleUpdate}>Update</Button>
+                        </div>
+                    </div>
+                </PopoverContent>
+            </Popover>
+        </div>
+    )
+}
 
 export default function AddProducts() {
 
@@ -139,7 +316,7 @@ export default function AddProducts() {
             formData.append("product_brand_id", selectedBrandId);
             formData.append("created_by_user_id", seller_id);
             formData.append("price", productPrice);
-            formData.append("colors[]", "a");
+            formData.append("colors[]", productColor);
             formData.append("colors[]", "h");
             formData.append("sizes[]", "s");
             formData.append("sizes[]", "as");

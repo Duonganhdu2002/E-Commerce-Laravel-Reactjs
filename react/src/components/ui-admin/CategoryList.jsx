@@ -3,20 +3,9 @@ import {
     ChevronUpDownIcon,
     ArrowRightIcon,
     ArrowLeftIcon,
+    TrashIcon,
+    PencilIcon,
 } from "@heroicons/react/24/outline";
-
-import {
-    EyeIcon,
-    Bars4Icon,
-    GlobeAmericasIcon,
-    NewspaperIcon,
-    PhoneIcon,
-    RectangleGroupIcon,
-    SquaresPlusIcon,
-    SunIcon,
-    TagIcon,
-    UserGroupIcon,
-} from "@heroicons/react/24/solid"
 
 import {
     Card,
@@ -24,18 +13,16 @@ import {
     Input,
     Typography,
     CardBody,
-    Chip,
-    Avatar,
     IconButton,
     Button,
-    Collapse,
-    ListItem,
-    Menu,
-    MenuHandler,
-    MenuList,
-    MenuItem,
     CardFooter,
+    Popover,
+    PopoverHandler,
+    PopoverContent,
+    Textarea,
 } from "@material-tailwind/react";
+
+import AddImageIcon from "../../assets/icon/image (1).png";
 
 import { useEffect, useState } from "react";
 import { listOrder, orderItems } from "../../services/orderService";
@@ -44,8 +31,8 @@ import { useSelector } from 'react-redux'
 import React from "react";
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
-import { fetchAllFieldAdmin } from "../../services/fieldService";
-import { fetchAllCategoryByAdmin } from "../../services/categoryService";
+import { fetchAllFieldAdmin, } from "../../services/fieldService";
+import { fetchAllCategoryByAdmin, deleteCategory, updateCategory, categoryInformation } from "../../services/categoryService";
 
 const TABLE_HEAD = [
     "Icon",
@@ -53,8 +40,184 @@ const TABLE_HEAD = [
     "Category name",
     "Field name",
     "Description",
-    "Edit"
+    "Edit",
+    "Delete,"
 ];
+
+const DeleteCategory = ({ product_category_id }) => {
+    const handleDelete = async () => {
+        try {
+            let res = await deleteCategory(product_category_id);
+            console.log(res);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    return (
+        <div onClick={handleDelete} className="cursor-pointer flex justify-center hover:bg-blue-gray-50 py-2 rounded-lg " >
+            <TrashIcon className="w-4 h-4 " />
+        </div>
+    )
+}
+
+const EditCategory = ({ product_category_id }) => {
+
+
+    const [data, setData] = useState([]);
+    const [images, setImages] = useState([]);
+    const imageLength = images.length;
+
+    const [categoryName, setCategoryName] = useState('');
+    const [categoryDescription, setCategoryDescription] = useState('');
+
+    const handleInputChange = (event, setterFunction) => {
+        setterFunction(event.target.value);
+    };
+
+    const dataUpdate = {
+        'product_category_name': categoryName,
+        'description': categoryDescription,
+    }
+
+    const handleUpdate = () => {
+        try {
+            updateCategory(product_category_id, dataUpdate);
+            alert("Thanh cong")
+        } catch (error) {
+            alert(error)
+        }
+    };
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await categoryInformation(product_category_id);
+                setCategoryName(res.data.product_category_name || '');
+                setCategoryDescription(res.data.description || '');
+                // Kiểm tra xem res.data.icon_category trả về một giá trị đơn lẻ hay một mảng
+                const iconCategory = Array.isArray(res.data.icon) ? res.data.icon : [res.data.icon];
+                setImages(iconCategory);
+                setData(res.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData();
+    }, [product_category_id]);
+
+
+    const [imageList, setImageList] = useState([AddImageIcon,]);
+
+    const handleImageChange = (event, index) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const newImageList = [...imageList];
+                newImageList[index] = reader.result;
+                setImageList(newImageList);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+
+
+    return (
+        <div className="cursor-pointer flex justify-center hover:bg-blue-gray-50 py-2 rounded-lg" >
+            <Popover placement="left">
+                <PopoverHandler>
+                    <div className=" w-full flex justify-center">
+                        <PencilIcon className=" w-4 h-4" />
+                    </div>
+                </PopoverHandler>
+                <PopoverContent className=" z-10 p-8">
+                    <div className="flex">
+                        <div className="">Category Images</div>
+                        <div className="w-[85%]">
+                            <p>Image</p>
+                            <div className="flex">
+                                {imageLength === 1 ? (
+                                    <div className="p-6 px-8  mr-4 border-2 hover:bg-gray-200 border-dashed border-gray-400 w-fit h-fit mt-5 rounded-md hover:border-gray-600 transition-colors duration-300">
+                                        <div className="mb-4">
+                                            <input
+                                                type="file"
+                                                className="hidden"
+                                                onChange={(event) => handleImageChange(event, 0)} // chỉ truyền index là 0
+                                                data-index={0}
+                                            />
+                                            <img
+                                                className="w-24 h-24 object-cover cursor-pointer"
+                                                src={`../../../src/assets/icon_category/${images[0]}`} // chỉ truy cập ảnh đầu tiên trong images
+                                                alt={`Image 1`}
+                                                onClick={() => document.querySelector(`input[type="file"][data-index="0"]`).click()} // chỉ trigger input với index là 0
+                                            />
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <>
+                                        {images.map((imageSrc, index) => (
+                                            <div key={index} className="p-6 px-8  mr-4 border-2 hover:bg-gray-200 border-dashed border-gray-400 w-fit h-fit mt-5 rounded-md hover:border-gray-600 transition-colors duration-300">
+                                                <div className="mb-4">
+                                                    <input
+                                                        type="file"
+                                                        className="hidden"
+                                                        onChange={(event) => handleImageChange(event, index)}
+                                                        data-index={index}
+                                                    />
+                                                    <img
+                                                        className="w-24 h-24 object-cover cursor-pointer"
+                                                        src={`../../../src/assets/image/${imageSrc}`}
+                                                        alt={`Image ${index + 1}`}
+                                                        onClick={() => document.querySelector(`input[type="file"][data-index="${index}"]`).click()}
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    <div className=" flex mt-8">
+                        <div className=" ">
+                            Category name
+                        </div>
+                        <div className=" w-[85%]">
+                            <Input
+                                value={categoryName}
+                                label="Input"
+                                onChange={(event) => handleInputChange(event, setCategoryName)}
+                            />
+                        </div>
+                    </div>
+
+                    <div className=" flex mt-8">
+                        <div className=" ">
+                            Description
+                        </div>
+                        <div className=" w-[85%]">
+                            <Textarea
+                                value={categoryDescription}
+                                label="Input"
+                                onChange={(event) => handleInputChange(event, setCategoryName)}
+                            />
+                        </div>
+                    </div>
+
+
+                    <div className=" flex my-8">
+                        <div className=" w-[15%]">
+                        </div>
+                        <div className=" w-[85%]">
+                            <Button onClick={handleUpdate}>Update</Button>
+                        </div>
+                    </div>
+                </PopoverContent>
+            </Popover>
+        </div>
+    )
+}
 
 const convertToExcel = (data) => {
     const worksheet = XLSX.utils.json_to_sheet(data);
@@ -83,7 +246,7 @@ export default function CategoryList() {
                 setDataFull(res.data);
                 setData(res.data.data)
             } catch (error) {
-                console.error("Error fetching fields:", error);
+                console.error("Error fetching categorys:", error);
             }
         }
         fetchData()
@@ -103,7 +266,6 @@ export default function CategoryList() {
 
     const next = () => {
         if (active === dataFull.last_page) return;
-
         setActive(active + 1);
         setPage(active + 1);
     };
@@ -160,6 +322,7 @@ export default function CategoryList() {
 
                         <div className=" w-fit">
                             <Button size="sm" color="gray" variant="outlined" onClick={handleExportExcel}>Export to Excel</Button>
+                            <Button size="sm" color="gray" className=" ml-2">Add Category</Button>
                         </div>
 
                     </div>
@@ -247,13 +410,11 @@ export default function CategoryList() {
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {data.field_name}
-                                            </Typography>
+                                            <EditCategory product_category_id={data.product_category_id} />
+                                        </td>
+
+                                        <td className={classes}>
+                                            <DeleteCategory category_id={data.product_category_id} />
                                         </td>
                                     </tr>
                                 );
