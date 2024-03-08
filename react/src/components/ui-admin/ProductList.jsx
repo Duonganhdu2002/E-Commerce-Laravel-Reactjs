@@ -1,121 +1,593 @@
 import {
     MagnifyingGlassIcon,
     ChevronUpDownIcon,
+    ArrowRightIcon,
+    ArrowLeftIcon,
 } from "@heroicons/react/24/outline";
-import { EyeIcon, PlusIcon } from "@heroicons/react/24/solid";
+
+import {
+    EyeIcon,
+    PencilIcon,
+    TrashIcon
+} from "@heroicons/react/24/solid"
+
 import {
     Card,
     CardHeader,
     Input,
     Typography,
-    Button,
     CardBody,
-    CardFooter,
+    Chip,
     Avatar,
     IconButton,
-    Tooltip,
-    Chip,
+    Button,
+    Collapse,
+    ListItem,
+    Menu,
+    MenuHandler,
+    MenuList,
+    MenuItem,
+    CardFooter,
+    Popover,
+    PopoverHandler,
+    PopoverContent,
+    Select,
+    Option,
+    Textarea,
 } from "@material-tailwind/react";
 
-const TABLE_HEAD = ["ID", "Product Name", "Description", "Product Brand", "Product Category", "Price", "Stock", "Discount", "Create at", "Details"];
+import AddImageIcon from "../../assets/icon/image (1).png";
 
-const TABLE_ROWS = [
-    {
-        id: "1",
-        img: "https://lzd-img-global.slatic.net/g/p/3155709012daf005299359ec6a1dfd62.jpg_200x200q80.jpg_.webp",
-        name: "Smartphones 1d",
-        description: "Description for Smartphones 9",
-        brand: "IPhone",
-        category: "SmartPhone",
-        date: "23/04/18",
-        discount: "Hehe",
-        price: "3722.97",
-        stock: "10",
+import { useEffect, useState } from "react";
+import { useSelector } from 'react-redux'
+import { listOrder, orderItems } from "../../services/orderService";
+import React from "react";
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+import { deleteProduct, productAll, productInformation, productListShop, updateProduct } from "../../services/productService";
+import starBlackImg from "../../assets/icon/star-black.svg"
+import starWhiteImg from "../../assets/icon/star-white.svg"
 
-    },
-    {
-        id: "2",
-        img: "https://lzd-img-global.slatic.net/g/p/3155709012daf005299359ec6a1dfd62.jpg_200x200q80.jpg_.webp",
-        name: "Tablets 2",
-        description: "Description for Smartphones 9",
-        brand: "IPhone",
-        category: "SmartPhone",
-        date: "23/04/18",
-        stock: "99",
-        discount: "Hehe",
-        price: "3722.97",
-    },
-    {
-        id: "3",
-        img: "https://lzd-img-global.slatic.net/g/p/3155709012daf005299359ec6a1dfd62.jpg_200x200q80.jpg_.webp",
-        name: "SIM Cards 5",
-        description: "Description for Smartphones 9",
-        brand: "IPhone",
-        category: "SmartPhone",
-        date: "23/04/18",
-        stock: "99",
-        price: "3722.97",
-        discount: "Hehe",
-    },
-    {
-        id: "4",
-        img: "https://lzd-img-global.slatic.net/g/p/3155709012daf005299359ec6a1dfd62.jpg_200x200q80.jpg_.webp",
-        name: "SIM Cards 3",
-        description: "Description for Smartphones 9",
-        brand: "IPhone",
-        category: "SmartPhone",
-        date: "23/04/18",
-        stock: "999",
-        price: "3722.97",
-        discount: "Hehe",
-    },
-    {
-        id: "5",
-        img: "https://lzd-img-global.slatic.net/g/p/3155709012daf005299359ec6a1dfd62.jpg_200x200q80.jpg_.webp",
-        name: "SIM Cards 3",
-        description: "Description for Smartphones 9",
-        brand: "IPhone",
-        category: "SmartPhone",
-        date: "23/04/18",
-        stock: "455",
-        price: "3722.97",
-        discount: "Hehe",
-    },
+
+const TABLE_HEAD = [
+    "ID",
+    "Product name",
+    "Price",
+    "Category",
+    "Brand",
+    "Stock",
+    "Detail",
+    "Edit",
+    "Detele",
 ];
 
-export default function ProductList() {
+const convertToExcel = (data) => {
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const dataExcel = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+    FileSaver.saveAs(dataExcel, 'data.xlsx');
+}
+
+const DeleteProduct = ({ product_id }) => {
+
+    const handleDelete = async () => {
+        try {
+            let res = await deleteProduct(product_id);
+            console.log(res);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
-        <Card className="w-full">
-            <CardHeader floated={false} shadow={false} className="rounded-none">
-                <div className="mb-8 flex items-center justify-between gap-8">
-                    <div>
-                        <Typography variant="h5" color="blue-gray">
-                            Products list
-                        </Typography>
-                        <Typography color="gray" className="mt-1 font-normal">
-                            See all products
-                        </Typography>
+        <div onClick={handleDelete} className="cursor-pointer flex justify-center hover:bg-blue-gray-50 py-2 rounded-lg " >
+            <TrashIcon className="w-4 h-4 " />
+        </div>
+    )
+}
+
+const EditProduct = ({ product_id }) => {
+
+    const [data, setData] = useState([]);
+
+    const [colors, setColors] = useState([]);
+    const [sizes, setSizes] = useState([]);
+    const [images, setImages] = useState([]);
+    const imageLength = images.length;
+    const leftImageLength = 3 - imageLength;
+
+    const [productName, setProductName] = useState('');
+    const [productPrice, setProductPrice] = useState('');
+    const [productStock, setProductStock] = useState('');
+    const [productDescription, setProductDescription] = useState('');
+
+    const handleInputChange = (event, setterFunction) => {
+        setterFunction(event.target.value);
+    };
+
+    const dataUpdate = {
+        'name': productName,
+        'description': productDescription,
+        'price': productPrice,
+        'stock': productStock
+    }
+
+    const handleUpdate = () => {
+
+        try {
+            updateProduct(product_id, dataUpdate);
+            alert("Thanh cong")
+        } catch (error) {
+            alert(error)
+        }
+        
+    };
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await productInformation(product_id);
+                setProductName(res.data.name || '');
+                setProductPrice(res.data.price || '');
+                setProductStock(res.data.stock || '');
+                setProductDescription(res.data.description || '');
+                setColors(res.data.colors);
+                setSizes(res.data.sizes);
+                setImages(res.data.image_urls);
+                setData(res.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchData();
+    }, [product_id]);
+
+    const [imageList, setImageList] = useState([AddImageIcon, AddImageIcon, AddImageIcon]);
+
+    const handleImageChange = (event, index) => {
+        const file = event.target.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const newImageList = [...imageList];
+                newImageList[index] = reader.result;
+                setImageList(newImageList);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    return (
+        <div className="cursor-pointer flex justify-center hover:bg-blue-gray-50 py-2 rounded-lg" >
+            <Popover placement="left">
+                <PopoverHandler>
+                    <div className=" w-full flex justify-center">
+                        <PencilIcon className=" w-4 h-4" />
                     </div>
-                    <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-                        <Button variant="outlined" size="sm">
-                            view all
-                        </Button>
-                        <Button className="flex items-center gap-3" size="sm">
-                            <PlusIcon strokeWidth={2} className="h-4 w-4" /> Add product
-                        </Button>
+                </PopoverHandler>
+                <PopoverContent className=" z-10 p-8">
+                    <div className="flex">
+                        <div className="w-[15%]">Product Images</div>
+                        <div className="w-[85%]">
+                            <p>Image (You can upload max 3 images)</p>
+                            <div className="flex">
+                                {imageLength === 3 ? (
+                                    images.map((imageSrc, index) => (
+                                        <div key={index} className="p-6 px-8  mr-4 border-2 hover:bg-gray-200 border-dashed border-gray-400 w-fit h-fit mt-5 rounded-md hover:border-gray-600 transition-colors duration-300">
+                                            <div className="mb-4">
+                                                <input
+                                                    type="file"
+                                                    className="hidden"
+                                                    onChange={(event) => handleImageChange(event, index)}
+                                                    data-index={index}
+                                                />
+                                                <img
+                                                    className="w-24 h-24 object-cover cursor-pointer"
+                                                    src={`../../../src/assets/image/${imageSrc}`}
+                                                    alt={`Image ${index + 1}`}
+                                                    onClick={() => document.querySelector(`input[type="file"][data-index="${index}"]`).click()}
+                                                />
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <>
+                                        {images.map((imageSrc, index) => (
+                                            <div key={index} className="p-6 px-8  mr-4 border-2 hover:bg-gray-200 border-dashed border-gray-400 w-fit h-fit mt-5 rounded-md hover:border-gray-600 transition-colors duration-300">
+                                                <div className="mb-4">
+                                                    <input
+                                                        type="file"
+                                                        className="hidden"
+                                                        onChange={(event) => handleImageChange(event, index)}
+                                                        data-index={index}
+                                                    />
+                                                    <img
+                                                        className="w-24 h-24 object-cover cursor-pointer"
+                                                        src={`../../../src/assets/image/${imageSrc}`}
+                                                        alt={`Image ${index + 1}`}
+                                                        onClick={() => document.querySelector(`input[type="file"][data-index="${index}"]`).click()}
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+                                        {imageList.slice(0, leftImageLength).map((imageSrc, index) => (
+                                            <div key={index} className="p-6 px-8  mr-4 border-2 hover:bg-gray-200 border-dashed border-gray-400 w-fit h-fit mt-5 rounded-md hover:border-gray-600 transition-colors duration-300">
+                                                <div className="mb-4">
+                                                    <input
+                                                        type="file"
+                                                        className="hidden"
+                                                        onChange={(event) => handleImageChange(event, index)}
+                                                        data-index={index}
+                                                    />
+                                                    <img
+                                                        className="w-24 h-24 object-cover cursor-pointer"
+                                                        src={imageSrc}
+                                                        alt={`Image ${index + 1}`}
+                                                        onClick={() => document.querySelector(`input[type="file"][data-index="${index}"]`).click()}
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </>
+                                )}
+                            </div>;
+                        </div>
+                    </div>
+                    <div className=" flex mt-8">
+                        <div className=" w-[15%]">
+                            Product name
+                        </div>
+                        <div className=" w-[85%]">
+                            <Input
+                                value={productName}
+                                label="Input"
+                                onChange={(event) => handleInputChange(event, setProductName)}
+                            />
+                        </div>
+                    </div>
+
+                    <div className=" flex mt-8">
+                        <div className=" w-[15%]">
+                            Price
+                        </div>
+                        <div className=" w-[85%]">
+                            <Input
+                                value={productPrice}
+                                label="Input"
+                                onChange={(event) => handleInputChange(event, setProductPrice)}
+                            />
+                        </div>
+                    </div>
+
+                    <div className=" flex mt-8">
+                        <div className=" w-[15%]">
+                            Stock
+                        </div>
+                        <div className=" w-[85%]">
+                            <Input
+                                value={productStock}
+                                label="Input"
+                                onChange={(event) => handleInputChange(event, setProductStock)}
+                            />
+                        </div>
+                    </div>
+
+                    <div className=" flex my-8">
+                        <div className=" w-[15%]">
+                            Description
+                        </div>
+                        <div className=" w-[85%]">
+                            <Textarea
+                                value={productDescription}
+                                color="gray"
+                                label="Textarea Gray"
+                                onChange={(event) => handleInputChange(event, setProductDescription)}
+                            />
+                        </div>
+                    </div>
+
+                    <div className=" flex my-8">
+                        <div className=" w-[15%]">
+                        </div>
+                        <div className=" w-[85%]">
+                            <Button onClick={handleUpdate}>Update</Button>
+                        </div>
+                    </div>
+                </PopoverContent>
+            </Popover>
+        </div>
+    )
+}
+
+const SeeProduct = ({ product_id }) => {
+
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    const [data, setData] = useState({
+        sizes: [],
+        colors: [],
+        average_rating: 0,
+        average_rating_by_creator: 0,
+        image_urls: [],
+        name: "",
+        total_reviews: 0,
+        description: "",
+    });
+
+    const sizes = data.sizes || [];
+    const colors = data.colors || [];
+
+    const starBlack = Number(data.average_rating).toFixed(0);
+    const starWhite = 5 - starBlack;
+
+    const starBlack1 = Number(data.average_rating_by_creator).toFixed(0);
+    const starWhite1 = 5 - starBlack1;
+
+    const imageUrls = data.image_urls || [];
+    const limitedImageUrls = imageUrls.slice(0, 3);
+    const [currentImage, setCurrentImage] = useState(imageUrls[0]);
+
+    const handleThumbnailClick = (imageUrl) => {
+        setCurrentImage(imageUrl);
+    };
+
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+            try {
+                let res = await productInformation(product_id);
+                if (res && res.data) {
+                    setData(res.data);
+
+                    if (res.data.image_urls && res.data.image_urls.length > 0) {
+                        setCurrentImage(res.data.image_urls[0]);
+                    }
+                }
+            } catch (error) {
+                console.error("Error fetching fields:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    const renderItems =
+        <div className="flex justify-center items-center lg:flex-row flex-col gap-8 p-8">
+            <div className="  w-full sm:w-96 md:w-8/12 lg:w-6/12 items-center">
+                <h2 className="font-semibold lg:text-4xl text-3xl lg:leading-9 leading-7 text-gray-800 mt-4">{data.name}</h2>
+
+                <div className=" flex flex-row justify-between  mt-5">
+                    <div className="flex flex-row space-x-3">
+                        {Array.from({ length: starBlack }, (_, index) => (
+                            <img key={index} src={starBlackImg} alt="" />
+                        ))}
+                        {Array.from({ length: starWhite }, (_, index) => (
+                            <img key={index} src={starWhiteImg} alt="" />
+                        ))}
+                    </div>
+                    <div>
+                        {data.total_reviews} reviews - {Number(data.average_rating).toFixed(2)}/5
                     </div>
                 </div>
-                <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-                    <div className="w-full md:w-72">
-                        <Input
-                            label="Search"
-                            icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+
+                <p className=" font-normal text-base leading-6 text-gray-600 mt-7">{data.description}</p>
+
+                <hr className=" bg-gray-200 w-full my-2" />
+
+                <div className="lg:mt-11 mt-10 w-[70%] flex justify-between ">
+                    <div className=" mr-12">
+                        <p className=" font-medium text-xl leading-6 text-gray-600 my-7">Size</p>
+                        {
+                            sizes.map((size, index) => (
+                                <p className=" font-normal text-base leading-6 text-gray-600 mt-2" key={index}>{size}</p>
+                            ))
+                        }
+                    </div>
+                    <div>
+                        <p className=" font-medium text-xl leading-6 text-gray-600 my-7">Color</p>
+                        {
+                            colors.map((color, index) => (
+                                <p className=" font-normal text-base leading-6 text-gray-600 mt-2" key={index}>{color}</p>
+                            ))
+                        }
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div className="w-full sm:w-96 md:w-8/12 lg:w-6/12 flex lg:flex-row flex-col lg:gap-8 sm:gap-6 gap-4">
+                <div className="w-full lg:w-8/12 flex justify-center items-center">
+                    {imageUrls.length > 0 && currentImage ? (
+                        <img
+                            className="h-[420px] w-[460px] object-cover"
+                            src={`../../../src/assets/image/${currentImage}`}
+                            alt={data.name}
                         />
+                    ) : (
+                        <img
+                            className="h-[420px] w-[460px] object-cover"
+                            src={`https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png`}
+                            alt="Placeholder Image"
+                        />
+                    )}
+                </div>
+
+                <div className="w-full lg:w-4/12 grid lg:grid-cols-1 sm:grid-cols-3 grid-cols-2 gap-6">
+                    {limitedImageUrls.length > 0 ? (
+                        limitedImageUrls.map((imageUrl, index) => (
+                            <div
+                                key={index}
+                                className="flex justify-center items-center cursor-pointer"
+                                onMouseOver={() => handleThumbnailClick(imageUrl)}
+                            >
+                                <img
+                                    className="h-[200px] w-[180px] object-cover"
+                                    src={`../../../src/assets/image/${imageUrl}`}
+                                    alt={`${data.name} - preview ${index + 1}`}
+                                />
+                            </div>
+                        ))
+                    ) : (
+                        <div className=" py-4">
+                            <img
+                                className="h-[200px] w-[180px] object-cover mb-5"
+                                src={`https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png`}
+                                alt="Placeholder Image"
+                            />
+                            <img
+                                className="h-[200px] w-[180px] object-cover"
+                                src={`https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png`}
+                                alt="Placeholder Image"
+                            />
+                        </div>
+                    )}
+
+                </div>
+            </div>
+        </div>
+
+    return (
+        <React.Fragment>
+            <Menu
+                open={isMenuOpen}
+                handler={setIsMenuOpen}
+                offset={{ mainAxis: 20 }}
+                placement="left"
+                allowHover={true}
+            >
+                <MenuHandler>
+                    <Typography as="div" variant="small" className="font-medium">
+                        <ListItem
+                            className="flex justify-center items-center gap-2 py-2 pr-4 font-medium text-gray-900"
+                            selected={isMenuOpen || isMobileMenuOpen}
+                            onClick={() => setIsMobileMenuOpen((cur) => !cur)}
+                        >
+                            <EyeIcon className="h-4 w-4" />
+                        </ListItem>
+                    </Typography>
+                </MenuHandler>
+                <MenuList className="hidden w-[60%] h-fit rounded-xl lg:block">
+                    <ul className=" gap-y-2 outline-none outline-0">
+                        {renderItems}
+                    </ul>
+                </MenuList>
+            </Menu>
+            <div className="block lg:hidden">
+                <Collapse open={isMobileMenuOpen}>{renderItems}</Collapse>
+            </div>
+        </React.Fragment>
+    )
+}
+
+export default function ProductList() {
+
+    const seller_id = useSelector((state) => state.seller.seller.user_id);
+    const [data, setData] = useState([]);
+    const [dataFull, setDataFull] = useState([]);
+    const [page, setPage] = useState(1);
+
+    const handleExportExcel = () => {
+        convertToExcel(data);
+    }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await productAll( page);
+                setDataFull(res.data);
+                setData(res.data.data);
+            } catch (error) {
+                console.error("Error fetching fields:", error);
+            }
+        }
+        fetchData();
+    }, [page]);
+
+    const [active, setActive] = useState(1);
+    const [visiblePages, setVisiblePages] = useState([]);
+
+    const getItemProps = (index) => ({
+        variant: active === index ? 'filled' : 'text',
+        color: 'gray',
+        onClick: () => {
+            setPage(index);
+            setActive(index);
+        },
+    });
+
+    const next = () => {
+        if (active === dataFull.last_page) return;
+
+        setActive(active + 1);
+        setPage(active + 1);
+    };
+
+    const prev = () => {
+        if (active === dataFull.from) return;
+
+        setActive(active - 1);
+        setPage(active - 1);
+    };
+
+    useEffect(() => {
+        const calculateVisiblePages = async () => {
+
+            const totalVisiblePages = 3;
+            const totalPageCount = dataFull.last_page;
+
+            let startPage, endPage;
+            if (totalPageCount <= totalVisiblePages) {
+                startPage = 1;
+                endPage = totalPageCount;
+            } else {
+                const middlePage = Math.floor(totalVisiblePages / 2);
+                if (active <= middlePage + 1) {
+                    startPage = 1;
+                    endPage = totalVisiblePages;
+                } else if (active >= totalPageCount - middlePage) {
+                    startPage = totalPageCount - totalVisiblePages + 1;
+                    endPage = totalPageCount;
+                } else {
+                    startPage = active - middlePage;
+                    endPage = active + middlePage;
+                }
+            }
+
+            const visiblePagesArray = Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index);
+            setVisiblePages(visiblePagesArray);
+        };
+
+        calculateVisiblePages();
+    }, [active, dataFull.last_page]);
+
+    return (
+        <Card className=" h-[88vh] w-full p-4">
+            <CardHeader floated={false} shadow={false} className="rounded-none">
+                <div className="flex flex-col sm:flex-row w-full justify-center items-center">
+                    <div className="w-full justify-between flex">
+                        <div className=" w-fit">
+                            <Input
+                                label="Find order ID"
+                                icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                            />
+                        </div>
+
+                        <div className=" w-fit">
+                            <Button size="sm" color="gray" variant="outlined" onClick={handleExportExcel}>Export to Excel</Button>
+                        </div>
+
                     </div>
                 </div>
             </CardHeader>
-            <CardBody className="overflow-scroll px-0">
-                <table className="mt-4 w-full min-w-max table-auto text-left">
+            <CardBody className="px-4">
+                <table className=" w-full min-w-max table-auto text-left">
                     <thead>
                         <tr>
                             {TABLE_HEAD.map((head, index) => (
@@ -130,7 +602,10 @@ export default function ProductList() {
                                     >
                                         {head}{" "}
                                         {index !== TABLE_HEAD.length - 1 && (
-                                            <ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
+                                            <ChevronUpDownIcon
+                                                strokeWidth={2}
+                                                className="h-4 w-4"
+                                            />
                                         )}
                                     </Typography>
                                 </th>
@@ -138,128 +613,132 @@ export default function ProductList() {
                         </tr>
                     </thead>
                     <tbody>
-                        {TABLE_ROWS.map(
-                            ({ id, brand, category, name, description, date, stock, price, discount, img }, index) => {
-                                const isLast = index === TABLE_ROWS.length - 1;
+                        {data && data.length > 0 && data.map(
+                            (data, index) => {
+                                const key = `${index}`;
+                                const isLast = index === data.length - 1;
                                 const classes = isLast
-                                    ? "p-4"
-                                    : "p-4 border-b border-blue-gray-50";
+                                    ? "py-5 p-2"
+                                    : "py-5 p-2 border-b border-blue-gray-50";
 
                                 return (
-                                    <tr key={id}>
-                                        <td className={classes}>
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {id}
-                                            </Typography>
-                                        </td>
+                                    <tr key={key}>
                                         <td className={classes}>
                                             <div className="flex items-center gap-3">
-                                                <Avatar src={img} alt={name} size="sm" />
-                                                <div className="flex flex-col">
-                                                    <Typography
-                                                        variant="small"
-                                                        color="blue-gray"
-                                                        className="font-normal"
-                                                    >
-                                                        {name}
-                                                    </Typography>
-                                                </div>
+                                                <Typography
+                                                    variant="small"
+                                                    color="blue-gray"
+                                                    className="font-normal"
+                                                >
+                                                    {data.product_id}
+                                                </Typography>
+
                                             </div>
                                         </td>
                                         <td className={classes}>
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal w-52"
-                                            >
-                                                {description}
-                                            </Typography>
+                                            <div className="flex flex-col">
+                                                <Typography
+                                                    variant="small"
+                                                    color="blue-gray"
+                                                    className="font-normal"
+                                                >
+                                                    {data.name}
+                                                </Typography>
+                                            </div>
                                         </td>
+                                        <td className={classes}>
+                                            <div className="flex flex-col">
+                                                <Typography
+                                                    variant="small"
+                                                    color="blue-gray"
+                                                    className="font-normal"
+                                                >
+                                                    {data.price}
+                                                </Typography>
+                                            </div>
+                                        </td>
+
                                         <td className={classes}>
                                             <Typography
                                                 variant="small"
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                {brand}
+                                                {data.product_category_name}
                                             </Typography>
                                         </td>
+
                                         <td className={classes}>
                                             <Typography
                                                 variant="small"
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                {category}
+                                                {data.product_brand_name}
                                             </Typography>
                                         </td>
+
                                         <td className={classes}>
                                             <Typography
                                                 variant="small"
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                $ {price}
+                                                {data.stock}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {stock}
-                                            </Typography>
+                                            <SeeProduct product_id={data.product_id} />
                                         </td>
+
                                         <td className={classes}>
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {discount}
-                                            </Typography>
+                                            <EditProduct product_id={data.product_id} />
                                         </td>
+
                                         <td className={classes}>
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {date}
-                                            </Typography>
+                                            <DeleteProduct product_id={data.product_id} />
                                         </td>
-                                        <td className={classes}>
-                                            <Tooltip content="Details">
-                                                <IconButton variant="text">
-                                                    <EyeIcon className="h-4 w-4" />
-                                                </IconButton>
-                                            </Tooltip>
-                                        </td>
+
                                     </tr>
                                 );
-                            },
+                            }
                         )}
                     </tbody>
                 </table>
             </CardBody>
-            <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-                <Typography variant="small" color="blue-gray" className="font-normal">
-                    Page 1 of 10
-                </Typography>
-                <div className="flex gap-2">
-                    <Button variant="outlined" size="sm">
-                        Previous
+            <CardFooter>
+                <div className="flex justify-end  my-6 absolute bottom-4 right-10">
+                    <Button
+                        variant="text"
+                        className="flex items-center gap-2"
+                        onClick={prev}
+                        disabled={active === dataFull.from}
+                    >
+                        <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
                     </Button>
-                    <Button variant="outlined" size="sm">
+
+                    <div className="flex items-center gap-2">
+                        {visiblePages.map((pageNumber) => (
+                            <IconButton
+                                key={pageNumber}
+                                {...getItemProps(pageNumber)}
+                            >
+                                {pageNumber}
+                            </IconButton>
+                        ))}
+                    </div>
+
+                    <Button
+                        variant="text"
+                        className="flex items-center gap-2"
+                        onClick={next}
+                        disabled={active === dataFull.last_page}
+                    >
                         Next
+                        <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
                     </Button>
                 </div>
             </CardFooter>
         </Card>
-    )
+    );
 }

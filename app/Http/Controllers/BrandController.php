@@ -14,12 +14,14 @@ class BrandController extends Controller
     public function index()
     {
 
-        $b = Brand::all();
+        $b = Brand::join('field', 'field.field_id', '=', 'product_brand.product_brand_id' )
+        ->select('product_brand.*', 'field.field_name')
+        ->paginate(7);
 
         $arr = [
             'status' => true,
             'message' => 'Danh sách',
-            'data' => BrandResource::collection($b)
+            'data' => $b
         ];
 
         return response()->json($arr, 200);

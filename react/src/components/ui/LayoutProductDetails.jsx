@@ -334,6 +334,11 @@ const LayoutProductDetails = () => {
                                     alt="Placeholder Image"
                                 />
                                 <img
+                                    className="h-[200px] w-[180px] object-cover mb-5"
+                                    src={`https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png`}
+                                    alt="Placeholder Image"
+                                />
+                                <img
                                     className="h-[200px] w-[180px] object-cover"
                                     src={`https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png`}
                                     alt="Placeholder Image"

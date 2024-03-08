@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash; // Mã hóa 
-
+use PhpParser\Node\Expr\Cast\String_;
 
 class UserController extends Controller
 {
@@ -318,11 +318,10 @@ class UserController extends Controller
     }
 
 
-    public function userList()
+    public function userList(Request $request, int $type_id)
     {
-        $users = User::where('type_account_id', 2)
-            ->orWhere('type_account_id', 3)
-            ->paginate(7);
+        $users = User::where('type_account_id', $type_id)
+            ->paginate(6);
 
         $arr = [
             'status' => true,

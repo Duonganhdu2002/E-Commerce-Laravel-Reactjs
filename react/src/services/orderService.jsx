@@ -20,5 +20,9 @@ const orderShipped = (order_id, page) => {
     return axios.get(`/public/order/shipped-orders/${order_id}?page=${page}`);
 }
 
+const getAllOrder = (page) => {
+    return axios.get(`/public/order/list?page=${page}`);
+}
 
-export { orderShipped, orderItems, listOrderCancled, handleOrder, listOrder };
+
+export { getAllOrder, orderShipped, orderItems, listOrderCancled, handleOrder, listOrder };

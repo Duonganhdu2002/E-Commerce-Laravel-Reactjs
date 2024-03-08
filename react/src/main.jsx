@@ -60,7 +60,6 @@ import FieldList from "./components/ui-admin/FieldList";
 import CategoryList from "./components/ui-admin/CategoryList";
 import BrandList from "./components/ui-admin/BrandList";
 import OrderList from "./components/ui-admin/OrderList";
-import OrderUser from "./components/ui-admin/OrderUser";
 import OrderStatusList from "./components/ui-admin/OrderStatus";
 import ProductList from "./components/ui-admin/ProductList";
 import ProductUserList from "./components/ui-admin/ProductUser";
@@ -242,7 +241,6 @@ const App = () => {
                                 <Route path="category-list" element={<PrivateAdminRoute element={<CategoryList />} />} />
                                 <Route path="brand-list" element={<PrivateAdminRoute element={<BrandList />} />} />
                                 <Route path="order-list" element={<PrivateAdminRoute element={<OrderList />} />} />
-                                <Route path="order-user" element={<PrivateAdminRoute element={<OrderUser />} />} />
                                 <Route path="order-status-list" element={<PrivateAdminRoute element={<OrderStatusList />} />} />
                                 <Route path="product-list" element={<PrivateAdminRoute element={<ProductList />} />} />
                                 <Route path="product-user-list" element={<PrivateAdminRoute element={<ProductUserList />} />} />

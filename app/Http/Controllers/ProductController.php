@@ -24,12 +24,14 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $product = Product::paginate(10);
-
+        $product = Product::join('product_category', 'product.product_category_id', '=', 'product_category.product_category_id')
+            ->join('product_brand', 'product.product_brand_id', '=', 'product_brand.product_brand_id')
+            ->select('product.*', 'product_category.product_category_name', 'product_brand.product_brand_name')
+            ->paginate(7);
         $arr = [
             'status' => true,
             'message' => 'Danh sách sản phẩm',
-            'data' => ProductResource::collection($product)
+            'data' => $product
         ];
 
         return response()->json($arr, 200);
@@ -186,7 +188,7 @@ class ProductController extends Controller
             'stock' => 'required',
             'discount_id' => 'nullable',
             'image_urls' => 'required|array',
-            'image_urls.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_urls.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'colors' => 'required|array',
             'colors.*' => 'required',
             'sizes' => 'required|array',

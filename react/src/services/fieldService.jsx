@@ -4,4 +4,8 @@ const fetchAllField = () => {
     return axios.get("/public/field/list");
 }
 
-export { fetchAllField };
+const fetchAllFieldAdmin = (page) => {
+    return axios.get(`/public/field/listAdmin?page=${page}`);
+}
+
+export {fetchAllFieldAdmin, fetchAllField };
