@@ -9,7 +9,8 @@ class field extends Model
 {
     use HasFactory;
     public $table = 'field';
-    protected $fillable = ['field_id', 'field_name', 'icon_field', 'created_at', 'modified_at', 'deleted_at'];
+    protected $fillable = ['field_id', 'field_name', 'icon_field'];
 
     protected $primaryKey = 'field_id';
+    public $timestamps = false;
 }
