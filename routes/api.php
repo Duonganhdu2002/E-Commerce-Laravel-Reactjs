@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FieldController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ShoppingCartController;
 use App\Http\Controllers\OrderController;
@@ -30,6 +31,8 @@ Route::prefix('user')->group(function () {
 
 
     Route::post('login', [UserController::class, 'login'])->name('login');
+    Route::get('auth/google', [GoogleAuthController::class, 'redirect'])->name('google-auth');
+    Route::get('auth/google/call-back', [GoogleAuthController::class, 'callbackGoogle'])->name('google-auth');
     Route::post('loginBusiness', [UserController::class, 'loginBusiness'])->name('loginBusiness');
     Route::post('loginAdmin', [UserController::class, 'loginAdmin'])->name('loginAdmin');
 

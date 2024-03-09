@@ -317,6 +317,29 @@ class UserController extends Controller
         }
     }
 
+    public function create($new_user)
+    {
+        try {
+           
+            User::create([
+                'username' => $new_user->input('username'),
+                'email' => $new_user->input('email'),
+            ]);
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'User Created Successfully',
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Error creating user',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+
 
     public function userList(Request $request, int $type_id)
     {
