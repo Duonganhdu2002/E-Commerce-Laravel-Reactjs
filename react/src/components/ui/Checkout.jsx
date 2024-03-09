@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Input, Select, Option, Button } from "@material-tailwind/react";
 import { districtList, provincesList, wardList } from "../../services/locationService";
 import { handleOrder } from "../../services/orderService";
+import { loadStripe } from '@stripe/stripe-js';
 
 export default function Checkout() {
 
@@ -139,6 +140,9 @@ export default function Checkout() {
     };
 
     const handleProceedToPayment = async () => {
+
+        const stripe = await loadStripe('pk_test_51OrgAxGsQVxhhN2xWaQ6M9xIGpVwC93X9iDRwSMIWxQpwou7NP5MjNn55WtsQu1ia1ChmO46b8I3qsiiNPz6k3qS00KEa4XTlA');
+
         if (!name || !phoneNumber || !streetAndNumber || !selectedWard || !selectedDistrict || !selectedProvince) {
             alert('Vui lòng điền đầy đủ thông tin để tiếp tục đặt hàng.');
             return;
@@ -168,7 +172,7 @@ export default function Checkout() {
                 "order_name": name,
                 "total": (subtotal + parseFloat(selectedShippingPrice)).toFixed(2),
                 'order_note': note,
-                'shop_id' : selectedItems[0].shop_id,
+                'shop_id': selectedItems[0].shop_id,
             };
             console.log(updatedDataOrder)
             await handleOrder(updatedDataOrder);
