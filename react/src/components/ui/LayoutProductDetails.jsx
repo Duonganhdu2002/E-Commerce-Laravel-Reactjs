@@ -298,13 +298,13 @@ const LayoutProductDetails = () => {
                     <div className="w-full lg:w-8/12 flex justify-center items-center">
                         {imageUrls.length > 0 && currentImage ? (
                             <img
-                                className="h-[420px] w-[360px] object-cover"
+                                className="h-[420px] w-[360px] object-cover rounded-xl"
                                 src={`../../../src/assets/image/${currentImage}`}
                                 alt={data.name}
                             />
                         ) : (
                             <img
-                                className="h-[420px] w-[360px] object-cover"
+                                className="h-[420px] w-[360px] object-cover rounded-xl"
                                 src={`https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png`}
                                 alt="Placeholder Image"
                             />
@@ -320,7 +320,7 @@ const LayoutProductDetails = () => {
                                     onClick={() => handleThumbnailClick(imageUrl)}
                                 >
                                     <img
-                                        className="h-[200px] w-[180px] object-cover"
+                                        className="h-[200px] w-[180px] object-cover rounded-xl"
                                         src={`../../../src/assets/image/${imageUrl}`}
                                         alt={`${data.name} - preview ${index + 1}`}
                                     />
@@ -329,17 +329,17 @@ const LayoutProductDetails = () => {
                         ) : (
                             <div className=" py-4">
                                 <img
-                                    className="h-[200px] w-[180px] object-cover mb-5"
+                                    className="h-[200px] w-[180px] object-cover mb-5 rounded-xl"
                                     src={`https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png`}
                                     alt="Placeholder Image"
                                 />
                                 <img
-                                    className="h-[200px] w-[180px] object-cover mb-5"
+                                    className="h-[200px] w-[180px] object-cover mb-5 rounded-xl"
                                     src={`https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png`}
                                     alt="Placeholder Image"
                                 />
                                 <img
-                                    className="h-[200px] w-[180px] object-cover"
+                                    className="h-[200px] w-[180px] object-cover rounded-xl"
                                     src={`https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png`}
                                     alt="Placeholder Image"
                                 />
