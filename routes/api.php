@@ -15,7 +15,11 @@ use App\Http\Controllers\SearchHistoryController;
 use App\Http\Controllers\ProvincesController;
 use App\Http\Controllers\RevenueController;
 use App\Http\Controllers\ProductReviewController;
+use App\Http\Controllers\PaymentController;
 
+Route::prefix('payment')->group(function () {
+    Route::post('payment', [PaymentController::class, 'createPaymentIntent']);
+});
 
 Route::prefix('user')->group(function () {
 
@@ -120,7 +124,6 @@ Route::prefix('public')->group(function () {
         Route::put('/{id}', [FieldController::class, 'update']);
         Route::delete('/{id}', [FieldController::class, 'delete']);
         Route::post('/addField', [FieldController::class, 'addField']);
-
     });
 
     Route::prefix('brand')->group(function () {
@@ -147,7 +150,6 @@ Route::prefix('public')->group(function () {
         Route::put('update/{id}', [ProductCategoryController::class, 'update']);
         Route::delete('delete/{id}', [ProductCategoryController::class, 'delete']);
         Route::post('/addCategory', [ProductCategoryController::class, 'addCategory']);
-
     });
 
     Route::prefix('cart')->group(function () {
