@@ -25,13 +25,10 @@ import {
 import AddImageIcon from "../../assets/icon/image (1).png";
 
 import { useEffect, useState } from "react";
-import { listOrder, orderItems } from "../../services/orderService";
-import { useSelector } from 'react-redux'
 
 import React from "react";
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
-import { fetchAllFieldAdmin, } from "../../services/fieldService";
 import { fetchAllCategoryByAdmin, deleteCategory, updateCategory, categoryInformation } from "../../services/categoryService";
 
 const TABLE_HEAD = [
@@ -238,6 +235,9 @@ export default function CategoryList() {
         convertToExcel(data);
     }
 
+    console.log(data)
+    console.log(dataFull)
+
     // Call API list order by user
     useEffect(() => {
         const fetchData = async () => {
@@ -360,8 +360,8 @@ export default function CategoryList() {
                                 const key = `${index}`;
                                 const isLast = index === data.length - 1;
                                 const classes = isLast
-                                    ? "p-6"
-                                    : "p-6 border-b border-blue-gray-50";
+                                    ? "p-5"
+                                    : "p-5 border-b border-blue-gray-50";
 
                                 return (
                                     <tr key={key}>

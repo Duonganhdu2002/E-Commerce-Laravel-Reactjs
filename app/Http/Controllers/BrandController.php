@@ -14,7 +14,7 @@ class BrandController extends Controller
     public function index()
     {
 
-        $b = Brand::join('field', 'field.field_id', '=', 'product_brand.product_brand_id' )
+        $b = Brand::join('field', 'field.field_id', '=', 'product_brand.field_id' )
         ->select('product_brand.*', 'field.field_name')
         ->paginate(7);
 

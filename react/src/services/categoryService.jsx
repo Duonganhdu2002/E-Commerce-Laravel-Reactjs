@@ -14,7 +14,7 @@ const fetchAllCategoryByUser = (user_id) => {
 }
 
 const fetchAllCategoryByAdmin = (page) => {
-    return axios.get(`/public/category/list?page=${page}`);
+    return axios.get(`/public/category/listCategory?page=${page}`);
 }
 
 const deleteCategory = (product_category_id) => {

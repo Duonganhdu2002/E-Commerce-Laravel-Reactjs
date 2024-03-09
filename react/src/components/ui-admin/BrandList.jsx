@@ -361,8 +361,8 @@ export default function BrandList() {
                                 const key = `${index}`;
                                 const isLast = index === data.length - 1;
                                 const classes = isLast
-                                    ? "p-6"
-                                    : "p-6 border-b border-blue-gray-50";
+                                    ? "p-5"
+                                    : "p-5 border-b border-blue-gray-50";
 
                                 return (
                                     <tr key={key}>

@@ -14,7 +14,7 @@ class ProductCategoryController extends Controller
 {
     public function index()
     {
-        $pc = Category::join('field', 'field.field_id', '=', 'product_category.product_category_id')
+        $pc = Category::join('field', 'field.field_id', '=', 'product_category.field_id')
         ->select('product_category.*', 'field.field_name')
         ->paginate(7);
 
