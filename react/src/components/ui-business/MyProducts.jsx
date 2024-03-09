@@ -17,8 +17,6 @@ import {
     Input,
     Typography,
     CardBody,
-    Chip,
-    Avatar,
     IconButton,
     Button,
     Collapse,
@@ -26,13 +24,10 @@ import {
     Menu,
     MenuHandler,
     MenuList,
-    MenuItem,
     CardFooter,
     Popover,
     PopoverHandler,
     PopoverContent,
-    Select,
-    Option,
     Textarea,
 } from "@material-tailwind/react";
 

@@ -3,9 +3,12 @@ import {
     ChevronUpDownIcon,
     ArrowRightIcon,
     ArrowLeftIcon,
-    TrashIcon,
-    PencilIcon
 } from "@heroicons/react/24/outline";
+import {
+    EyeIcon,
+    PencilIcon,
+    TrashIcon
+} from "@heroicons/react/24/solid";
 
 import {
     Card,
@@ -347,7 +350,7 @@ export default function FieldList() {
                                 const isLast = index === data.length - 1;
                                 const classes = isLast
                                     ? "p-6"
-                                    : "p-6 border-b border-blue-gray-50";
+                                    : "p-5 border-b border-blue-gray-50";
 
                                 return (
                                     <tr key={key}>

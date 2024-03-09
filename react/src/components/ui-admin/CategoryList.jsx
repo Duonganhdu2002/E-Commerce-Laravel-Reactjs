@@ -3,8 +3,6 @@ import {
     ChevronUpDownIcon,
     ArrowRightIcon,
     ArrowLeftIcon,
-    TrashIcon,
-    PencilIcon,
 } from "@heroicons/react/24/outline";
 
 import {
@@ -21,6 +19,11 @@ import {
     PopoverContent,
     Textarea,
 } from "@material-tailwind/react";
+
+import {
+    PencilIcon,
+    TrashIcon
+} from "@heroicons/react/24/solid";
 
 import AddImageIcon from "../../assets/icon/image (1).png";
 

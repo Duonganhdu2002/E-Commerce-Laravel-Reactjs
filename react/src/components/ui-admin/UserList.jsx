@@ -9,7 +9,11 @@ import {
     Cog6ToothIcon,
     MagnifyingGlassIcon
 } from "@heroicons/react/24/outline";
-import { PencilIcon } from "@heroicons/react/24/solid";
+import {
+    EyeIcon,
+    PencilIcon,
+    TrashIcon
+} from "@heroicons/react/24/solid";
 import {
     Card,
     Typography,
@@ -36,8 +40,9 @@ const TABLE_HEAD = [
     "Email",
     "Warehouse",
     "Revenue",
-    "Advertising",
-    "Action",
+    "Detail",
+    "Edit",
+    "Delete"
 ];
 
 const FetchAllUser = ({ type_id }) => {
@@ -209,19 +214,25 @@ const FetchAllUser = ({ type_id }) => {
                                                 {users.telephone || ''}
                                             </Typography>
                                         </td>
+                                    
                                         <td className={classes}>
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {users.telephone || ''}
-                                            </Typography>
+                                            <Tooltip content="Edit User">
+                                                <IconButton variant="text">
+                                                    <EyeIcon className="h-4 w-4" />
+                                                </IconButton>
+                                            </Tooltip>
                                         </td>
                                         <td className={classes}>
                                             <Tooltip content="Edit User">
                                                 <IconButton variant="text">
                                                     <PencilIcon className="h-4 w-4" />
+                                                </IconButton>
+                                            </Tooltip>
+                                        </td>
+                                        <td className={classes}>
+                                            <Tooltip content="Edit User">
+                                                <IconButton variant="text">
+                                                    <TrashIcon className="h-4 w-4" />
                                                 </IconButton>
                                             </Tooltip>
                                         </td>

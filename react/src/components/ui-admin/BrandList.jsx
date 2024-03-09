@@ -3,8 +3,6 @@ import {
     ChevronUpDownIcon,
     ArrowRightIcon,
     ArrowLeftIcon,
-    TrashIcon,
-    PencilIcon,
 } from "@heroicons/react/24/outline";
 
 import {
@@ -22,15 +20,16 @@ import {
     PopoverContent,
 } from "@material-tailwind/react";
 
+import {
+    PencilIcon,
+    TrashIcon
+} from "@heroicons/react/24/solid";
+
 import { useEffect, useState } from "react";
-import { listOrder, orderItems } from "../../services/orderService";
-import { useSelector } from 'react-redux'
 
 import React from "react";
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
-import { fetchAllFieldAdmin } from "../../services/fieldService";
-import { fetchAllCategoryByAdmin } from "../../services/categoryService";
 import { fetchBrandsByAdmin, deleteBrand, updateBrand, brandInformation } from "../../services/brandService";
 
 import AddImageIcon from "../../assets/icon/image (1).png";
