@@ -34,6 +34,7 @@ export default function Checkout() {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [streetAndNumber, setStreetAndNumber] = useState("");
     const [note, setNote] = useState("");
+    const [orderId, setOrderId] = useState("");
     // Tính tổng tất cả các mặt hàng
     const subtotal = selectedItems.reduce((total, item) => {
         const itemTotal = parseFloat(item.Price) * item.newQuantity;
@@ -150,7 +151,8 @@ export default function Checkout() {
                 'shop_id': selectedItems[0].shop_id,
             };
             console.log(updatedDataOrder)
-            await handleOrder(updatedDataOrder);
+            let res = await handleOrder(updatedDataOrder);
+            setOrderId(res.data.order_id)
             setLoading(false);
             navigate('/payment');
         } catch (error) {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\TryCatch;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
 use Stripe\Exception\ApiErrorException as Error;
@@ -39,7 +40,7 @@ class PaymentController extends Controller
             ]);
 
             // Save transaction history
-            $this->saveTransactionHistory($jsonObj, $totalAmount);
+            // $this->saveTransactionHistory($jsonObj);
 
             $output = [
                 'clientSecret' => $paymentIntent->client_secret,
@@ -53,21 +54,25 @@ class PaymentController extends Controller
         }
     }
 
-    private function saveTransactionHistory($jsonObj, $totalAmount)
+    public function saveTransactionHistory(Request $request)
     {
-        // Create a new Transaction instance and fill it with the provided data
-        $transaction = new Transaction([
-            'buyer_id' => $jsonObj->buyer_id,
-            'seller_id' => $jsonObj->seller_id,
-            'order_id' => $jsonObj->order_id,
-            'payment_id' => $jsonObj->payment_id,
-            'transaction_status' => $jsonObj->transaction_status,
-            'total_amount' => $totalAmount,
-            'created_at' => now(),
-        ]);
+        try {
+            $transaction = new Transaction([
+                'buyer_id' => $request->buyer_id,
+                'seller_id' => $request->seller_id,
+                'order_id' => $request->order_id,
+                'payment_id' => $request->payment_id,
+                'transaction_status' => $request->transaction_status,
+                'total_amount' => $request->total_amount,
+                'created_at' => now(),
+            ]);
 
-        // Save the transaction to the database
-        $transaction->save();
+            $transaction->save();
+
+            return response()->json($transaction);
+        } catch (\Throwable $transaction) {
+            return response()->json(['error'], 500);
+        }
     }
     private function calculateOrderAmount(array $items): int
     {
@@ -75,8 +80,8 @@ class PaymentController extends Controller
 
         foreach ($items as $item) {
             $itemArray = (array) $item;
-            if (isset($itemArray['id'], $itemArray['price'], $itemArray['quantity'])) {
-                $totalAmount += $itemArray['price'] * $itemArray['quantity'];
+            if (isset($itemArray['itemId'], $itemArray['Price'], $itemArray['newQuantity'])) {
+                $totalAmount += $itemArray['Price'] * $itemArray['newQuantity'];
             }
         }
         return $totalAmount;

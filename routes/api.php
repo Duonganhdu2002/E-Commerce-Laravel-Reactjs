@@ -20,6 +20,7 @@ use App\Http\Controllers\PaymentController;
 
 Route::prefix('payment')->group(function () {
     Route::post('payment', [PaymentController::class, 'createPaymentIntent']);
+    Route::post('save', [PaymentController::class, 'saveTransactionHistory']);
 });
 
 Route::prefix('user')->group(function () {

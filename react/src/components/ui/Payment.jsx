@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import { useSelector } from "react-redux";
 
 import CheckoutForm from "./CheckoutForm";
 import "../../App.css";
@@ -12,24 +13,14 @@ const stripePromise = loadStripe("pk_test_51OrgAxGsQVxhhN2xWaQ6M9xIGpVwC93X9iDRw
 export default function Payment() {
 
     const [clientSecret, setClientSecret] = useState("");
-
+    const selectedItems = useSelector(state => state.cart.items);
+    console.log(selectedItems)
+    const userId = useSelector(state => state.user.user.user_id || '');
+    
     const data = {
-        "items": [
-            {
-                "id": 1,
-                "price": 1000,
-                "quantity": 2,
-                "image_url": "https://example.com/image1.jpg"
-            },
-            {
-                "id": 2,
-                "price": 1500,
-                "quantity": 1,
-                "image_url": "https://example.com/image2.jpg"
-            }
-        ],
-        "buyer_id": 1,
-        "seller_id": 2,
+        "items": selectedItems,
+        "buyer_id": userId,
+        "seller_id": selectedItems[0].shop_id,
         "order_id": 84,
         "payment_id": 2,
         "transaction_status": "Thanh cong"

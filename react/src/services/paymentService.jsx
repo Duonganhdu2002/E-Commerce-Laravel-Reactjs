@@ -4,4 +4,8 @@ const paymentAction = (data) => {
     return axios.post("/payment/payment", data);
 }
 
-export { paymentAction };
+const paymentSave = (data) => {
+    return axios.post("/payment/save", data);
+}
+
+export { paymentSave, paymentAction };
