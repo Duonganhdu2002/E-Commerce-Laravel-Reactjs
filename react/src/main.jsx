@@ -66,6 +66,7 @@ import ReviewList from "./components/ui-admin/ReviewList";
 import ReviewUserList from "./components/ui-admin/ReviewUser";
 import ShoppingMethodList from "./components/ui-admin/ShoppingMethod";
 import Setting from "./components/ui-admin/Setting";
+import Payment from "./components/ui/Payment";
 
 
 const Customer = () => {
@@ -192,6 +193,7 @@ const App = () => {
                                 <Route path="product/:productId" element={<ProductDetails />} />
                                 <Route path="shop/:user_id" element={<Shop />} />
                                 <Route path="checkout" element={<PrivateCustomerRoute element={<Checkout />} />} />
+                                <Route path="payment" element={<PrivateCustomerRoute element={<Payment />} />} />
                                 <Route path="search/:searchKey" element={<SearchLayout />} />
                                 <Route path="success" element={<PrivateCustomerRoute element={<Success />} />} />
                                 {/* {User} */}

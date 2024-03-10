@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
@@ -17,12 +18,16 @@ class PaymentController extends Controller
             $jsonStr = $request->getContent();
             $jsonObj = json_decode($jsonStr);
 
+            // Check if the 'items' property exists in the JSON payload
             if (!property_exists($jsonObj, 'items')) {
                 throw new \InvalidArgumentException('Missing "items" property in JSON payload');
             }
 
             // Set up Stripe API key
             Stripe::setApiKey(env('STRIPE_SECRET'));
+
+            // Calculate total amount
+            $totalAmount = $this->calculateOrderAmount($jsonObj->items);
 
             // Create a PaymentIntent with amount and currency
             $paymentIntent = PaymentIntent::create([
@@ -33,9 +38,11 @@ class PaymentController extends Controller
                 ],
             ]);
 
+            // Save transaction history
+            $this->saveTransactionHistory($jsonObj, $totalAmount);
+
             $output = [
                 'clientSecret' => $paymentIntent->client_secret,
-                'amout' => $this->calculateOrderAmount($jsonObj->items)
             ];
 
             return response()->json($output);
@@ -46,6 +53,22 @@ class PaymentController extends Controller
         }
     }
 
+    private function saveTransactionHistory($jsonObj, $totalAmount)
+    {
+        // Create a new Transaction instance and fill it with the provided data
+        $transaction = new Transaction([
+            'buyer_id' => $jsonObj->buyer_id,
+            'seller_id' => $jsonObj->seller_id,
+            'order_id' => $jsonObj->order_id,
+            'payment_id' => $jsonObj->payment_id,
+            'transaction_status' => $jsonObj->transaction_status,
+            'total_amount' => $totalAmount,
+            'created_at' => now(),
+        ]);
+
+        // Save the transaction to the database
+        $transaction->save();
+    }
     private function calculateOrderAmount(array $items): int
     {
         $totalAmount = 0;
