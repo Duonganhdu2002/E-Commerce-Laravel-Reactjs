@@ -164,8 +164,8 @@ const EditProduct = ({ product_id }) => {
                         <PencilIcon className=" w-4 h-4" />
                     </div>
                 </PopoverHandler>
-                <PopoverContent className=" z-10 p-8">
-                    <div className="flex">
+                <PopoverContent className=" z-10 p-8 w-[60%]">
+                    {/* <div className="flex">
                         <div className="w-[15%]">Product Images</div>
                         <div className="w-[85%]">
                             <p>Image (You can upload max 3 images)</p>
@@ -231,7 +231,7 @@ const EditProduct = ({ product_id }) => {
                                 )}
                             </div>;
                         </div>
-                    </div>
+                    </div> */}
                     <div className=" flex mt-8">
                         <div className=" w-[15%]">
                             Product name
@@ -475,7 +475,7 @@ const SeeProduct = ({ product_id }) => {
                 </MenuList>
             </Menu>
             <div className="block lg:hidden">
-                <Collapse open={isMobileMenuOpen}>{renderItems}</Collapse>
+            <Collapse open={isMobileMenuOpen}>{renderItems}</Collapse>
             </div>
         </React.Fragment>
     )
