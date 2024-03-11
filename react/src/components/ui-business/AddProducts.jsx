@@ -204,8 +204,15 @@ export default function AddProducts() {
     // Khai báo state để lưu trữ dữ liệu nhập từ form
     const [productName, setProductName] = useState("");
     const [productPrice, setProductPrice] = useState("");
-    const [productColor, setProductColor] = useState("");
-    const [productSize, setProductSize] = useState("");
+    
+    const [productColor1, setProductColor1] = useState("" || null);
+    const [productColor2, setProductColor2] = useState("" || null);
+    const [productColor3, setProductColor3] = useState("" || null);
+
+    const [productSize1, setProductSize1] = useState("" || null);
+    const [productSize2, setProductSize2] = useState("" || null);
+    const [productSize3, setProductSize3] = useState("" || null);
+
     const [productDescription, setProductDescription] = useState("");
     const [productStock, setProductStock] = useState(0);
     const [selectedCategoryId, setSelectedCategoryId] = useState(null);
@@ -316,10 +323,12 @@ export default function AddProducts() {
             formData.append("product_brand_id", selectedBrandId);
             formData.append("created_by_user_id", seller_id);
             formData.append("price", productPrice);
-            formData.append("colors[]", productColor);
-            formData.append("colors[]", "h");
-            formData.append("sizes[]", "s");
-            formData.append("sizes[]", "as");
+            formData.append("colors[]", productColor1);
+            formData.append("colors[]", productColor2);
+            formData.append("colors[]", productColor3);
+            formData.append("sizes[]", productSize1);
+            formData.append("sizes[]", productSize2);
+            formData.append("sizes[]", productSize3);
 
             console.log("Product Data:", formData);
 
@@ -344,7 +353,7 @@ export default function AddProducts() {
                     <div className="w-[85%]">
                         <p>Image (You can upload max 3 images)</p>
                         <div className=" flex">
-                        <div>
+                            <div>
                                 <input type="file" onChange={handleChange1} />
                                 {file1 ? (
                                     <img className="w-40 mt-3 rounded-xl" src={URL.createObjectURL(file1)} alt="Selected File" />
@@ -419,20 +428,41 @@ export default function AddProducts() {
                                 </Select>
                             </div>
                         </div>
+
                         <div className=" flex mt-8">
                             <div className=" w-[20%]">
-                                Price
+                                Brand
                             </div>
                             <div className=" w-[80%]">
-                                <Input label="Input" value={productPrice} onChange={(e) => setProductPrice(e.target.value)} />
+                                <Select disabled={selectedFieldId === null || dataBrand.length === 0} label="Brand" onChange={handlechangeBrand}>
+                                    {dataBrand.map((data) => (
+                                        <Option value={String(data.product_brand_id)} key={data.product_brand_id}>{data.product_brand_name}</Option>
+                                    ))}
+                                </Select>
                             </div>
                         </div>
                         <div className=" flex mt-8">
                             <div className=" w-[20%]">
-                                Color
+                                Color 1
                             </div>
                             <div className=" w-[80%]">
-                                <Input label="Input" value={productColor} onChange={(e) => setProductColor(e.target.value)} />
+                                <Input label="Input" value={productColor1} onChange={(e) => setProductColor1(e.target.value)} />
+                            </div>
+                        </div>
+                        <div className=" flex mt-8">
+                            <div className=" w-[20%]">
+                                Color 2
+                            </div>
+                            <div className=" w-[80%]">
+                                <Input label="Input" value={productColor2} onChange={(e) => setProductColor2(e.target.value)} />
+                            </div>
+                        </div>
+                        <div className=" flex mt-8">
+                            <div className=" w-[20%]">
+                                Color 3
+                            </div>
+                            <div className=" w-[80%]">
+                                <Input label="Input" value={productColor3} onChange={(e) => setProductColor3(e.target.value)} />
                             </div>
                         </div>
                         <div className=" flex mt-16">
@@ -446,14 +476,10 @@ export default function AddProducts() {
                     <div className="w-[50%]">
                         <div className=" flex mt-8">
                             <div className=" w-[20%]">
-                                Brand
+                                Price
                             </div>
                             <div className=" w-[80%]">
-                                <Select disabled={selectedFieldId === null || dataBrand.length === 0} label="Brand" onChange={handlechangeBrand}>
-                                    {dataBrand.map((data) => (
-                                        <Option value={String(data.product_brand_id)} key={data.product_brand_id}>{data.product_brand_name}</Option>
-                                    ))}
-                                </Select>
+                                <Input label="Input" value={productPrice} onChange={(e) => setProductPrice(e.target.value)} />
                             </div>
                         </div>
                         <div className=" flex mt-8">
@@ -474,10 +500,26 @@ export default function AddProducts() {
                         </div>
                         <div className=" flex mt-8">
                             <div className=" w-[20%]">
-                                Size
+                                Size 1
                             </div>
                             <div className=" w-[80%]">
-                                <Input label="Input" value={productSize} onChange={(e) => setProductSize(e.target.value)} />
+                                <Input label="Input" value={productSize1} onChange={(e) => setProductSize1(e.target.value)} />
+                            </div>
+                        </div>
+                        <div className=" flex mt-8">
+                            <div className=" w-[20%]">
+                                Size 2
+                            </div>
+                            <div className=" w-[80%]">
+                                <Input label="Input" value={productSize2} onChange={(e) => setProductSize2(e.target.value)} />
+                            </div>
+                        </div>
+                        <div className=" flex mt-8">
+                            <div className=" w-[20%]">
+                                Size 3
+                            </div>
+                            <div className=" w-[80%]">
+                                <Input label="Input" value={productSize3} onChange={(e) => setProductSize3(e.target.value)} />
                             </div>
                         </div>
                     </div>

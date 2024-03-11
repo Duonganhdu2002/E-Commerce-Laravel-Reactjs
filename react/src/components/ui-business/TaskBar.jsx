@@ -135,15 +135,7 @@ const TaskBar = () => {
                         </ListItemSuffix>
                     </ListItem>
                 </Link> */}
-                <Link to="profile">
-
-                    <ListItem>
-                        <ListItemPrefix>
-                            <UserCircleIcon className="h-5 w-5" />
-                        </ListItemPrefix>
-                        Profile
-                    </ListItem>
-                </Link>
+                
             </List>
         </Card>
     );

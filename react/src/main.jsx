@@ -11,7 +11,6 @@ import { store } from "./redux/Store";
 import MenuBarBusiness from "./components/ui-business/MenuBar";
 import LoginBusiness from "./components/ui-business/Login";
 import RegisterBusiness from "./components/ui-business/Register";
-import ProfileBusiness from "./components/ui-business/Profile";
 import InboxBusiness from "./components/ui-business/Inbox";
 import MyProductsBusiness from "./pages/business/MyProducts";
 import DashboardBusiness from "./pages/business/Dashboard";
@@ -228,7 +227,6 @@ const App = () => {
                                 <Route path="shop-information" element={<PrivateBusinessRoute element={<ShopInformation />} />} />
                                 <Route path="dashboard" element={<PrivateBusinessRoute element={<Business />} />} />
                                 <Route path="inbox" element={<PrivateBusinessRoute element={<InboxBusiness />} />} />
-                                <Route path="profile" element={<PrivateBusinessRoute element={<ProfileBusiness />} />} />
                             </Route>
 
                             {/* Admin */}
