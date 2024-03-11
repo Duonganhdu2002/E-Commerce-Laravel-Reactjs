@@ -196,7 +196,7 @@ const App = () => {
                                 <Route path="search/:searchKey" element={<SearchLayout />} />
                                 <Route path="success" element={<PrivateCustomerRoute element={<Success />} />} />
                                 {/* {User} */}
-                                <Route path="/user" element={<User />}>
+                                <Route path="/user" element={<PrivateCustomerRoute element={<User/>} />}>
                                     <Route path="profile" element={<PrivateCustomerRoute element={<Profile />} />} />
                                     <Route path="banking" element={<PrivateCustomerRoute element={<Banking />} />} />
                                     <Route path="address" element={<PrivateCustomerRoute element={<Address />} />} />
