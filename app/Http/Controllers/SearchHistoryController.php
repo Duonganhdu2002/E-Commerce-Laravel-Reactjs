@@ -218,31 +218,31 @@ class SearchHistoryController extends Controller
     }
 
     public function searchOrdersByUsername(Request $request)
-{
-    $request->validate([
-        'username' => 'required|string',
-        'shop_id' => 'required|numeric',
-    ]);
+    {
+        $request->validate([
+            'username' => 'required|string',
+            'shop_id' => 'required|numeric',
+        ]);
 
-    $username = $request->input('username');
-    $shopId = $request->input('shop_id');
+        $username = $request->input('username');
+        $shopId = $request->input('shop_id');
 
-    $user = User::where('username', $username)->first();
+        $user = User::where('username', $username)->first();
 
-    if (!$user) {
+        if (!$user) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'not found.',
+                'data' => null,
+            ], 404);
+        }
+
+        $orders = $user->orders()->where('shop_id', $shopId)->paginate(7);
+
         return response()->json([
-            'status' => 404,
-            'message' => 'not found.',
-            'data' => null,
-        ], 404);
+            'status' => 200,
+            'message' => 'các đơn hàng của ' . $username . 'mua trong shop có id là ' . $shopId,
+            'data' => $orders,
+        ]);
     }
-
-    $orders = $user->orders()->where('shop_id', $shopId)->paginate(7);
-
-    return response()->json([
-        'status' => 200,
-        'message' => 'các đơn hàng của ' . $username .'mua trong shop có id là ' . $shopId ,
-        'data' => $orders,
-    ]);
-}
 }
