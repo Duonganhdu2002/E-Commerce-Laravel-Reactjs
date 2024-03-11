@@ -107,18 +107,14 @@ const AllRating = ({ seller_id, rating }) => {
         calculateVisiblePages();
     }, [active, dataFull.last_page]);
 
-    const SeeReview = ({ product_review_id }) => {
+    const SeeReview = ({ comment }) => {
 
         const [isMenuOpen, setIsMenuOpen] = useState(false);
         const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-        const [data, setData] = useState({
-            comment: "",
-        });
-
         const renderItems =
             <div className=" w-full sm:w-96 md:w-8/12 lg:w-6/12 items-center">
-                <p className=" font-normal text-base leading-6 text-black mt-7">{data.comment}</p>
+                <p className=" font-normal text-base leading-6 text-black mt-7">{comment}</p>
             </div>
         return (
             <React.Fragment>
@@ -180,7 +176,7 @@ const AllRating = ({ seller_id, rating }) => {
                 <tbody>
                     {data.map(
                         ({ username, product_name
-                            , rating }, index) => {
+                            , rating, comment}, index) => {
                             const isLast = index === TABLE_ROWS.length - 1;
                             const classes = isLast
                                 ? "p-4"
@@ -219,7 +215,7 @@ const AllRating = ({ seller_id, rating }) => {
                                         </div>
                                     </td>
                                     <td className={classes}>
-                                        <SeeReview product_review_id={data} />
+                                        <SeeReview comment={comment} />
                                     </td>
                                 </tr>
                             );
