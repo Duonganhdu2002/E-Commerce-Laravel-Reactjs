@@ -34,7 +34,6 @@ Route::prefix('user')->group(function () {
     // sửa user
     Route::put('/{id}', [UserController::class, 'update']);
 
-
     Route::post('login', [UserController::class, 'login'])->name('login');
     Route::get('auth/google', [GoogleAuthController::class, 'redirect'])->name('google-auth');
     Route::get('auth/google/call-back', [GoogleAuthController::class, 'callbackGoogle'])->name('google-auth');
