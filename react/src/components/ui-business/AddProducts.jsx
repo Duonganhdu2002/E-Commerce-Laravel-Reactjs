@@ -205,13 +205,13 @@ export default function AddProducts() {
     const [productName, setProductName] = useState("");
     const [productPrice, setProductPrice] = useState("");
     
-    const [productColor1, setProductColor1] = useState("" || null);
-    const [productColor2, setProductColor2] = useState("" || null);
-    const [productColor3, setProductColor3] = useState("" || null);
+    const [productColor1, setProductColor1] = useState(null);
+    const [productColor2, setProductColor2] = useState(null);
+    const [productColor3, setProductColor3] = useState(null);
 
-    const [productSize1, setProductSize1] = useState("" || null);
-    const [productSize2, setProductSize2] = useState("" || null);
-    const [productSize3, setProductSize3] = useState("" || null);
+    const [productSize1, setProductSize1] = useState(null);
+    const [productSize2, setProductSize2] = useState(null);
+    const [productSize3, setProductSize3] = useState(null);
 
     const [productDescription, setProductDescription] = useState("");
     const [productStock, setProductStock] = useState(0);
@@ -334,12 +334,7 @@ export default function AddProducts() {
 
             let res = await addProduct(formData);
             console.log("Response:", res);
-            // Xử lý kết quả từ API (nếu cần)
-            setProductName("");
-            setProductDescription("");
-            setProductStock(0);
-            setSelectedCategoryId(null);
-            setSelectedBrandId(null);
+         
         } catch (error) {
             console.error("Error adding product:", error);
         }
