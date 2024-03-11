@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'
 import 'react-datepicker/dist/react-datepicker.css';
 import {
@@ -24,7 +24,11 @@ import {
     Chip,
     IconButton,
     Button,
-
+    Menu,
+    MenuHandler,
+    MenuList,
+    ListItem,
+    Collapse,
 } from "@material-tailwind/react";
 import { getProductListRating } from '../../services/ratingService';
 
@@ -103,6 +107,52 @@ const AllRating = ({ seller_id, rating }) => {
         calculateVisiblePages();
     }, [active, dataFull.last_page]);
 
+    const SeeReview = ({ product_review_id }) => {
+
+        const [isMenuOpen, setIsMenuOpen] = useState(false);
+        const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+        const [data, setData] = useState({
+            comment: "",
+        });
+
+        const renderItems =
+            <div className=" w-full sm:w-96 md:w-8/12 lg:w-6/12 items-center">
+                <p className=" font-normal text-base leading-6 text-black mt-7">{data.comment}</p>
+            </div>
+        return (
+            <React.Fragment>
+                <Menu
+                    open={isMenuOpen}
+                    handler={setIsMenuOpen}
+                    offset={{ mainAxis: 20 }}
+                    placement="left"
+                    allowHover={true}
+                >
+                    <MenuHandler>
+                        <Typography as="div" variant="small" className="font-medium">
+                            <ListItem
+                                className="flex justify-center items-center gap-2 py-2 pr-4 font-medium text-gray-900"
+                                selected={isMenuOpen || isMobileMenuOpen}
+                                onClick={() => setIsMobileMenuOpen((cur) => !cur)}
+                            >
+                                <EyeIcon className="h-4 w-4" />
+                            </ListItem>
+                        </Typography>
+                    </MenuHandler>
+                    <MenuList className="hidden w-[60%] h-fit rounded-xl lg:block">
+                        <ul className=" gap-y-2 outline-none outline-0">
+                            {renderItems}
+                        </ul>
+                    </MenuList>
+                </Menu>
+                <div className="block lg:hidden">
+                    <Collapse open={isMobileMenuOpen}>{renderItems}</Collapse>
+                </div>
+            </React.Fragment>
+        )
+    }
+
     return (
         <div className="h-full w-full">
             <table className="mt-4 w-full min-w-max table-auto text-left">
@@ -169,7 +219,7 @@ const AllRating = ({ seller_id, rating }) => {
                                         </div>
                                     </td>
                                     <td className={classes}>
-                                        <EyeIcon className="h-4 w-4" />
+                                        <SeeReview product_review_id={data} />
                                     </td>
                                 </tr>
                             );
