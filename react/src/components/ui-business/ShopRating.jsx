@@ -14,6 +14,7 @@ import {
     Card,
     Typography,
     CardBody,
+    CardFooter,
     Tabs,
     TabsHeader,
     Tab,
@@ -113,8 +114,8 @@ const AllRating = ({ seller_id, rating }) => {
         const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
         const renderItems =
-            <div className=" w-full sm:w-96 md:w-8/12 lg:w-6/12 items-center">
-                <p className=" font-normal text-base leading-6 text-black mt-7">{comment}</p>
+            <div className="">
+                <p className=" text-lg">{comment}</p>
             </div>
         return (
             <React.Fragment>
@@ -136,7 +137,7 @@ const AllRating = ({ seller_id, rating }) => {
                             </ListItem>
                         </Typography>
                     </MenuHandler>
-                    <MenuList className="hidden w-[60%] h-fit rounded-xl lg:block">
+                    <MenuList className="hidden  h-fit rounded-xl lg:block">
                         <ul className=" gap-y-2 outline-none outline-0">
                             {renderItems}
                         </ul>
@@ -151,110 +152,114 @@ const AllRating = ({ seller_id, rating }) => {
 
     return (
         <div className="h-full w-full">
-            <table className="mt-4 w-full min-w-max table-auto text-left">
-                <thead>
-                    <tr>
-                        {TABLE_HEAD.map((head, index) => (
-                            <th
-                                key={head}
-                                className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
-                            >
-                                <Typography
-                                    variant="small"
-                                    color="blue-gray"
-                                    className="flex items-center justify-between gap-2 font-normal leading-none opacity-70"
+            <div className='h-[58vh]'>
+                <table className="mt-4 w-full min-w-max table-auto text-left">
+                    <thead>
+                        <tr>
+                            {TABLE_HEAD.map((head, index) => (
+                                <th
+                                    key={head}
+                                    className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
                                 >
-                                    {head}{" "}
-                                    {index !== TABLE_HEAD.length - 1 && (
-                                        <ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
-                                    )}
-                                </Typography>
-                            </th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.map(
-                        ({ username, product_name
-                            , rating, comment}, index) => {
-                            const isLast = index === TABLE_ROWS.length - 1;
-                            const classes = isLast
-                                ? "p-4"
-                                : "p-4 border-b border-blue-gray-50";
+                                    <Typography
+                                        variant="small"
+                                        color="blue-gray"
+                                        className="flex items-center justify-between gap-2 font-normal leading-none opacity-70"
+                                    >
+                                        {head}{" "}
+                                        {index !== TABLE_HEAD.length - 1 && (
+                                            <ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
+                                        )}
+                                    </Typography>
+                                </th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data.map(
+                            ({ username, product_name
+                                , rating, comment }, index) => {
+                                const isLast = index === TABLE_ROWS.length - 1;
+                                const classes = isLast
+                                    ? "p-4"
+                                    : "p-4 border-b border-blue-gray-50";
 
-                            return (
-                                <tr key={index}>
-                                    <td className={classes}>
-                                        <div className="flex flex-col">
-                                            <Typography
-                                                color="gray"
-                                                className="font-normal"
-                                            >
-                                                {username || ""}
-                                            </Typography>
-                                        </div>
-                                    </td>
-                                    <td className={classes}>
-                                        <div className="flex flex-col">
-                                            <Typography
-                                                color="gray"
-                                                className="font-normal"
-                                            >
-                                                {product_name}
-                                            </Typography>
-                                        </div>
-                                    </td>
-                                    <td className={classes}>
-                                        <div className="flex flex-col">
-                                            <Typography
-                                                color="gray"
-                                                className="font-normal"
-                                            >
-                                                {rating}.0 / 5.0
-                                            </Typography>
-                                        </div>
-                                    </td>
-                                    <td className={classes}>
-                                        <SeeReview comment={comment} />
-                                    </td>
-                                </tr>
-                            );
-                        },
-                    )}
-                </tbody>
-            </table>
-            <div className="flex items-center mt-8">
-                <Button
-                    variant="text"
-                    className="flex items-center gap-2"
-                    onClick={prev}
-                    disabled={active === dataFull.from}
-                >
-                    <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
-                </Button>
-
-                <div className="flex items-center gap-2">
-                    {visiblePages.map((pageNumber) => (
-                        <IconButton
-                            key={pageNumber}
-                            {...getItemProps(pageNumber)}
-                        >
-                            {pageNumber}
-                        </IconButton>
-                    ))}
-                </div>
-
-
-                <Button
-                    variant="text"
-                    className="flex items-center gap-2"
-                    onClick={next}
-                    disabled={active === dataFull.last_page}
-                >
-                    Next
-                    <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
-                </Button>
+                                return (
+                                    <tr key={index}>
+                                        <td className={classes}>
+                                            <div className="flex flex-col">
+                                                <Typography
+                                                    color="gray"
+                                                    className="font-normal"
+                                                >
+                                                    {username || ""}
+                                                </Typography>
+                                            </div>
+                                        </td>
+                                        <td className={classes}>
+                                            <div className="flex flex-col">
+                                                <Typography
+                                                    color="gray"
+                                                    className="font-normal"
+                                                >
+                                                    {product_name}
+                                                </Typography>
+                                            </div>
+                                        </td>
+                                        <td className={classes}>
+                                            <div className="flex flex-col">
+                                                <Typography
+                                                    color="gray"
+                                                    className="font-normal"
+                                                >
+                                                    {rating}.0 / 5.0
+                                                </Typography>
+                                            </div>
+                                        </td>
+                                        <td className={classes}>
+                                            <SeeReview comment={comment} />
+                                        </td>
+                                    </tr>
+                                );
+                            },
+                        )}
+                    </tbody>
+                </table>
             </div>
+            <CardFooter>
+                <div className="flex mt-8 justify-end">
+                    <Button
+                        variant="text"
+                        className="flex items-center gap-2"
+                        onClick={prev}
+                        disabled={active === dataFull.from}
+                    >
+                        <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
+                    </Button>
+
+                    <div className="flex items-center gap-2">
+                        {visiblePages.map((pageNumber) => (
+                            <IconButton
+                                key={pageNumber}
+                                {...getItemProps(pageNumber)}
+                            >
+                                {pageNumber}
+                            </IconButton>
+                        ))}
+                    </div>
+
+
+                    <Button
+                        variant="text"
+                        className="flex items-center gap-2"
+                        onClick={next}
+                        disabled={active === dataFull.last_page}
+                    >
+                        Next
+                        <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
+                    </Button>
+                </div>
+            </CardFooter>
         </div>
     )
 }
