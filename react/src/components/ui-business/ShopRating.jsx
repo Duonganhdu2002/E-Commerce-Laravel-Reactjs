@@ -177,7 +177,7 @@ const AllRating = ({ seller_id, rating }) => {
                     {data.map(
                         ({ username, product_name
                             , rating, comment}, index) => {
-                            const isLast = index === TABLE_ROWS.length - 1;
+                            const isLast = index === data.length - 1;
                             const classes = isLast
                                 ? "p-4"
                                 : "p-4 border-b border-blue-gray-50";
@@ -259,45 +259,6 @@ const AllRating = ({ seller_id, rating }) => {
     )
 }
 const TABLE_HEAD = ["Username", "Product name", "Buyer Reviews", "Details"];
-
-const TABLE_ROWS = [
-    {
-        img: "https://www.shutterstock.com/image-vector/young-smiling-man-avatar-brown-600nw-2261401207.jpg",
-        name: "John",
-        review: "5.0 / 5.0",
-    },
-    {
-        img: "https://www.shutterstock.com/image-vector/young-smiling-man-avatar-brown-600nw-2261401207.jpg",
-        name: "Dui",
-        review: "5.0 / 5.0",
-    },
-    {
-        img: "https://www.shutterstock.com/image-vector/young-smiling-man-avatar-brown-600nw-2261401207.jpg",
-        name: "Lala",
-        review: "5.0 / 5.0",
-    },
-    {
-        img: "https://www.shutterstock.com/image-vector/young-smiling-man-avatar-brown-600nw-2261401207.jpg",
-        name: "Love",
-        review: "5.0 / 5.0",
-    },
-    {
-        img: "https://www.shutterstock.com/image-vector/young-smiling-man-avatar-brown-600nw-2261401207.jpg",
-        name: "Vaa",
-        review: "5.0 / 5.0",
-    },
-    {
-        img: "https://www.shutterstock.com/image-vector/young-smiling-man-avatar-brown-600nw-2261401207.jpg",
-        name: "sda",
-        review: "5.0 / 5.0",
-    },
-    {
-        img: "https://www.shutterstock.com/image-vector/young-smiling-man-avatar-brown-600nw-2261401207.jpg",
-        name: "asddas",
-        review: "5.0 / 5.0",
-    },
-];
-
 
 export function ShopRating() {
 
