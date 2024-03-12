@@ -14,7 +14,6 @@ import {
     Card,
     Typography,
     CardBody,
-    CardFooter,
     Tabs,
     TabsHeader,
     Tab,
@@ -32,13 +31,10 @@ import {
     Collapse,
 } from "@material-tailwind/react";
 import { getProductListRating } from '../../services/ratingService';
-
 const AllRating = ({ seller_id, rating }) => {
-
     const [data, setData] = useState([]);
     const [dataFull, setDataFull] = useState([]);
     const [page, setPage] = useState(1);
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -51,10 +47,8 @@ const AllRating = ({ seller_id, rating }) => {
         }
         fetchData()
     }, [page]);
-
     const [active, setActive] = useState(1);
     const [visiblePages, setVisiblePages] = useState([]);
-
     const getItemProps = (index) => ({
         variant: active === index ? 'filled' : 'text',
         color: 'gray',
@@ -63,26 +57,20 @@ const AllRating = ({ seller_id, rating }) => {
             setActive(index);
         },
     });
-
     const next = () => {
         if (active === dataFull.last_page) return;
-
         setActive(active + 1);
         setPage(active + 1);
     };
-
     const prev = () => {
         if (active === dataFull.from) return;
-
         setActive(active - 1);
         setPage(active - 1);
     };
-
     useEffect(() => {
         const calculateVisiblePages = async () => {
             const totalVisiblePages = 3;
             const totalPageCount = dataFull.last_page;
-
             let startPage, endPage;
             if (totalPageCount <= totalVisiblePages) {
                 startPage = 1;
@@ -100,22 +88,17 @@ const AllRating = ({ seller_id, rating }) => {
                     endPage = active + middlePage;
                 }
             }
-
             const visiblePagesArray = Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index);
             setVisiblePages(visiblePagesArray);
         };
-
         calculateVisiblePages();
     }, [active, dataFull.last_page]);
-
     const SeeReview = ({ comment }) => {
-
         const [isMenuOpen, setIsMenuOpen] = useState(false);
         const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
         const renderItems =
-            <div className="">
-                <p className=" text-lg">{comment}</p>
+            <div className=" w-full sm:w-96 md:w-8/12 lg:w-6/12 items-center">
+                <p className=" font-normal text-base leading-6 text-black mt-7">{comment}</p>
             </div>
         return (
             <React.Fragment>
@@ -137,7 +120,7 @@ const AllRating = ({ seller_id, rating }) => {
                             </ListItem>
                         </Typography>
                     </MenuHandler>
-                    <MenuList className="hidden  h-fit rounded-xl lg:block">
+                    <MenuList className="hidden w-[60%] h-fit rounded-xl lg:block">
                         <ul className=" gap-y-2 outline-none outline-0">
                             {renderItems}
                         </ul>
@@ -149,7 +132,6 @@ const AllRating = ({ seller_id, rating }) => {
             </React.Fragment>
         )
     }
-
     return (
         <div className="h-full w-full">
             <table className="mt-4 w-full min-w-max table-auto text-left">
@@ -182,92 +164,123 @@ const AllRating = ({ seller_id, rating }) => {
                             const classes = isLast
                                 ? "p-4"
                                 : "p-4 border-b border-blue-gray-50";
-
-                                return (
-                                    <tr key={index}>
-                                        <td className={classes}>
-                                            <div className="flex flex-col">
-                                                <Typography
-                                                    color="gray"
-                                                    className="font-normal"
-                                                >
-                                                    {username || ""}
-                                                </Typography>
-                                            </div>
-                                        </td>
-                                        <td className={classes}>
-                                            <div className="flex flex-col">
-                                                <Typography
-                                                    color="gray"
-                                                    className="font-normal"
-                                                >
-                                                    {product_name}
-                                                </Typography>
-                                            </div>
-                                        </td>
-                                        <td className={classes}>
-                                            <div className="flex flex-col">
-                                                <Typography
-                                                    color="gray"
-                                                    className="font-normal"
-                                                >
-                                                    {rating}.0 / 5.0
-                                                </Typography>
-                                            </div>
-                                        </td>
-                                        <td className={classes}>
-                                            <SeeReview comment={comment} />
-                                        </td>
-                                    </tr>
-                                );
-                            },
-                        )}
-                    </tbody>
-                </table>
-            </div>
-            <CardFooter>
-                <div className="flex mt-8 justify-end">
-                    <Button
-                        variant="text"
-                        className="flex items-center gap-2"
-                        onClick={prev}
-                        disabled={active === dataFull.from}
-                    >
-                        <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
-                    </Button>
-
-                    <div className="flex items-center gap-2">
-                        {visiblePages.map((pageNumber) => (
-                            <IconButton
-                                key={pageNumber}
-                                {...getItemProps(pageNumber)}
-                            >
-                                {pageNumber}
-                            </IconButton>
-                        ))}
-                    </div>
-
-
-                    <Button
-                        variant="text"
-                        className="flex items-center gap-2"
-                        onClick={next}
-                        disabled={active === dataFull.last_page}
-                    >
-                        Next
-                        <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
-                    </Button>
+                            return (
+                                <tr key={index}>
+                                    <td className={classes}>
+                                        <div className="flex flex-col">
+                                            <Typography
+                                                color="gray"
+                                                className="font-normal"
+                                            >
+                                                {username || ""}
+                                            </Typography>
+                                        </div>
+                                    </td>
+                                    <td className={classes}>
+                                        <div className="flex flex-col">
+                                            <Typography
+                                                color="gray"
+                                                className="font-normal"
+                                            >
+                                                {product_name}
+                                            </Typography>
+                                        </div>
+                                    </td>
+                                    <td className={classes}>
+                                        <div className="flex flex-col">
+                                            <Typography
+                                                color="gray"
+                                                className="font-normal"
+                                            >
+                                                {rating}.0 / 5.0
+                                            </Typography>
+                                        </div>
+                                    </td>
+                                    <td className={classes}>
+                                        <SeeReview comment={comment} />
+                                    </td>
+                                </tr>
+                            );
+                        },
+                    )}
+                </tbody>
+            </table>
+            <div className="flex items-center mt-8">
+                <Button
+                    variant="text"
+                    className="flex items-center gap-2"
+                    onClick={prev}
+                    disabled={active === dataFull.from}
+                >
+                    <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
+                </Button>
+                <div className="flex items-center gap-2">
+                    {visiblePages.map((pageNumber) => (
+                        <IconButton
+                            key={pageNumber}
+                            {...getItemProps(pageNumber)}
+                        >
+                            {pageNumber}
+                        </IconButton>
+                    ))}
                 </div>
-            </CardFooter>
+                <Button
+                    variant="text"
+                    className="flex items-center gap-2"
+                    onClick={next}
+                    disabled={active === dataFull.last_page}
+                >
+                    Next
+                    <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
+                </Button>
+            </div>
         </div>
     )
 }
 const TABLE_HEAD = ["Username", "Product name", "Buyer Reviews", "Details"];
 
+const TABLE_ROWS = [
+    {
+        img: "https://www.shutterstock.com/image-vector/young-smiling-man-avatar-brown-600nw-2261401207.jpg",
+        name: "John",
+        review: "5.0 / 5.0",
+    },
+    {
+        img: "https://www.shutterstock.com/image-vector/young-smiling-man-avatar-brown-600nw-2261401207.jpg",
+        name: "Dui",
+        review: "5.0 / 5.0",
+    },
+    {
+        img: "https://www.shutterstock.com/image-vector/young-smiling-man-avatar-brown-600nw-2261401207.jpg",
+        name: "Lala",
+        review: "5.0 / 5.0",
+    },
+    {
+        img: "https://www.shutterstock.com/image-vector/young-smiling-man-avatar-brown-600nw-2261401207.jpg",
+        name: "Love",
+        review: "5.0 / 5.0",
+    },
+    {
+        img: "https://www.shutterstock.com/image-vector/young-smiling-man-avatar-brown-600nw-2261401207.jpg",
+        name: "Vaa",
+        review: "5.0 / 5.0",
+    },
+    {
+        img: "https://www.shutterstock.com/image-vector/young-smiling-man-avatar-brown-600nw-2261401207.jpg",
+        name: "sda",
+        review: "5.0 / 5.0",
+    },
+    {
+        img: "https://www.shutterstock.com/image-vector/young-smiling-man-avatar-brown-600nw-2261401207.jpg",
+        name: "asddas",
+        review: "5.0 / 5.0",
+    },
+];
+
+
 export function ShopRating() {
 
     const seller_id = useSelector((state) => state.seller.seller.user_id);
-
     const TABS = [
         {
             label: "All",
@@ -300,12 +313,9 @@ export function ShopRating() {
             desc: <AllRating seller_id={seller_id} rating={1} />
         },
     ];
-
     return (
         <Card className="h-fit w-full">
-
             <CardBody >
-
                 <div className="flex flex-col gap-4 font-normal mb-6">
                     <Tabs value="all">
                         <TabsHeader>
@@ -324,7 +334,6 @@ export function ShopRating() {
                         </TabsBody>
                     </Tabs>
                 </div>
-
             </CardBody>
         </Card>
     );
