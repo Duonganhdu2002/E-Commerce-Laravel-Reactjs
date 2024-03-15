@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\FieldController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ShoppingCartController;
 use App\Http\Controllers\OrderController;
@@ -185,6 +186,13 @@ Route::prefix('public')->group(function () {
 
 Route::prefix('shopping-method')->group(function () {
     Route::get('show', [ShippingMethodController::class, 'index']);
+});
+
+Route::prefix('notification')->group(function () {
+    Route::get('show', [NotificationController::class, 'index']);
+    Route::post('store', [NotificationController::class, 'store']);
+    Route::put('update/{id}', [NotificationController::class, 'update']);
+    Route::delete('store/{id}', [NotificationController::class, 'destroy']);
 });
 
 Route::prefix('pageAdmin')->group(function () { // truy vấn dữ liệu ra trang admin

@@ -24,6 +24,7 @@ import {
     ChevronDownIcon,
     Bars3Icon,
     XMarkIcon,
+    BellIcon
 } from "@heroicons/react/24/outline";
 import {
     Bars4Icon,
@@ -43,6 +44,7 @@ import logoSingle from "../../assets/icon/logo-single.svg";
 import { useNavigate } from 'react-router-dom';
 import Search from "../../assets/icon/search.svg"
 import { getCart } from "../../services/cartService";
+import { getNotification } from "../../services/notificationService";
 
 const navListMenuItems = [
     {
@@ -270,6 +272,19 @@ function NavProductList() {
                             selected={isMenuOpen || isMobileMenuOpen}
                             onClick={() => setIsMobileMenuOpen((cur) => !cur)}
                         >
+
+                            <Link className=" mr-8" to="/notification">
+                                <Badge
+                                    className=" w-3"
+                                    content={user ? (data.length > 0 ? (data.length) : ("0")) : ("0")} withBorder
+                                >
+                                    <BellIcon
+                                        className="h-6 w-6"
+                                        strokeWidth={2}
+                                    />
+                                </Badge>
+                            </Link>
+
                             <Link to="/cart">
                                 <Badge
                                     className=" w-3"
@@ -281,6 +296,7 @@ function NavProductList() {
                                     />
                                 </Badge>
                             </Link>
+
                         </ListItem>
                     </Typography>
                 </MenuHandler>
@@ -343,8 +359,22 @@ export default function MenuBar() {
     const [hidden, setHidden] = useState(false);
     const [data, setData] = useState([]);
 
+
+    console.log(data)
+
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await getNotification()
+            } catch (error) {
+                console.error(error)
+            }
+        }
+        fetchData();
+    }, [])
 
     const handleLogOut = () => {
         dispatch(clearUser());
@@ -471,7 +501,7 @@ export default function MenuBar() {
                         <div className=" items-center flex">
                             <Typography>Hello </Typography>
                             <Link to="/user/profile">
-                            <Typography className=" mx-3 font-semibold">{user.username}</Typography>
+                                <Typography className=" mx-3 font-semibold">{user.username}</Typography>
                             </Link>
 
                             <Button variant="gradient" size="sm" fullWidth onClick={handleLogOut}>
@@ -497,6 +527,17 @@ export default function MenuBar() {
                 <div className=" hidden lg:block">
                     <NavProductList />
                 </div>
+
+                <Link to="/notification">
+                    <div className=" lg:hidden">
+                        <Badge className=" w-3" content={user ? (data.length > 0 ? (data.length) : ("0")) : ("0")} withBorder>
+                            <BellIcon
+                                className="h-6 w-6"
+                                strokeWidth={2}
+                            />
+                        </Badge>
+                    </div>
+                </Link>
 
                 <Link to="/cart">
                     <div className=" lg:hidden">

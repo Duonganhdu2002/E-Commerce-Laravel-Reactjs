@@ -66,6 +66,7 @@ import ReviewUserList from "./components/ui-admin/ReviewUser";
 import ShoppingMethodList from "./components/ui-admin/ShoppingMethod";
 import Setting from "./components/ui-admin/Setting";
 import Payment from "./components/ui/Payment";
+import Notification from "./components/commom/modal/notification";
 
 
 const Customer = () => {
@@ -195,6 +196,7 @@ const App = () => {
                                 <Route path="payment" element={<PrivateCustomerRoute element={<Payment />} />} />
                                 <Route path="search/:searchKey" element={<SearchLayout />} />
                                 <Route path="success" element={<PrivateCustomerRoute element={<Success />} />} />
+                                <Route path="notification" element={<PrivateCustomerRoute element={<Notification />} />} />
                                 {/* {User} */}
                                 <Route path="/user" element={<PrivateCustomerRoute element={<User/>} />}>
                                     <Route path="profile" element={<PrivateCustomerRoute element={<Profile />} />} />
