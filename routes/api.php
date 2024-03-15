@@ -109,17 +109,20 @@ Route::prefix('public')->group(function () {
         //hiển thị danh sách sản phẩm theo sắp xếp
         // Route::get('/sort-products/{sortBy}', [ProductController::class, 'sortProducts']);
 
-        //hiển thị danh sách sản phẩm theo sắp xếp
-        // Route::get('/sort-products/{sortBy}/{user_id}', [ProductController::class, 'sortUserProducts']);
-
-        Route::get('revenue/{shop_id}/{type}/{date}', [RevenueController::class, 'calculateShopRevenue']);
         Route::get('rating/{shop_id}/{rating?}', [ProductReviewController::class, 'shopReviews']);
     });
 
 
     Route::prefix('revenue')->group(function () {
+
+        // tính tổng doanh thu ngày, tuần, tháng, năm và tỉ lệ so với ngày hôm qua, tuần trước,  tháng trước, năm trước
         Route::get('/total/{shopId}', [RevenueController::class, 'calculateRevenue']);
+
+        // tính tổng số sản phẩm được bán ra trong ngày, tháng, năm và tỉ lệ so với ngày hôm qua, tuần trước,  tháng trước, năm trước
+        Route::get('/totalProduct/{shopId}', [RevenueController::class, 'calculateProductSold']);
     });
+
+
 
     Route::prefix('field')->group(function () {
         Route::get('list', [FieldController::class, 'index']);

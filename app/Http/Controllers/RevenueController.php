@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use App\Models\order_items;
 use App\Models\User;
+use Carbon\Carbon;
+use Carbon\CarbonInterval;
 
 class RevenueController extends Controller
 {
@@ -20,16 +22,17 @@ class RevenueController extends Controller
             ->where('order.shop_id', $shopId)
             ->select(DB::raw('DATE(order.created_at) AS date'), DB::raw('SUM(order_items.quantity * order.total) AS total_revenue'))
             ->groupBy(DB::raw('DATE(order.created_at)'))
-            ->orderBy(DB::raw('DATE(order.created_at)'), 'DESC')
+            ->orderBy('date', 'DESC')
             ->get();
 
         // Tính tổng doanh thu theo tuần
         $weeklyRevenue = DB::table('order_items')
             ->join('order', 'order_items.order_id', '=', 'order.order_id')
             ->where('order.shop_id', $shopId)
-            ->select(DB::raw('YEARWEEK(order.created_at) AS week'), DB::raw('SUM(order_items.quantity * order.total) AS total_revenue'))
-            ->groupBy(DB::raw('YEARWEEK(order.created_at)'))
-            ->orderBy(DB::raw('YEARWEEK(order.created_at)'), 'DESC')
+            ->select(DB::raw('YEAR(order.created_at) AS year'), DB::raw('WEEK(order.created_at) AS week'), DB::raw('SUM(order_items.quantity * order.total) AS total_revenue'))
+            ->groupBy('year', 'week')
+            ->orderBy('year', 'DESC')
+            ->orderBy('week', 'DESC')
             ->get();
 
         // Tính tổng doanh thu theo tháng
@@ -37,9 +40,9 @@ class RevenueController extends Controller
             ->join('order', 'order_items.order_id', '=', 'order.order_id')
             ->where('order.shop_id', $shopId)
             ->select(DB::raw('YEAR(order.created_at) AS year'), DB::raw('MONTH(order.created_at) AS month'), DB::raw('SUM(order_items.quantity * order.total) AS total_revenue'))
-            ->groupBy(DB::raw('YEAR(order.created_at)'), DB::raw('MONTH(order.created_at)'))
-            ->orderBy(DB::raw('YEAR(order.created_at)'), 'DESC')
-            ->orderBy(DB::raw('MONTH(order.created_at)'), 'DESC')
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'DESC')
+            ->orderBy('month', 'DESC')
             ->get();
 
         // Tính tổng doanh thu theo năm
@@ -47,167 +50,117 @@ class RevenueController extends Controller
             ->join('order', 'order_items.order_id', '=', 'order.order_id')
             ->where('order.shop_id', $shopId)
             ->select(DB::raw('YEAR(order.created_at) AS year'), DB::raw('SUM(order_items.quantity * order.total) AS total_revenue'))
-            ->groupBy(DB::raw('YEAR(order.created_at)'))
-            ->orderBy(DB::raw('YEAR(order.created_at)'), 'DESC')
+            ->groupBy('year')
+            ->orderBy('year', 'DESC')
             ->get();
 
-        // Tính tỉ lệ so với thời gian trước
-        $revenueRatios = [];
+        // Tính tỉ lệ so với ngày hôm qua
+        $yesterdayRevenue = $dailyRevenue[1]->total_revenue ?? 0;
+        $todayRevenue = $dailyRevenue[0]->total_revenue;
+        $revenueChangeYesterday = ($yesterdayRevenue != 0) ? (($todayRevenue - $yesterdayRevenue) / $yesterdayRevenue) * 100 : 0;
 
+        // Tính tỉ lệ so với tuần trước
+        $lastWeekRevenue = $weeklyRevenue[1]->total_revenue ?? 0;
+        $thisWeekRevenue = $weeklyRevenue[0]->total_revenue;
+        $revenueChangeLastWeek = ($lastWeekRevenue != 0) ? (($thisWeekRevenue - $lastWeekRevenue) / $lastWeekRevenue) * 100 : 0;
 
-        // Tính toán doanh thu trước và hiện tại cho mỗi khoảng thời gian và tính tỉ lệ trực tiếp
-        foreach (['DAY', 'WEEK', 'MONTH', 'YEAR'] as $interval) {
-            $previousRevenue = DB::table('order_items')
-                ->join('order', 'order_items.order_id', '=', 'order.order_id')
-                ->where('order.shop_id', $shopId)
-                ->whereDate('order.created_at', '=', DB::raw('DATE(DATE_SUB(NOW(), INTERVAL 1 ' . $interval . '))'))
-                ->select(DB::raw('SUM(order_items.quantity * order.total) AS total_revenue'))
-                ->value('total_revenue');
+        // Tính tỉ lệ so với tháng trước
+        $lastMonthRevenue = $monthlyRevenue[1]->total_revenue ?? 0;
+        $thisMonthRevenue = $monthlyRevenue[0]->total_revenue;
+        $revenueChangeLastMonth = ($lastMonthRevenue != 0) ? (($thisMonthRevenue - $lastMonthRevenue) / $lastMonthRevenue) * 100 : 0;
 
-            $currentRevenue = DB::table('order_items')
-                ->join('order', 'order_items.order_id', '=', 'order.order_id')
-                ->where('order.shop_id', $shopId)
-                ->whereDate('order.created_at', '=', DB::raw('DATE(NOW())'))
-                ->select(DB::raw('SUM(order_items.quantity * order.total) AS total_revenue'))
-                ->value('total_revenue');
+        // Tính tỉ lệ so với năm trước
+        $lastYearRevenue = $annualRevenue[1]->total_revenue ?? 0;
+        $thisYearRevenue = $annualRevenue[0]->total_revenue;
+        $revenueChangeLastYear = ($lastYearRevenue != 0) ? (($thisYearRevenue - $lastYearRevenue) / $lastYearRevenue) * 100 : 0;
 
-            if ($previousRevenue !== null && $currentRevenue !== null && $previousRevenue > 0) {
-                // Chuyển đổi kết quả tỉ lệ sang phần trăm
-                $revenueRatios[$interval] = (($currentRevenue - $previousRevenue) / $previousRevenue) * 100;
-            } else {
-                $revenueRatios[$interval] = null;
-            }
-        }
-
+        // Trả về kết quả
         return response()->json([
-            'daily_revenue' => $dailyRevenue,
-            'weekly_revenue' => $weeklyRevenue,
-            'monthly_revenue' => $monthlyRevenue,
-            'annual_revenue' => $annualRevenue,
-            'revenue_ratios' => $revenueRatios,
+            'dailyRevenue' => $dailyRevenue,
+            'weeklyRevenue' => $weeklyRevenue,
+            'monthlyRevenue' => $monthlyRevenue,
+            'annualRevenue' => $annualRevenue,
+            'revenueChangeYesterday' => $revenueChangeYesterday,
+            'revenueChangeLastWeek' => $revenueChangeLastWeek,
+            'revenueChangeLastMonth' => $revenueChangeLastMonth,
+            'revenueChangeLastYear' => $revenueChangeLastYear
         ]);
     }
 
 
 
+    public function calculateProductSold(Request $request, $shopId)
+    {
+        // Tính tổng số sản phẩm bán ra theo ngày
+        $dailyProductSold = DB::table('order_items')
+            ->join('order', 'order_items.order_id', '=', 'order.order_id')
+            ->where('order.shop_id', $shopId)
+            ->select(DB::raw('DATE(order.created_at) AS date'), DB::raw('SUM(order_items.quantity) AS total_products_sold')) // xét theo thời gian bảng order
+            ->groupBy(DB::raw('DATE(order.created_at)'))
+            ->orderBy('date', 'DESC')
+            ->get();
 
+        // Tính tổng số sản phẩm bán ra theo tuần
+        $weeklyProductSold = DB::table('order_items')
+            ->join('order', 'order_items.order_id', '=', 'order.order_id')
+            ->where('order.shop_id', $shopId)
+            ->select(DB::raw('YEAR(order.created_at) AS year'), DB::raw('WEEK(order.created_at) AS week'), DB::raw('SUM(order_items.quantity) AS total_products_sold'))
+            ->groupBy('year', 'week')
+            ->orderBy('year', 'DESC')
+            ->orderBy('week', 'DESC')
+            ->get();
 
+        // Tính tổng số sản phẩm bán ra theo tháng
+        $monthlyProductSold = DB::table('order_items')
+            ->join('order', 'order_items.order_id', '=', 'order.order_id')
+            ->where('order.shop_id', $shopId)
+            ->select(DB::raw('YEAR(order.created_at) AS year'), DB::raw('MONTH(order.created_at) AS month'), DB::raw('SUM(order_items.quantity) AS total_products_sold'))
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'DESC')
+            ->orderBy('month', 'DESC')
+            ->get();
 
+        // Tính tổng số sản phẩm bán ra theo năm
+        $annualProductSold = DB::table('order_items')
+            ->join('order', 'order_items.order_id', '=', 'order.order_id')
+            ->where('order.shop_id', $shopId)
+            ->select(DB::raw('YEAR(order.created_at) AS year'), DB::raw('SUM(order_items.quantity) AS total_products_sold'))
+            ->groupBy('year')
+            ->orderBy('year', 'DESC')
+            ->get();
 
+        // Tính tỉ lệ so với ngày hôm qua
+        $yesterdayProductSold = $dailyProductSold[1]->total_products_sold ?? 0;
+        $todayProductSold = $dailyProductSold[0]->total_products_sold;
+        $productSoldChangeYesterday = ($yesterdayProductSold != 0) ? (($todayProductSold - $yesterdayProductSold) / $yesterdayProductSold) * 100 : 0;
 
+        // Tính tỉ lệ so với tuần trước
+        $lastWeekProductSold = $weeklyProductSold[1]->total_products_sold ?? 0;
+        $thisWeekProductSold = $weeklyProductSold[0]->total_products_sold;
+        $productSoldChangeLastWeek = ($lastWeekProductSold != 0) ? (($thisWeekProductSold - $lastWeekProductSold) / $lastWeekProductSold) * 100 : 0;
 
+        // Tính tỉ lệ so với tháng trước
+        $lastMonthProductSold = $monthlyProductSold[1]->total_products_sold ?? 0;
+        $thisMonthProductSold = $monthlyProductSold[0]->total_products_sold;
+        $productSoldChangeLastMonth = ($lastMonthProductSold != 0) ? (($thisMonthProductSold - $lastMonthProductSold) / $lastMonthProductSold) * 100 : 0;
 
+        // Tính tỉ lệ so với năm trước
+        $lastYearProductSold = $annualProductSold[1]->total_products_sold ?? 0;
+        $thisYearProductSold = $annualProductSold[0]->total_products_sold;
+        $productSoldChangeLastYear = ($lastYearProductSold != 0) ? (($thisYearProductSold - $lastYearProductSold) / $lastYearProductSold) * 100 : 0;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //     public function calculateShopRevenue($shopId, $type, $date)
-// {
-//     try {
-//         $shop = User::with('products.orders')->findOrFail($shopId);
-
-    //         $endDate = $date;
-//         $startDate = null;
-
-    //         switch ($type) {
-//             case 'day':
-//                 $startDate = now()->subDay()->format('Y-m-d H:i:s');
-//                 break;
-//             case 'week':
-//                 $startDate = now()->subWeek()->format('Y-m-d H:i:s');
-//                 break;
-//             case 'month':
-//                 $startDate = now()->subMonth()->format('Y-m-d H:i:s');
-//                 break;
-//             case 'year':
-//                 $startDate = now()->subYear()->format('Y-m-d H:i:s');
-//                 break;
-//             default:
-//                 return response()->json(['error' => 'Invalid type'], 400);
-//         }
-
-    //         $revenue = $shop->products
-//             ->flatMap(function ($product) use ($startDate, $endDate) {
-//                 return $product->orders
-//                     ->where('created_at', '>=', $startDate)
-//                     ->where('created_at', '<=', $endDate)
-//                     ->pluck('order_items.quantity', 'product.price')
-//                     ->map(function ($quantity, $price) {
-//                         return (object)['quantity' => $quantity, 'price' => $price];
-//                     });
-//             })
-//             ->sum(function ($item) {
-//                 return ($item->quantity !== null && $item->price !== null) 
-//                 ? $item->quantity * $item->price 
-//                 : 0;
-//             });
-//             $previousRevenue = $shop->products
-//             ->flatMap(function ($product) use ($startDate, $endDate, $type) {
-//                 $timeUnit = 'sub' . ucfirst($type);
-
-    //                 return $product->orders
-//                     ->where('created_at', '>=', now()->{$timeUnit}())
-//                     ->where('created_at', '<=', $endDate)
-//                     ->pluck('pivot.quantity', 'product.price')
-//                     ->map(function ($quantity, $price) {
-//                         return (object)['quantity' => $quantity, 'price' => $price];
-//                     });
-//             })
-//             ->sum(function ($item) {
-//                 return ($item->quantity !== null && $item->price !== null) 
-//                 ? $item->quantity * $item->price 
-//                 : 0;
-
-    //             });
-
-    //             $growthRate = $previousRevenue !== 0 ? ($revenue - $previousRevenue) / $previousRevenue * 100 : 0;
-
-    //         return response()->json([
-//             'shop_id' => $shopId,
-//             'type' => $type,
-//             'revenue' => $revenue,
-//             'previous_revenue' => $previousRevenue,
-//             'growth_rate' => $growthRate,
-//         ], 200);
-//     } catch (ModelNotFoundException $e) {
-//         return response()->json([
-//             'status' => false,
-//             'message' => 'Không tìm thấy cửa hàng.',
-//             'data' => null,
-//         ], 404);
-//     }
-// }
+        // Trả về kết quả
+        return response()->json([
+            'dailyProductSold' => $dailyProductSold,
+            'weeklyProductSold' => $weeklyProductSold,
+            'monthlyProductSold' => $monthlyProductSold,
+            'annualProductSold' => $annualProductSold,
+            'productSoldChangeYesterday' => $productSoldChangeYesterday,
+            'productSoldChangeLastWeek' => $productSoldChangeLastWeek,
+            'productSoldChangeLastMonth' => $productSoldChangeLastMonth,
+            'productSoldChangeLastYear' => $productSoldChangeLastYear
+        ]);
+    }
 
 
 }
