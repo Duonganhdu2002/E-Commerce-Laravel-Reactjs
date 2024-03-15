@@ -87,4 +87,80 @@ class RevenueController extends Controller
         ]);
     }
 
+
+
+    public function calculateProductSold(Request $request, $shopId)
+    {
+        // Tính tổng số sản phẩm bán ra theo ngày
+        $dailyProductSold = DB::table('order_items')
+            ->join('order', 'order_items.order_id', '=', 'order.order_id')
+            ->where('order.shop_id', $shopId)
+            ->select(DB::raw('DATE(order.created_at) AS date'), DB::raw('SUM(order_items.quantity) AS total_products_sold')) // xét theo thời gian bảng order
+            ->groupBy(DB::raw('DATE(order.created_at)'))
+            ->orderBy('date', 'DESC')
+            ->get();
+
+        // Tính tổng số sản phẩm bán ra theo tuần
+        $weeklyProductSold = DB::table('order_items')
+            ->join('order', 'order_items.order_id', '=', 'order.order_id')
+            ->where('order.shop_id', $shopId)
+            ->select(DB::raw('YEAR(order.created_at) AS year'), DB::raw('WEEK(order.created_at) AS week'), DB::raw('SUM(order_items.quantity) AS total_products_sold'))
+            ->groupBy('year', 'week')
+            ->orderBy('year', 'DESC')
+            ->orderBy('week', 'DESC')
+            ->get();
+
+        // Tính tổng số sản phẩm bán ra theo tháng
+        $monthlyProductSold = DB::table('order_items')
+            ->join('order', 'order_items.order_id', '=', 'order.order_id')
+            ->where('order.shop_id', $shopId)
+            ->select(DB::raw('YEAR(order.created_at) AS year'), DB::raw('MONTH(order.created_at) AS month'), DB::raw('SUM(order_items.quantity) AS total_products_sold'))
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'DESC')
+            ->orderBy('month', 'DESC')
+            ->get();
+
+        // Tính tổng số sản phẩm bán ra theo năm
+        $annualProductSold = DB::table('order_items')
+            ->join('order', 'order_items.order_id', '=', 'order.order_id')
+            ->where('order.shop_id', $shopId)
+            ->select(DB::raw('YEAR(order.created_at) AS year'), DB::raw('SUM(order_items.quantity) AS total_products_sold'))
+            ->groupBy('year')
+            ->orderBy('year', 'DESC')
+            ->get();
+
+        // Tính tỉ lệ so với ngày hôm qua
+        $yesterdayProductSold = $dailyProductSold[1]->total_products_sold ?? 0;
+        $todayProductSold = $dailyProductSold[0]->total_products_sold;
+        $productSoldChangeYesterday = ($yesterdayProductSold != 0) ? (($todayProductSold - $yesterdayProductSold) / $yesterdayProductSold) * 100 : 0;
+
+        // Tính tỉ lệ so với tuần trước
+        $lastWeekProductSold = $weeklyProductSold[1]->total_products_sold ?? 0;
+        $thisWeekProductSold = $weeklyProductSold[0]->total_products_sold;
+        $productSoldChangeLastWeek = ($lastWeekProductSold != 0) ? (($thisWeekProductSold - $lastWeekProductSold) / $lastWeekProductSold) * 100 : 0;
+
+        // Tính tỉ lệ so với tháng trước
+        $lastMonthProductSold = $monthlyProductSold[1]->total_products_sold ?? 0;
+        $thisMonthProductSold = $monthlyProductSold[0]->total_products_sold;
+        $productSoldChangeLastMonth = ($lastMonthProductSold != 0) ? (($thisMonthProductSold - $lastMonthProductSold) / $lastMonthProductSold) * 100 : 0;
+
+        // Tính tỉ lệ so với năm trước
+        $lastYearProductSold = $annualProductSold[1]->total_products_sold ?? 0;
+        $thisYearProductSold = $annualProductSold[0]->total_products_sold;
+        $productSoldChangeLastYear = ($lastYearProductSold != 0) ? (($thisYearProductSold - $lastYearProductSold) / $lastYearProductSold) * 100 : 0;
+
+        // Trả về kết quả
+        return response()->json([
+            'dailyProductSold' => $dailyProductSold,
+            'weeklyProductSold' => $weeklyProductSold,
+            'monthlyProductSold' => $monthlyProductSold,
+            'annualProductSold' => $annualProductSold,
+            'productSoldChangeYesterday' => $productSoldChangeYesterday,
+            'productSoldChangeLastWeek' => $productSoldChangeLastWeek,
+            'productSoldChangeLastMonth' => $productSoldChangeLastMonth,
+            'productSoldChangeLastYear' => $productSoldChangeLastYear
+        ]);
+    }
+
+
 }
