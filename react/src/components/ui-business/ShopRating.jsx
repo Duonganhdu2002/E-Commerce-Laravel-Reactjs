@@ -93,45 +93,45 @@ const AllRating = ({ seller_id, rating }) => {
         };
         calculateVisiblePages();
     }, [active, dataFull.last_page]);
-    const SeeReview = ({ comment }) => {
-        const [isMenuOpen, setIsMenuOpen] = useState(false);
-        const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-        const renderItems =
-            <div className="">
-                <p className=" font-normal text-base leading-6 text-gray-800">{comment}</p>
-            </div>
-        return (
-            <React.Fragment>
-                <Menu
-                    open={isMenuOpen}
-                    handler={setIsMenuOpen}
-                    offset={{ mainAxis: 20 }}
-                    placement="left"
-                    allowHover={true}
-                >
-                    <MenuHandler>
-                        <Typography as="div" variant="small" className="font-medium">
-                            <ListItem
-                                className="flex justify-center items-center gap-2 py-2 pr-4 font-medium text-gray-900"
-                                selected={isMenuOpen || isMobileMenuOpen}
-                                onClick={() => setIsMobileMenuOpen((cur) => !cur)}
-                            >
-                                <EyeIcon className="h-4 w-4" />
-                            </ListItem>
-                        </Typography>
-                    </MenuHandler>
-                    <MenuList className="hidden h-fit rounded-xl lg:block">
-                        <ul className=" gap-y-2 outline-none outline-0">
-                            {renderItems}
-                        </ul>
-                    </MenuList>
-                </Menu>
-                <div className="block lg:hidden">
-                    <Collapse open={isMobileMenuOpen}>{renderItems}</Collapse>
+        const SeeReview = ({ comment }) => {
+            const [isMenuOpen, setIsMenuOpen] = useState(false);
+            const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+            const renderItems =
+                <div className="">
+                    <p className=" font-normal text-base leading-6 text-gray-800">{comment}</p>
                 </div>
-            </React.Fragment>
-        )
-    }
+            return (
+                <React.Fragment>
+                    <Menu
+                        open={isMenuOpen}
+                        handler={setIsMenuOpen}
+                        offset={{ mainAxis: 20 }}
+                        placement="left"
+                        allowHover={true}
+                    >
+                        <MenuHandler>
+                            <Typography as="div" variant="small" className="font-medium">
+                                <ListItem
+                                    className="flex justify-center items-center gap-2 py-2 pr-4 font-medium text-gray-900"
+                                    selected={isMenuOpen || isMobileMenuOpen}
+                                    onClick={() => setIsMobileMenuOpen((cur) => !cur)}
+                                >
+                                    <EyeIcon className="h-4 w-4" />
+                                </ListItem>
+                            </Typography>
+                        </MenuHandler>
+                        <MenuList className="hidden h-fit rounded-xl lg:block">
+                            <ul className=" gap-y-2 outline-none outline-0">
+                                {renderItems}
+                            </ul>
+                        </MenuList>
+                    </Menu>
+                    <div className="block lg:hidden">
+                        <Collapse open={isMobileMenuOpen}>{renderItems}</Collapse>
+                    </div>
+                </React.Fragment>
+            )
+        }
     return (
         <div className="h-full w-full">
             <table className="mt-4 w-full min-w-max table-auto text-left">

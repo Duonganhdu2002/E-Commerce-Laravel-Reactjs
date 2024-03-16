@@ -28,10 +28,13 @@ import {
     TabPanel,
     Button,
     Input,
+    Popover,
+    PopoverHandler,
+    PopoverContent,
 } from "@material-tailwind/react";
 
 import { useEffect, useState } from "react";
-import { fetchAllUser } from "../../services/authService";
+import { fetchAllUser, userDelete, } from "../../services/authService";
 
 const TABLE_HEAD = [
     "Avt",
@@ -119,6 +122,69 @@ const FetchAllUser = ({ type_id }) => {
 
         calculateVisiblePages();
     }, [active, dataFull.last_page]);
+
+    const EditUser = () => {
+
+
+        return (
+            <div className="cursor-pointer flex justify-center hover:bg-blue-gray-50 py-2 rounded-lg">
+                <Popover placement="left">
+                    <PopoverHandler>
+                        <div className=" w-full flex justify-center">
+                            <PencilIcon className=" w-4 h-4" />
+                        </div>
+                    </PopoverHandler>
+                    <PopoverContent className="flex flex-col z-10 p-8 gap-4">
+
+                        <div className=" flex flex-col gap-2">
+                            <div>
+                                Change Email
+                            </div>
+                            <div>
+                                <Input
+                                    label="Input"
+                                />
+                            </div>
+                        </div>
+
+                        <div className=" flex flex-col gap-2">
+                            <div>
+                                Change Password
+                            </div>
+                            <div>
+                                <Input
+                                    label="Input"
+                                />
+                            </div>
+                        </div>
+
+                        <div className=" flex my-8">
+                            <div className=" w-[85%]">
+                                <Button>Update</Button>
+                            </div>
+                        </div>
+                    </PopoverContent>
+                </Popover>
+            </div>
+        )
+    }
+
+    const DeleteUser = ( {user_id} ) => {
+        const handleDelete = async () => {
+            try {
+                let res = await userDelete(user_id);
+                console.log(res);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        return (
+            <div onClick={handleDelete} className="cursor-pointer flex justify-center hover:bg-blue-gray-50 py-2 rounded-lg " >
+                <TrashIcon className="w-4 h-4 " />
+            </div>
+        )
+    }
 
     return (
         <div>
@@ -214,27 +280,40 @@ const FetchAllUser = ({ type_id }) => {
                                                 {users.telephone || ''}
                                             </Typography>
                                         </td>
-                                    
+
                                         <td className={classes}>
-                                            <Tooltip content="Edit User">
+                                            <Tooltip
+                                                className=" bg-white shadow-gray-400/10 shadow-xl border p-4"
+                                                content={
+                                                    <div className="w-80 font-normal text-base leading-6 text-gray-800">
+                                                        <Typography className="font-medium">
+                                                            Material Tailwind
+                                                        </Typography>
+                                                        <Typography
+                                                            variant="small"
+
+                                                            className="font-normal opacity-80"
+                                                        >
+                                                            Material Tailwind is an easy to use components library for Tailwind
+                                                            CSS and Material Design.
+                                                        </Typography>
+                                                    </div>
+                                                }
+                                                animate={{
+                                                    mount: { scale: 1, y: 0 },
+                                                    unmount: { scale: 0, y: 25 },
+                                                }}
+                                            >
                                                 <IconButton variant="text">
                                                     <EyeIcon className="h-4 w-4" />
                                                 </IconButton>
                                             </Tooltip>
                                         </td>
                                         <td className={classes}>
-                                            <Tooltip content="Edit User">
-                                                <IconButton variant="text">
-                                                    <PencilIcon className="h-4 w-4" />
-                                                </IconButton>
-                                            </Tooltip>
+                                            <EditUser user_id={users.user_id} />
                                         </td>
                                         <td className={classes}>
-                                            <Tooltip content="Edit User">
-                                                <IconButton variant="text">
-                                                    <TrashIcon className="h-4 w-4" />
-                                                </IconButton>
-                                            </Tooltip>
+                                            <DeleteUser user_id={users.user_id} />
                                         </td>
                                     </tr>
                                 );

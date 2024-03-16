@@ -18,6 +18,7 @@ use App\Http\Controllers\ProvincesController;
 use App\Http\Controllers\RevenueController;
 use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\UserAddressController;
 
 Route::prefix('payment')->group(function () {
     Route::post('payment', [PaymentController::class, 'createPaymentIntent']);
@@ -31,7 +32,7 @@ Route::prefix('user')->group(function () {
     Route::post('createBusiness', [UserController::class, 'createBusiness'])->name('createBusiness');
     Route::post('register', [UserController::class, 'createUser'])->name('register');
     // xóa user
-    Route::delete('/{id}', [UserController::class, 'delete']);
+    Route::delete('delete/{id}', [UserController::class, 'delete']);
     // sửa user
     Route::put('/{id}', [UserController::class, 'update']);
 
@@ -44,6 +45,10 @@ Route::prefix('user')->group(function () {
     Route::get('info/{user_id}', [UserController::class, 'info'])->name('info');
     Route::get('auth-total', [UserController::class, 'getTotalUsers'])->name('getTotalUsers');
     Route::get('auth-list/{type_id}', [UserController::class, 'userList'])->name('userList');
+
+    //Địa chỉ của user
+    Route::get('address/{user_id}', [UserAddressController::class,'index'])->name('index');
+
 });
 
 Route::prefix('public')->group(function () {
@@ -176,7 +181,7 @@ Route::prefix('public')->group(function () {
         Route::get('search', [SearchHistoryController::class, 'searchOrdersByUsername']);
         //show cac don hang bị huy
         Route::get('disable/{user_id}', [OrderController::class, 'getDisableOrdersForShop']);
-        // Hiển thị các đơn hàng đang được vận chuyển 
+        // Hiển thị các đơn hàng đang được vận chuyển
         Route::get('shipped-orders/{user_id}', [OrderController::class, 'showShippingOrdersByUserId']);
     });
 
