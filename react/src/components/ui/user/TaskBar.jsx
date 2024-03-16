@@ -80,14 +80,6 @@ export default function TaskBar() {
                                     Address
                                 </ListItem>
                             </Link>
-                            <Link to="./password">
-                                <ListItem>
-                                    <ListItemPrefix>
-                                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                                    </ListItemPrefix>
-                                    Change Password
-                                </ListItem>
-                            </Link>
                         </List>
                     </AccordionBody>
                 </Accordion>
@@ -102,6 +94,17 @@ export default function TaskBar() {
                         </ListItemSuffix>
                     </ListItem>
                 </Link>
+                <Link to="./notification">
+                    <ListItem>
+                        <ListItemPrefix>
+                            <BellAlertIcon className="h-5 w-5" />
+                        </ListItemPrefix>
+                        Notification
+                        <ListItemSuffix>
+                            <Chip value="99+" size="sm" color="red" className="rounded-full" />
+                        </ListItemSuffix>
+                    </ListItem>
+                </Link>
                 <Accordion
                     open={open === 2}
                     icon={
@@ -111,52 +114,6 @@ export default function TaskBar() {
                         />
                     }
                 >
-                    <ListItem className="p-0" selected={open === 2}>
-                        <AccordionHeader onClick={() => handleOpen(2)} className="border-b-0 p-3">
-                            <ListItemPrefix>
-                                <BellAlertIcon className="h-5 w-5" />
-                            </ListItemPrefix>
-                            <Typography color="blue-gray" className="mr-auto font-normal">
-                                Notification
-                            </Typography>
-                        </AccordionHeader>
-                    </ListItem>
-                    <AccordionBody className="py-1">
-                        <List className="p-0">
-                            <Link to="./order">
-                                <ListItem>
-                                    <ListItemPrefix>
-                                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                                    </ListItemPrefix>
-                                    Update orders
-                                </ListItem>
-                            </Link>
-                            <Link to="./promotion">
-                                <ListItem>
-                                    <ListItemPrefix>
-                                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                                    </ListItemPrefix>
-                                    Promotion
-                                </ListItem>
-                            </Link>
-                            <Link to="./wallet">
-                                <ListItem>
-                                    <ListItemPrefix>
-                                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                                    </ListItemPrefix>
-                                    Update wallet
-                                </ListItem>
-                            </Link>
-                            <Link to="./company">
-                                <ListItem>
-                                    <ListItemPrefix>
-                                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                                    </ListItemPrefix>
-                                    Update company
-                                </ListItem>
-                            </Link>
-                        </List>
-                    </AccordionBody>
                 </Accordion>
                 <Link to="./voucher-wallet">
                 <ListItem>

@@ -290,7 +290,7 @@ function NavProductList() {
 
                         </Link>
 
-                        <Link to="/notification">
+                        <Link to="/user/notification">
                             <ListItem
                                 className="flex items-center gap-2 pr-4 pt-4 font-medium text-gray-900"
                                 selected={isMenuOpen || isMobileMenuOpen}
@@ -544,7 +544,7 @@ export default function MenuBar() {
                     <NavProductList />
                 </div>
 
-                <Link to="/notification">
+                <Link to="/user/notification">
                     <div className=" lg:hidden">
                         <Badge className=" w-3" content={user ? (data.length > 0 ? (data.length) : ("0")) : ("0")} withBorder>
                             <BellIcon

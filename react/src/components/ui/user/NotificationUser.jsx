@@ -1,40 +1,21 @@
 import {
-    MagnifyingGlassIcon,
-    ChevronUpDownIcon,
-    ArrowRightIcon,
-    ArrowLeftIcon,
-} from "@heroicons/react/24/outline";
-import {
-    EyeIcon,
-    PencilIcon,
-    TrashIcon
-} from "@heroicons/react/24/solid";
-
-import {
     Card,
     CardHeader,
-    Input,
+    CardFooter,
     Typography,
     CardBody,
-    IconButton,
+    Avatar,
     Button,
-    CardFooter,
-
 } from "@material-tailwind/react";
 
 import React, { useEffect, useState } from "react";
 import { useSelector } from 'react-redux'
 import { deleteNotification, getNotification, updateNotification } from "../../../services/notificationService";
+import { IconButton } from "@material-tailwind/react";
+import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 
-const TABLE_HEAD = [
-    "Icon",
-    "ID",
-    "Field name ",
-    "Edit",
-    "Delete",
-];
 
-export default function Notification() {
+export default function NotificationUser() {
 
     const [data, setData] = useState([]);
     const [dataFull, setDataFull] = useState([]);
@@ -130,35 +111,41 @@ export default function Notification() {
     }, [active, dataFull.last_page]);
 
     return (
-        <Card className=" w-[80%] mx-auto my-8 p-4">
-            <CardBody className="px-4">
-                <div className=" w-full table-auto text-left mb-12">
-                    {data && data.length > 0 && data.map((item, index) => (
-                        <div key={index} className={`p-4 border-b-[1px] flex ${item.read ? 'bg-green-50' : ''}`}>
-                            <div className=" w-3/4">
-                                <div>
-                                    <Typography color="blue-gray" className={`font-semibold text-gray-600 ` }>
-                                        {item.title}
-                                    </Typography>
-                                </div>
-                                <div >
-                                    <Typography color="blue-gray" className=" font-normal text-gray-700">
-                                        {item.content}
-                                    </Typography>
-                                </div>
-                            </div>
-                            <div>
-                                <Button onClick={() => updateNotification1(item.notification_id)} className="mr-8">Update</Button>
-                                <Button onClick={() => deleteNotification1(item.notification_id)}>Delete</Button>
-                            </div>
-                        </div>
-
-                    ))}
+        <Card className="w-full">
+            <CardHeader floated={false} shadow={false} className="rounded-none">
+                <div className="mb-8 flex items-center justify-between gap-8">
+                    <div>
+                        <Typography variant="h5" color="blue-gray">
+                            Notification
+                        </Typography>
+                        <Typography color="gray" className="mt-1 font-normal">
+                            See all notification
+                        </Typography>
+                    </div>
                 </div>
-            </CardBody>
-            <CardFooter>
-                <div className="flex justify-end  my-6 mt-12 absolute bottom-4 right-10">
-                    <Button
+            </CardHeader>
+            {data && data.length > 0 && data.map((item, index) => (
+                <CardBody className={`md:flex md:justify-between items-center ${item.read ? 'bg-green-50' : ''}`} key={index}>
+                    <div className=" flex">
+                        <Avatar variant="rounded" alt="image" src="https://static.vecteezy.com/system/resources/previews/002/594/675/original/alarm-bell-alert-caution-linear-icon-style-free-vector.jpg" className=" md:w-[70px] md:h-[70px] w-32 h-32 overflow-clip mb-4 md:mb-4" />
+                        <div className=" mb-4 md:mb-4 ml-6">
+                            <Typography color="blue-gray" className={`font-semibold text-gray-600 `}>
+                                {item.title}
+                            </Typography>
+                            <Typography color="blue-gray" className=" font-normal text-gray-700">
+                                {item.content}
+                            </Typography>
+                        </div>
+                    </div>
+                    <div className=" flex gap-4">
+                        <Button onClick={() => updateNotification1(item.notification_id)} className="">Update</Button>
+                        <Button onClick={() => deleteNotification1(item.notification_id)}>Delete</Button>
+                    </div>
+                </CardBody>
+            ))}
+            <CardFooter className=" mt-8">
+                <div className="flex justify-end mt-12 absolute bottom-4 right-10">
+                <Button
                         variant="text"
                         className="flex items-center gap-2"
                         onClick={prev}
@@ -190,5 +177,5 @@ export default function Notification() {
                 </div>
             </CardFooter>
         </Card>
-    );
+    )
 }
