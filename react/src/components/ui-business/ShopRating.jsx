@@ -97,8 +97,8 @@ const AllRating = ({ seller_id, rating }) => {
         const [isMenuOpen, setIsMenuOpen] = useState(false);
         const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
         const renderItems =
-            <div className=" w-full sm:w-96 md:w-8/12 lg:w-6/12 items-center">
-                <p className=" font-normal text-base leading-6 text-black mt-7">{comment}</p>
+            <div className="">
+                <p className=" font-normal text-base leading-6 text-gray-800">{comment}</p>
             </div>
         return (
             <React.Fragment>
@@ -120,7 +120,7 @@ const AllRating = ({ seller_id, rating }) => {
                             </ListItem>
                         </Typography>
                     </MenuHandler>
-                    <MenuList className="hidden w-[60%] h-fit rounded-xl lg:block">
+                    <MenuList className="hidden h-fit rounded-xl lg:block">
                         <ul className=" gap-y-2 outline-none outline-0">
                             {renderItems}
                         </ul>
