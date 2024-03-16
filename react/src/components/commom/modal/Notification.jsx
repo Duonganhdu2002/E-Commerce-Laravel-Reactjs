@@ -24,7 +24,7 @@ import {
 
 import React, { useEffect, useState } from "react";
 import { useSelector } from 'react-redux'
-import { getNotification } from "../../../services/notificationService";
+import { deleteNotification, getNotification, updateNotification } from "../../../services/notificationService";
 
 const TABLE_HEAD = [
     "Icon",
@@ -54,6 +54,23 @@ export default function Notification() {
         }
         fetchData()
     }, [page]);
+
+    const updateNotification1 = async (notificationId, notificationData) => {
+        try {
+            await updateNotification(notificationId, notificationData);
+        } catch (error) {
+            console.error("Error updating notification:", error);
+        }
+    }
+
+    const deleteNotification1 = async (notificationId) => {
+        try {
+            await deleteNotification(notificationId);
+        } catch (error) {
+            console.error("Error deleting notification:", error);
+        }
+    }
+
 
     const [active, setActive] = useState(1);
     const [visiblePages, setVisiblePages] = useState([]);
@@ -117,10 +134,10 @@ export default function Notification() {
             <CardBody className="px-4">
                 <div className=" w-full table-auto text-left mb-12">
                     {data && data.length > 0 && data.map((item, index) => (
-                        <div key={index} className=" p-4 border-b-[1px] flex">
-                            <div className=" w-1/2">
+                        <div key={index} className={`p-4 border-b-[1px] flex ${item.read ? 'bg-green-50' : ''}`}>
+                            <div className=" w-3/4">
                                 <div>
-                                    <Typography color="blue-gray" className=" font-semibold text-gray-600">
+                                    <Typography color="blue-gray" className={`font-semibold text-gray-600 ` }>
                                         {item.title}
                                     </Typography>
                                 </div>
@@ -131,7 +148,8 @@ export default function Notification() {
                                 </div>
                             </div>
                             <div>
-                                <button>xoa</button>
+                                <Button onClick={() => updateNotification1(item.notification_id)} className="mr-8">Update</Button>
+                                <Button onClick={() => deleteNotification1(item.notification_id)}>Delete</Button>
                             </div>
                         </div>
 

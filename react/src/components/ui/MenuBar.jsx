@@ -119,7 +119,6 @@ function NavListMenu() {
         ({ icon, title, description, link }, key) => (
             <div key={key}>
                 <Link to={link}>
-
                     <MenuItem className="flex items-center gap-3 rounded-lg">
                         <div className="flex items-center justify-center rounded-lg !bg-blue-gray-50 p-2">
                             {React.createElement(icon, {
@@ -265,27 +264,18 @@ function NavProductList() {
                     <Typography
                         as="div"
                         variant="small"
-                        className="font-medium"
+                        className="font-medium flex"
                     >
-                        <ListItem
-                            className="flex items-center gap-2 pr-4 pt-4 font-medium text-gray-900"
-                            selected={isMenuOpen || isMobileMenuOpen}
-                            onClick={() => setIsMobileMenuOpen((cur) => !cur)}
-                        >
+                        <Link to="/cart" className=" mr-8">
 
-                            <Link className=" mr-8" to="/notification">
-                                <Badge
-                                    className=" w-3"
-                                    content={user ? (data.length > 0 ? (data.length) : ("0")) : ("0")} withBorder
-                                >
-                                    <BellIcon
-                                        className="h-6 w-6"
-                                        strokeWidth={2}
-                                    />
-                                </Badge>
-                            </Link>
+                            <ListItem
+                                className="flex items-center gap-2 pr-4 pt-4 font-medium text-gray-900"
+                                selected={isMenuOpen || isMobileMenuOpen}
+                                onClick={() => setIsMobileMenuOpen((cur) => !cur)}
+                            >
 
-                            <Link to="/cart">
+
+
                                 <Badge
                                     className=" w-3"
                                     content={user ? (data.length > 0 ? (data.length) : ("0")) : ("0")} withBorder
@@ -295,9 +285,35 @@ function NavProductList() {
                                         strokeWidth={2}
                                     />
                                 </Badge>
-                            </Link>
 
-                        </ListItem>
+                            </ListItem>
+
+                        </Link>
+
+                        <Link to="/notification">
+                            <ListItem
+                                className="flex items-center gap-2 pr-4 pt-4 font-medium text-gray-900"
+                                selected={isMenuOpen || isMobileMenuOpen}
+                                onClick={() => setIsMobileMenuOpen((cur) => !cur)}
+                            >
+
+
+
+                                <Badge
+                                    className=" w-3"
+                                    content={user ? (data.length > 0 ? (data.length) : ("0")) : ("0")} withBorder
+                                >
+                                    <BellIcon
+                                        className="h-6 w-6"
+                                        strokeWidth={2}
+                                    />
+                                </Badge>
+
+                            </ListItem>
+
+                        </Link>
+
+
                     </Typography>
                 </MenuHandler>
                 {

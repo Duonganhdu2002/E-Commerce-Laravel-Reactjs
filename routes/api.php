@@ -195,7 +195,7 @@ Route::prefix('notification')->group(function () {
     Route::get('show', [NotificationController::class, 'index']);
     Route::post('store', [NotificationController::class, 'store']);
     Route::put('update/{id}', [NotificationController::class, 'update']);
-    Route::delete('store/{id}', [NotificationController::class, 'destroy']);
+    Route::delete('delete/{id}', [NotificationController::class, 'destroy']);
 });
 
 Route::prefix('pageAdmin')->group(function () { // truy vấn dữ liệu ra trang admin
