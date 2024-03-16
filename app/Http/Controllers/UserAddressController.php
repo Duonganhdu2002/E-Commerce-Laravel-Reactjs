@@ -63,7 +63,7 @@ class UserAddressController extends Controller
         ];
         return response()->json($arr, 201);
     }
-    
+
 
     public function show(string $id)
     {
@@ -92,54 +92,54 @@ class UserAddressController extends Controller
         }
     }
 
-   
+
     public function update(Request $request, string $user_address_id)
     {
-    $input = $request->all();
+        $input = $request->all();
 
 
-    $validator = Validator::make($input, [
-         'user_id' => 'required',
-         'user_address_id' => 'required',
-           
-        
-    ]);
+        $validator = Validator::make($input, [
+            'user_id' => 'required',
+            'user_address_id' => 'required',
 
-    if ($validator->fails()) {
+
+        ]);
+
+        if ($validator->fails()) {
+            $arr = [
+                'status' => false,
+                'message' => 'Lỗi kiểm tra dữ liệu',
+                'data' => $validator->errors()
+            ];
+            return response()->json($arr, 200);
+        }
+
+        $address = user_address::find($user_address_id);
+
+        if (!$address) {
+            $arr = [
+                'status' => false,
+                'message' => 'Sản phẩm không tồn tại',
+                'data' => null
+            ];
+            return response()->json($arr, 404);
+        }
+
+        $address->number = $input['number'] ?? $address->number;
+        $address->street = $input['street'] ?? $address->street;
+        $address->commune = $input['commune'] ?? $address->commune;
+        $address->district = $input['district'] ?? $address->district;
+        $address->province = $input['province'] ?? $address->province;
+        $address->save();
+
         $arr = [
-            'status' => false,
-            'message' => 'Lỗi kiểm tra dữ liệu',
-            'data' => $validator->errors()
+            'status' => true,
+            'message' => 'Sản phẩm cập nhật thành công',
+            'data' => $address
         ];
+
         return response()->json($arr, 200);
     }
-
-    $address = user_address::find($user_address_id);
-
-    if (!$address) {
-        $arr = [
-            'status' => false,
-            'message' => 'Sản phẩm không tồn tại',
-            'data' => null
-        ];
-        return response()->json($arr, 404);
-    }
-
-    $address->number = $input['number'] ?? $address->number;
-    $address->street = $input['street'] ?? $address->street;
-    $address->commune = $input['commune'] ?? $address->commune;
-    $address->district = $input['district'] ?? $address->district;
-    $address->province = $input['province'] ?? $address->province;
-    $address->save();
-
-    $arr = [
-        'status' => true,
-        'message' => 'Sản phẩm cập nhật thành công',
-        'data' => $address
-    ];
-
-    return response()->json($arr, 200);
-}
 
     public function destroy(string $id)
     {
@@ -164,6 +164,31 @@ class UserAddressController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Có lỗi xảy ra khi xóa địa chỉ',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function indexId( $userId)
+    {
+        try {
+            // Lấy user_id từ request
+            // $userId = $request->input('user_id');
+
+            // Lấy danh sách địa chỉ của người dùng có user_id cụ thể
+            $userAddresses = user_address::where('user_id', $userId)->get();
+
+            $arr = [
+                'status' => true,
+                'message' => 'Danh sách địa chỉ của người dùng',
+                'data' => UserAddressResource::collection($userAddresses)
+            ];
+
+            return response()->json($arr, 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Có lỗi xảy ra khi lấy danh sách địa chỉ',
                 'error' => $e->getMessage(),
             ], 500);
         }

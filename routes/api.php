@@ -47,7 +47,7 @@ Route::prefix('user')->group(function () {
     Route::get('auth-list/{type_id}', [UserController::class, 'userList'])->name('userList');
 
     //Địa chỉ của user
-    Route::get('address/{user_id}', [UserAddressController::class,'index'])->name('index');
+    Route::get('address/{user_id}', [UserAddressController::class, 'indexId'])->name('index');
 
 });
 
