@@ -16,44 +16,39 @@ export default function Payment() {
 
     const [clientSecret, setClientSecret] = useState("");
     const selectedItems = useSelector(state => state.cart.items);
-    console.log(selectedItems)
+    const orderId = useSelector(state => state.cart.orderId);
+    const selectedShippingPrice = useSelector(state => state.cart.selectedShippingPrice);
+    console.log(orderId);
+    console.log(selectedItems);
     const userId = useSelector(state => state.user.user.user_id || '');
 
+    // Calculate the total amount
+    const totalAmount = selectedItems.reduce((acc, currentItem) => {
+        return acc + parseFloat(currentItem.Price);
+    }, 0);
+
+    // Define data for the order
     const data = {
         "items": selectedItems,
         "buyer_id": userId,
-        "seller_id": selectedItems[0].shop_id,
-        "order_id": 84,
+        "seller_id": selectedItems.length > 0 ? selectedItems[0].shop_id : '', // Assuming shop_id is present in the first selected item
+        "order_id": orderId,
         "payment_id": 2,
-        "transaction_status": "Thanh cong"
-    }
+        "total_amount": parseFloat(selectedShippingPrice) + totalAmount
+    };
 
-
-    useEffect(() => {
-        const FetchData = async () => {
-            try {
-                let res = await paymentAction(data)
-                setClientSecret(res.clientSecret)
-            } catch (error) {
-                console.error(error)
-            }
-        }
-        FetchData();
-
-
-    }, []);
-
+    console.log(data)
 
     const appearance = {
         theme: 'stripe',
     };
+
     const options = {
         clientSecret,
         appearance,
     };
 
     const [loading, setLoading] = useState(true);
-
 
     useEffect(() => {
         const fetchData = async () => {
@@ -69,7 +64,6 @@ export default function Payment() {
         };
         fetchData();
     }, []);
-
 
     return (
         <div className="flex h-[50vh] items-center">

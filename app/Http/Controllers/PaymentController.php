@@ -32,7 +32,7 @@ class PaymentController extends Controller
 
             // Create a PaymentIntent with amount and currency
             $paymentIntent = PaymentIntent::create([
-                'amount' => $this->calculateOrderAmount($jsonObj->items),
+                'amount' => $totalAmount,
                 'currency' => 'usd',
                 'automatic_payment_methods' => [
                     'enabled' => true,
@@ -40,7 +40,7 @@ class PaymentController extends Controller
             ]);
 
             // Save transaction history
-            // $this->saveTransactionHistory($jsonObj);
+            $this->saveTransactionHistory($request, $totalAmount);
 
             $output = [
                 'clientSecret' => $paymentIntent->client_secret,
@@ -54,7 +54,7 @@ class PaymentController extends Controller
         }
     }
 
-    public function saveTransactionHistory(Request $request)
+    public function saveTransactionHistory(Request $request, $totalAmount)
     {
         try {
             $transaction = new Transaction([
@@ -62,25 +62,25 @@ class PaymentController extends Controller
                 'seller_id' => $request->seller_id,
                 'order_id' => $request->order_id,
                 'payment_id' => $request->payment_id,
-                'transaction_status' => $request->transaction_status,
-                'total_amount' => $request->total_amount,
+                'total_amount' => $request->total_amount, // Use calculated total amount
                 'created_at' => now(),
             ]);
 
             $transaction->save();
 
             return response()->json($transaction);
-        } catch (\Throwable $transaction) {
-            return response()->json(['error'], 500);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
     private function calculateOrderAmount(array $items): int
     {
         $totalAmount = 0;
 
         foreach ($items as $item) {
             $itemArray = (array) $item;
-            if (isset($itemArray['itemId'], $itemArray['Price'], $itemArray['newQuantity'])) {
+            if (isset($itemArray['Price'], $itemArray['newQuantity'])) {
                 $totalAmount += $itemArray['Price'] * $itemArray['newQuantity'];
             }
         }
