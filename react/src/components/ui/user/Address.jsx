@@ -23,19 +23,15 @@ import {
 import React, { useEffect, useState } from "react";
 
 import { useSelector } from 'react-redux';
-import { deleteAddress, updateAddress, userAddress } from "../../../services/authService";
+import { deleteAddress, updateAddress, userAddress, addAddress } from "../../../services/authService";
 
 
 
 
 const TABLE_HEAD = ["Id", "Address", "Edit", "Delete"];
 
-const EditAddress = ({ user_address_id, addressData }) => {
-    const [data, setData] = useState([]);
+const EditAddress = ({ user_address_id, addressData, user_id, updateAddressList }) => {
     const [open, setOpen] = useState(false);
-
-    const handleOpen = () => setOpen(!open);
-
     const [country, setCountry] = useState(addressData.country || '');
     const [province, setProvince] = useState(addressData.province || '');
     const [district, setDistrict] = useState(addressData.district || '');
@@ -43,43 +39,43 @@ const EditAddress = ({ user_address_id, addressData }) => {
     const [street, setStreet] = useState(addressData.street || '');
     const [number, setNumber] = useState(addressData.number || '');
 
+    const handleOpen = () => setOpen(!open);
+
     const handleInputChange = (event, setterFunction) => {
         setterFunction(event.target.value);
     };
 
-    const dataUpdate = {
-        country: country,
-        province: province,
-        district: district,
-        commune: commune,
-        street: street,
-        number: number
-    };
-
     const handleUpdate = async () => {
         try {
+            const dataUpdate = {
+                user_id: user_id,
+                country: country,
+                province: province,
+                district: district,
+                commune: commune,
+                street: street,
+                number: number
+            };
+            console.log(dataUpdate);
             await updateAddress(user_address_id, dataUpdate);
-            alert("Thanh cong");
+            alert("Update successful");
+            // Gọi hàm updateAddressList từ props để cập nhật danh sách địa chỉ
+            updateAddressList();
         } catch (error) {
-            alert(error)
+            alert(error);
         }
-
     };
 
+
+
     useEffect(() => {
-        const fetchData = async () => {
-
-            try {
-                const res = await updateAddress(user_address_id);
-                setData(res.data);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
-        fetchData();
-    }, [user_address_id]);
-
+        setCountry(addressData.country || '');
+        setProvince(addressData.province || '');
+        setDistrict(addressData.district || '');
+        setCommune(addressData.commune || '');
+        setStreet(addressData.street || '');
+        setNumber(addressData.number || '');
+    }, [addressData]);
 
     return (
         <div>
@@ -120,12 +116,14 @@ const EditAddress = ({ user_address_id, addressData }) => {
     );
 };
 
-const DeleteAddress = ({ user_address_id }) => {
+
+const DeleteAddress = ({ user_address_id, updateAddressList }) => {
 
     const handleDelete = async () => {
         try {
             let res = await deleteAddress(user_address_id);
             console.log(res);
+            updateAddressList();
         } catch (error) {
             console.error(error);
         }
@@ -144,24 +142,65 @@ export default function Address() {
 
     const [data, setData] = useState([]);
     const [dataFull, setDataFull] = useState([]);
+    const [open, setOpen] = useState(false);
+
+
     const user_id = useSelector((state) => state.user.user.user_id);
+    const [newAddress, setNewAddress] = useState({
+        country: '',
+        province: '',
+        district: '',
+        commune: '',
+        street: '',
+        number: ''
+    });
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                let res = await userAddress(user_id);
-                setDataFull(res);
-                setData(res.data);
-            } catch (error) {
-                console.error("Error fetching fields:", error);
-            }
-        }
-        fetchData();
+        fetchData(); // Lấy danh sách địa chỉ khi component được mount
     }, [user_id]);
 
-    const [open, setOpen] = React.useState(false);
+    const fetchData = async () => {
+        try {
+            let res = await userAddress(user_id);
+            setDataFull(res);
+            setData(res.data);
+        } catch (error) {
+            console.error("Error fetching fields:", error);
+        }
+    }
 
     const handleOpen = () => setOpen(!open);
+
+    const handleInputChange = (event, field) => {
+        // Hàm xử lý sự kiện khi người dùng nhập dữ liệu vào input
+        setNewAddress({
+            ...newAddress,
+            [field]: event.target.value
+        });
+    };
+
+    const handleAddAddress = async () => {
+        // Hàm xử lý sự kiện khi người dùng xác nhận thêm địa chỉ mới
+        try {
+            await addAddress({ ...newAddress, user_id });
+            alert("Add new address successful");
+            fetchData(); // Cập nhật lại danh sách địa chỉ sau khi thêm thành công
+            setOpen(false); // Đóng Dialog
+        } catch (error) {
+            console.error("Error adding new address:", error);
+        }
+    };
+
+    const updateAddressList = async () => {
+        try {
+            let res = await userAddress(user_id);
+            setDataFull(res);
+            setData(res.data);
+        } catch (error) {
+            console.error("Error fetching fields:", error);
+        }
+    }
+
 
 
     return (
@@ -173,7 +212,7 @@ export default function Address() {
                             My Addresses
                         </Typography>
                     </div>
-                    {/* <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+                    <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
                         <Button className="flex items-center gap-3" size="sm" onClick={handleOpen}>
                             <PlusIcon strokeWidth={2} className="h-4 w-4" /> Add New Address
                         </Button>
@@ -181,14 +220,14 @@ export default function Address() {
                             <DialogHeader>Add Address</DialogHeader>
                             <DialogBody className="flex gap-6">
                                 <div className="flex flex-col gap-3 w-[50%]">
-                                    <Input label="Country" value={data.country} />
-                                    <Input label="Province" value={data.province} />
-                                    <Input label="District" value={data.district} />
+                                    <Input label="Country" value={newAddress.country} onChange={(event) => handleInputChange(event, 'country')} />
+                                    <Input label="Province" value={newAddress.province} onChange={(event) => handleInputChange(event, 'province')} />
+                                    <Input label="District" value={newAddress.district} onChange={(event) => handleInputChange(event, 'district')} />
                                 </div>
                                 <div className="flex flex-col gap-3 w-[50%]">
-                                    <Input label="Commune" value={data.commune} />
-                                    <Input label="Street" value={data.street} />
-                                    <Input label="Number" value={data.number} />
+                                    <Input label="Commune" value={newAddress.commune} onChange={(event) => handleInputChange(event, 'commune')} />
+                                    <Input label="Street" value={newAddress.street} onChange={(event) => handleInputChange(event, 'street')} />
+                                    <Input label="Number" value={newAddress.number} onChange={(event) => handleInputChange(event, 'number')} />
                                 </div>
                             </DialogBody>
                             <DialogFooter>
@@ -200,12 +239,12 @@ export default function Address() {
                                 >
                                     <span>Cancel</span>
                                 </Button>
-                                <Button variant="gradient" color="green" onClick={handleOpen}>
+                                <Button variant="gradient" color="green" onClick={handleAddAddress}>
                                     <span>Confirm</span>
                                 </Button>
                             </DialogFooter>
                         </Dialog>
-                    </div> */}
+                    </div>
                 </div>
             </CardHeader>
             <CardBody className="px-0">
@@ -249,10 +288,10 @@ export default function Address() {
                                     </div>
                                 </td>
                                 <td className=" p-4">
-                                    <EditAddress user_address_id={item.user_address_id} addressData={item} />
+                                    <EditAddress user_address_id={item.user_address_id} addressData={item} user_id={user_id} updateAddressList={updateAddressList} />
                                 </td>
                                 <td className=" p-4">
-                                    <DeleteAddress user_address_id={item.user_address_id} />
+                                    <DeleteAddress user_address_id={item.user_address_id} updateAddressList={updateAddressList}/>
                                 </td>
                             </tr>
                         ))}

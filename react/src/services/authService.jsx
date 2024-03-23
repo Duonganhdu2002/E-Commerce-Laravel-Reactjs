@@ -43,12 +43,16 @@ const userAddress = (userId) => {
     return axios.get(`/user/address/${userId}`);
 };
 
-const updateAddress = (addressId) => {
-    return axios.put(`/user/address/update/${addressId}`)
+const updateAddress = (addressId, dataUpdate) => {
+    return axios.put(`/user/address/update/${addressId}`, dataUpdate)
 };
 
 const deleteAddress = (addressId) => {
     return axios.delete(`/user/address/delete/${addressId}`)
 };
 
-export { adminLogin, fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister, getUserInfor, userDelete, userAddress, updateAddress, deleteAddress, };
+const addAddress = (addressData) => {
+    return axios.post("/user/user-addresses", addressData);
+};
+
+export { adminLogin, fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister, getUserInfor, userDelete, userAddress, updateAddress, deleteAddress, addAddress };
