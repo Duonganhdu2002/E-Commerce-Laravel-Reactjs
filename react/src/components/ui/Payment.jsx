@@ -31,7 +31,7 @@ export default function Payment() {
     const data = {
         "items": selectedItems,
         "buyer_id": userId,
-        "seller_id": selectedItems.length > 0 ? selectedItems[0].shop_id : '', // Assuming shop_id is present in the first selected item
+        "seller_id": selectedItems.length > 0 ? selectedItems[0].shop_id : '', 
         "order_id": orderId,
         "payment_id": 2,
         "total_amount": parseFloat(selectedShippingPrice) + totalAmount

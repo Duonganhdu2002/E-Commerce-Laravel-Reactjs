@@ -202,16 +202,3 @@ Route::prefix('notification')->group(function () {
     Route::put('update/{id}', [NotificationController::class, 'update']);
     Route::delete('delete/{id}', [NotificationController::class, 'destroy']);
 });
-
-Route::prefix('pageAdmin')->group(function () { // truy vấn dữ liệu ra trang admin
-
-});
-
-Route::prefix('admin')->middleware(['auth:sanctum', 'check.role:1'])->group(function () {
-});
-
-Route::prefix('seller')->middleware(['auth:sanctum', 'check.role:2'])->group(function () {
-});
-
-Route::prefix('customer')->middleware(['auth:sanctum', 'check.role:3'])->group(function () {
-});

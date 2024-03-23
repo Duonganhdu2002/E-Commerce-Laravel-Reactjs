@@ -4,8 +4,6 @@ const fetchAllUser = (type_id, page) => {
     return axios.get(`/user/auth-list/${type_id}?page=${page}`);
 }
 
-
-
 const fetchUserPagination = (pageNumber) => {
     return axios.get(`/auth/auth?page=${pageNumber}`);
 }
@@ -38,6 +36,8 @@ const userDelete = (userId) => {
     return axios.delete(`/user/delete/${userId}`);
 };
 
+const userAddress = (userId) => {
+    return axios.get(`/user/address/${userId}`);
+};
 
-
-export { adminLogin, fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister, getUserInfor, userDelete, };
+export {userAddress, adminLogin, fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister, getUserInfor, userDelete, };
