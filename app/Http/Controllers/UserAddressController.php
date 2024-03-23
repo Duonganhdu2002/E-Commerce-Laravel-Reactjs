@@ -127,6 +127,7 @@ class UserAddressController extends Controller
         $address->commune = $input['commune'] ?? $address->commune;
         $address->district = $input['district'] ?? $address->district;
         $address->province = $input['province'] ?? $address->province;
+        $address->country = $input['country'] ?? $address->country;
         $address->save();
 
         $arr = [
