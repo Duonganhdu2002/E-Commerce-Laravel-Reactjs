@@ -38,11 +38,11 @@ Route::prefix('user')->group(function () {
 
     Route::post('login', [UserController::class, 'login'])->name('login');
 
-    
+
     Route::get('auth', [GoogleAuthController::class, 'redirectToAuth']);
     Route::get('auth/callback', [GoogleAuthController::class, 'handleAuthCallback']);
 
-    
+
     Route::post('loginBusiness', [UserController::class, 'loginBusiness'])->name('loginBusiness');
     Route::post('loginAdmin', [UserController::class, 'loginAdmin'])->name('loginAdmin');
 
@@ -52,6 +52,11 @@ Route::prefix('user')->group(function () {
 
     //Địa chỉ của user
     Route::get('address/{user_id}', [UserAddressController::class, 'indexId'])->name('index');
+
+    //Cập nhật địa chỉ user
+    Route::put('address/update/{user_address_id}', [UserAddressController::class, 'update']);
+
+    Route::delete('address/delete/{user_address_id}', [UserAddressController::class, 'destroy']);
 
 });
 

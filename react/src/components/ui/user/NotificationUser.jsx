@@ -33,7 +33,7 @@ export default function NotificationUser() {
                 console.error("Error fetching fields:", error);
             }
         }
-        fetchData()
+        fetchData();
     }, [page]);
 
     const updateNotification1 = async (notificationId, notificationData) => {
@@ -125,10 +125,9 @@ export default function NotificationUser() {
                 </div>
             </CardHeader>
             {data && data.length > 0 && data.map((item, index) => (
-                <CardBody className={`md:flex md:justify-between items-center ${item.read ? 'bg-green-50' : ''}`} key={index}>
+                <CardBody className={`md:flex md:justify-between items-center w-[93%] mx-auto ${item.read ? '' : 'bg-gray-100'}`} key={index}>
                     <div className=" flex">
-                        <Avatar variant="rounded" alt="image" src="https://static.vecteezy.com/system/resources/previews/002/594/675/original/alarm-bell-alert-caution-linear-icon-style-free-vector.jpg" className=" md:w-[70px] md:h-[70px] w-32 h-32 overflow-clip mb-4 md:mb-4" />
-                        <div className=" mb-4 md:mb-4 ml-6">
+                        <div className=" mb-4 md:mb-4">
                             <Typography color="blue-gray" className={`font-semibold text-gray-600 `}>
                                 {item.title}
                             </Typography>
@@ -138,7 +137,6 @@ export default function NotificationUser() {
                         </div>
                     </div>
                     <div className=" flex gap-4">
-                        <Button onClick={() => updateNotification1(item.notification_id)} className="">Update</Button>
                         <Button onClick={() => deleteNotification1(item.notification_id)}>Delete</Button>
                     </div>
                 </CardBody>

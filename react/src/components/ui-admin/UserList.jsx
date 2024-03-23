@@ -34,7 +34,7 @@ import {
 } from "@material-tailwind/react";
 
 import { useEffect, useState } from "react";
-import { fetchAllUser, userDelete, } from "../../services/authService";
+import { fetchAllUser, userDelete, userAddress } from "../../services/authService";
 
 const TABLE_HEAD = [
     "Avt",
@@ -169,7 +169,7 @@ const FetchAllUser = ({ type_id }) => {
         )
     }
 
-    const DeleteUser = ( {user_id} ) => {
+    const DeleteUser = ({ user_id }) => {
         const handleDelete = async () => {
             try {
                 let res = await userDelete(user_id);
@@ -185,6 +185,49 @@ const FetchAllUser = ({ type_id }) => {
             </div>
         )
     }
+
+
+    const UserAddress = ({ user_id }) => {
+        const [data, setData] = useState([]);
+
+        useEffect(() => {
+            const fetchData = async () => {
+                try {
+                    let res = await userAddress(user_id);
+                    setData(res.data);
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+            fetchData();
+        }, []);
+
+        return (
+            <div className="w-80 font-normal text-base leading-6 text-gray-800">
+                {
+                    data && data.length > 0 && data.map((item, index) => (
+                        <div key={index}>
+                            <Typography className=" font-semibold">
+                            Address {index+1}
+                            </Typography>
+                            <Typography
+                                variant="small"
+                                className="font-normal opacity-80"
+                            >
+                                {item.country}, {item.province}, {item.district}, {item.commune}, {item.street}, {item.number}
+                            </Typography>
+                        </div>
+                    ) )
+                }
+            </div>
+        );
+    };
+
+
+
+
+
+
 
     return (
         <div>
@@ -285,19 +328,7 @@ const FetchAllUser = ({ type_id }) => {
                                             <Tooltip
                                                 className=" bg-white shadow-gray-400/10 shadow-xl border p-4"
                                                 content={
-                                                    <div className="w-80 font-normal text-base leading-6 text-gray-800">
-                                                        <Typography className="font-medium">
-                                                            Material Tailwind
-                                                        </Typography>
-                                                        <Typography
-                                                            variant="small"
-
-                                                            className="font-normal opacity-80"
-                                                        >
-                                                            Material Tailwind is an easy to use components library for Tailwind
-                                                            CSS and Material Design.
-                                                        </Typography>
-                                                    </div>
+                                                    <UserAddress user_id={users.user_id} />
                                                 }
                                                 animate={{
                                                     mount: { scale: 1, y: 0 },
@@ -309,6 +340,7 @@ const FetchAllUser = ({ type_id }) => {
                                                 </IconButton>
                                             </Tooltip>
                                         </td>
+
                                         <td className={classes}>
                                             <EditUser user_id={users.user_id} />
                                         </td>
