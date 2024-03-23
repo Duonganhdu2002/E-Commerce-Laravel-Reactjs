@@ -40,4 +40,20 @@ const userAddress = (userId) => {
     return axios.get(`/user/address/${userId}`);
 };
 
-export {userAddress, adminLogin, fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister, getUserInfor, userDelete, };
+const userAddress = (userId) => {
+    return axios.get(`/user/address/${userId}`);
+};
+
+const updateAddress = (addressId, dataUpdate) => {
+    return axios.put(`/user/address/update/${addressId}`, dataUpdate)
+};
+
+const deleteAddress = (addressId) => {
+    return axios.delete(`/user/address/delete/${addressId}`)
+};
+
+const addAddress = (addressData) => {
+    return axios.post("/user/user-addresses", addressData);
+};
+
+export { adminLogin, fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister, getUserInfor, userDelete, userAddress, updateAddress, deleteAddress, addAddress };

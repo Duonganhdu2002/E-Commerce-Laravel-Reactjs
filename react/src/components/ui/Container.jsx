@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import { Carousel } from "@material-tailwind/react";
 
 import sale3 from "../../assets/sale/sale3.png";
@@ -7,8 +8,24 @@ import sale6 from "../../assets/sale/sale6.png";
 import sale7 from "../../assets/sale/sale7.png";
 import sale8 from "../../assets/sale/sale8.png";
 
+import { Spinner } from "@material-tailwind/react";
+
 const Container = () => {
     const imagePaths = [sale3, sale4, sale5, sale6, sale7, sale8];
+    const [loading, setLoading] = useState(true); // Thêm state để theo dõi trạng thái tải ảnh
+
+    useEffect(() => {
+        const loadImage = () => {
+            // Simulate loading time
+            const timer = setTimeout(() => {
+                setLoading(false);
+            }, 2000);
+
+            return () => clearTimeout(timer);
+        };
+
+        loadImage();
+    }, []);
 
     return (
         <div className="flex items-center justify-center mx-auto">
@@ -32,9 +49,17 @@ const Container = () => {
                 autoplay={true}
                 loop={true}
             >
-                {imagePaths.map((path, index) => (
-                    <img key={index} src={path} alt="" className="rounded-3xl h-full p-2 object-cover object-center" />
-                ))}
+                {loading ? (
+                    // Hiển thị skeleton loader trong khi ảnh đang được tải
+                    <div className="rounded-xl xl:h-[650px] lg:h-[550px] md:h-[450px] sm:h-[450px] h-[450px]  p-2 animate-pulse bg-gray-300 flex justify-center items-center">
+                    <Spinner className="h-10 w-10"/>
+                    </div>
+                ) : (
+                    // Hiển thị ảnh khi đã tải xong
+                    imagePaths.map((path, index) => (
+                        <img key={index} src={path} alt="" className="rounded-3xl h-full p-2 object-cover object-center" />
+                    ))
+                )}
             </Carousel>
         </div>
     );

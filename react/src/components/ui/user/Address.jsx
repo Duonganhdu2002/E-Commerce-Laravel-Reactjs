@@ -13,10 +13,15 @@ import {
     CardHeader,
     Typography,
     CardBody,
-    Chip,
-    CardFooter,
+    CardHeader,
+    Dialog,
+    DialogBody,
+    DialogFooter,
+    DialogHeader,
     IconButton,
+    Input,
     Tooltip,
+    Typography,
 } from "@material-tailwind/react";
 import { userAddress } from "../../../services/authService";
 import { useSelector } from 'react-redux';

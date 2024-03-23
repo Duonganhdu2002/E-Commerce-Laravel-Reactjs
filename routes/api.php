@@ -37,8 +37,12 @@ Route::prefix('user')->group(function () {
     Route::put('/{id}', [UserController::class, 'update']);
 
     Route::post('login', [UserController::class, 'login'])->name('login');
-    Route::get('auth/google', [GoogleAuthController::class, 'redirect'])->name('google-auth');
-    Route::get('auth/google/call-back', [GoogleAuthController::class, 'callbackGoogle'])->name('google-auth');
+
+
+    Route::get('auth', [GoogleAuthController::class, 'redirectToAuth']);
+    Route::get('auth/callback', [GoogleAuthController::class, 'handleAuthCallback']);
+
+
     Route::post('loginBusiness', [UserController::class, 'loginBusiness'])->name('loginBusiness');
     Route::post('loginAdmin', [UserController::class, 'loginAdmin'])->name('loginAdmin');
 
@@ -48,6 +52,14 @@ Route::prefix('user')->group(function () {
 
     //Địa chỉ của user
     Route::get('address/{user_id}', [UserAddressController::class, 'indexId'])->name('index');
+
+    // thêm địa chỉ user
+    Route::post('user-addresses', [UserAddressController::class, 'store']);
+
+    // cập nhật địa chỉ user
+    Route::put('address/update/{user_address_id}', [UserAddressController::class, 'update']);
+
+    Route::delete('address/delete/{user_address_id}', [UserAddressController::class, 'destroy']);
 
 });
 
@@ -201,4 +213,17 @@ Route::prefix('notification')->group(function () {
     Route::post('store', [NotificationController::class, 'store']);
     Route::put('update/{id}', [NotificationController::class, 'update']);
     Route::delete('delete/{id}', [NotificationController::class, 'destroy']);
+});
+
+Route::prefix('pageAdmin')->group(function () { // truy vấn dữ liệu ra trang admin
+
+});
+
+Route::prefix('admin')->middleware(['auth:sanctum', 'check.role:1'])->group(function () {
+});
+
+Route::prefix('seller')->middleware(['auth:sanctum', 'check.role:2'])->group(function () {
+});
+
+Route::prefix('customer')->middleware(['auth:sanctum', 'check.role:3'])->group(function () {
 });
