@@ -40,10 +40,6 @@ const userAddress = (userId) => {
     return axios.get(`/user/address/${userId}`);
 };
 
-const userAddress = (userId) => {
-    return axios.get(`/user/address/${userId}`);
-};
-
 const updateAddress = (addressId, dataUpdate) => {
     return axios.put(`/user/address/update/${addressId}`, dataUpdate)
 };
