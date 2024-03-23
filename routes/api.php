@@ -37,8 +37,12 @@ Route::prefix('user')->group(function () {
     Route::put('/{id}', [UserController::class, 'update']);
 
     Route::post('login', [UserController::class, 'login'])->name('login');
-    Route::get('auth/google', [GoogleAuthController::class, 'redirect'])->name('google-auth');
-    Route::get('auth/google/call-back', [GoogleAuthController::class, 'callbackGoogle'])->name('google-auth');
+
+    
+    Route::get('auth', [GoogleAuthController::class, 'redirectToAuth']);
+    Route::get('auth/callback', [GoogleAuthController::class, 'handleAuthCallback']);
+
+    
     Route::post('loginBusiness', [UserController::class, 'loginBusiness'])->name('loginBusiness');
     Route::post('loginAdmin', [UserController::class, 'loginAdmin'])->name('loginAdmin');
 
