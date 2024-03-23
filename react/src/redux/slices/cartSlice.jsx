@@ -36,13 +36,17 @@ export const cartSlice = createSlice({
             localStorage.setItem('shippingPrice', action.payload);
         },
         selectShippingMethod: (state, action) => {
-            state.selectedShippingMethod = action.payload; 
+            state.selectedShippingMethod = action.payload;
             localStorage.setItem('shippingMehthod', action.payload);
+        },
+        setOrderIdRedux: (state, action) => {
+            state.orderId = action.payload;
+            localStorage.setItem('orderId', action.payload);
         },
 
     },
 });
 
-export const { addItem, removeItem, updateItemQuantity, clearCart, selectShippingPrice, selectShippingMethod } = cartSlice.actions;
+export const { setOrderIdRedux, addItem, removeItem, updateItemQuantity, clearCart, selectShippingPrice, selectShippingMethod } = cartSlice.actions;
 
 export default cartSlice.reducer;

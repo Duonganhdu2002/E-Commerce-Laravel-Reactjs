@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Input, Select, Option, Button } from "@material-tailwind/react";
 import { districtList, provincesList, wardList } from "../../services/locationService";
 import { handleOrder } from "../../services/orderService";
+import { setOrderIdRedux } from "../../redux/slices/cartSlice";
 
 export default function Checkout() {
 
@@ -11,6 +12,7 @@ export default function Checkout() {
     const [loading, setLoading] = useState(false);
     // Navigate
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     // Mảng chứa dữ liệu được gọi từ API
     const [provincesListData, setProvincesListData] = useState([]);
     const [districtListData, setDistrictListData] = useState([]);
@@ -19,7 +21,7 @@ export default function Checkout() {
     const selectedItems = useSelector(state => state.cart.items);
     const selectedShippingPrice = useSelector(state => state.cart.selectedShippingPrice);
     const selectedShippingMethod = useSelector(state => state.cart.selectedShippingMethod);
-    //Redux store id user
+    //Redux get id user
     const userId = useSelector(state => state.user.user.user_id || '');
     // Các biến chứa id của Tỉnh, huyện, xã
     const [selectedProvinceId, setSelectedProvinceId] = useState(null);
@@ -129,10 +131,10 @@ export default function Checkout() {
         try {
             await fetchData();
         } catch (error) {
+
             console.error("Error fetching data:", error);
         }
     };
-    console.log(selectedItems)
     const fetchData = async () => {
         try {
             setLoading(true);
@@ -152,7 +154,8 @@ export default function Checkout() {
             };
             console.log(updatedDataOrder)
             let res = await handleOrder(updatedDataOrder);
-            setOrderId(res.data.order_id)
+            console.log(res)
+            dispatch(setOrderIdRedux(res.data.order_id)); // Dispatch action to set orderId in Redux
             setLoading(false);
             navigate('/payment');
         } catch (error) {
