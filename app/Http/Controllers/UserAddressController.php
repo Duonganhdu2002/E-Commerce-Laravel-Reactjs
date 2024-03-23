@@ -100,9 +100,6 @@ class UserAddressController extends Controller
 
         $validator = Validator::make($input, [
             'user_id' => 'required',
-            'user_address_id' => 'required',
-
-
         ]);
 
         if ($validator->fails()) {
@@ -119,7 +116,7 @@ class UserAddressController extends Controller
         if (!$address) {
             $arr = [
                 'status' => false,
-                'message' => 'Sản phẩm không tồn tại',
+                'message' => 'Người dùng không tồn tại',
                 'data' => null
             ];
             return response()->json($arr, 404);
@@ -134,7 +131,7 @@ class UserAddressController extends Controller
 
         $arr = [
             'status' => true,
-            'message' => 'Sản phẩm cập nhật thành công',
+            'message' => 'Địa chỉ cập nhật thành công',
             'data' => $address
         ];
 

@@ -52,6 +52,12 @@ Route::prefix('user')->group(function () {
 
     //Địa chỉ của user
     Route::get('address/{user_id}', [UserAddressController::class, 'indexId'])->name('index');
+    
+    // thêm địa chỉ user
+    Route::post('user-addresses', [UserAddressController::class, 'store']);
+
+    // cập nhật địa chỉ user
+    Route::put('user-addresses/{user_address_id}', [UserAddressController::class, 'update']);
 
 });
 
