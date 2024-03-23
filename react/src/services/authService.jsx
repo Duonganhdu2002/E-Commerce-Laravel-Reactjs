@@ -39,5 +39,16 @@ const userDelete = (userId) => {
 };
 
 
+const userAddress = (userId) => {
+    return axios.get(`/user/address/${userId}`);
+};
 
-export { adminLogin, fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister, getUserInfor, userDelete, };
+const updateAddress = (addressId) => {
+    return axios.put(`/user/address/update/${addressId}`)
+};
+
+const deleteAddress = (addressId) => {
+    return axios.delete(`/user/address/delete/${addressId}`)
+};
+
+export { adminLogin, fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister, getUserInfor, userDelete, userAddress, updateAddress, deleteAddress, };
