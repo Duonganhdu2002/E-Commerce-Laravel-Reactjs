@@ -94,6 +94,8 @@ class RevenueController extends Controller
             ->orderBy('year', 'DESC')
             ->get();
 
+        
+
         // Truy vấn dữ liệu doanh số của năm trước
         $lastYearRevenue = DB::table('order_items')
             ->join('order', 'order_items.order_id', '=', 'order.order_id')
@@ -121,6 +123,24 @@ class RevenueController extends Controller
         $lastYearRevenue = $lastYearRevenue->total_revenue ?? 0;
         $thisYearRevenue = isset ($annualRevenue[0]) ? $annualRevenue[0]->total_revenue : 0;
         $revenueChangeLastYear = ($lastYearRevenue != 0) ? (($thisYearRevenue - $lastYearRevenue) / $lastYearRevenue) * 100 : 0;
+
+        foreach ($dailyRevenue as $item) {
+            $item->total_revenue = (float) $item->total_revenue;
+        }
+
+        foreach ($weeklyRevenue as $item) {
+            $item->total_revenue = (float) $item->total_revenue;
+        }
+
+        foreach ($monthlyRevenue as $item) {
+            $item->total_revenue = (float) $item->total_revenue;
+        }
+
+        foreach ($annualRevenue as $item) {
+            $item->total_revenue = (float) $item->total_revenue;
+        }
+
+
         // Trả về kết quả
         return response()->json([
             'dailyRevenue' => $dailyRevenue,
@@ -130,7 +150,8 @@ class RevenueController extends Controller
             'revenueChangeYesterday' => $revenueChangeYesterday,
             'revenueChangeLastWeek' => $revenueChangeLastWeek,
             'revenueChangeLastMonth' => $revenueChangeLastMonth,
-            'revenueChangeLastYear' => $revenueChangeLastYear
+            'revenueChangeLastYear' => $revenueChangeLastYear,
+           
         ]);
     }
 
@@ -242,7 +263,7 @@ class RevenueController extends Controller
         $thisYearProductSold = isset ($annualProductSold[0]) ? $annualProductSold[0]->total_products_sold : 0;
         $productSoldChangeLastYear = ($lastYearProductSold != 0) ? (($thisYearProductSold - $lastYearProductSold) / $lastYearProductSold) * 100 : 0;
 
-
+        
         // Trả về kết quả
         return response()->json([
             'dailyProductSold' => $dailyProductSold,
