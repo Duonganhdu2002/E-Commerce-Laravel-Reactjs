@@ -25,7 +25,6 @@ Route::prefix('payment')->group(function () {
 });
 
 Route::prefix('user')->group(function () {
-<<<<<<< HEAD
 
     // Lấy toàn bộ thông tin của user
     Route::get('/getAllUsers', [UserController::class, 'getAllUsers'])->name('getAllUsers');
@@ -33,8 +32,6 @@ Route::prefix('user')->group(function () {
     
 
     // Quyền admin
-=======
->>>>>>> d11f1fc6ff24333bc070a9456cd501ffd0e67073
     Route::post('createAdmin', [UserController::class, 'createAdmin'])->name('createAdmin');
     Route::post('createBusiness', [UserController::class, 'createBusiness'])->name('createBusiness');
     Route::post('register', [UserController::class, 'createUser'])->name('register');
@@ -188,4 +185,3 @@ Route::prefix('notification')->group(function () {
     Route::put('update/{id}', [NotificationController::class, 'update']);
     Route::delete('delete/{id}', [NotificationController::class, 'destroy']);
 });
-
