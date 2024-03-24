@@ -200,6 +200,19 @@ function NavProductList() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [data, setData] = useState([]);
+    const [notification, setNotification] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await getNotification(user.user_id);
+                setNotification(res.data);
+            } catch (error) {
+                console.error(error)
+            }
+        }
+        fetchData();
+    }, [])
 
     useEffect(() => {
         if (user && user.user_id) {
@@ -296,12 +309,9 @@ function NavProductList() {
                                 selected={isMenuOpen || isMobileMenuOpen}
                                 onClick={() => setIsMobileMenuOpen((cur) => !cur)}
                             >
-
-
-
                                 <Badge
                                     className=" w-3"
-                                    content={user ? (data.length > 0 ? (data.length) : ("0")) : ("0")} withBorder
+                                    content={user ? (notification.length > 0 ? (notification.length) : ("0")) : ("0")} withBorder
                                 >
                                     <BellIcon
                                         className="h-6 w-6"
@@ -374,9 +384,7 @@ export default function MenuBar() {
     const [scrollingUp, setScrollingUp] = useState(true);
     const [hidden, setHidden] = useState(false);
     const [data, setData] = useState([]);
-
-
-    console.log(data)
+    const [notification, setNotification] = useState([]);
 
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
@@ -384,7 +392,8 @@ export default function MenuBar() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await getNotification()
+                let res = await getNotification(user.user_id);
+                setNotification(res.data);
             } catch (error) {
                 console.error(error)
             }
@@ -546,7 +555,7 @@ export default function MenuBar() {
 
                 <Link to="/user/notification">
                     <div className=" lg:hidden">
-                        <Badge className=" w-3" content={user ? (data.length > 0 ? (data.length) : ("0")) : ("0")} withBorder>
+                        <Badge className=" w-3" content={user ? (notification.length > 0 ? (notification.length) : ("0")) : ("0")} withBorder>
                             <BellIcon
                                 className="h-6 w-6"
                                 strokeWidth={2}
