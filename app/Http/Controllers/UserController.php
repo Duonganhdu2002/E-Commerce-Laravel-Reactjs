@@ -17,6 +17,12 @@ use PhpParser\Node\Expr\Cast\String_;
 class UserController extends Controller
 {
 
+    public function getAllUsers()
+    {
+        $users = User::all();
+        return response()->json($users);
+    }
+
 
     public function info(Request $request, int $user_id)
     {

@@ -27,6 +27,11 @@ Route::prefix('payment')->group(function () {
 
 Route::prefix('user')->group(function () {
 
+    // Lấy toàn bộ thông tin của user
+    Route::get('/getAllUsers', [UserController::class, 'getAllUsers'])->name('getAllUsers');
+
+    
+
     // Quyền admin
     Route::post('createAdmin', [UserController::class, 'createAdmin'])->name('createAdmin');
     Route::post('createBusiness', [UserController::class, 'createBusiness'])->name('createBusiness');

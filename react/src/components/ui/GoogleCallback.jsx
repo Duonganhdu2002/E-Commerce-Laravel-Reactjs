@@ -28,21 +28,21 @@ function GoogleCallback() {
     }, []);
     // Helper method to fetch User data for authenticated user
     // Watch out for "Authorization" header that is added to this call
-    // function fetchUserData() {
-    //     fetch(`http://localhost:8000/api/user`, {
-    //         headers : {
-    //             'Content-Type': 'application/json',
-    //             'Accept': 'application/json',
-    //             'Authorization': 'Bearer ' + data.access_token,
-    //         }
-    //     })
-    //         .then((response) => {
-    //             return response.json();
-    //         })
-    //         .then((data) => {
-    //             setUser(data);
-    //         });
-    // }
+    function fetchUserData() {
+        fetch(`http://localhost:8000/api/user/getAllUsers`, {
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                Authorization: "Bearer " + data.access_token,
+            },
+        })
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                setUser(data);
+            });
+    }
     if (loading) {
         return <DisplayLoading />;
     } else {

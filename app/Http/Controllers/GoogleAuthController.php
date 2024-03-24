@@ -17,9 +17,9 @@ class GoogleAuthController extends Controller
     {
         return response()->json([
             'url' => Socialite::driver('google')
-                         ->stateless()
-                         ->redirect()
-                         ->getTargetUrl(),
+                ->stateless()
+                ->redirect()
+                ->getTargetUrl(),
         ]);
     }
 
@@ -39,9 +39,10 @@ class GoogleAuthController extends Controller
                 ],
                 [
                     'email_verified_at' => now(),
-                    'name' => $socialiteUser->getName(),
+                    'full_name' => $socialiteUser->getName(),
                     'google_id' => $socialiteUser->getId(),
-                    'avatar' => $socialiteUser->getAvatar(),
+                    'type_account_id' => 3,
+                    // 'avatar' => $socialiteUser->getAvatar(),
                 ]
             );
         return response()->json([
