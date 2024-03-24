@@ -5,6 +5,7 @@ import Banner7 from '../../assets/banner/banner_7.png';
 import { fetchTop6CategoryById } from '../../services/productService';
 
 export default function SmartPhone() {
+    const [loading, setLoading] = useState(true);
     const [listTop6SmartPhone, setListTop6SmartPhone] = useState([]);
 
     useEffect(() => {
@@ -17,8 +18,10 @@ export default function SmartPhone() {
             if (res && res.data) {
                 setListTop6SmartPhone(res.data);
             }
+            setLoading(false); // Tắt trạng thái loading khi đã nhận dữ liệu
         } catch (error) {
             console.error("Error: ", error);
+            setLoading(false); // Xử lý lỗi và tắt trạng thái loading
         }
     }
 
@@ -29,15 +32,19 @@ export default function SmartPhone() {
 
                     <section
                         id="Projects"
-                        className=" mx-auto grid grid-cols-2 lg:grid-cols-4  md:grid-cols-3 2xl:grid-cols-5 justify-items-center justify-center gap-y-8 gap-x-6 mt-6 mb-5"
+                        className="mx-auto grid grid-cols-2 lg:grid-cols-4 md:grid-cols-3 2xl:grid-cols-5 justify-items-center justify-center gap-y-8 gap-x-6 mt-6 mb-5"
                     >
-                        {listTop6SmartPhone &&
-                            listTop6SmartPhone.length > 0 &&
+                        {loading ? (
+                            // Hiển thị Skeleton Loader khi đang loading
+                            Array.from({ length: 5 }).map((_, index) => (
+                            <div key={`skeleton-${index}`} className="w-full h-[300px] md:h-[330px] lg:h-[400px] xl:h-[460px] bg-gray-200 shadow-md shadow-gray-300 rounded-xl duration-500 animate-pulse"></div>                            ))
+                        ) : (
+                            // Hiển thị danh sách sản phẩm khi không loading
                             listTop6SmartPhone.map((product, index) => (
                                 <Link key={index} to={`/product/${product.product_id}`}>
-                                    <div className="w-full h-[300px] md:h-[330px] lg:h-[400px] xl:h-[460px]  bg-white shadow-md shadow-gray-300 rounded-xl duration-500 hover:scale-105 hover:shadow-2xl">
+                                    <div className="w-full h-[300px] md:h-[330px] lg:h-[400px] xl:h-[460px] bg-white shadow-md shadow-gray-300 rounded-xl duration-500 hover:scale-105 hover:shadow-2xl">
                                         <img
-                                            className=" h-[200px] w-[200px] md:h-[220px] md:w-[220px] lg:h-[280px] lg:w-[280px] xl:h-[320px] xl:w-[320px] object-cover rounded-t-xl"
+                                            className="h-[200px] w-[200px] md:h-[220px] md:w-[220px] lg:h-[280px] lg:w-[280px] xl:h-[320px] xl:w-[320px] object-cover rounded-t-xl"
                                             src={`src/assets/image/${product.images[0]}`}
                                             alt="Product"
                                         />
@@ -53,8 +60,8 @@ export default function SmartPhone() {
                                         </div>
                                     </div>
                                 </Link>
-
-                            ))}
+                            ))
+                        )}
                     </section>
                 </div>
             </div>

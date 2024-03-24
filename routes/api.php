@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\ShippingMethodController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImageController;
@@ -26,6 +25,7 @@ Route::prefix('payment')->group(function () {
 });
 
 Route::prefix('user')->group(function () {
+<<<<<<< HEAD
 
     // Lấy toàn bộ thông tin của user
     Route::get('/getAllUsers', [UserController::class, 'getAllUsers'])->name('getAllUsers');
@@ -33,39 +33,28 @@ Route::prefix('user')->group(function () {
     
 
     // Quyền admin
+=======
+>>>>>>> d11f1fc6ff24333bc070a9456cd501ffd0e67073
     Route::post('createAdmin', [UserController::class, 'createAdmin'])->name('createAdmin');
     Route::post('createBusiness', [UserController::class, 'createBusiness'])->name('createBusiness');
     Route::post('register', [UserController::class, 'createUser'])->name('register');
-    // xóa user
     Route::delete('delete/{id}', [UserController::class, 'delete']);
-    // sửa user
     Route::put('/{id}', [UserController::class, 'update']);
-
     Route::post('login', [UserController::class, 'login'])->name('login');
-
-
     Route::get('auth', [GoogleAuthController::class, 'redirectToAuth']);
     Route::get('auth/callback', [GoogleAuthController::class, 'handleAuthCallback']);
-
-
     Route::post('loginBusiness', [UserController::class, 'loginBusiness'])->name('loginBusiness');
     Route::post('loginAdmin', [UserController::class, 'loginAdmin'])->name('loginAdmin');
-
     Route::get('info/{user_id}', [UserController::class, 'info'])->name('info');
     Route::get('auth-total', [UserController::class, 'getTotalUsers'])->name('getTotalUsers');
     Route::get('auth-list/{type_id}', [UserController::class, 'userList'])->name('userList');
-
     //Địa chỉ của user
     Route::get('address/{user_id}', [UserAddressController::class, 'indexId'])->name('index');
-    
     // thêm địa chỉ user
     Route::post('user-addresses', [UserAddressController::class, 'store']);
-
     // cập nhật địa chỉ user
-    Route::put('user-addresses/{user_address_id}', [UserAddressController::class, 'update']);
-
+    Route::put('address/update/{user_address_id}', [UserAddressController::class, 'update']);
     Route::delete('address/delete/{user_address_id}', [UserAddressController::class, 'destroy']);
-
 });
 
 Route::prefix('public')->group(function () {
@@ -75,32 +64,23 @@ Route::prefix('public')->group(function () {
         Route::delete('delete/{id}', [ProductController::class, 'destroy']);
         Route::post('add', [ProductController::class, 'store']);
         Route::put('update/{id}', [ProductController::class, 'update']);
-
         //xuất ra 6 sản phẩm mới nhất
         Route::get('latest-products/{categoryId}', [ProductController::class, 'getLatestProductsInCategory'])->name('latest-products');
-
         // xuất ra 6 sản phẩm best seller
         Route::get('best-selling-products/{categoryId}', [ProductController::class, 'getBestSellingProductsInCategory'])->name('best-selling-products');
-
         // xuất ra những sản phẩm bởi id của category
         Route::get('indexByCate/{categoryId}', [ProductController::class, 'indexByCategory'])->name('indexByCategory');
-
         // xuất ra 8 sản phẩm best seller của user
         Route::get('best-selling-user-products/{userId}', [ProductController::class, 'getBestSellingUserProducts'])->name('best-selling-user-products');
-
         // xuất ra những sản phẩm bởi id của brand và phân trang = 10 sp
         Route::get('indexByBrand/{brandId}', [ProductController::class, 'indexByBrand'])->name('indexByBrand');
-
         // Lọc sản phẩm theo danh mục và có trạng thái là 3
         Route::get('listProductWithCategory/{categoryId}', [ProductController::class, 'listProductWithCategory'])->name('product-with-category');
-
         // Lọc sản phẩm theo thương hiệu và có trạng thái là 3
         Route::get('listProductWithBrand/{categoryId}', [ProductController::class, 'listProductWithBrand']);
-
         // xuất ra những sản phẩm của user tạo ra( chủ shop)
         Route::get('user/{id}', [ProductController::class, 'indexByUser']);
         Route::get('shop/{id}', [ProductController::class, 'createByShop']);
-
         // chức năng tìm kiếm sản phẩm theo tên của sản phẩm, brand, category
         Route::get('/search-products', [SearchHistoryController::class, 'search']);
 
@@ -118,7 +98,6 @@ Route::prefix('public')->group(function () {
 
         //Gợi ý sản phẩm theo lịch sử tìm kiếm gần nhất theo 5 từ khóa gần nhất và mỗi từ khóa ứng vs 5 sản phẩm
         Route::get('recommend/{user_id}', [ProductController::class, 'recommendBaseOnSearch']);
-
         // Lấy NGẪU NHIÊN 4 danh mục và show 4 sản phẩm bán chạy nhất của 4 danh mục đó
         Route::get('getRandomCategories', [ProductController::class, 'getRandomCategories']);
 
@@ -127,24 +106,16 @@ Route::prefix('public')->group(function () {
             Route::post('upload/{productId}', [ProductImageController::class, 'upload']);
             Route::resource('/', ProductImageController::class);
         });
-
         //hiển thị danh sách sản phẩm theo sắp xếp
-        // Route::get('/sort-products/{sortBy}', [ProductController::class, 'sortProducts']);
-
         Route::get('rating/{shop_id}/{rating?}', [ProductReviewController::class, 'shopReviews']);
     });
 
-
     Route::prefix('revenue')->group(function () {
-
         // tính tổng doanh thu ngày, tuần, tháng, năm và tỉ lệ so với ngày hôm qua, tuần trước,  tháng trước, năm trước
         Route::get('/total/{shopId}', [RevenueController::class, 'calculateRevenue']);
-
         // tính tổng số sản phẩm được bán ra trong ngày, tháng, năm và tỉ lệ so với ngày hôm qua, tuần trước,  tháng trước, năm trước
         Route::get('/totalProduct/{shopId}', [RevenueController::class, 'calculateProductSold']);
     });
-
-
 
     Route::prefix('field')->group(function () {
         Route::get('list', [FieldController::class, 'index']);
@@ -159,7 +130,6 @@ Route::prefix('public')->group(function () {
         Route::get('list', [BrandController::class, 'index']);
         //Danh sách các brand có field_id
         Route::get('id={fieldId}', [BrandController::class, 'showByld']);
-
         Route::get('/{id}', [BrandController::class, 'show']);
         Route::put('/{id}', [BrandController::class, 'update']);
         Route::delete('/{id}', [BrandController::class, 'delete']);
@@ -174,7 +144,6 @@ Route::prefix('public')->group(function () {
         Route::get('{user_id}', [ProductCategoryController::class, 'showUserCategories']);
         //show category theo user có phân trang
         Route::get('paging/{user_id}', [ProductCategoryController::class, 'showUserCategorieswithP']);
-
         Route::get('show/{id}', [ProductCategoryController::class, 'show']);
         Route::put('update/{id}', [ProductCategoryController::class, 'update']);
         Route::delete('delete/{id}', [ProductCategoryController::class, 'delete']);
@@ -220,15 +189,3 @@ Route::prefix('notification')->group(function () {
     Route::delete('delete/{id}', [NotificationController::class, 'destroy']);
 });
 
-Route::prefix('pageAdmin')->group(function () { // truy vấn dữ liệu ra trang admin
-
-});
-
-Route::prefix('admin')->middleware(['auth:sanctum', 'check.role:1'])->group(function () {
-});
-
-Route::prefix('seller')->middleware(['auth:sanctum', 'check.role:2'])->group(function () {
-});
-
-Route::prefix('customer')->middleware(['auth:sanctum', 'check.role:3'])->group(function () {
-});
