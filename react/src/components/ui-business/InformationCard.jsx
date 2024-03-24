@@ -3,12 +3,25 @@ import Views from "../../assets/icon/eye.svg";
 import Carts from "../../assets/icon/shopping-cart.svg";
 import Users from "../../assets/icon/users-alt.svg";
 import Products from "../../assets/icon/apps-add.svg";
+import { useSelector } from 'react-redux'
+import { getTotalRevenue } from "../../services/revenue";
 
 const InformationCard = () => {
     const [viewsValue, setViewsValue] = useState(0);
     const [cartsValue, setCartsValue] = useState(0);
     const [productsValue, setProductsValue] = useState(0);
     const [usersValue, setUsersValue] = useState(0);
+
+    const userID = useSelector((state) => state.user.user.user_id);
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            let res = await getTotalRevenue(61)
+            setData(res)
+        }
+        fetchData()
+    }, [])
 
     const startCounterAnimation = (endValue, setValue) => {
         const duration = 2000;
