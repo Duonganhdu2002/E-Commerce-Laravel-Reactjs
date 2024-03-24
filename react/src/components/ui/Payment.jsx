@@ -18,8 +18,6 @@ export default function Payment() {
     const selectedItems = useSelector(state => state.cart.items);
     const orderId = useSelector(state => state.cart.orderId);
     const selectedShippingPrice = useSelector(state => state.cart.selectedShippingPrice);
-    console.log(orderId);
-    console.log(selectedItems);
     const userId = useSelector(state => state.user.user.user_id || '');
 
     // Calculate the total amount
