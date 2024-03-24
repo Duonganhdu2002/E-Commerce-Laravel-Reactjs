@@ -105,23 +105,13 @@ export default function TaskBar() {
                         </ListItemSuffix>
                     </ListItem>
                 </Link>
-                <Accordion
-                    open={open === 2}
-                    icon={
-                        <ChevronDownIcon
-                            strokeWidth={2.5}
-                            className={`mx-auto h-4 w-4 transition-transform ${open === 2 ? "rotate-180" : ""}`}
-                        />
-                    }
-                >
-                </Accordion>
                 <Link to="./voucher-wallet">
-                <ListItem>
-                    <ListItemPrefix>
-                        <TicketIcon className="h-5 w-5" />
-                    </ListItemPrefix>
-                    Voucher Warehouse
-                </ListItem>
+                    <ListItem>
+                        <ListItemPrefix>
+                            <TicketIcon className="h-5 w-5" />
+                        </ListItemPrefix>
+                        Voucher Warehouse
+                    </ListItem>
                 </Link>
             </List>
         </Card>

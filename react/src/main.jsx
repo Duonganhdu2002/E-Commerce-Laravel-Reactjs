@@ -34,7 +34,6 @@ import CategoryPage from "./pages/CategoryPage";
 import ProductDetails from "./pages/ProductDetails";
 import Shop from "./pages/Shop";
 import Profile from "./pages/Profile";
-import OrderStatus from "./pages/OrderStatus";
 import Banking from "./components/ui/user/Banking";
 import Address from "./components/ui/user/Address";
 import MenuBar from "./components/ui/MenuBar";
@@ -204,7 +203,6 @@ const App = () => {
                                     <Route path="notification" element={<PrivateCustomerRoute element={<NotificationUser />} />} />
                                     <Route path="voucher-wallet" element={<PrivateCustomerRoute element={<VoucherWallet />} />} />
                                 </Route>
-                                <Route path="orderstatus" element={<PrivateCustomerRoute element={<OrderStatus />} />} />
                             </Route>
 
 
