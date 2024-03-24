@@ -100,9 +100,6 @@ export default function TaskBar() {
                             <BellAlertIcon className="h-5 w-5" />
                         </ListItemPrefix>
                         Notification
-                        <ListItemSuffix>
-                            <Chip value="99+" size="sm" color="red" className="rounded-full" />
-                        </ListItemSuffix>
                     </ListItem>
                 </Link>
                 <Link to="./voucher-wallet">
