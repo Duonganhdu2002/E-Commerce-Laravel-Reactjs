@@ -134,7 +134,6 @@ Route::prefix('public')->group(function () {
         Route::get('{user_id}', [ProductCategoryController::class, 'showUserCategories']);
         //show category theo user có phân trang
         Route::get('paging/{user_id}', [ProductCategoryController::class, 'showUserCategorieswithP']);
-
         Route::get('show/{id}', [ProductCategoryController::class, 'show']);
         Route::put('update/{id}', [ProductCategoryController::class, 'update']);
         Route::delete('delete/{id}', [ProductCategoryController::class, 'delete']);
