@@ -52,7 +52,7 @@ const Container = () => {
                 {loading ? (
                     // Hiển thị skeleton loader trong khi ảnh đang được tải
                     <div className="rounded-xl xl:h-[650px] lg:h-[550px] md:h-[450px] sm:h-[450px] h-[450px]  p-2 animate-pulse bg-gray-300 flex justify-center items-center">
-                    <Spinner className="h-10 w-10"/>
+                    
                     </div>
                 ) : (
                     // Hiển thị ảnh khi đã tải xong
