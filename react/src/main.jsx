@@ -61,7 +61,6 @@ import ReviewUserList from "./components/ui-admin/ReviewUser";
 import ShoppingMethodList from "./components/ui-admin/ShoppingMethod";
 import Setting from "./components/ui-admin/Setting";
 import Payment from "./components/ui/Payment";
-import SignIn from "./components/ui/SignIn";
 import GoogleCallback from "./components/ui/GoogleCallback";
 
 
@@ -181,8 +180,7 @@ const App = () => {
                             <Route path="/" element={<Customer />}>
                                 <Route index element={<Home />} />
                                 <Route path="login" element={<Login />} />
-                                <Route path="/aaa" element={<SignIn />}></Route>
-                                <Route path="/auth/google" element={<GoogleCallback />}></Route>
+                                <Route path="auth/google" element={<GoogleCallback />}></Route>
                                 <Route path="register" element={<Register />} />
                                 <Route path="cart" element={<PrivateCustomerRoute element={<Cart />} />} />
                                 <Route path="fields/:fieldId" element={<Field />} />

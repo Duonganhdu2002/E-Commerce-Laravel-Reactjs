@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, Alert, Input } from "@material-tailwind/react";
 import logo from "../../assets/icon/logo.svg";
 import LogoGoogle1 from "../../assets/icon/Google__G__logo.svg";
@@ -9,10 +9,40 @@ import { loginUser } from "../../redux/slices/userSlice";
 function Icon() {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-6 w-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"/>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
         </svg>
     );
 }
+function SignIn() {
+    const [loginUrl, setLoginUrl] = useState(null);
+    useEffect(() => {
+        fetch("http://localhost:8000/api/user/auth", {
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error("Something went wrong!");
+            })
+            .then((data) => setLoginUrl(data.url))
+            .catch((error) => console.error(error));
+    }, []);
+    return (
+        <div>{loginUrl != null &&
+            <Link to={loginUrl}>
+                <Button size="lg" variant="outlined" color="blue-gray" className="flex w-full justify-center items-center mt-4">
+                    <img src={LogoGoogle1} alt="metamask" className="h-6 w-6" />
+                    GOOGLE
+                </Button>
+            </Link>}
+        </div>
+    );
+}
+
 
 export default function LayoutLogin() {
     const [email, setEmail] = useState("");
@@ -107,10 +137,7 @@ export default function LayoutLogin() {
                                 </span>
                                 <span className="flex-1 absolute top-1/2 left-0 right-0 h-0.5 bg-gray-700/50"></span>
                             </p>
-                            <Button size="lg" variant="outlined" color="blue-gray" className="flex w-full justify-center items-center mt-4">
-                                <img src={LogoGoogle1} alt="metamask" className="h-6 w-6"/>
-                                GOOGLE
-                            </Button>
+                            <SignIn />
                             <div className="mt-5">
                                 New member?&nbsp;
                                 <Link to="/register" className="font-semibold text-slate-500 hover:text-black hover:underline">
