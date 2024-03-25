@@ -5,7 +5,6 @@ import Views from "../../assets/icon/eye.svg";
 import Carts from "../../assets/icon/shopping-cart.svg";
 import Users from "../../assets/icon/users-alt.svg";
 import { getTotalRevenue } from "../../services/revenue";
-import { clearSeller } from "../../redux/slices/sellerSlice";
 
 const Skeleton = () => {
     return (
@@ -19,13 +18,10 @@ const InformationCard = () => {
     const [weeklyRevenue, setWeeklyRevenue] = useState(0);
     const [monthlyRevenue, setMonthlyRevenue] = useState(0);
     const [annualRevenue, setAnnualRevenue] = useState(0);
-    const [month, setMonth] = useState('');
-    const [year, setYear] = useState('');
     const [data, setData] = useState([]);
 
     const seller = useSelector((state) => state.seller.seller);
     const userID = seller.user_id;
-    // console.log(seller_id)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -33,39 +29,40 @@ const InformationCard = () => {
             if (res && res.monthlyRevenue && res.annualRevenue) {
                 setData(res);
             }
-
         };
         fetchData();
     }, []);
 
-
     useEffect(() => {
-        // Extracting data from the response
         const { dailyRevenue, weeklyRevenue, monthlyRevenue, annualRevenue } = data;
 
-        // Check if data is available before accessing monthlyRevenue and annualRevenue
         if (dailyRevenue && dailyRevenue.length > 0) {
-            setDailyRevenue(parseFloat(dailyRevenue[0].total_revenue));
+            animateNumber(dailyRevenue[0].total_revenue, setDailyRevenue);
         }
         if (weeklyRevenue && weeklyRevenue.length > 0) {
-            setWeeklyRevenue(parseFloat(weeklyRevenue[0].total_revenue));
+            animateNumber(weeklyRevenue[0].total_revenue, setWeeklyRevenue);
         }
         if (monthlyRevenue && monthlyRevenue.length > 0) {
-            setMonthlyRevenue(parseFloat(monthlyRevenue[0].total_revenue));
+            animateNumber(monthlyRevenue[0].total_revenue, setMonthlyRevenue);
         }
         if (annualRevenue && annualRevenue.length > 0) {
-            setAnnualRevenue(parseFloat(annualRevenue[0].total_revenue));
+            animateNumber(annualRevenue[0].total_revenue, setAnnualRevenue);
         }
-        // Update other values accordingly
-
-        if (month) {
-            setMonth(month);
-        }
-        if (year) {
-            setYear(year);
-        }
-
     }, [data]);
+
+    const animateNumber = (targetNumber, setNumber) => {
+        let start = 0;
+        const increment = Math.ceil(targetNumber/42);
+        const animation = setInterval(() => {
+            if (start >= targetNumber) {
+                clearInterval(animation);
+                setNumber(targetNumber);
+            } else {
+                setNumber(start);
+                start += increment;
+            }
+        }, 50);
+    };
 
 
 
