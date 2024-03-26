@@ -66,7 +66,7 @@ import GoogleCallback from "./components/ui/GoogleCallback";
 
 const Customer = () => {
     return (
-        <div>
+        <div className=" h-screen">
             <div className="flex h-20 md:h-24"></div>
             <MenuBar />
             <Outlet />

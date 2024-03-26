@@ -26,7 +26,7 @@ export default function FiledLayout() {
 
     return (
         <div className='flex justify-center items-center my-8 '>
-            <div className='w-[95%] md:w-[90%] lg:w-[80%] mx-auto grid grid-cols-5 lg:grid-cols-8 xl:grid-cols-9 md:grid-cols-6 justify-items-center justify-center gap-y-8 gap-x-6'>
+            <div className='w-[95%] md:w-[90%] lg:w-[80%] mx-auto grid grid-cols-5 lg:grid-cols-8 xl:grid-cols-10 md:grid-cols-6 justify-items-center justify-center gap-y-8 gap-x-6'>
                 {loading ? ( // Kiểm tra nếu đang tải, render skeleton loader
                     Array.from({ length: 9 }).map((_, index) => (
                         <div key={`skeleton-${index}`} className='animate-pulse flex flex-col float-left w-[60px] lg:w-[90px] h-auto mx-2'>
