@@ -52,8 +52,4 @@ const addAddress = (addressData) => {
     return axios.post("/user/user-addresses", addressData);
 };
 
-const loginGoogle = (search) => {
-    return axios.post(`http://localhost:8000/api/user/auth/callback${search}`);
-};
-
-export {loginGoogle, adminLogin, fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister, getUserInfor, userDelete, userAddress, updateAddress, deleteAddress, addAddress };
+export {adminLogin, fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister, getUserInfor, userDelete, userAddress, updateAddress, deleteAddress, addAddress };

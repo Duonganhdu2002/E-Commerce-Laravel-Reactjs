@@ -17,7 +17,7 @@ export const loadUserFromCookies = () => {
 // Hàm để thiết lập cookie an toàn
 const setSecureCookie = (name, value) => {
   const secureCookieOptions = {
-    secure: process.env.NODE_ENV === 'production', 
+    secure: process.env.NODE_ENV === 'production',
     sameSite: 'Strict',
   };
 
