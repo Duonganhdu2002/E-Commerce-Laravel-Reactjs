@@ -7,15 +7,7 @@ import {
 
 import {
     EyeIcon,
-    Bars4Icon,
-    GlobeAmericasIcon,
-    NewspaperIcon,
-    PhoneIcon,
-    RectangleGroupIcon,
-    SquaresPlusIcon,
-    SunIcon,
-    TagIcon,
-    UserGroupIcon,
+    ForwardIcon,
 } from "@heroicons/react/24/solid"
 
 import {
@@ -51,6 +43,7 @@ const TABLE_HEAD = [
     "Status",
     "Countdown",
     "All SC",
+    "Ship action",
     "Detail",
 ];
 
@@ -344,9 +337,11 @@ export function MyOrdersBusiness() {
                                             </Typography>
                                         </td>
                                         <td className={classes}>
+                                            <ForwardIcon className=" w-5 h-5 mx-auto" />
+                                        </td>
+                                        <td className={classes}>
                                             <NavListMenu order_id={data.order_id} />
                                         </td>
-
                                     </tr>
                                 );
                             }

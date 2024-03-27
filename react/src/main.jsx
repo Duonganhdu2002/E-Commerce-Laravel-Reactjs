@@ -54,12 +54,10 @@ import FieldList from "./components/ui-admin/FieldList";
 import CategoryList from "./components/ui-admin/CategoryList";
 import BrandList from "./components/ui-admin/BrandList";
 import OrderList from "./components/ui-admin/OrderList";
-import OrderStatusList from "./components/ui-admin/OrderStatus";
 import ProductList from "./components/ui-admin/ProductList";
 import ReviewList from "./components/ui-admin/ReviewList";
 import ReviewUserList from "./components/ui-admin/ReviewUser";
 import ShoppingMethodList from "./components/ui-admin/ShoppingMethod";
-import Setting from "./components/ui-admin/Setting";
 import Payment from "./components/ui/Payment";
 import GoogleCallback from "./components/ui/GoogleCallback";
 
@@ -232,15 +230,12 @@ const App = () => {
                                 <Route path="category-list" element={<PrivateAdminRoute element={<CategoryList />} />} />
                                 <Route path="brand-list" element={<PrivateAdminRoute element={<BrandList />} />} />
                                 <Route path="order-list" element={<PrivateAdminRoute element={<OrderList />} />} />
-                                <Route path="order-status-list" element={<PrivateAdminRoute element={<OrderStatusList />} />} />
                                 <Route path="product-list" element={<PrivateAdminRoute element={<ProductList />} />} />
                                 <Route path="review-list" element={<PrivateAdminRoute element={<ReviewList />} />} />
                                 <Route path="review-user-list" element={<PrivateAdminRoute element={<ReviewUserList />} />} />
                                 <Route path="shopping-method-list" element={<PrivateAdminRoute element={<ShoppingMethodList />} />} />
                                 <Route path="dashboard" element={<PrivateAdminRoute element={<DashboardAdmin />} />} />
                                 <Route path="profile" element={<PrivateAdminRoute element={<ProfileAdmin />} />} />
-                                <Route path="settings" element={<PrivateAdminRoute element={<Setting />} />} />
-                                <Route path="logout" element={<PrivateAdminRoute element={<div>Cancelation</div>} />} />
                             </Route>
 
                         </Routes>

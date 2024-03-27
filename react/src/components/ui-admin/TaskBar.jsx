@@ -51,7 +51,6 @@ const accordionData = [
         title: "Order",
         links: [
             { path: "/admin/order-list", label: "Order list" },
-            { path: "/admin/order-status-list", label: "Order status list" },
         ],
     },
     {
@@ -153,25 +152,6 @@ const TaskBarAdmin = () => {
                         Profile
                     </ListItem>
                 </Link>
-                <Link to="settings">
-
-                    <ListItem>
-                        <ListItemPrefix>
-                            <Cog6ToothIcon className="h-5 w-5" />
-                        </ListItemPrefix>
-                        Settings
-                    </ListItem>
-                </Link>
-                <Link to="logout">
-
-                    <ListItem>
-                        <ListItemPrefix>
-                            <PowerIcon className="h-5 w-5" />
-                        </ListItemPrefix>
-                        Log Out
-                    </ListItem>
-                </Link>
-
             </List>
         </Card>
     );
