@@ -41,7 +41,7 @@ export default function CategoryProduct() {
                                     {product.images[0] ? (
                                         <img
                                         className=" h-[200px] w-[200px] md:h-[220px] md:w-[220px] lg:h-[280px] lg:w-[280px] xl:h-[320px] xl:w-[320px] object-cover rounded-t-xl"
-                                        src={`https://github.com/Duonganhdu2002/E-Commerce/blob/main/react/src/assets/image/${product.images[0]}?raw=true`}
+                                        src={`../../../src/assets/image/${product.images?.[0]}`}
                                         alt="Product"
                                     />
                                     ) : (
