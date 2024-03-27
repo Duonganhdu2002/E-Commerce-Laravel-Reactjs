@@ -22,7 +22,7 @@ export default function Payment() {
 
     // Calculate the total amount
     const totalAmount = selectedItems.reduce((acc, currentItem) => {
-        return acc + parseFloat(currentItem.Price);
+        return acc + parseFloat(currentItem.Price * currentItem.newQuantity);
     }, 0);
 
     // Define data for the order

@@ -19,6 +19,7 @@ export default function Checkout() {
     const [wardListData, setWardListData] = useState([]);
     // Redux thông tin giỏ hàng và giá ship
     const selectedItems = useSelector(state => state.cart.items);
+    console.log(selectedItems)
     const selectedShippingPrice = useSelector(state => state.cart.selectedShippingPrice);
     const selectedShippingMethod = useSelector(state => state.cart.selectedShippingMethod);
     //Redux get id user
