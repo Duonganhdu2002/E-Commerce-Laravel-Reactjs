@@ -231,8 +231,8 @@ const App = () => {
                                 <Route path="brand-list" element={<PrivateAdminRoute element={<BrandList />} />} />
                                 <Route path="order-list" element={<PrivateAdminRoute element={<OrderList />} />} />
                                 <Route path="product-list" element={<PrivateAdminRoute element={<ProductList />} />} />
-                                <Route path="review-list" element={<PrivateAdminRoute element={<ReviewList />} />} />
-                                <Route path="review-user-list" element={<PrivateAdminRoute element={<ReviewUserList />} />} />
+                                {/* <Route path="review-list" element={<PrivateAdminRoute element={<ReviewList />} />} />
+                                <Route path="review-user-list" element={<PrivateAdminRoute element={<ReviewUserList />} />} /> */}
                                 <Route path="shopping-method-list" element={<PrivateAdminRoute element={<ShoppingMethodList />} />} />
                                 <Route path="dashboard" element={<PrivateAdminRoute element={<DashboardAdmin />} />} />
                                 <Route path="profile" element={<PrivateAdminRoute element={<ProfileAdmin />} />} />

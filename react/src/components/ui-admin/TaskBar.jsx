@@ -61,24 +61,14 @@ const accordionData = [
             { path: "/admin/product-list", label: "Product list" },
         ],
     },
-    {
-        id: 5,
-        icon: <StarIcon className="h-5 w-5" />,
-        title: "Review",
-        links: [
-            { path: "/admin/review-list", label: "Review list" },
-            { path: "/admin/review-user-list", label: "Review user list" },
-        ],
-    },
-
-    {
-        id: 6,
-        icon: <CreditCardIcon className="h-5 w-5" />,
-        title: "Shopping method",
-        links: [
-            { path: "/admin/shopping-method-list", label: "Shopping method list" },
-        ],
-    },
+    // {
+    //     id: 5,
+    //     icon: <CreditCardIcon className="h-5 w-5" />,
+    //     title: "Shopping method",
+    //     links: [
+    //         { path: "/admin/shopping-method-list", label: "Shopping method list" },
+    //     ],
+    // },
 ];
 
 
