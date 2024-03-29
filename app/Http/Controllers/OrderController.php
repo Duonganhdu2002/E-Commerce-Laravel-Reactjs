@@ -29,6 +29,29 @@ class OrderController extends Controller
         return response()->json($arr, 200);
     }
 
+    public function checkPurchase(Request $request)
+    {
+        // Validate the incoming request data
+        $request->validate([
+            'user_id' => 'required|integer',
+            'product_id' => 'required|integer',
+        ]);
+
+        // Retrieve the user_id and product_id from the request
+        $user_id = $request->input('user_id');
+        $product_id = $request->input('product_id');
+
+        // Check if the user has purchased the specified product
+        $hasPurchased = order::where('user_id', $user_id)
+            ->whereHas('items', function ($query) use ($product_id) {
+                $query->where('product_id', $product_id);
+            })
+            ->exists();
+
+        // Return 1 if the user has purchased the product, otherwise return 0
+        return response()->json(['purchased' => $hasPurchased ? 1 : 0]);
+    }
+
     public function getDisableOrdersForShop($sellerId)
     {
         try {

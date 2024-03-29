@@ -155,6 +155,7 @@ Route::prefix('public')->group(function () {
     });
 
     Route::prefix('order')->group(function () {
+        Route::get('purchase', [OrderController::class, 'checkPurchase']);
         Route::get('list', [OrderController::class, 'getAllOrder']);
         Route::post('make', [OrderController::class, 'checkout']);
         Route::get('details/{order_id}', [OrderController::class, 'getOrderDetails']);
