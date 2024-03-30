@@ -18,6 +18,8 @@ use App\Http\Controllers\RevenueController;
 use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserAddressController;
+use App\Http\Controllers\OrderStatusController;
+;
 
 Route::prefix('payment')->group(function () {
     Route::post('payment', [PaymentController::class, 'createPaymentIntent']);
@@ -167,6 +169,10 @@ Route::prefix('public')->group(function () {
         Route::get('disable/{user_id}', [OrderController::class, 'getDisableOrdersForShop']);
         // Hiển thị các đơn hàng đang được vận chuyển
         Route::get('shipped-orders/{user_id}', [OrderController::class, 'showShippingOrdersByUserId']);
+        // Cập Nhật trạng thái đơn hàng
+        Route::get('update-order-status/{order_id}', [OrderStatusController::class, 'updateStatus']);
+
+    
     });
 
     Route::prefix('location')->group(function () {
