@@ -74,6 +74,9 @@ class ProductReviewController extends Controller
 
         $validator = Validator::make($input, [
             'user_id' => 'required',
+            'product_id' => 'required',
+            'rating' => 'required',
+            'comment' => 'required',
         ]);
         if ($validator->fails()) {
             $arr = [
