@@ -107,6 +107,8 @@ Route::prefix('public')->group(function () {
         });
         //hiển thị danh sách sản phẩm theo sắp xếp
         Route::get('rating/{shop_id}/{rating?}', [ProductReviewController::class, 'shopReviews']);
+        // bình luận sản phẩm
+        Route::post('reviews', [ProductReviewController::class, 'store']);
     });
 
     Route::prefix('revenue')->group(function () {
