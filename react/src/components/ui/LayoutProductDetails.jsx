@@ -25,6 +25,7 @@ import {
     Rating,
     Textarea,
 } from "@material-tailwind/react";
+import { checkOrder } from "../../services/orderService";
 
 
 const LayoutProductDetails = () => {
@@ -50,6 +51,8 @@ const LayoutProductDetails = () => {
     const imageUrls = data.image_urls || [];
     const limitedImageUrls = imageUrls.slice(0, 3);
     const [currentImage, setCurrentImage] = useState(imageUrls[0]);
+
+    const [check, setCheck] = useState();
 
     const handleThumbnailClick = (imageUrl) => {
         setCurrentImage(imageUrl);
@@ -122,18 +125,29 @@ const LayoutProductDetails = () => {
 
         getProduct();
 
-        const intervalId = setInterval(() => {
-            getProduct();
-        }, 3000);
+        // const intervalId = setInterval(() => {
+        //     getProduct();
+        // }, 3000);
 
-        return () => clearInterval(intervalId);
+        // return () => clearInterval(intervalId);
 
     }, [productId]);
 
-
-    // console.log(data);
-    // console.log(starBlack);
-    // console.log(starWhite);
+    useEffect(() => {
+        if (user && user.user_id) {
+            const checkPurchase = async () => {
+                try {
+                    let res = await checkOrder(user.user_id, productId);
+                    if (res && res.purchased) {
+                        setCheck(res.purchased);
+                    }
+                } catch (error) {
+                    console.error("Error fetching fields:", error);
+                }
+            };
+            checkPurchase();
+        }
+    }, [productId]);
 
     const addCount = () => {
         setCount((prev) => prev + 1);
@@ -602,7 +616,14 @@ const LayoutProductDetails = () => {
                                     great.{" "}
                                 </div>
                             </div>
-                            <Button className=" w-full text-sm" onClick={handleOpen}>Write review</Button>
+                            {
+                                (check === 1) ? (
+                                    <Button className=" w-full text-sm" onClick={handleOpen}>Write review</Button>
+                                ) : (
+                                    <Button className=" w-full text-sm">You need to buy this product first</Button>
+                                )
+                            }
+
                             <Dialog open={open} size="xs" handler={handleOpen}>
                                 <div className="flex items-center justify-between">
                                     <DialogHeader className="flex flex-col items-start">

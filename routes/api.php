@@ -31,8 +31,6 @@ Route::prefix('user')->group(function () {
     // Lấy toàn bộ thông tin của user
     Route::get('/getAllUsers', [UserController::class, 'getAllUsers'])->name('getAllUsers');
 
-
-
     // Quyền admin
     Route::post('createAdmin', [UserController::class, 'createAdmin'])->name('createAdmin');
     Route::post('createBusiness', [UserController::class, 'createBusiness'])->name('createBusiness');
@@ -82,10 +80,8 @@ Route::prefix('public')->group(function () {
         Route::get('shop/{id}', [ProductController::class, 'createByShop']);
         // chức năng tìm kiếm sản phẩm theo tên của sản phẩm, brand, category
         Route::get('/search-products', [SearchHistoryController::class, 'search']);
-
         // Lọc sản phẩm theo category và brand
         Route::post('/filterByCategoriesAndBrands', [ProductController::class, 'filterByCategoriesAndBrands'])->name('filterByCategoriesAndBrands');
-
         // Lọc sản phẩm theo giá
         // Route::get('/filter-by-price', [ProductController::class, 'filterByPrice']);
 
@@ -171,8 +167,6 @@ Route::prefix('public')->group(function () {
         Route::get('shipped-orders/{user_id}', [OrderController::class, 'showShippingOrdersByUserId']);
         // Cập Nhật trạng thái đơn hàng
         Route::put('update-order-status/{order_id}', [OrderStatusController::class, 'updateStatus']);
-
-
     });
 
     Route::prefix('location')->group(function () {
