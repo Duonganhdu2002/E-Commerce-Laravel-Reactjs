@@ -31,7 +31,7 @@ Route::prefix('user')->group(function () {
     // Lấy toàn bộ thông tin của user
     Route::get('/getAllUsers', [UserController::class, 'getAllUsers'])->name('getAllUsers');
 
-    
+
 
     // Quyền admin
     Route::post('createAdmin', [UserController::class, 'createAdmin'])->name('createAdmin');
@@ -170,9 +170,9 @@ Route::prefix('public')->group(function () {
         // Hiển thị các đơn hàng đang được vận chuyển
         Route::get('shipped-orders/{user_id}', [OrderController::class, 'showShippingOrdersByUserId']);
         // Cập Nhật trạng thái đơn hàng
-        Route::get('update-order-status/{order_id}', [OrderStatusController::class, 'updateStatus']);
+        Route::put('update-order-status/{order_id}', [OrderStatusController::class, 'updateStatus']);
 
-    
+
     });
 
     Route::prefix('location')->group(function () {

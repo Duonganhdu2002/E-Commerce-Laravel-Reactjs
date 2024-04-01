@@ -28,4 +28,8 @@ const checkOrder = (user_id, product_id) => {
     return axios.get(`/public/order/purchase?user_id=${user_id}&product_id=${product_id}`);
 }
 
-export { checkOrder, getAllOrder, orderShipped, orderItems, listOrderCancled, handleOrder, listOrder };
+const updateOrderStatus = (order_id) => {
+    return axios.put(`/public/order/update-order-status/${order_id}`)
+}
+
+export { checkOrder, getAllOrder, orderShipped, orderItems, listOrderCancled, handleOrder, listOrder, updateOrderStatus };

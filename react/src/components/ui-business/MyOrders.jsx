@@ -30,7 +30,7 @@ import {
 } from "@material-tailwind/react";
 
 import { useEffect, useState } from "react";
-import { listOrder, orderItems } from "../../services/orderService";
+import { listOrder, orderItems, updateOrderStatus } from "../../services/orderService";
 import { useSelector } from 'react-redux'
 
 import React from "react";
@@ -59,7 +59,6 @@ function NavListMenu({ order_id }) {
 
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
-
     const [data, setData] = useState([]);
 
     useEffect(() => {
@@ -147,7 +146,7 @@ export function MyOrdersBusiness() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await listOrder(seller_id, page);
+                let res = await listOrder(seller_id, page,);
                 setDataFull(res.data);
                 setData(res.data.data)
             } catch (error) {
@@ -213,6 +212,23 @@ export function MyOrdersBusiness() {
 
         calculateVisiblePages();
     }, [active, dataFull.last_page]);
+
+    const handleButtonClicked = async (order_id) => {
+        try {
+
+            await updateOrderStatus(order_id);
+
+            const res = await listOrder(seller_id, page);
+            setDataFull(res.data);
+            setData(res.data.data);
+
+
+        } catch (error) {
+            console.error("Error handling button click:", error);
+        }
+    };
+
+
 
     return (
         <Card className=" h-[98%] w-full p-4">
@@ -337,10 +353,13 @@ export function MyOrdersBusiness() {
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <ForwardIcon className=" w-5 h-5 mx-auto" />
+                                            <Button variant="text" onClick={() => handleButtonClicked(data.order_id)} disabled={data.order_status === "Cancled"}>
+                                                <ForwardIcon className="w-5 h-5 mx-auto" />
+                                            </Button>
+
                                         </td>
                                         <td className={classes}>
-                                            <NavListMenu order_id={data.order_id} />
+                                            <NavListMenu order_id={data.order_id}/>
                                         </td>
                                     </tr>
                                 );
