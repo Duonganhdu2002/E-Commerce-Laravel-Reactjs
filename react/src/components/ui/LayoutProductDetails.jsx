@@ -172,6 +172,8 @@ const LayoutProductDetails = () => {
 
     const handleDoneButtonClick = async () => {
         await addComment(dataReview);
+        alert("Successful")
+        setOpen(!open);
     };
 
     return (
