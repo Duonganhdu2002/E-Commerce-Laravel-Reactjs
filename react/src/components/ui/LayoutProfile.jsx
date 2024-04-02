@@ -79,7 +79,7 @@ const UpdateProfile = (user_id) => {
                 </DialogFooter>
             </Dialog>
 
-            <Button onClick={handleOpen}>
+            <Button className=" mt-4" onClick={handleOpen}>
                 Edit
             </Button>
         </div>
