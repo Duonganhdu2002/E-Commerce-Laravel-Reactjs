@@ -6,6 +6,10 @@ import {
 } from "@material-tailwind/react";
 import Chart from "react-apexcharts";
 import { Square3Stack3DIcon } from "@heroicons/react/24/outline";
+import { useSelector } from 'react-redux'
+import { productSalesByMonth } from "../../services/revenue";
+import { useEffect, useState } from "react";
+
 
 // If you're using Next.js please use the dynamic import for react-apexcharts and remove the import from the top for the react-apexcharts
 // import dynamic from "next/dynamic";
@@ -100,6 +104,71 @@ const chartConfig = {
 };
 
 export default function Graph2() {
+    const user = useSelector((state) => state.seller.seller.user_id);
+    const [data, setData] = useState([])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            let res = await productSalesByMonth(user)
+            setData(res)
+        }
+        fetchData()
+    }, [])
+
+
+    // Chuyển đổi dữ liệu thành mảng để sử dụng trong biểu đồ
+    const chartData = Object.values(data);
+
+    // Tạo mảng categories cho trục x của biểu đồ
+    const categories = Object.keys(data).map(month => {
+        switch (parseInt(month)) {
+            case 1:
+                return "Jan";
+            case 2:
+                return "Feb";
+            case 3:
+                return "Mar";
+            case 4:
+                return "Apr";
+            case 5:
+                return "May";
+            case 6:
+                return "Jun";
+            case 7:
+                return "Jul";
+            case 8:
+                return "Aug";
+            case 9:
+                return "Sep";
+            case 10:
+                return "Oct";
+            case 11:
+                return "Nov";
+            case 12:
+                return "Dec";
+            default:
+                return "";
+        }
+    });
+
+    // Thay đổi chartConfig để sử dụng dữ liệu và categories mới
+    const updatedChartConfig = {
+        ...chartConfig,
+        series: [
+            {
+                name: "Sales",
+                data: chartData,
+            },
+        ],
+        options: {
+            ...chartConfig.options,
+            xaxis: {
+                ...chartConfig.options.xaxis,
+                categories: categories,
+            },
+        },
+    };
+
     return (
         <Card>
             <CardHeader
@@ -120,13 +189,12 @@ export default function Graph2() {
                         color="gray"
                         className="max-w-sm font-normal"
                     >
-                        Visualize your data in a simple way using the
-                        @material-tailwind/react chart plugin.
+                        Sales in 12 months
                     </Typography>
                 </div>
             </CardHeader>
             <CardBody className="px-2 pb-0">
-                <Chart {...chartConfig} />
+                <Chart {...updatedChartConfig} />
             </CardBody>
         </Card>
     );

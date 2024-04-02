@@ -8,4 +8,11 @@ const getTotalProductRevenue = (user_id) => {
     return axios.get(`/public/revenue/totalProduct/${user_id}`);
 }
 
-export { getTotalRevenue, getTotalProductRevenue };
+const getRevenueByMonth = (user_id) => {
+    return axios.get(`/public/revenue/per-month/${user_id}`);
+}
+
+const productSalesByMonth = (user_id) => {
+    return axios.get(`/public/revenue/getSalesByMonth/${user_id}`);
+}
+export { productSalesByMonth, getRevenueByMonth, getTotalRevenue, getTotalProductRevenue };

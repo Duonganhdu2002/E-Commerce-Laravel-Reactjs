@@ -117,6 +117,9 @@ Route::prefix('public')->group(function () {
         Route::get('/total/{shopId}', [RevenueController::class, 'calculateRevenue']);
         // tính tổng số sản phẩm được bán ra trong ngày, tháng, năm và tỉ lệ so với ngày hôm qua, tuần trước,  tháng trước, năm trước
         Route::get('/totalProduct/{shopId}', [RevenueController::class, 'calculateProductSold']);
+        //Doanh thu theo từng tháng
+        Route::get('/per-month/{shopId}', [RevenueController::class, 'getRevenueByMonth']);
+        Route::get('/getSalesByMonth/{shopId}', [RevenueController::class, 'productSalesByMonth']);
     });
 
     Route::prefix('field')->group(function () {

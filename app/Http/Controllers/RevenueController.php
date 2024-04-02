@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
-use App\Models\order_items;
+use App\Models\order_items as OrderItem;
+use App\Models\order as Order;
 use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
@@ -94,7 +95,7 @@ class RevenueController extends Controller
             ->orderBy('year', 'DESC')
             ->get();
 
-        
+
 
         // Truy vấn dữ liệu doanh số của năm trước
         $lastYearRevenue = DB::table('order_items')
@@ -106,22 +107,22 @@ class RevenueController extends Controller
 
         // Tính tỉ lệ so với ngày hôm qua
         $yesterdayRevenue = $yesterdayRevenue->total_revenue ?? 0;
-        $todayRevenue = isset ($dailyRevenue[0]) ? $dailyRevenue[0]->total_revenue : 0;
+        $todayRevenue = isset($dailyRevenue[0]) ? $dailyRevenue[0]->total_revenue : 0;
         $revenueChangeYesterday = ($yesterdayRevenue != 0) ? (($todayRevenue - $yesterdayRevenue) / $yesterdayRevenue) * 100 : 0;
 
         // Tính tỉ lệ so với tuần trước
         $lastWeekRevenue = $lastWeekRevenue->total_revenue ?? 0;
-        $thisWeekRevenue = isset ($weeklyRevenue[0]) ? $weeklyRevenue[0]->total_revenue : 0;
+        $thisWeekRevenue = isset($weeklyRevenue[0]) ? $weeklyRevenue[0]->total_revenue : 0;
         $revenueChangeLastWeek = ($lastWeekRevenue != 0) ? (($thisWeekRevenue - $lastWeekRevenue) / $lastWeekRevenue) * 100 : 0;
 
         // Tính tỉ lệ so với tháng trước
         $lastMonthRevenue = $lastMonthRevenue->total_revenue ?? 0;
-        $thisMonthRevenue = isset ($monthlyRevenue[0]) ? $monthlyRevenue[0]->total_revenue : 0;
+        $thisMonthRevenue = isset($monthlyRevenue[0]) ? $monthlyRevenue[0]->total_revenue : 0;
         $revenueChangeLastMonth = ($lastMonthRevenue != 0) ? (($thisMonthRevenue - $lastMonthRevenue) / $lastMonthRevenue) * 100 : 0;
 
         // Tính tỉ lệ so với năm trước
         $lastYearRevenue = $lastYearRevenue->total_revenue ?? 0;
-        $thisYearRevenue = isset ($annualRevenue[0]) ? $annualRevenue[0]->total_revenue : 0;
+        $thisYearRevenue = isset($annualRevenue[0]) ? $annualRevenue[0]->total_revenue : 0;
         $revenueChangeLastYear = ($lastYearRevenue != 0) ? (($thisYearRevenue - $lastYearRevenue) / $lastYearRevenue) * 100 : 0;
 
         foreach ($dailyRevenue as $item) {
@@ -151,7 +152,7 @@ class RevenueController extends Controller
             'revenueChangeLastWeek' => $revenueChangeLastWeek,
             'revenueChangeLastMonth' => $revenueChangeLastMonth,
             'revenueChangeLastYear' => $revenueChangeLastYear,
-           
+
         ]);
     }
 
@@ -245,25 +246,25 @@ class RevenueController extends Controller
 
         // Tính tỉ lệ so với ngày hôm qua
         $yesterdayProductSold = $yesterdayProductSold->total_products_sold ?? 0;
-        $todayProductSold = isset ($dailyProductSold[0]) ? $dailyProductSold[0]->total_products_sold : 0;
+        $todayProductSold = isset($dailyProductSold[0]) ? $dailyProductSold[0]->total_products_sold : 0;
         $productSoldChangeYesterday = ($yesterdayProductSold != 0) ? (($todayProductSold - $yesterdayProductSold) / $yesterdayProductSold) * 100 : 0;
 
         // Tính tỉ lệ so với tuần trước
         $lastWeekProductSold = $lastWeekProductSold->total_products_sold ?? 0;
-        $thisWeekProductSold = isset ($weeklyProductSold[0]) ? $weeklyProductSold[0]->total_products_sold : 0;
+        $thisWeekProductSold = isset($weeklyProductSold[0]) ? $weeklyProductSold[0]->total_products_sold : 0;
         $productSoldChangeLastWeek = ($lastWeekProductSold != 0) ? (($thisWeekProductSold - $lastWeekProductSold) / $lastWeekProductSold) * 100 : 0;
 
         // Tính tỉ lệ so với tháng trước
         $lastMonthProductSold = $lastMonthProductSold->total_products_sold ?? 0;
-        $thisMonthProductSold = isset ($monthlyProductSold[0]) ? $monthlyProductSold[0]->total_products_sold : 0;
+        $thisMonthProductSold = isset($monthlyProductSold[0]) ? $monthlyProductSold[0]->total_products_sold : 0;
         $productSoldChangeLastMonth = ($lastMonthProductSold != 0) ? (($thisMonthProductSold - $lastMonthProductSold) / $lastMonthProductSold) * 100 : 0;
 
         // Tính tỉ lệ so với năm trước
         $lastYearProductSold = $lastYearProductSold->total_products_sold ?? 0;
-        $thisYearProductSold = isset ($annualProductSold[0]) ? $annualProductSold[0]->total_products_sold : 0;
+        $thisYearProductSold = isset($annualProductSold[0]) ? $annualProductSold[0]->total_products_sold : 0;
         $productSoldChangeLastYear = ($lastYearProductSold != 0) ? (($thisYearProductSold - $lastYearProductSold) / $lastYearProductSold) * 100 : 0;
 
-        
+
         // Trả về kết quả
         return response()->json([
             'dailyProductSold' => $dailyProductSold,
@@ -277,5 +278,51 @@ class RevenueController extends Controller
         ]);
     }
 
+    public function getRevenueByMonth($userId)
+    {
+        // Lấy doanh thu theo tháng từ cơ sở dữ liệu
+        $revenueByMonth = DB::table('order')
+            ->join('order_items', 'order.order_id', '=', 'order_items.order_id')
+            ->join('product', 'order_items.product_id', '=', 'product.product_id')
+            ->selectRaw('MONTH(order.created_at) as month, SUM(order_items.quantity * product.price) as revenue')
+            ->where('order.user_id', $userId)
+            ->whereYear('order.created_at', now()->year)
+            ->groupBy(DB::raw('MONTH(order.created_at)'))
+            ->pluck('revenue', 'month');
 
+        // Tạo mảng kết quả với tất cả các tháng và giá trị mặc định là 0
+        $allMonths = range(1, 12);
+        $revenueData = [];
+        foreach ($allMonths as $month) {
+            $revenueData[$month] = isset($revenueByMonth[$month]) ? $revenueByMonth[$month] : '0';
+        }
+
+        return response()->json($revenueData);
+    }
+
+    public function productSalesByMonth($userId)
+    {
+        $currentYear = now()->year;
+        $productSalesByMonth = Order::leftJoin('order_items', 'order.order_id', '=', 'order_items.order_id')
+            ->select(
+                DB::raw('MONTH(order.created_at) as month'),
+                DB::raw('COALESCE(SUM(order_items.quantity), 0) as total_products_sold')
+            )
+            ->where('order.user_id', $userId)
+            ->whereYear('order.created_at', $currentYear)
+            ->groupBy(DB::raw('MONTH(order.created_at)'))
+            ->orderBy(DB::raw('MONTH(order.created_at)'))
+            ->pluck('total_products_sold', 'month')
+            ->toArray();
+
+        // Initialize an array for storing product sales data for each month
+        $salesData = [];
+
+        // Loop through each month to set sales data
+        for ($month = 1; $month <= 12; $month++) {
+            $salesData[$month] = isset($productSalesByMonth[$month]) ? $productSalesByMonth[$month] : "0";
+        }
+
+        return response()->json($salesData);
+    }
 }
