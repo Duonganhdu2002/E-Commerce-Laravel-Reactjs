@@ -12,4 +12,8 @@ const deleteNotification = (notificationId) => {
     return axios.delete(`/notification/delete/${notificationId}`);
 }
 
-export { updateNotification, deleteNotification, getNotification };
+const addNotification = (data) => {
+    return axios.post(`/notification/store`, data);
+}
+
+export {addNotification, updateNotification, deleteNotification, getNotification };
