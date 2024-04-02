@@ -60,4 +60,8 @@ const searchUser = (email) => {
     return axios.get(`/admin/users/search/${email}`);
 };
 
-export { searchUser, adminLogin, fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister, getUserInfor, userDelete, userAddress, updateAddress, deleteAddress, addAddress, updateUser };
+const transactionUser = (userId) => {
+    return axios.get(`/transaction/getAllTransaction/${userId}`);
+};
+
+export { searchUser, adminLogin, fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister, getUserInfor, userDelete, userAddress, updateAddress, deleteAddress, addAddress, updateUser, transactionUser };
