@@ -185,7 +185,6 @@ Route::prefix('public')->group(function () {
 
 
     });
-
     Route::prefix('location')->group(function () {
         Route::get('/', [ProvincesController::class, 'index']);
         Route::get('province={provinceId}', [ProvincesController::class, 'getDistricts']);
@@ -208,9 +207,9 @@ Route::prefix('notification')->group(function () { // quản lí thông báo
     Route::delete('delete/{id}', [NotificationController::class, 'destroy']);
 });
 
-Route::prefix('Transaction')->group(function () {
+Route::prefix('transaction')->group(function () {
     // show tất cả giao dịch
-    Route::get('/getAllTransaction', [TransactionController::class, 'index'])->name('getAllTransaction');
+    Route::get('getAllTransaction', [TransactionController::class, 'index'])->name('getAllTransaction');
 });
 
 Route::prefix('admin')->group(function () {
