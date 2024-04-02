@@ -214,7 +214,7 @@ Route::prefix('transaction')->group(function () {
 
 Route::prefix('admin')->group(function () {
     // User list
-    Route::get('/users/search', [UserController::class, 'search']);
+    Route::get('/users/search/{email}', [UserController::class, 'search']);
     // Tìm kiếm field
     Route::get('/fields/searchField', [FieldController::class, 'searchField']);
     // tìm kiếm category
