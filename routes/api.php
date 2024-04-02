@@ -31,7 +31,7 @@ Route::prefix('user')->group(function () {
 
     
 
-    // Quyền admin
+    
     Route::post('createAdmin', [UserController::class, 'createAdmin'])->name('createAdmin');
     Route::post('createBusiness', [UserController::class, 'createBusiness'])->name('createBusiness');
     Route::post('register', [UserController::class, 'createUser'])->name('register');
@@ -56,7 +56,8 @@ Route::prefix('user')->group(function () {
 
 Route::prefix('public')->group(function () {
     Route::prefix('product')->group(function () {
-        Route::get('all', [ProductController::class, 'index']);
+        Route::get('all', [ProductController::class, 'ind
+        ex']);
         Route::get('show/{id}', [ProductController::class, 'show']);
         Route::delete('delete/{id}', [ProductController::class, 'destroy']);
         Route::post('add', [ProductController::class, 'store']);
@@ -71,14 +72,14 @@ Route::prefix('public')->group(function () {
         Route::get('best-selling-user-products/{userId}', [ProductController::class, 'getBestSellingUserProducts'])->name('best-selling-user-products');
         // xuất ra những sản phẩm bởi id của brand và phân trang = 10 sp
         Route::get('indexByBrand/{brandId}', [ProductController::class, 'indexByBrand'])->name('indexByBrand');
-        // Lọc sản phẩm theo danh mục và có trạng thái là 3
+        // Lọc sản phẩm theo danh mục và sắp xếp các sản phẩm theo độ đánh giá và lượt bán.
         Route::get('listProductWithCategory/{categoryId}', [ProductController::class, 'listProductWithCategory'])->name('product-with-category');
-        // Lọc sản phẩm theo thương hiệu và có trạng thái là 3
+        // Lọc sản phẩm theo thương hiệu và sắp xếp các sản phẩm theo độ đánh giá và lượt bán.
         Route::get('listProductWithBrand/{categoryId}', [ProductController::class, 'listProductWithBrand']);
         // xuất ra những sản phẩm của user tạo ra( chủ shop)
         Route::get('user/{id}', [ProductController::class, 'indexByUser']);
         Route::get('shop/{id}', [ProductController::class, 'createByShop']);
-        // chức năng tìm kiếm sản phẩm theo tên của sản phẩm, brand, category
+        // chức năng tìm kiếm sản phẩm theo tên của sản phẩm
         Route::get('/search-products', [SearchHistoryController::class, 'search']);
 
         // Lọc sản phẩm theo category và brand
@@ -103,7 +104,7 @@ Route::prefix('public')->group(function () {
             Route::post('upload/{productId}', [ProductImageController::class, 'upload']);
             Route::resource('/', ProductImageController::class);
         });
-        //hiển thị danh sách sản phẩm theo sắp xếp
+        //hiển thị danh sách sản phẩm theo sắp xếp lượt đánh giá sản phẩm
         Route::get('rating/{shop_id}/{rating?}', [ProductReviewController::class, 'shopReviews']);
     });
 
@@ -115,7 +116,9 @@ Route::prefix('public')->group(function () {
     });
 
     Route::prefix('field')->group(function () {
+        // Hiển thị tất cả các lĩnh vực
         Route::get('list', [FieldController::class, 'index']);
+        // Hiển thị mỗi trang có 7 lĩnh vực cho admin
         Route::get('listAdmin', [FieldController::class, 'admin']);
         Route::get('/{id}', [FieldController::class, 'show']);
         Route::put('/{id}', [FieldController::class, 'update']);
@@ -155,11 +158,15 @@ Route::prefix('public')->group(function () {
     });
 
     Route::prefix('order')->group(function () {
+        // Kiểm tra người dùng đã mua sản phẩm chưa
         Route::get('purchase', [OrderController::class, 'checkPurchase']);
+        // Hiển thị danh sách đơn hàng của Customer
         Route::get('list', [OrderController::class, 'getAllOrder']);
+        // Tạo đơn hàng
         Route::post('make', [OrderController::class, 'checkout']);
+        // Hiển thị chi tiết đơn hàng
         Route::get('details/{order_id}', [OrderController::class, 'getOrderDetails']);
-        //show các đơn hàng được đặt của seller
+        //show các đơn hàng được đặt của Business
         Route::get('{user_id}', [OrderController::class, 'getSellerOrders']);
         //show don hang duoc tim kiem theo username cua 1 shop
         Route::get('search', [SearchHistoryController::class, 'searchOrdersByUsername']);
@@ -180,9 +187,13 @@ Route::prefix('shopping-method')->group(function () {
     Route::get('show', [ShippingMethodController::class, 'index']);
 });
 
-Route::prefix('notification')->group(function () {
+Route::prefix('notification')->group(function () { // quản lí thông báo
+    // Hiển thị danh sách thông báo cho user xem
     Route::get('show', [NotificationController::class, 'index']);
+    // Tạo thông báo từ user để gửi user khác
     Route::post('store', [NotificationController::class, 'store']);
+    // Cập nhật thông báo nếu đã được đọc
     Route::put('update/{id}', [NotificationController::class, 'update']);
+    // xóa thông báo
     Route::delete('delete/{id}', [NotificationController::class, 'destroy']);
 });

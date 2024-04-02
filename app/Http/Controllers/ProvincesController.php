@@ -15,12 +15,12 @@ class ProvincesController extends Controller
         $provinces = Provinces::all();
         return response()->json($provinces);
     }
-    public function getDistricts($provinceId)
+    public function getDistricts($provinceId) // huyện
     {
         $districts = Districts::where('province_id', $provinceId)->get();
         return response()->json($districts);
     }
-    public function getWards($districtId)
+    public function getWards($districtId) // phường
     {
         $wards = Wards::where('district_id', $districtId)->get();
         return response()->json($wards);

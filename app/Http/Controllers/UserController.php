@@ -447,7 +447,7 @@ class UserController extends Controller
         }
     }
 
-    public function getTotalUsers()
+    public function   getTotalUsers()
     {
         // Sử dụng SQL raw query để lấy tổng số người dùng
         $totalUsers = DB::table('user')->selectRaw('COUNT(*) as total_users')->first();
