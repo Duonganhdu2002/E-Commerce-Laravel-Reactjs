@@ -177,6 +177,9 @@ Route::prefix('public')->group(function () {
         Route::get('shipped-orders/{user_id}', [OrderController::class, 'showShippingOrdersByUserId']);
         // Cập Nhật trạng thái đơn hàng
         Route::put('update-order-status/{order_id}', [OrderStatusController::class, 'updateStatus']);
+        //tim kiem don hang theo username
+        Route::get('{username}/{shop_id}/{order_status?}', [OrderController::class, 'showOrdersbyUsername']);
+
     });
 
     Route::prefix('location')->group(function () {
