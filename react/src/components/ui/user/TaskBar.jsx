@@ -83,7 +83,7 @@ export default function TaskBar() {
                         </List>
                     </AccordionBody>
                 </Accordion>
-                <Link to="./purchase">
+                {/* <Link to="./purchase">
                     <ListItem>
                         <ListItemPrefix>
                             <ShoppingBagIcon className="h-5 w-5" />
@@ -93,7 +93,7 @@ export default function TaskBar() {
                             <Chip value="14" size="sm" variant="ghost" color="blue" className="rounded-full" />
                         </ListItemSuffix>
                     </ListItem>
-                </Link>
+                </Link> */}
                 <Link to="./notification">
                     <ListItem>
                         <ListItemPrefix>
@@ -102,14 +102,14 @@ export default function TaskBar() {
                         Notification
                     </ListItem>
                 </Link>
-                <Link to="./voucher-wallet">
+                {/* <Link to="./voucher-wallet">
                     <ListItem>
                         <ListItemPrefix>
                             <TicketIcon className="h-5 w-5" />
                         </ListItemPrefix>
                         Voucher Warehouse
                     </ListItem>
-                </Link>
+                </Link> */}
             </List>
         </Card>
     )
