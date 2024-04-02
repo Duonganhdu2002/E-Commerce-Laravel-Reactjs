@@ -15,8 +15,8 @@ class ProductCategoryController extends Controller
     public function index()
     {
         $pc = Category::join('field', 'field.field_id', '=', 'product_category.field_id')
-        ->select('product_category.*', 'field.field_name')
-        ->paginate(7);
+            ->select('product_category.*', 'field.field_name')
+            ->paginate(7);
 
         $arr = [
             'status' => true,
@@ -247,5 +247,27 @@ class ProductCategoryController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function searchCategory(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'product_category_name' => 'required|string|max:255',
+        ]);
+
+        // Get the product category name from the request
+        $productCategoryName = $request->input('product_category_name');
+
+        // Query the database for product categories matching the name
+        $productCategories = Category::where('product_category_name', 'like', '%' . $productCategoryName . '%')->paginate(6);
+
+        // Check if any product categories were found
+        if ($productCategories->isEmpty()) {
+            return response()->json(['message' => 'No product categories found for the given criteria'], 404);
+        }
+
+        // Return the product categories with pagination
+        return response()->json($productCategories, 200);
     }
 }

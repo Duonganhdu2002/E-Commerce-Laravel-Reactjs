@@ -1127,4 +1127,26 @@ class ProductController extends Controller
             return response()->json($arr, 404);
         }
     }
+
+    public function searchProduct(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        // Get the name from the request
+        $name = $request->input('name');
+
+        // Query the database for products matching the name
+        $products = Product::where('name', 'like', '%' . $name . '%')->paginate(6);
+
+        // Check if any products were found
+        if ($products->isEmpty()) {
+            return response()->json(['message' => 'No products found for the given name'], 404);
+        }
+
+        // Return the products with pagination
+        return response()->json($products, 200);
+    }
 }

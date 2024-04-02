@@ -161,4 +161,25 @@ class FieldController extends Controller
             ], 500);
         }
     }
+    public function searchField(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'field_name' => 'required|string|max:255',
+        ]);
+
+        // Get the field name from the request
+        $fieldName = $request->input('field_name');
+
+        // Query the database for fields matching the field name
+        $fields = Field::where('field_name', 'like', '%' . $fieldName . '%')->paginate(6);
+
+        // Check if any fields were found
+        if ($fields->isEmpty()) {
+            return response()->json(['message' => 'No fields found for the given criteria'], 404);
+        }
+
+        // Return the fields with pagination
+        return response()->json($fields, 200);
+    }
 }

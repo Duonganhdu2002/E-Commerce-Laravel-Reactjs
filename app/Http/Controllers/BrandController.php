@@ -14,9 +14,9 @@ class BrandController extends Controller
     public function index()
     {
 
-        $b = Brand::join('field', 'field.field_id', '=', 'product_brand.field_id' )
-        ->select('product_brand.*', 'field.field_name')
-        ->paginate(7);
+        $b = Brand::join('field', 'field.field_id', '=', 'product_brand.field_id')
+            ->select('product_brand.*', 'field.field_name')
+            ->paginate(7);
 
         $arr = [
             'status' => true,
@@ -182,5 +182,27 @@ class BrandController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function searchBrand(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'product_brand_name' => 'required|string|max:255',
+        ]);
+
+        // Get the product brand name from the request
+        $productBrandName = $request->input('product_brand_name');
+
+        // Query the database for product brands matching the name
+        $productBrands = Brand::where('product_brand_name', 'like', '%' . $productBrandName . '%')->paginate(6);
+
+        // Check if any product brands were found
+        if ($productBrands->isEmpty()) {
+            return response()->json(['message' => 'No product brands found for the given criteria'], 404);
+        }
+
+        // Return the product brands with pagination
+        return response()->json($productBrands, 200);
     }
 }

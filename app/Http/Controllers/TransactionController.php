@@ -15,7 +15,7 @@ class TransactionController extends Controller
 
         $arr = [
             'status' => true,
-            'message' => 'Danh sách',
+            'message' => 'Danh sách lịch sử giao dịch',
             'data' => TransactionResource::collection($t)
         ];
 
