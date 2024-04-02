@@ -58,8 +58,7 @@ Route::prefix('user')->group(function () {
 
 Route::prefix('public')->group(function () {
     Route::prefix('product')->group(function () {
-        Route::get('all', [ProductController::class, 'ind
-        ex']);
+        Route::get('all', [ProductController::class, 'index']);
         Route::get('show/{id}', [ProductController::class, 'show']);
         Route::delete('delete/{id}', [ProductController::class, 'destroy']);
         Route::post('add', [ProductController::class, 'store']);
