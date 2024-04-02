@@ -124,14 +124,14 @@ const TaskBarAdmin = () => {
                     </Accordion>
                 ))}
                 <hr className="my-2 border-blue-gray-50" />
-                <Link to="dashboard">
+                {/* <Link to="dashboard">
                     <ListItem>
                         <ListItemPrefix>
                             <InboxIcon className="h-5 w-5" />
                         </ListItemPrefix>
                         Dashboard
                     </ListItem>
-                </Link>
+                </Link> */}
 
                 <Link to="profile">
 
