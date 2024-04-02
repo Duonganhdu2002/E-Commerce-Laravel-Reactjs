@@ -524,10 +524,12 @@ class UserController extends Controller
         }
     }
 
-    public function search(Request $request)
+    public function search($email)
     {
-        // Lấy thông tin từ request
-        $email = $request->input('email');
+        // Kiểm tra xem có email được cung cấp không
+        if (!$email) {
+            return response()->json(['message' => 'Vui lòng cung cấp địa chỉ email'], 400);
+        }
 
         // Tìm user có email tương ứng
         $users = User::where('email', $email)->paginate(6);

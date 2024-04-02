@@ -56,4 +56,8 @@ const updateUser = (userId, dataUpdate) => {
     return axios.put(`/user/${userId}`, dataUpdate);
 };
 
-export {adminLogin, fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister, getUserInfor, userDelete, userAddress, updateAddress, deleteAddress, addAddress, updateUser };
+const searchUser = (email) => {
+    return axios.get(`/user/admin/users/search/${email}`);
+};
+
+export { searchUser, adminLogin, fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister, getUserInfor, userDelete, userAddress, updateAddress, deleteAddress, addAddress, updateUser };
