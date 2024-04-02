@@ -9,7 +9,15 @@ import {
 import Background from '../../assets/sale/sale7.png';
 import Avatar from '../../assets/public/profile/thaicong.jpg'
 
+import { useSelector } from 'react-redux'
+
+
 export default function LayoutProfile() {
+
+    const user = useSelector((state) => state.user.user);
+
+    console.log(user)
+
     return (
         <Card className="mt-6 w-full">
             <CardHeader color="blue-gray" className="relative h-60">
