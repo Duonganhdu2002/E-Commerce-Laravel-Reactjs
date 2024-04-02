@@ -47,7 +47,7 @@ class ProductReviewController extends Controller
             }
 
             $currentPage = LengthAwarePaginator::resolveCurrentPage();
-            $perPage = 10;
+            $perPage = 8;
             $currentReviewsData = array_slice($allReviewsData, ($currentPage - 1) * $perPage, $perPage);
             $reviewsData = new LengthAwarePaginator($currentReviewsData, count($allReviewsData), $perPage, $currentPage);
 

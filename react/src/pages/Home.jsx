@@ -28,6 +28,7 @@ export default function Home() {
             <Banner4/>
             <SmartPhone />
             <Watch />
+            <div className=" mb-8"></div>
         </div>
     );
 }
