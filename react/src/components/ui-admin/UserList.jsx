@@ -543,7 +543,7 @@ function DataSearch() {
                     icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                     value={userEmail}
                     onChange={handleInputChange}
-                    onMouseOut={handleMouseOut} 
+                    onMouseDown={handleMouseOut} 
                 />
             </div>
             <CardBody className="px-4">
