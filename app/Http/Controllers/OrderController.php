@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\OrderResource;
 use App\Models\order;
+use App\Models\user;
 use App\Models\product;
 use App\Models\shopping_cart as ShoppingCart;
 use Illuminate\Support\Facades\DB;
@@ -423,4 +424,32 @@ class OrderController extends Controller
         return response()->json($orders, 200);
     }
 
+
+    public function showOrdersbyUsername($username, $shop_id, $order_status = null)
+    {
+    $user = User::where('username', $username)->first();
+
+    if (!$user) {
+        return response()->json(['message' => 'User not found'], 404);
+    }
+
+    $userId = $user->user_id;
+
+    $query = Order::select('users.username', 'total', 'order_status.order_status_name', 'order.created_at', 'shipping_method.shipping_method_name')
+            ->join('users', 'users.user_id', '=', 'order.user_id')
+            ->join('order_status', 'order.order_status_id', '=', 'order_status.order_status_id')
+            ->join('shipping_method', 'order.shipping_method_id', '=', 'shipping_method.shipping_method_id')
+            ->where('order.user_id', $userId)
+            ->where('order.shop_id', $shop_id);
+
+    if ($order_status !== null) {
+        $query->where('order.order_status_id', $order_status);
+    }
+
+    $orders = $query->get();
+
+    return response()->json([
+        'orders' => $orders,
+    ]);
+    }
 }
