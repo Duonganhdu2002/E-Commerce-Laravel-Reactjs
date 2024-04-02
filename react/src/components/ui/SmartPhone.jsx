@@ -14,7 +14,7 @@ export default function SmartPhone() {
 
     const getFetchTop6CategoryById = async () => {
         try {
-            let res = await fetchTop6CategoryById(1);
+            let res = await fetchTop6CategoryById(27);
             if (res && res.data) {
                 setListTop6SmartPhone(res.data);
             }

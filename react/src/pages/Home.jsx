@@ -27,7 +27,7 @@ export default function Home() {
             <FurniturePrview />
             <Banner4/>
             <SmartPhone />
-            {/* <Watch /> */}
+            <Watch />
         </div>
     );
 }
