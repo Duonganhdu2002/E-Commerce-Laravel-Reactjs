@@ -209,7 +209,7 @@ Route::prefix('notification')->group(function () { // quản lí thông báo
 
 Route::prefix('transaction')->group(function () {
     // show tất cả giao dịch
-    Route::get('getAllTransaction', [TransactionController::class, 'index'])->name('getAllTransaction');
+    Route::get('getAllTransaction/{user_id}', [TransactionController::class, 'index'])->name('getAllTransaction');
 });
 
 Route::prefix('admin')->group(function () {
