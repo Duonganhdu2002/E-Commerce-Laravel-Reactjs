@@ -27,7 +27,8 @@ export default function Home() {
             <FurniturePrview />
             <Banner4/>
             <SmartPhone />
-            {/* <Watch /> */}
+            <Watch />
+            <div className=" mb-8"></div>
         </div>
     );
 }

@@ -14,7 +14,7 @@ export default function FurniturePrview() {
 
     const getFetchTop6CategoryById = async () => {
         try {
-            let res = await fetchTop6CategoryById(27);
+            let res = await fetchTop6CategoryById(1);
             if (res && res.data) {
                 setListTop6Furniture(res.data);
             }

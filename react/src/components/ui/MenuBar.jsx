@@ -503,7 +503,7 @@ export default function MenuBar() {
                 <div className="relative items-center flex w-full mx-2 max-w-[24rem]">
                     <Input
                         className="pr-20"
-                        label="What do you looking for?"
+                        label="What are you looking for?"
                         containerProps={{
                             className: "min-w-0",
                         }}

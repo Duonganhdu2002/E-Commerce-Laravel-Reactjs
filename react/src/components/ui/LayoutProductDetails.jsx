@@ -92,7 +92,7 @@ const LayoutProductDetails = () => {
     const [comment, setComment] = useState("");
 
     const dataReview = {
-        user_id: user.user_id,
+        user_id: user?.user_id,
         product_id: productId,
         rating: scoreRating,
         comment: comment
