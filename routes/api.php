@@ -222,7 +222,7 @@ Route::prefix('admin')->group(function () {
     // tìm kiếm brand
     Route::get('/brand/searchBrand', [BrandController::class, 'searchBrand']);
     // order list
-    Route::get('/orders/search', [OrderController::class, 'searchOrder']);
+    Route::get('/orders/search/{username}', [OrderController::class, 'searchOrder']);
     // Product list
     Route::get('/products/search', [ProductController::class, 'searchProduct']);
 

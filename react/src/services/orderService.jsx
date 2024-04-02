@@ -32,4 +32,8 @@ const updateOrderStatus = (order_id) => {
     return axios.put(`/public/order/update-order-status/${order_id}`)
 }
 
-export { checkOrder, getAllOrder, orderShipped, orderItems, listOrderCancled, handleOrder, listOrder, updateOrderStatus };
+const searchOrder = (username) => {
+    return axios.get(`/admin/orders/search/${username}`)
+}
+
+export { searchOrder, checkOrder, getAllOrder, orderShipped, orderItems, listOrderCancled, handleOrder, listOrder, updateOrderStatus };

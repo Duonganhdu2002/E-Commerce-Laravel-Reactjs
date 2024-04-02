@@ -397,16 +397,8 @@ class OrderController extends Controller
         }
     }
 
-    public function searchOrder(Request $request)
+    public function searchOrder($username)
     {
-        // Validate the request
-        $request->validate([
-            'username' => 'required|string|max:255',
-        ]);
-
-        // Get the username from the request
-        $username = $request->input('username');
-
         // Query to join Users table with Orders table
         $orders = DB::table('order')
             ->join('users', 'order.user_id', '=', 'users.user_id')
@@ -424,32 +416,31 @@ class OrderController extends Controller
         return response()->json($orders, 200);
     }
 
-
     public function showOrdersbyUsername($username, $shop_id, $order_status = null)
     {
-    $user = User::where('username', $username)->first();
+        $user = User::where('username', $username)->first();
 
-    if (!$user) {
-        return response()->json(['message' => 'User not found'], 404);
-    }
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
 
-    $userId = $user->user_id;
+        $userId = $user->user_id;
 
-    $query = Order::select('users.username', 'total', 'order_status.order_status_name', 'order.created_at', 'shipping_method.shipping_method_name')
+        $query = Order::select('users.username', 'total', 'order_status.order_status_name', 'order.created_at', 'shipping_method.shipping_method_name')
             ->join('users', 'users.user_id', '=', 'order.user_id')
             ->join('order_status', 'order.order_status_id', '=', 'order_status.order_status_id')
             ->join('shipping_method', 'order.shipping_method_id', '=', 'shipping_method.shipping_method_id')
             ->where('order.user_id', $userId)
             ->where('order.shop_id', $shop_id);
 
-    if ($order_status !== null) {
-        $query->where('order.order_status_id', $order_status);
-    }
+        if ($order_status !== null) {
+            $query->where('order.order_status_id', $order_status);
+        }
 
-    $orders = $query->get();
+        $orders = $query->get();
 
-    return response()->json([
-        'orders' => $orders,
-    ]);
+        return response()->json([
+            'orders' => $orders,
+        ]);
     }
 }
