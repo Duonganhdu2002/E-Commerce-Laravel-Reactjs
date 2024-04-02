@@ -1,8 +1,8 @@
-import React from "react";
-import { PencilIcon } from "@heroicons/react/24/solid";
+import React, { useEffect, useState } from "react";
+import { useSelector } from 'react-redux';
+import { transactionUser } from "../../../services/authService";
+
 import {
-    PlusIcon,
-    MagnifyingGlassIcon,
     ArrowRightIcon,
     ArrowLeftIcon,
 } from "@heroicons/react/24/outline";
@@ -20,45 +20,7 @@ import {
     Input,
 } from "@material-tailwind/react";
 
-const TABLE_HEAD = ["Account", "Date", "Status", ""];
-
-const TABLE_ROWS = [
-    {
-        date: "Wed 3:00pm",
-        status: "paid",
-        account: "visa",
-        accountNumber: "1234",
-        expiry: "06/2026",
-    },
-    {
-        date: "Wed 1:00pm",
-        status: "paid",
-        account: "master-card",
-        accountNumber: "1234",
-        expiry: "06/2026",
-    },
-    {
-        date: "Mon 7:40pm",
-        status: "pending",
-        account: "master-card",
-        accountNumber: "1234",
-        expiry: "06/2026",
-    },
-    {
-        date: "Wed 5:00pm",
-        status: "paid",
-        account: "visa",
-        accountNumber: "1234",
-        expiry: "06/2026",
-    },
-    {
-        date: "Wed 3:30am",
-        status: "cancelled",
-        account: "visa",
-        accountNumber: "1234",
-        expiry: "06/2026",
-    },
-];
+const TABLE_HEAD = ["ID", "Order Id" , "Buyer Id", "Total Amount", "Date"];
 
 export default function Banking() {
 
@@ -76,6 +38,37 @@ export default function Banking() {
         setActive(active - 1);
     };
 
+    const user_id = useSelector((state) => state.user.user.user_id);
+
+    const [data, setData] = useState([]);
+    const [dataFull, setDataFull] = useState([]);
+    const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        fetchData(); // Lấy danh sách địa chỉ khi component được mount
+    }, [user_id]);
+
+
+    const formatCreatedAt = (createdAt) => {
+        const date = new Date(createdAt);
+        const formattedDate = date.toISOString().replace(/T/, ' ').replace(/\..+/, '');
+        return formattedDate;
+    };
+
+    const fetchData = async () => {
+        try {
+            let res = await transactionUser(user_id);
+            // Định dạng lại thời gian cho mỗi item trong res.data
+            res.data.forEach(item => {
+                item.created_at = formatCreatedAt(item.created_at);
+            });
+            setDataFull(res);
+            setData(res.data);
+        } catch (error) {
+            console.error("Error fetching fields:", error);
+        }
+    }
+
     return (
         <div className="flex flex-col gap-y-8">
             <Card className="h-full w-full">
@@ -83,19 +76,8 @@ export default function Banking() {
                     <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
                         <div>
                             <Typography variant="h5" color="blue-gray">
-                                Credit/Debit Cards
+                                Transaction
                             </Typography>
-                        </div>
-                        <div className="flex w-full shrink-0 gap-2 md:w-max">
-                            <div className="w-full md:w-72">
-                                <Input
-                                    label="Search"
-                                    icon={<MagnifyingGlassIcon className="h-5 w-5" />}
-                                />
-                            </div>
-                            <Button className="flex items-center gap-3" size="sm">
-                                <PlusIcon strokeWidth={2} className="h-4 w-4" /> Add New Card
-                            </Button>
                         </div>
                     </div>
                 </CardHeader>
@@ -120,97 +102,59 @@ export default function Banking() {
                             </tr>
                         </thead>
                         <tbody>
-                            {TABLE_ROWS.map(
-                                (
-                                    {
-                                        date,
-                                        status,
-                                        account,
-                                        accountNumber,
-                                        expiry,
-                                    },
-                                    index,
-                                ) => {
-                                    const isLast = index === TABLE_ROWS.length - 1;
-                                    const classes = isLast
-                                        ? "p-4"
-                                        : "p-4 border-b border-blue-gray-50";
-
-                                    return (
-                                        <tr key={date}>
-                                            <td className={classes}>
-                                                <div className="flex items-center gap-3">
-                                                    <div className="h-9 w-12 rounded-md border border-blue-gray-50 p-1">
-                                                        <Avatar
-                                                            src={
-                                                                account === "visa"
-                                                                    ? "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/logos/visa.png"
-                                                                    : "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/logos/mastercard.png"
-                                                            }
-                                                            size="sm"
-                                                            alt={account}
-                                                            variant="square"
-                                                            className="h-full w-full object-contain p-1"
-                                                        />
-                                                    </div>
-                                                    <div className="flex flex-col">
-                                                        <Typography
-                                                            variant="small"
-                                                            color="blue-gray"
-                                                            className="font-normal capitalize"
-                                                        >
-                                                            {account.split("-").join(" ")} {accountNumber}
-                                                        </Typography>
-                                                        <Typography
-                                                            variant="small"
-                                                            color="blue-gray"
-                                                            className="font-normal opacity-70"
-                                                        >
-                                                            {expiry}
-                                                        </Typography>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td className={classes}>
-                                                <Typography
-                                                    variant="small"
-                                                    color="blue-gray"
-                                                    className="font-normal"
-                                                >
-                                                    {date}
-                                                </Typography>
-                                            </td>
-                                            <td className={classes}>
-                                                <div className="w-max">
-                                                    <Chip
-                                                        size="sm"
-                                                        variant="ghost"
-                                                        value={status}
-                                                        color={
-                                                            status === "paid"
-                                                                ? "green"
-                                                                : status === "pending"
-                                                                    ? "amber"
-                                                                    : "red"
-                                                        }
-                                                    />
-                                                </div>
-                                            </td>
-                                            <td className={classes}>
-                                                <Tooltip content="Edit User">
-                                                    <IconButton variant="text">
-                                                        <PencilIcon className="h-4 w-4" />
-                                                    </IconButton>
-                                                </Tooltip>
-                                            </td>
-                                        </tr>
-                                    );
-                                },
-                            )}
+                            {data && data.length > 0 && data.map((item, index) => (
+                                <tr key={index} className="border-b">
+                                    <td className=" p-4">
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="font-normal"
+                                        >
+                                            {item.transaction_id}
+                                        </Typography>
+                                    </td>
+                                    <td className=" p-4">
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="font-normal"
+                                        >
+                                            {item.order_id}
+                                        </Typography>
+                                    </td>
+                                    <td className=" p-4">
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="font-normal"
+                                        >
+                                            {item.buyer_id}
+                                        </Typography>
+                                    </td>
+                                    <td className=" p-4">
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="font-normal"
+                                        >
+                                            ${item.total_amount}
+                                        </Typography>
+                                    </td>
+                                    <td className=" p-4">
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="font-normal"
+                                        >
+                                            {item.created_at}
+                                        </Typography>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </CardBody>
-                <CardFooter className="flex items-center justify-center border-t border-blue-gray-50 gap-8">
+                <CardFooter className="flex items-center justify-center border-blue-gray-50 gap-8">
                     <IconButton
                         size="sm"
                         variant="outlined"
