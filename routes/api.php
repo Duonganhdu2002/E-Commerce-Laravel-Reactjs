@@ -18,6 +18,8 @@ use App\Http\Controllers\RevenueController;
 use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserAddressController;
+use App\Http\Controllers\OrderStatusController;
+;
 
 Route::prefix('payment')->group(function () {
     Route::post('payment', [PaymentController::class, 'createPaymentIntent']);
@@ -81,10 +83,8 @@ Route::prefix('public')->group(function () {
         Route::get('shop/{id}', [ProductController::class, 'createByShop']);
         // chức năng tìm kiếm sản phẩm theo tên của sản phẩm
         Route::get('/search-products', [SearchHistoryController::class, 'search']);
-
         // Lọc sản phẩm theo category và brand
         Route::post('/filterByCategoriesAndBrands', [ProductController::class, 'filterByCategoriesAndBrands'])->name('filterByCategoriesAndBrands');
-
         // Lọc sản phẩm theo giá
         // Route::get('/filter-by-price', [ProductController::class, 'filterByPrice']);
 
@@ -106,6 +106,8 @@ Route::prefix('public')->group(function () {
         });
         //hiển thị danh sách sản phẩm theo sắp xếp lượt đánh giá sản phẩm
         Route::get('rating/{shop_id}/{rating?}', [ProductReviewController::class, 'shopReviews']);
+        // bình luận sản phẩm
+        Route::post('reviews', [ProductReviewController::class, 'store']);
     });
 
     Route::prefix('revenue')->group(function () {
@@ -174,6 +176,8 @@ Route::prefix('public')->group(function () {
         Route::get('disable/{user_id}', [OrderController::class, 'getDisableOrdersForShop']);
         // Hiển thị các đơn hàng đang được vận chuyển
         Route::get('shipped-orders/{user_id}', [OrderController::class, 'showShippingOrdersByUserId']);
+        // Cập Nhật trạng thái đơn hàng
+        Route::put('update-order-status/{order_id}', [OrderStatusController::class, 'updateStatus']);
     });
 
     Route::prefix('location')->group(function () {

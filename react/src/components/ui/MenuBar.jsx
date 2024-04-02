@@ -203,15 +203,17 @@ function NavProductList() {
     const [notification, setNotification] = useState([]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                let res = await getNotification(user.user_id);
-                setNotification(res.data);
-            } catch (error) {
-                console.error(error)
+        if (user && user.user_id) {
+            const fetchData = async () => {
+                try {
+                    let res = await getNotification(user.user_id);
+                    setNotification(res.data);
+                } catch (error) {
+                    console.error(error)
+                }
             }
+            fetchData();
         }
-        fetchData();
     }, [])
 
     useEffect(() => {
@@ -390,15 +392,17 @@ export default function MenuBar() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                let res = await getNotification(user.user_id);
-                setNotification(res.data);
-            } catch (error) {
-                console.error(error)
+        if (user && user.user_id) {
+            const fetchData = async () => {
+                try {
+                    let res = await getNotification(user.user_id);
+                    setNotification(res.data);
+                } catch (error) {
+                    console.error(error)
+                }
             }
+            fetchData();
         }
-        fetchData();
     }, [])
 
     const handleLogOut = () => {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { productInformation } from "../../services/productService";
+import { addComment, productInformation } from "../../services/productService";
 import { useSelector } from 'react-redux'
 import { addToCart } from "../../services/cartService";
 import starBlackImg from "../../assets/icon/star-black.svg"
@@ -25,6 +25,7 @@ import {
     Rating,
     Textarea,
 } from "@material-tailwind/react";
+import { checkOrder } from "../../services/orderService";
 
 
 const LayoutProductDetails = () => {
@@ -50,6 +51,8 @@ const LayoutProductDetails = () => {
     const imageUrls = data.image_urls || [];
     const limitedImageUrls = imageUrls.slice(0, 3);
     const [currentImage, setCurrentImage] = useState(imageUrls[0]);
+
+    const [check, setCheck] = useState();
 
     const handleThumbnailClick = (imageUrl) => {
         setCurrentImage(imageUrl);
@@ -85,6 +88,16 @@ const LayoutProductDetails = () => {
         setSelectedColor(e);
     }
 
+    const [scoreRating, setScoreRating] = useState(0);
+    const [comment, setComment] = useState("");
+
+    const dataReview = {
+        user_id: user.user_id,
+        product_id: productId,
+        rating: scoreRating,
+        comment: comment
+    }
+
     const card = {
         user_id: user ? user.user_id : 0,
         product_id: data.product_id,
@@ -113,7 +126,6 @@ const LayoutProductDetails = () => {
                 let res = await productInformation(productId);
                 if (res && res.data) {
                     setData(res.data);
-
                 }
             } catch (error) {
                 console.error("Error fetching fields:", error);
@@ -122,18 +134,23 @@ const LayoutProductDetails = () => {
 
         getProduct();
 
-        const intervalId = setInterval(() => {
-            getProduct();
-        }, 3000);
-
-        return () => clearInterval(intervalId);
-
     }, [productId]);
 
-
-    // console.log(data);
-    // console.log(starBlack);
-    // console.log(starWhite);
+    useEffect(() => {
+        if (user && user.user_id) {
+            const checkPurchase = async () => {
+                try {
+                    let res = await checkOrder(user.user_id, productId);
+                    if (res && res.purchased) {
+                        setCheck(res.purchased);
+                    }
+                } catch (error) {
+                    console.error("Error fetching fields:", error);
+                }
+            };
+            checkPurchase();
+        }
+    }, [productId]);
 
     const addCount = () => {
         setCount((prev) => prev + 1);
@@ -145,7 +162,19 @@ const LayoutProductDetails = () => {
         }
     };
 
+    const handleScoreRatingChange = (newValue) => {
+        setScoreRating(newValue);
+    };
 
+    const handleCommentChange = (event) => {
+        setComment(event.target.value);
+    };
+
+    const handleDoneButtonClick = async () => {
+        await addComment(dataReview);
+        alert("Successful")
+        setOpen(!open);
+    };
 
     return (
         <div className="2xl:container 2xl:mx-auto lg:py-16 lg:px-20 md:py-12 md:px-6 py-9 px-4 ">
@@ -602,7 +631,14 @@ const LayoutProductDetails = () => {
                                     great.{" "}
                                 </div>
                             </div>
-                            <Button className=" w-full text-sm" onClick={handleOpen}>Write review</Button>
+                            {
+                                (check === 1) ? (
+                                    <Button className=" w-full text-sm" onClick={handleOpen}>Write review</Button>
+                                ) : (
+                                    <Button className=" w-full text-sm">You need to buy this product first</Button>
+                                )
+                            }
+
                             <Dialog open={open} size="xs" handler={handleOpen}>
                                 <div className="flex items-center justify-between">
                                     <DialogHeader className="flex flex-col items-start">
@@ -611,32 +647,24 @@ const LayoutProductDetails = () => {
                                         </Typography>
                                     </DialogHeader>
                                 </div>
-                                <DialogBody>
-                                    <Typography className="mb-10 -mt-7 " color="gray" variant="lead">
+                                <DialogBody className=" p-8">
+                                    <Typography className="mb-10 -mt-7 text-lg " color="gray" variant="lead" >
                                         Star rating, Write a review and Click on button.
                                     </Typography>
                                     <div className="flex justify-between items-center mb-4">
                                         Product Quality
-                                        <Rating value={4} />
+                                        <Rating value={scoreRating} onChange={handleScoreRatingChange} />
                                     </div>
                                     <div className="grid gap-6">
-                                        <Textarea label="Write a review" />
-                                    </div>
-                                    <div className="flex flex-col sm:flex-row w-full mt-4">
-                                        <Button variant="gradient" color="gray" className="sm:mr-2 mb-2 sm:mb-0">
-                                            add picture
-                                        </Button>
-                                        <Button variant="gradient" color="gray">
-                                            add video
-                                        </Button>
+                                        <Textarea label="Write a review" value={comment} onChange={handleCommentChange} />
                                     </div>
                                 </DialogBody>
                                 <DialogFooter className="space-x-2">
                                     <Button variant="text" color="gray" onClick={handleOpen}>
-                                        cancel
+                                        Cancle
                                     </Button>
-                                    <Button variant="gradient" color="gray" onClick={handleOpen}>
-                                        send message
+                                    <Button variant="gradient" color="gray" onClick={handleDoneButtonClick}>
+                                        Done
                                     </Button>
                                 </DialogFooter>
                             </Dialog>

@@ -60,4 +60,9 @@ const productAll = (page) => {
     return axios.get(`/public/product/all?page=${page}`)
 }
 
-export { productAll, updateProduct, deleteProduct, productListShop, productFilter, bestSellerUser, productSort, productWithBrand, fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession, fetchRandomFourCategoryAndGetFourProduct, searchProduct, addProduct, };
+const addComment = (data) => {
+    return axios.post(`/public/product/reviews`, data)
+}
+
+
+export { addComment, productAll, updateProduct, deleteProduct, productListShop, productFilter, bestSellerUser, productSort, productWithBrand, fetchTop6CategoryById, fetchProductWithCategory, productInformation, productSugession, fetchRandomFourCategoryAndGetFourProduct, searchProduct, addProduct, };
