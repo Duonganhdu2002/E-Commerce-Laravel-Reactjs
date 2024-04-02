@@ -260,6 +260,7 @@ class UserController extends Controller
                 'shop_avt' => $request->input('shop_avt', 'shop_avt.jpg'),
                 'shop_background' => $request->input('shop_background', 'shop_background.png'),
                 'avt_image' => $request->input('avt_image', 'avatar.jpg'),
+                'shop_name' => $request->input('shop_name'),
 
             ]);
 
@@ -326,7 +327,7 @@ class UserController extends Controller
     public function create($new_user)
     {
         try {
-           
+
             User::create([
                 'username' => $new_user->input('username'),
                 'email' => $new_user->input('email'),
@@ -447,7 +448,7 @@ class UserController extends Controller
         }
     }
 
-    public function   getTotalUsers()
+    public function getTotalUsers()
     {
         // Sử dụng SQL raw query để lấy tổng số người dùng
         $totalUsers = DB::table('user')->selectRaw('COUNT(*) as total_users')->first();
