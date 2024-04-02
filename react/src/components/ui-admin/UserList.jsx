@@ -415,94 +415,22 @@ const DataTab = [
 
 function DataSearch() {
 
-    const [dataSearch, setDataSearch] = useState([]);
     const [userEmail, setUserEmail] = useState("")
+    const [dataSearch, setDataSearch] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
-            let res = await searchUser(userEmail);
-            setDataSearch(res.data)
-        }
-        fetchData()
-    }, [userEmail])
-
-
-    const [data, setData] = useState([]);
-    const [dataFull, setDataFull] = useState([]);
-    const [page, setPage] = useState(1);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                let res = await fetchAllUser(type_id, page);
-                setData(res.data.data);
-                setDataFull(res.data);
-            } catch (error) {
-                console.error(error);
+            if (userEmail.trim() !== "") {
+                let res = await searchUser(userEmail);
+                setDataSearch(res.data);
+            } else {
+                setDataSearch([]);
             }
         }
         fetchData();
-    }, [page]);
-
-    const [active, setActive] = useState(1);
-    const [visiblePages, setVisiblePages] = useState([]);
-
-    const getItemProps = (index) => ({
-        variant: active === index ? 'filled' : 'text',
-        color: 'gray',
-        onClick: () => {
-            setPage(index);
-            setActive(index);
-        },
-    });
-
-    const next = () => {
-        if (active === dataFull.last_page) return;
-
-        setActive(active + 1);
-        setPage(active + 1);
-    };
-
-    const prev = () => {
-        if (active === dataFull.from) return;
-
-        setActive(active - 1);
-        setPage(active - 1);
-    };
-
-    useEffect(() => {
-        const calculateVisiblePages = async () => {
-            const totalVisiblePages = 3;
-            const totalPageCount = dataFull.last_page;
-
-            let startPage, endPage;
-            if (totalPageCount <= totalVisiblePages) {
-                startPage = 1;
-                endPage = totalPageCount;
-            } else {
-                const middlePage = Math.floor(totalVisiblePages / 2);
-                if (active <= middlePage + 1) {
-                    startPage = 1;
-                    endPage = totalVisiblePages;
-                } else if (active >= totalPageCount - middlePage) {
-                    startPage = totalPageCount - totalVisiblePages + 1;
-                    endPage = totalPageCount;
-                } else {
-                    startPage = active - middlePage;
-                    endPage = active + middlePage;
-                }
-            }
-
-            const visiblePagesArray = Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index);
-            setVisiblePages(visiblePagesArray);
-        };
-
-        calculateVisiblePages();
-    }, [active, dataFull.last_page]);
+    }, [userEmail]);
 
     const EditUser = () => {
-
-
         return (
             <div className="cursor-pointer flex justify-center hover:bg-blue-gray-50 py-2 rounded-lg">
                 <Popover placement="left">
@@ -600,12 +528,22 @@ function DataSearch() {
         );
     };
 
+    const handleInputChange = (e) => {
+        setUserEmail(e.target.value);
+    }
+
+    const handleMouseOut = () => {
+        setUserEmail(""); 
+    }
     return (
         <div>
-            <div className=" mt-2">
+            <div className="mt-2">
                 <Input
                     label="Search"
                     icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                    value={userEmail}
+                    onChange={handleInputChange}
+                    onMouseOut={handleMouseOut} 
                 />
             </div>
             <CardBody className="px-4">
@@ -635,9 +573,9 @@ function DataSearch() {
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map(
+                        {dataSearch.map(
                             (users, index) => {
-                                const isLast = index === data.length - 1;
+                                const isLast = index === dataSearch.length - 1;
                                 const classes = isLast
                                     ? "p-4"
                                     : "p-4 border-b border-blue-gray-50";
@@ -731,43 +669,7 @@ function DataSearch() {
                     </tbody>
                 </table>
             </CardBody>
-            <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-                <div>
 
-                </div>
-                <div className="flex items-center mt-2 ">
-                    <Button
-                        variant="text"
-                        className="flex items-center gap-2"
-                        onClick={prev}
-                        disabled={active === dataFull.from}
-                    >
-                        <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
-                    </Button>
-
-                    <div className="flex items-center gap-2">
-                        {visiblePages.map((pageNumber) => (
-                            <IconButton
-                                key={pageNumber}
-                                {...getItemProps(pageNumber)}
-                            >
-                                {pageNumber}
-                            </IconButton>
-                        ))}
-                    </div>
-
-
-                    <Button
-                        variant="text"
-                        className="flex items-center gap-2"
-                        onClick={next}
-                        disabled={active === dataFull.last_page}
-                    >
-                        Next
-                        <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
-                    </Button>
-                </div>
-            </CardFooter>
         </div>
     );
 }

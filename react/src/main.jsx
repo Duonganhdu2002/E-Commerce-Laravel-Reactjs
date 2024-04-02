@@ -195,9 +195,9 @@ const App = () => {
                                     <Route path="profile" element={<PrivateCustomerRoute element={<Profile />} />} />
                                     <Route path="banking" element={<PrivateCustomerRoute element={<Banking />} />} />
                                     <Route path="address" element={<PrivateCustomerRoute element={<Address />} />} />
-                                    <Route path="purchase" element={<PrivateCustomerRoute element={<Purchase />} />} />
+                                    {/* <Route path="purchase" element={<PrivateCustomerRoute element={<Purchase />} />} /> */}
                                     <Route path="notification" element={<PrivateCustomerRoute element={<NotificationUser />} />} />
-                                    <Route path="voucher-wallet" element={<PrivateCustomerRoute element={<VoucherWallet />} />} />
+                                    {/* <Route path="voucher-wallet" element={<PrivateCustomerRoute element={<VoucherWallet />} />} /> */}
                                 </Route>
                             </Route>
 
