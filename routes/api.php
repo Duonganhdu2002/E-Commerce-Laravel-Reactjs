@@ -19,6 +19,9 @@ use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserAddressController;
 use App\Http\Controllers\OrderStatusController;
+use App\Http\Controllers\TransactionController;
+
+
 ;
 
 Route::prefix('payment')->group(function () {
@@ -31,9 +34,9 @@ Route::prefix('user')->group(function () {
     // Lấy toàn bộ thông tin của user
     Route::get('/getAllUsers', [UserController::class, 'getAllUsers'])->name('getAllUsers');
 
-    
 
-    
+
+
     Route::post('createAdmin', [UserController::class, 'createAdmin'])->name('createAdmin');
     Route::post('createBusiness', [UserController::class, 'createBusiness'])->name('createBusiness');
     Route::post('register', [UserController::class, 'createUser'])->name('register');
@@ -180,6 +183,7 @@ Route::prefix('public')->group(function () {
         //tim kiem don hang theo username
         Route::get('{username}/{shop_id}/{order_status?}', [OrderController::class, 'showOrdersbyUsername']);
 
+
     });
 
     Route::prefix('location')->group(function () {
@@ -202,4 +206,25 @@ Route::prefix('notification')->group(function () { // quản lí thông báo
     Route::put('update/{id}', [NotificationController::class, 'update']);
     // xóa thông báo
     Route::delete('delete/{id}', [NotificationController::class, 'destroy']);
+});
+
+Route::prefix('Transaction')->group(function () {
+    // show tất cả giao dịch
+    Route::get('/getAllTransaction', [TransactionController::class, 'index'])->name('getAllTransaction');
+});
+
+Route::prefix('admin')->group(function () {
+    // User list
+    Route::get('/users/search', [UserController::class, 'search']);
+    // Tìm kiếm field
+    Route::get('/fields/searchField', [FieldController::class, 'searchField']);
+    // tìm kiếm category
+    Route::get('/category/searchCategory', [ProductCategoryController::class, 'searchCategory']);
+    // tìm kiếm brand
+    Route::get('/brand/searchBrand', [BrandController::class, 'searchBrand']);
+    // order list
+    Route::get('/orders/search', [OrderController::class, 'searchOrder']);
+    // Product list
+    Route::get('/products/search', [ProductController::class, 'searchProduct']);
+
 });

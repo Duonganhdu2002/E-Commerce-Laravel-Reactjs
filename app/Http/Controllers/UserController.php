@@ -522,4 +522,21 @@ class UserController extends Controller
             ], 500);
         }
     }
+
+    public function search(Request $request)
+    {
+        // Lấy thông tin từ request
+        $email = $request->input('email');
+
+        // Tìm user có email tương ứng
+        $users = User::where('email', $email)->paginate(6);
+
+        // Kiểm tra xem user có tồn tại hay không
+        if ($users->isEmpty()) {
+            return response()->json(['message' => 'Không tìm thấy user'], 404);
+        }
+
+        // Trả về thông tin user
+        return response()->json($users, 200);
+    }
 }

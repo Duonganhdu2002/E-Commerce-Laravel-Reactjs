@@ -10,6 +10,7 @@ use App\Models\order;
 use App\Models\user;
 use App\Models\product;
 use App\Models\shopping_cart as ShoppingCart;
+use Illuminate\Support\Facades\DB;
 
 
 
@@ -395,6 +396,34 @@ class OrderController extends Controller
             ], 500);
         }
     }
+
+    public function searchOrder(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'username' => 'required|string|max:255',
+        ]);
+
+        // Get the username from the request
+        $username = $request->input('username');
+
+        // Query to join Users table with Orders table
+        $orders = DB::table('order')
+            ->join('users', 'order.user_id', '=', 'users.user_id')
+            ->join('order_status', 'order.order_status_id', '=', 'order_status.order_status_id')
+            ->where('users.username', 'like', '%' . $username . '%')
+            ->select('order.*', 'users.username', 'order_status.order_status_name')
+            ->paginate(6);
+
+        // Check if any orders were found
+        if ($orders->isEmpty()) {
+            return response()->json(['message' => 'No orders found for the given username'], 404);
+        }
+
+        // Return the orders with pagination
+        return response()->json($orders, 200);
+    }
+
 
     public function showOrdersbyUsername($username, $shop_id, $order_status = null)
     {

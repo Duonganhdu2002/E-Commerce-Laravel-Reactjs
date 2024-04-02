@@ -271,7 +271,7 @@ const SeeProduct = ({ product_id }) => {
 
 export default function ProductList() {
 
-    const seller_id = useSelector((state) => state.seller.seller.user_id);
+    // const seller_id = useSelector((state) => state.seller.seller.user_id);
     const [data, setData] = useState([]);
     const [dataFull, setDataFull] = useState([]);
     const [page, setPage] = useState(1);

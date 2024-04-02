@@ -4,13 +4,32 @@ import {
     useStripe,
     useElements
 } from "@stripe/react-stripe-js";
-
+import { useSelector } from 'react-redux'
+import { addNotification } from "../../services/notificationService";
 export default function CheckoutForm() {
     const stripe = useStripe();
     const elements = useElements();
 
     const [message, setMessage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+
+    const user = useSelector((state) => state.user.user.user_id);
+
+    const dataAdd = {
+        user_id: user,
+        title: "Thanh toán thành công",
+        content: "Đơn hàng của bạn đang được chờ vận chuyển",
+        read: 1
+    }
+    
+    const addThongbao = async () => {
+        try {
+            await addNotification(dataAdd);
+            console.log("Notification added successfully");
+        } catch (error) {
+            console.error("Error adding notification:", error);
+        }
+    }
 
     useEffect(() => {
         if (!stripe) {
@@ -29,6 +48,7 @@ export default function CheckoutForm() {
             switch (paymentIntent.status) {
                 case "succeeded":
                     setMessage("Payment succeeded!");
+                    addThongbao();
                     break;
                 case "processing":
                     setMessage("Your payment is processing.");
@@ -41,7 +61,7 @@ export default function CheckoutForm() {
                     break;
             }
         });
-    }, [stripe]);
+    }, [stripe, addThongbao]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -74,6 +94,8 @@ export default function CheckoutForm() {
         }
 
         setIsLoading(false);
+
+        addThongbao();
     };
 
     const paymentElementOptions = {
@@ -84,7 +106,7 @@ export default function CheckoutForm() {
         <form className=" mx-auto my-14" id="payment-form" onSubmit={handleSubmit}>
 
             <PaymentElement id="payment-element" options={paymentElementOptions} />
-            <button disabled={isLoading || !stripe || !elements} id="submit">
+            <button onClick={addThongbao} disabled={isLoading || !stripe || !elements} id="submit">
                 <span id="button-text">
                     {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
                 </span>

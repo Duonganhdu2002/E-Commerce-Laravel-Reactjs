@@ -52,4 +52,8 @@ const addAddress = (addressData) => {
     return axios.post("/user/user-addresses", addressData);
 };
 
-export {adminLogin, fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister, getUserInfor, userDelete, userAddress, updateAddress, deleteAddress, addAddress };
+const updateUser = (userId, dataUpdate) => {
+    return axios.put(`/user/${userId}`, dataUpdate);
+};
+
+export {adminLogin, fetchAllUser, fetchUserPagination, userLogin, sellerLogin, userRegister, sellerRegister, getUserInfor, userDelete, userAddress, updateAddress, deleteAddress, addAddress, updateUser };
